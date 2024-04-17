@@ -1,0 +1,58 @@
+spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:test}
+  application:
+    name: vinopener
+  web:
+    resources:
+      add-mappings: false
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+jwt:
+  access-secret-key-base64: ${JWT_ACCESS_SECRET_KEY_BASE64:iAbBnFDrPJgglJr+yO0dC1qITxoCJcm1HB8ZiFWhtN19lWOdCaiPmvqXRTLmqe4cIdaT5X62swd/8lfp8rdw0Q==}
+  access-expiration-seconds: ${JWT_ACCESS_EXPIRATION_SECONDS:300}
+  refresh-secret-key-base64: ${JWT_REFRESH_SECRET_KEY_BASE64:zxY3hKXBd6MPmmxha1rwte7GayIdjuzOTeD6nyuO7MockdamStat6G0nDF2T8EJP041sdz4eZxEPNJEGIXGmiQ==}
+  refresh-expiration-seconds: ${JWT_REFRESH_EXPIRATION_SECONDS:86400}
+
+s3:
+  access-key-id: ${S3_ACCESS_KEY_ID}
+  secret-access-key: ${S3_SECRET_ACCESS_KEY}
+  region: ${S3_REGION}
+  bucket: ${S3_BUCKET}
+  endpoint: ${S3_ENDPOINT}
+  public-base-url: ${S3_PUBLIC_BASE_URL}
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:h2:mem:test
+    username: sa
+    password:
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:mariadb://localhost:3306/vinopener
+    username: ssafy
+    password: ssafy
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:mariadb://${DB_HOST}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
