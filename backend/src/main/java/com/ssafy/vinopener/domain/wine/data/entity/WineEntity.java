@@ -41,4 +41,5 @@ public class WineEntity extends BaseTimeEntity {
         this.view++;
         return this;
     }
+
 }

@@ -17,4 +17,5 @@ public abstract class BaseTimeEntity {
 
     @Column(nullable = false, insertable = false, updatable = false)
     private LocalDateTime updatedTime;
+
 }

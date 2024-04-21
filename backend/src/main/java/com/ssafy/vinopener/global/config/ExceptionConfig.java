@@ -20,4 +20,5 @@ public class ExceptionConfig {
     public ConstraintViolationProblemModule constraintViolationProblemModule() {
         return new ConstraintViolationProblemModule();
     }
+
 }

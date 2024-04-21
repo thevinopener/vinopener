@@ -18,14 +18,17 @@ public class JwtProps {
     private final SecretKey refreshSecretKey;
     private final Duration refreshExpiration;
 
-    public JwtProps(final String accessSecretKeyBase64,
-        final @DurationUnit(ChronoUnit.SECONDS) Duration accessExpirationSeconds,
-        final String refreshSecretKeyBase64,
-        final @DurationUnit(ChronoUnit.SECONDS) Duration refreshExpirationSeconds) {
+    public JwtProps(
+            final String accessSecretKeyBase64,
+            final @DurationUnit(ChronoUnit.SECONDS) Duration accessExpirationSeconds,
+            final String refreshSecretKeyBase64,
+            final @DurationUnit(ChronoUnit.SECONDS) Duration refreshExpirationSeconds
+    ) {
         Base64.Decoder decoder = Base64.getDecoder();
         this.accessSecretKey = Keys.hmacShaKeyFor(decoder.decode(accessSecretKeyBase64));
         this.accessExpiration = accessExpirationSeconds;
         this.refreshSecretKey = Keys.hmacShaKeyFor(decoder.decode(refreshSecretKeyBase64));
         this.refreshExpiration = refreshExpirationSeconds;
     }
+
 }

@@ -7,4 +7,5 @@ public interface ErrorCode {
     Status getStatus();
 
     String getDetail();
+
 }
