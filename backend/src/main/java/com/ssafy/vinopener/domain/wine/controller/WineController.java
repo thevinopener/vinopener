@@ -22,7 +22,7 @@ public class WineController {
     @GetMapping
     @Operation(summary = "와인 목록 조회")
     public ResponseEntity<List<WineGetListResponse>> getList(
-        // TODO: pagination 추가
+            // TODO: pagination 추가
     ) {
         return ResponseEntity.ok(wineService.getList());
     }
@@ -30,8 +30,9 @@ public class WineController {
     @GetMapping("/{wineId}")
     @Operation(summary = "와인 상세 조회")
     public ResponseEntity<WineGetResponse> get(
-        @PathVariable final Long wineId
+            @PathVariable final Long wineId
     ) {
         return ResponseEntity.ok(wineService.get(wineId));
     }
+
 }

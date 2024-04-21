@@ -10,15 +10,19 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring",
-    injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-    unmappedTargetPolicy = ReportingPolicy.ERROR)
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+        unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface WineMapper {
 
     WineGetResponse toGetResponse(WineEntity entity);
 
     WineGetListResponse toGetListResponse(WineEntity entity);
 
+    /**
+     * 예제입니다. 실제로 사용하지 않습니다.
+     */
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "view", ignore = true)
-    WineEntity toEntity(WineCreateRequest dto);
+    WineEntity toEntity(WineCreateRequest request);
+
 }

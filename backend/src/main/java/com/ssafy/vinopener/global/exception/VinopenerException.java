@@ -6,10 +6,11 @@ public class VinopenerException extends AbstractThrowableProblem {
 
     public VinopenerException(final ErrorCode errorCode) {
         super(
-            null,
-            errorCode.getStatus().name(),
-            errorCode.getStatus(),
-            errorCode.getDetail()
+                null,
+                errorCode.getStatus().name(),
+                errorCode.getStatus(),
+                errorCode.getDetail()
         );
     }
+
 }

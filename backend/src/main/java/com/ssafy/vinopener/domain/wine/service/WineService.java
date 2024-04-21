@@ -22,15 +22,16 @@ public class WineService {
     @Transactional(readOnly = true)
     public List<WineGetListResponse> getList() {
         return wineRepository.findAll().stream()
-            .map(wineMapper::toGetListResponse)
-            .toList();
+                .map(wineMapper::toGetListResponse)
+                .toList();
     }
 
     @Transactional
     public WineGetResponse get(final Long wineId) {
         return wineRepository.findById(wineId)
-            .map(WineEntity::increaseView)
-            .map(wineMapper::toGetResponse)
-            .orElseThrow(() -> new VinopenerException(WineErrorCode.WINE_NOT_FOUND));
+                .map(WineEntity::increaseView)
+                .map(wineMapper::toGetResponse)
+                .orElseThrow(() -> new VinopenerException(WineErrorCode.WINE_NOT_FOUND));
     }
+
 }

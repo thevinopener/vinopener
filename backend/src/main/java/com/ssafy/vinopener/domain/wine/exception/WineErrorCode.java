@@ -16,5 +16,6 @@ public enum WineErrorCode implements ErrorCode {
     public static class Details {
 
         public static final String WINE_NOT_FOUND = "와인을 찾을 수 없습니다.";
+
     }
 }
