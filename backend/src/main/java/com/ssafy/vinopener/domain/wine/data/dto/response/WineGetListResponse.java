@@ -4,7 +4,7 @@ import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
 import lombok.Builder;
 
 @Builder
-public record WineGetResponse(
+public record WineGetListResponse(
     Long id,
     String nameKo,
     String nameEn,

@@ -10,6 +10,7 @@ import org.zalando.problem.violations.ConstraintViolationProblemModule;
 @Configuration
 @EnableAutoConfiguration(exclude = ErrorMvcAutoConfiguration.class)
 public class ExceptionConfig {
+
     @Bean
     public ProblemModule problemModule() {
         return new ProblemModule();

@@ -6,4 +6,5 @@ import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
 
 @ControllerAdvice
 public class GlobalExceptionHandler implements ProblemHandling, SecurityAdviceTrait {
+
 }

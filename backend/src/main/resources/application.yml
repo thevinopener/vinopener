@@ -9,6 +9,13 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+  h2:
+    console:
+      enabled: false
+
+springdoc:
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
 
 jwt:
   access-secret-key-base64: ${JWT_ACCESS_SECRET_KEY_BASE64:iAbBnFDrPJgglJr+yO0dC1qITxoCJcm1HB8ZiFWhtN19lWOdCaiPmvqXRTLmqe4cIdaT5X62swd/8lfp8rdw0Q==}
