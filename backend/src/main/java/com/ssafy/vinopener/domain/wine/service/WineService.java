@@ -19,6 +19,11 @@ public class WineService {
     private final WineRepository wineRepository;
     private final WineMapper wineMapper;
 
+    /**
+     * 와인 목록 조회
+     *
+     * @return 와인 목록
+     */
     @Transactional(readOnly = true)
     public List<WineGetListResponse> getList() {
         return wineRepository.findAll().stream()
@@ -26,6 +31,14 @@ public class WineService {
                 .toList();
     }
 
+    /**
+     * 와인 상세 조회
+     * <p>
+     * 조회수를 갱신합니다.
+     *
+     * @param wineId 와인 ID
+     * @return 와인
+     */
     @Transactional
     public WineGetResponse get(final Long wineId) {
         return wineRepository.findById(wineId)
