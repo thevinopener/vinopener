@@ -54,9 +54,12 @@ dependencies {
   implementation 'org.mapstruct:mapstruct:1.5.5.Final'
   annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 
-  // https://github.com/springdoc/springdoc-openapi
   // http://localhost:8080/swagger-ui/index.html
+  // https://github.com/springdoc/springdoc-openapi
   implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+  // https://springdoc.org/#javadoc-support
+  annotationProcessor 'com.github.therapi:therapi-runtime-javadoc-scribe:0.15.0'
+  implementation 'com.github.therapi:therapi-runtime-javadoc:0.15.0'
 
   // https://mvnrepository.com/artifact/software.amazon.awssdk/s3
   implementation 'software.amazon.awssdk:s3:2.+'
