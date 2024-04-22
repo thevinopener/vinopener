@@ -12,6 +12,15 @@ spring:
   h2:
     console:
       enabled: false
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 149686988355-5e0mqfevclljpiua46t517ftd03ip0u4.apps.googleusercontent.com
+            client-secret: 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
+            scope: email, profile
+
 
 springdoc:
   default-consumes-media-type: application/json;charset=UTF-8
