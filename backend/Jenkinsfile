@@ -1,0 +1,88 @@
+pipeline {
+    agent any
+    environment {
+        BASE_DIR = 'backend'
+        MAIN_BRANCH = 'main'
+        CREDENTIAL_DOTENV_NAME = 'vinopener-backend-dotenv'
+        PUBLISH_OVER_SSH_CONFIG_NAME = 'vinopener-backend-ssh-publish'
+        DOCKER_COMPOSE_PROJECT_NAME = 'vinopener-backend'
+    }
+    stages {
+        stage('backend test') {
+            steps {
+                dir(BASE_DIR) {
+                    withGradle {
+                        sh './gradlew test'
+                    }
+                }
+            }
+        }
+        stage('backend build') {
+            steps {
+                dir(BASE_DIR) {
+                    withGradle {
+                        sh './gradlew bootJar'
+                    }
+                }
+            }
+        }
+        stage('backend deploy') {
+            when {
+                branch MAIN_BRANCH
+            }
+            steps {
+                dir(BASE_DIR) {
+                    withCredentials([file(credentialsId: CREDENTIAL_DOTENV_NAME, variable: 'DOTENV')]) {
+                        sh 'cp $DOTENV .env'
+                    }
+                    sshPublisher(
+                        failOnError: true,
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: PUBLISH_OVER_SSH_CONFIG_NAME,
+                                transfers: [
+                                    sshTransfer(
+                                        cleanRemote: false,
+                                        excludes: '',
+                                        execCommand: """
+                                            cd ${PUBLISH_OVER_SSH_CONFIG_NAME};
+                                            docker compose -p ${DOCKER_COMPOSE_PROJECT_NAME} up -d;
+                                            docker image prune -f
+                                        """,
+                                        execTimeout: 120000,
+                                        flatten: false,
+                                        makeEmptyDirs: false,
+                                        noDefaultExcludes: false,
+                                        patternSeparator: '[, ]+',
+                                        remoteDirectory: PUBLISH_OVER_SSH_CONFIG_NAME,
+                                        remoteDirectorySDF: false,
+                                        removePrefix: '',
+                                        sourceFiles: 'build/libs/*.jar, src/main/resources/*.sql, Caddyfile, Dockerfile, docker-compose.yml, .env'
+                                    )
+                                ],
+                                usePromotionTimestamp: false,
+                                useWorkspaceInPromotion: false,
+                                verbose: true
+                            )
+                        ]
+                    )
+                }
+            }
+            post {
+                always {
+                    dir(BASE_DIR) {
+                        sh 'rm -f .env'
+                    }
+                }
+            }
+        }
+    }
+    post {
+        failure {
+            mattermostSend(
+                color: 'danger',
+                message: "FAIL: Build #${env.BUILD_NUMBER}\n${env.BUILD_URL}"
+            )
+        }
+    }
+}
