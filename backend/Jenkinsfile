@@ -1,0 +1,75 @@
+pipeline {
+    agent any
+    environment {
+        BASE_DIR = 'backend'
+    }
+    stages {
+        stage('backend test') {
+            steps {
+                dir("${BASE_DIR}") {
+                    withGradle {
+                        sh './gradlew test'
+                    }
+                }
+            }
+        }
+        stage('backend build') {
+            steps {
+                dir("${BASE_DIR}") {
+                    withGradle {
+                        sh './gradlew bootJar'
+                    }
+                }
+            }
+        }
+        stage('backend deploy') {
+            steps {
+                dir("${BASE_DIR}") {
+                    withCredentials([file(credentialsId: 'vinopener-backend-dotenv', variable: 'DOTENV')]) {
+                        sh 'cp $DOTENV .env'
+                    }
+                    sshPublisher(
+                        failOnError: true,
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: 'vinopener-ssh-publish',
+                                transfers: [
+                                    sshTransfer(
+                                        cleanRemote: false,
+                                        excludes: '',
+                                        execCommand: 'docker compose -p vinopener up -d; docker image prune -f',
+                                        execTimeout: 120000,
+                                        flatten: false,
+                                        makeEmptyDirs: false,
+                                        noDefaultExcludes: false,
+                                        patternSeparator: '[, ]+',
+                                        remoteDirectory: '',
+                                        remoteDirectorySDF: false,
+                                        removePrefix: '',
+                                        sourceFiles: 'src/main/resources/*.sql, build/libs/*.jar, Dockerfile, docker-compose.yml, .env'
+                                    )
+                                ],
+                                usePromotionTimestamp: false,
+                                useWorkspaceInPromotion: false,
+                                verbose: false
+                            )
+                        ]
+                    )
+                }
+            }
+        }
+    }
+    post {
+        always {
+            dir("${BASE_DIR}") {
+                sh 'rm -f .env'
+            }
+        }
+        failure {
+            mattermostSend(
+                color: 'danger',
+                message: "FAILURE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+            )
+        }
+    }
+}
