@@ -60,6 +60,6 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: jdbc:mariadb://${DB_HOST}/${DB_NAME}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mariadb://${MARIADB_HOST}/${MARIADB_DATABASE}
+    username: ${MARIADB_USER}
+    password: ${MARIADB_PASSWORD}

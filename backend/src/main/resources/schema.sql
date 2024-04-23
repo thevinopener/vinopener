@@ -1,24 +1,24 @@
 DROP TABLE IF EXISTS
-  `AiChat`,
-  `WineChat`,
-  `UserChat`,
-  `UserChatRoom`,
-  `CellarItem`,
-  `Bookmark`,
-  `WineView`,
-  `Search`,
-  `FeedLike`,
-  `FeedWine`,
-  `Feed`,
-  `TastingNoteResponseChoice`,
-  `TastingNoteResponse`,
-  `TastingNoteQuestion`,
-  `TastingNote`,
-  `PreferenceSurvey`,
-  `Wine`,
-  `User`;
+  `ai_chat`,
+  `wine_chat`,
+  `user_chat`,
+  `user_chat_room`,
+  `cellar_item`,
+  `bookmark`,
+  `wine_view`,
+  `search`,
+  `feed_like`,
+  `feed_wine`,
+  `feed`,
+  `tasting_note_response_choice`,
+  `tasting_note_response`,
+  `tasting_note_question`,
+  `tasting_note`,
+  `preference_survey`,
+  `wine`,
+  `user`;
 
-CREATE TABLE `User`
+CREATE TABLE `user`
 (
   `user_id`      BIGINT PRIMARY KEY AUTO_INCREMENT,
   `email`        VARCHAR(320) NOT NULL UNIQUE,
@@ -28,7 +28,7 @@ CREATE TABLE `User`
   `updated_time` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE `Wine`
+CREATE TABLE `wine`
 (
   `wine_id`      BIGINT PRIMARY KEY AUTO_INCREMENT,
   `name_ko`      VARCHAR(255)                                                       NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE `Wine`
   `updated_time` TIMESTAMP                                                          NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE `PreferenceSurvey`
+CREATE TABLE `preference_survey`
 (
   `preference_survey_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
   `user_id`              BIGINT                                                             NOT NULL,
@@ -61,10 +61,10 @@ CREATE TABLE `PreferenceSurvey`
   `tannin`               INT                                                                NOT NULL,
   `created_time`         TIMESTAMP                                                          NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time`         TIMESTAMP                                                          NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`)
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 );
 
-CREATE TABLE `TastingNote`
+CREATE TABLE `tasting_note`
 (
   `tasting_note_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
   `user_id`         BIGINT       NOT NULL,
@@ -79,11 +79,11 @@ CREATE TABLE `TastingNote`
   `score`           INT          NOT NULL,
   `created_time`    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time`    TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`),
-  FOREIGN KEY (`wine_id`) REFERENCES `Wine` (`wine_id`)
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  FOREIGN KEY (`wine_id`) REFERENCES `wine` (`wine_id`)
 );
 
-CREATE TABLE `TastingNoteQuestion`
+CREATE TABLE `tasting_note_question`
 (
   `tasting_note_question_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
   `question`                 VARCHAR(16) NOT NULL,
@@ -92,17 +92,17 @@ CREATE TABLE `TastingNoteQuestion`
   `updated_time`             TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE `TastingNoteResponse`
+CREATE TABLE `tasting_note_response`
 (
   `tasting_note_response_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
   `tasting_note_question_id` BIGINT      NOT NULL,
   `response`                 VARCHAR(16) NOT NULL,
   `created_time`             TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time`             TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`tasting_note_question_id`) REFERENCES `TastingNoteQuestion` (`tasting_note_question_id`)
+  FOREIGN KEY (`tasting_note_question_id`) REFERENCES `tasting_note_question` (`tasting_note_question_id`)
 );
 
-CREATE TABLE `TastingNoteResponseChoice`
+CREATE TABLE `tasting_note_response_choice`
 (
   `tasting_note_response_choice_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
   `tasting_note_id`                 BIGINT    NOT NULL,
@@ -110,12 +110,12 @@ CREATE TABLE `TastingNoteResponseChoice`
   `tasting_note_response_id`        BIGINT    NOT NULL,
   `created_time`                    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time`                    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`tasting_note_id`) REFERENCES `TastingNote` (`tasting_note_id`),
-  FOREIGN KEY (`tasting_note_question_id`) REFERENCES `TastingNoteQuestion` (`tasting_note_question_id`),
-  FOREIGN KEY (`tasting_note_response_id`) REFERENCES `TastingNoteResponse` (`tasting_note_response_id`)
+  FOREIGN KEY (`tasting_note_id`) REFERENCES `tasting_note` (`tasting_note_id`),
+  FOREIGN KEY (`tasting_note_question_id`) REFERENCES `tasting_note_question` (`tasting_note_question_id`),
+  FOREIGN KEY (`tasting_note_response_id`) REFERENCES `tasting_note_response` (`tasting_note_response_id`)
 );
 
-CREATE TABLE `Feed`
+CREATE TABLE `feed`
 (
   `feed_id`      BIGINT PRIMARY KEY AUTO_INCREMENT,
   `user_id`      BIGINT       NOT NULL,
@@ -124,64 +124,64 @@ CREATE TABLE `Feed`
   `is_public`    BOOLEAN      NOT NULL,
   `created_time` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`)
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 );
 
-CREATE TABLE `FeedWine`
+CREATE TABLE `feed_wine`
 (
   `feed_id`      BIGINT    NOT NULL,
   `wine_id`      BIGINT    NOT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`feed_id`, `wine_id`),
-  FOREIGN KEY (`feed_id`) REFERENCES `Feed` (`feed_id`),
-  FOREIGN KEY (`wine_id`) REFERENCES `Wine` (`wine_id`)
+  FOREIGN KEY (`feed_id`) REFERENCES `feed` (`feed_id`),
+  FOREIGN KEY (`wine_id`) REFERENCES `wine` (`wine_id`)
 );
 
-CREATE TABLE `FeedLike`
+CREATE TABLE `feed_like`
 (
   `feed_id`      BIGINT    NOT NULL,
   `user_id`      BIGINT    NOT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`feed_id`, `user_id`),
-  FOREIGN KEY (`feed_id`) REFERENCES `Feed` (`feed_id`),
-  FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`)
+  FOREIGN KEY (`feed_id`) REFERENCES `feed` (`feed_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 );
 
-CREATE TABLE `Search`
+CREATE TABLE `search`
 (
   `search_id`    BIGINT PRIMARY KEY AUTO_INCREMENT,
   `user_id`      BIGINT       NOT NULL,
   `content`      VARCHAR(255) NOT NULL,
   `created_time` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`)
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 );
 
-CREATE TABLE `WineView`
+CREATE TABLE `wine_view`
 (
   `user_id`      BIGINT    NOT NULL,
   `wine_id`      BIGINT    NOT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`, `wine_id`),
-  FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`),
-  FOREIGN KEY (`wine_id`) REFERENCES `Wine` (`wine_id`)
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  FOREIGN KEY (`wine_id`) REFERENCES `wine` (`wine_id`)
 );
 
-CREATE TABLE `Bookmark`
+CREATE TABLE `bookmark`
 (
   `user_id`      BIGINT    NOT NULL,
   `wine_id`      BIGINT    NOT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`, `wine_id`),
-  FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`),
-  FOREIGN KEY (`wine_id`) REFERENCES `Wine` (`wine_id`)
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  FOREIGN KEY (`wine_id`) REFERENCES `wine` (`wine_id`)
 );
 
-CREATE TABLE `CellarItem`
+CREATE TABLE `cellar_item`
 (
   `cellar_id`     BIGINT PRIMARY KEY AUTO_INCREMENT,
   `user_id`       BIGINT    NOT NULL,
@@ -190,32 +190,32 @@ CREATE TABLE `CellarItem`
   `finished_date` TIMESTAMP NULL,
   `created_time`  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time`  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`),
-  FOREIGN KEY (`wine_id`) REFERENCES `Wine` (`wine_id`)
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  FOREIGN KEY (`wine_id`) REFERENCES `wine` (`wine_id`)
 );
 
-CREATE TABLE `UserChatRoom`
+CREATE TABLE `user_chat_room`
 (
   `user_chat_room_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
   `creator_id`        BIGINT    NOT NULL,
   `partner_id`        BIGINT    NOT NULL,
   `created_time`      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time`      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`creator_id`) REFERENCES `User` (`user_id`),
-  FOREIGN KEY (`partner_id`) REFERENCES `User` (`user_id`)
+  FOREIGN KEY (`creator_id`) REFERENCES `user` (`user_id`),
+  FOREIGN KEY (`partner_id`) REFERENCES `user` (`user_id`)
 );
 
-CREATE TABLE `UserChat`
+CREATE TABLE `user_chat`
 (
   `user_chat_id`      BIGINT PRIMARY KEY AUTO_INCREMENT,
   `user_chat_room_id` BIGINT       NOT NULL,
   `message`           VARCHAR(255) NOT NULL,
   `created_time`      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time`      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`user_chat_room_id`) REFERENCES `UserChatRoom` (`user_chat_room_id`)
+  FOREIGN KEY (`user_chat_room_id`) REFERENCES `user_chat_room` (`user_chat_room_id`)
 );
 
-CREATE TABLE `WineChat`
+CREATE TABLE `wine_chat`
 (
   `wine_chat_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
   `wine_id`      BIGINT       NOT NULL,
@@ -223,11 +223,11 @@ CREATE TABLE `WineChat`
   `message`      VARCHAR(255) NOT NULL,
   `created_time` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`wine_id`) REFERENCES `Wine` (`wine_id`),
-  FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`)
+  FOREIGN KEY (`wine_id`) REFERENCES `wine` (`wine_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 );
 
-CREATE TABLE `AiChat`
+CREATE TABLE `ai_chat`
 (
   `ai_chat_id`   BIGINT PRIMARY KEY AUTO_INCREMENT,
   `user_id`      BIGINT       NOT NULL,
@@ -235,5 +235,5 @@ CREATE TABLE `AiChat`
   `is_bot`       BOOLEAN      NOT NULL,
   `created_time` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`user_id`) REFERENCES `User` (`user_id`)
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 );
