@@ -1,0 +1,3 @@
+api.thevinopener.com
+
+reverse_proxy vinopener-api:8080

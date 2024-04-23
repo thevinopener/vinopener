@@ -1,0 +1,3 @@
+jenkins.thevinopener.com
+
+reverse_proxy jenkins:8080

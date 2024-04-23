@@ -1,0 +1,45 @@
+version: "3.8"
+
+networks:
+  jenkins:
+    driver: bridge
+
+services:
+  caddy:
+    container_name: caddy
+    image: docker.io/caddy:2-alpine
+    restart: on-failure
+    networks:
+      - jenkins
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    depends_on:
+      - jenkins
+
+  jenkins:
+    container_name: jenkins
+    image: docker.io/jenkins/jenkins:jdk21
+    restart: on-failure
+    networks:
+      - jenkins
+    expose:
+      - 8080
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+      - jenkins_data:/var/jenkins_home
+
+volumes:
+  caddy_data:
+  caddy_config:
+  jenkins_data:

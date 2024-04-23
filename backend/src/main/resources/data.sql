@@ -1,4 +1,4 @@
-INSERT INTO `TastingNoteQuestion`
+INSERT INTO `tasting_note_question`
 (tasting_note_question_id,
  question,
  is_multiple_choice)
@@ -17,7 +17,7 @@ VALUES (1, '색상', FALSE),
        (13, '기타/흙', TRUE),
        (14, '오크/숙성', TRUE);
 
-INSERT INTO `TastingNoteResponse`
+INSERT INTO `tasting_note_response`
 (tasting_note_question_id,
  response)
 VALUES (1, '밀짚색'),
