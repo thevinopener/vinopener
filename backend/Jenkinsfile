@@ -2,11 +2,14 @@ pipeline {
     agent any
     environment {
         BASE_DIR = 'backend'
+        CREDENTIAL_DOTENV_NAME = 'vinopener-backend-dotenv'
+        PUBLISH_OVER_SSH_CONFIG_NAME = 'vinopener-backend-ssh-publish'
+        DOCKER_COMPOSE_PROJECT_NAME = 'vinopener-backend'
     }
     stages {
         stage('backend test') {
             steps {
-                dir("${BASE_DIR}") {
+                dir(BASE_DIR) {
                     withGradle {
                         sh './gradlew test'
                     }
@@ -15,7 +18,7 @@ pipeline {
         }
         stage('backend build') {
             steps {
-                dir("${BASE_DIR}") {
+                dir(BASE_DIR) {
                     withGradle {
                         sh './gradlew bootJar'
                     }
@@ -24,51 +27,57 @@ pipeline {
         }
         stage('backend deploy') {
             steps {
-                dir("${BASE_DIR}") {
-                    withCredentials([file(credentialsId: 'vinopener-backend-dotenv', variable: 'DOTENV')]) {
+                dir(BASE_DIR) {
+                    withCredentials([file(credentialsId: CREDENTIAL_DOTENV_NAME, variable: 'DOTENV')]) {
                         sh 'cp $DOTENV .env'
                     }
                     sshPublisher(
                         failOnError: true,
                         publishers: [
                             sshPublisherDesc(
-                                configName: 'vinopener-ssh-publish',
+                                configName: PUBLISH_OVER_SSH_CONFIG_NAME,
                                 transfers: [
                                     sshTransfer(
                                         cleanRemote: false,
                                         excludes: '',
-                                        execCommand: 'docker compose -p vinopener up -d; docker image prune -f',
+                                        execCommand: """
+                                            cd ${PUBLISH_OVER_SSH_CONFIG_NAME};
+                                            docker compose -p ${DOCKER_COMPOSE_PROJECT_NAME} up -d;
+                                            docker image prune -f
+                                        """,
                                         execTimeout: 120000,
                                         flatten: false,
                                         makeEmptyDirs: false,
                                         noDefaultExcludes: false,
                                         patternSeparator: '[, ]+',
-                                        remoteDirectory: '',
+                                        remoteDirectory: PUBLISH_OVER_SSH_CONFIG_NAME,
                                         remoteDirectorySDF: false,
                                         removePrefix: '',
-                                        sourceFiles: 'src/main/resources/*.sql, build/libs/*.jar, Dockerfile, docker-compose.yml, .env'
+                                        sourceFiles: 'build/libs/*.jar, src/main/resources/*.sql, Caddyfile, Dockerfile, docker-compose.yml, .env'
                                     )
                                 ],
                                 usePromotionTimestamp: false,
                                 useWorkspaceInPromotion: false,
-                                verbose: false
+                                verbose: true
                             )
                         ]
                     )
                 }
             }
+            post {
+                always {
+                    dir(BASE_DIR) {
+                        sh 'rm -f .env'
+                    }
+                }
+            }
         }
     }
     post {
-        always {
-            dir("${BASE_DIR}") {
-                sh 'rm -f .env'
-            }
-        }
         failure {
             mattermostSend(
                 color: 'danger',
-                message: "FAILURE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+                message: "FAIL: Build #${env.BUILD_NUMBER}\n${env.BUILD_URL}"
             )
         }
     }
