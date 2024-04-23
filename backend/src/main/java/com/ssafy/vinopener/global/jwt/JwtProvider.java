@@ -2,6 +2,7 @@ package com.ssafy.vinopener.global.jwt;
 
 import com.ssafy.vinopener.global.config.props.JwtProps;
 import com.ssafy.vinopener.global.exception.VinopenerException;
+import com.ssafy.vinopener.global.oauth2.UserPrincipal;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -16,7 +17,17 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class JwtProvider {
 
+    private static final String CLAIMS_ID = "id";
+    private static final String CLAIMS_SHOP_ID = "shopId";
+    private static final String CLAIMS_AUTHORITY = "authority";
     private final JwtProps jwtProps;
+
+    public String issueUserAccessToken(UserPrincipal principal) {
+        return issueAccessToken(Jwts.claims()
+                .add(CLAIMS_ID, principal.getId())
+                .add(CLAIMS_AUTHORITY, principal.getAuthority())
+                .build());
+    }
 
     public String issueAccessToken(Claims claims) {
         return issueToken(

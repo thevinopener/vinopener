@@ -15,12 +15,12 @@ public class GoogleOAuth2User extends OAuth2UserInfo {
 
     @Override
     public String getEmail() {
-        return "";
+        return (String) attributes.get("email");
     }
 
     @Override
     public String getName() {
-        return "";
+        return (String) attributes.get("name");
     }
 
     @Override
@@ -29,8 +29,8 @@ public class GoogleOAuth2User extends OAuth2UserInfo {
     }
 
     @Override
-    public String profile_imgae() {
-        return "";
+    public String profile_image() {
+        return (String) attributes.get("picture");
     }
 
     @Override

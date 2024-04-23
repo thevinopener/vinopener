@@ -40,6 +40,9 @@ s3:
   endpoint: ${S3_ENDPOINT}
   public-base-url: ${S3_PUBLIC_BASE_URL}
 
+oauth:
+  authorizedRedirectUri: http://localhost:8080/auth/redirect
+
 ---
 
 spring:
