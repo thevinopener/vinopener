@@ -42,11 +42,17 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     public String determineTargetUrl(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) {
         UserPrincipal oAuth2User = (UserPrincipal) authentication.getPrincipal();
+        
+        //액세스 토큰 생성
         String accessToken = jwtProvider.issueUserAccessToken(oAuth2User);
+        //리프레시 토큰 생성
+        String refreshToken = jwtProvider.issueUserRefreshToken(oAuth2User);
 
+        //accessToken, refreshToken을 cookie에 담아 사용자에게 전달
         Cookie cookie = WebUtils.getCookie(request, HttpCookieOAuth2Repository.REDIRECT_URI_PARAM_COOKIE_NAME);
         return UriComponentsBuilder.fromUriString(cookie != null ? cookie.getValue() : getDefaultTargetUrl())
                 .queryParam("accessToken", accessToken)
+                .queryParam("refreshToken", refreshToken)
                 .toUriString();
     }
 

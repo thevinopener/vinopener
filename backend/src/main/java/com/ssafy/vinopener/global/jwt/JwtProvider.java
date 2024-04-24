@@ -29,6 +29,14 @@ public class JwtProvider {
                 .build());
     }
 
+    //refreshToken은 accessToken보다 더 적은 데이터가 들어가서 구성된다. 그걸 고려해서 수정해야함.
+    public String issueUserRefreshToken(UserPrincipal principal) {
+        return issueRefreshToken(Jwts.claims()
+                .add(CLAIMS_ID, principal.getId())
+                .add(CLAIMS_AUTHORITY, principal.getAuthority())
+                .build());
+    }
+
     public String issueAccessToken(Claims claims) {
         return issueToken(
                 claims,
@@ -53,6 +61,11 @@ public class JwtProvider {
                 .expiration(new Date(now.getTime() + expiration.toMillis()))
                 .signWith(secretKey)
                 .compact();
+    }
+
+    //토큰 정보를 검증하는 메소드. (구현 필요)
+    public boolean validateToken(String token) {
+        return false;
     }
 
     private Claims parseToken(String token, SecretKey secretKey) {
