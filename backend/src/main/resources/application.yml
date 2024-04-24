@@ -17,9 +17,10 @@ spring:
       client:
         registration:
           google:
-            client-id: 149686988355-5e0mqfevclljpiua46t517ftd03ip0u4.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 149686988355-moqaqo6seo7dhe9f4tf5okrkmum6groc.apps.googleusercontent.com
+            client-secret: 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
             scope: email, profile
+            redirect-uri: http://localhost:8080/auth/callback/google
 
 
 springdoc:
@@ -50,7 +51,7 @@ spring:
     activate:
       on-profile: test
   datasource:
-    url: jdbc:h2:mem:test
+    url: jdbc:h2:mem:test;NON_KEYWORDS=USER
     username: sa
     password:
 

@@ -4,13 +4,15 @@ import com.ssafy.vinopener.global.common.BaseTimeEntity;
 import com.ssafy.vinopener.global.oauth2.OAuth2UserInfo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "User")
+@Entity(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -18,6 +20,7 @@ import lombok.NoArgsConstructor;
 public class UserEntity extends BaseTimeEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
     private String email;
