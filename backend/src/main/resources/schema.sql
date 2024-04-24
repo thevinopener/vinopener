@@ -157,22 +157,24 @@ CREATE TABLE `feed`
 
 CREATE TABLE `feed_wine`
 (
+  `feed_wine_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
   `feed_id`      BIGINT    NOT NULL,
   `wine_id`      BIGINT    NOT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`feed_id`, `wine_id`),
+  UNIQUE (`feed_id`, `wine_id`),
   FOREIGN KEY (`feed_id`) REFERENCES `feed` (`feed_id`),
   FOREIGN KEY (`wine_id`) REFERENCES `wine` (`wine_id`)
 );
 
 CREATE TABLE `feed_like`
 (
+  `feed_like_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
   `feed_id`      BIGINT    NOT NULL,
   `user_id`      BIGINT    NOT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`feed_id`, `user_id`),
+  UNIQUE (`feed_id`, `user_id`),
   FOREIGN KEY (`feed_id`) REFERENCES `feed` (`feed_id`),
   FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 );
@@ -189,22 +191,24 @@ CREATE TABLE `search`
 
 CREATE TABLE `wine_view`
 (
+  `wine_view`    BIGINT PRIMARY KEY AUTO_INCREMENT,
   `user_id`      BIGINT    NOT NULL,
   `wine_id`      BIGINT    NOT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`, `wine_id`),
+  UNIQUE (`user_id`, `wine_id`),
   FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
   FOREIGN KEY (`wine_id`) REFERENCES `wine` (`wine_id`)
 );
 
 CREATE TABLE `bookmark`
 (
+  `bookmark_id`  BIGINT PRIMARY KEY AUTO_INCREMENT,
   `user_id`      BIGINT    NOT NULL,
   `wine_id`      BIGINT    NOT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`, `wine_id`),
+  UNIQUE (`user_id`, `wine_id`),
   FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
   FOREIGN KEY (`wine_id`) REFERENCES `wine` (`wine_id`)
 );
