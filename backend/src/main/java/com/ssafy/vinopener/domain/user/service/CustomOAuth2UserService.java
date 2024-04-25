@@ -63,7 +63,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             user = registerUser(authProviderType, oAuth2UserInfo);
         }
 
-        return UserPrincipal.create(user, oAuth2UserInfo.getAttributes());
+        return UserPrincipal.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .attributes(oAuth2UserInfo.getAttributes())
+                .build();
     }
 
     private UserEntity registerUser(AuthProviderType authProvidertype, OAuth2UserInfo oAuth2UserInfo) {

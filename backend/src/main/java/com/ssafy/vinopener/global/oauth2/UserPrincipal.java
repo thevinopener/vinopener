@@ -1,45 +1,25 @@
 package com.ssafy.vinopener.global.oauth2;
 
-import com.ssafy.vinopener.domain.user.data.entity.UserEntity;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Builder
 public class UserPrincipal implements OAuth2User, UserDetails {
 
-    private Long id;
-    private String email;
-    //    private Collection<? extends GrantedAuthority> authorities;
-
-    private String authority = "ROLE_USER";
-
-    @Setter
-    private Map<String, Object> attributes;
-
-    public UserPrincipal(Long id, String email) {
-        this.id = id;
-        this.email = email;
-    }
-
-    public static UserPrincipal create(UserEntity user, Map<String, Object> attributes) {
-//        List<GrantedAuthority> authorities = Collections.singletonList(
-//                new SimpleGrantedAuthority(Role.ROLE_USER.name()));
-//        UserPrincipal userPrincipal = new UserPrincipal(user.getId(), user.getEmail(), authorities);
-        UserPrincipal userPrincipal = new UserPrincipal(user.getId(), user.getEmail());
-        userPrincipal.setAttributes(attributes);
-        return userPrincipal;
-    }
+    private final Long id;
+    private final String email;
+    private final String authority;
+    private final Map<String, Object> attributes;
 
     @Override
     public Map<String, Object> getAttributes() {
