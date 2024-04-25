@@ -5,6 +5,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,8 @@ import org.springframework.web.util.WebUtils;
 
 @Component
 @RequiredArgsConstructor
-public class HttpCookieOAuth2Repository implements AuthorizationRequestRepository {
+@Slf4j
+public class HttpCookieOAuth2Repository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
     public static final String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
     public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
@@ -26,7 +28,7 @@ public class HttpCookieOAuth2Repository implements AuthorizationRequestRepositor
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
         Cookie cookie = WebUtils.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
-        if (cookie != null) {
+        if (cookie == null) {
             return null;
         }
         return CookieUtils.deserialize(cookie, OAuth2AuthorizationRequest.class);

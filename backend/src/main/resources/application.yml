@@ -49,7 +49,7 @@ oauth:
   authorizedRedirectUri: http://localhost:8080/auth/redirect
 
 redis:
-  ttl: 60
+  ttl: 3600
 
 ---
 

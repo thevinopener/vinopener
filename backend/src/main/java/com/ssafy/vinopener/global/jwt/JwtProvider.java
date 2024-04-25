@@ -8,9 +8,13 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import java.time.Duration;
+import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,13 +22,15 @@ import org.springframework.stereotype.Component;
 public class JwtProvider {
 
     private static final String CLAIMS_ID = "id";
-    private static final String CLAIMS_SHOP_ID = "shopId";
+    private static final String CLAIMS_EMAIL = "email";
     private static final String CLAIMS_AUTHORITY = "authority";
     private final JwtProps jwtProps;
+    private final Base64.Decoder decoder = Base64.getDecoder();
 
     public String issueUserAccessToken(UserPrincipal principal) {
         return issueAccessToken(Jwts.claims()
                 .add(CLAIMS_ID, principal.getId())
+                .add(CLAIMS_EMAIL, principal.getEmail())
                 .add(CLAIMS_AUTHORITY, principal.getAuthority())
                 .build());
     }
@@ -51,19 +57,27 @@ public class JwtProvider {
         );
     }
 
+    public Authentication getAuthentication(String accessToken) {
+        Claims claims = parseToken(accessToken, jwtProps.getAccessSecretKey());
+
+        UserPrincipal userPrincipal = UserPrincipal.builder()
+                .id(claims.get(CLAIMS_ID, Long.class))
+                .email(claims.get(CLAIMS_EMAIL, String.class))
+                .authority(claims.get(CLAIMS_AUTHORITY, String.class))
+                .build();
+
+        return new UsernamePasswordAuthenticationToken(userPrincipal, null, List.of(userPrincipal::getAuthority));
+    }
+
     private String issueToken(Claims claims, Duration expiration, SecretKey secretKey) {
         Date now = new Date();
         return Jwts.builder()
+                .header().add("typ", "JWT").and()
                 .claims(claims)
                 .issuedAt(now)
                 .expiration(new Date(now.getTime() + expiration.toMillis()))
                 .signWith(secretKey)
                 .compact();
-    }
-
-    //토큰 정보를 검증하는 메소드. (구현 필요)
-    public boolean validateToken(String token) {
-        return false;
     }
 
     private Claims parseToken(String token, SecretKey secretKey) {

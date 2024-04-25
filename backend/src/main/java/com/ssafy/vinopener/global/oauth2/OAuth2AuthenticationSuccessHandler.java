@@ -7,7 +7,6 @@ import com.ssafy.vinopener.domain.user.repository.UserRepository;
 import com.ssafy.vinopener.domain.user.service.TokenService;
 import com.ssafy.vinopener.global.jwt.JwtProvider;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -18,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.springframework.web.util.WebUtils;
 
 @Component
 @RequiredArgsConstructor
@@ -42,7 +40,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String targetUrl = determineTargetUrl(request, response, authentication);
 
         if (response.isCommitted()) {
-            log.debug("vinopener : Response has already been committed");
             return;
         }
         clearAuthenticationAttributes(request, response);
@@ -71,11 +68,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .build();
         tokenRepository.save(token);
 
-        //accessToken, refreshToken을 cookie에 담아 사용자에게 전달
-        Cookie cookie = WebUtils.getCookie(request, HttpCookieOAuth2Repository.REDIRECT_URI_PARAM_COOKIE_NAME);
-        return UriComponentsBuilder.fromUriString(cookie != null ? cookie.getValue() : getDefaultTargetUrl())
+        response.setHeader("Authorization", "Bearer " + accessToken);
+        response.setHeader("Refresh-Token", refreshToken);
+
+        String redirect_url = request.getHeader("redirect_url");
+        return UriComponentsBuilder.fromUriString(redirect_url != null ? redirect_url : getDefaultTargetUrl())
                 .queryParam("accessToken", accessToken)
-                .queryParam("refreshToken", refreshToken)
                 .toUriString();
     }
 
