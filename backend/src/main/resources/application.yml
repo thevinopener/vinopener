@@ -17,10 +17,10 @@ spring:
       client:
         registration:
           google:
-            client-id: 149686988355-moqaqo6seo7dhe9f4tf5okrkmum6groc.apps.googleusercontent.com
-            client-secret: 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
+            client-id: ${OAUTH2_GOOGLE_CLIENT_ID}
+            client-secret: ${OAUTH2_GOOGLE_CLIENT_SECRET}
             scope: email, profile
-            redirect-uri: http://localhost:8080/auth/callback/google
+            redirect-uri: ${OAUTH2_GOOGLE_REDIRECT_URI:http://localhost:8080/auth/callback/google}
   data:
     redis:
       host: localhost

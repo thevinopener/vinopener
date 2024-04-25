@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -25,14 +24,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private final TokenRepository tokenRepository;
     private final UserRepository userRepository;
-    @Value("${oauth.authorizedRedirectUri}")
-    private String redirectUri;
+    //    @Value("${oauth.authorizedRedirectUri}")
+//    private String redirectUri;
     private final JwtProvider jwtProvider;
     private final HttpCookieOAuth2Repository httpCookieOAuth2Repository;
     private final TokenService tokenService;
 
-    @Value("${redis.ttl}")
-    private long REDIS_TTL;
+    //    @Value("${redis.ttl}")
+    private final long REDIS_TTL = 3600;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
