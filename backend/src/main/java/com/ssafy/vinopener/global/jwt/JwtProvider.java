@@ -29,11 +29,9 @@ public class JwtProvider {
                 .build());
     }
 
-    //refreshToken은 accessToken보다 더 적은 데이터가 들어가서 구성된다. 그걸 고려해서 수정해야함.
     public String issueUserRefreshToken(UserPrincipal principal) {
         return issueRefreshToken(Jwts.claims()
                 .add(CLAIMS_ID, principal.getId())
-                .add(CLAIMS_AUTHORITY, principal.getAuthority())
                 .build());
     }
 

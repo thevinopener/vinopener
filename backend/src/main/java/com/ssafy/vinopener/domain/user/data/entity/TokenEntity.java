@@ -1,28 +1,30 @@
 package com.ssafy.vinopener.domain.user.data.entity;
 
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
-import org.springframework.data.redis.core.index.Indexed;
+import org.springframework.data.redis.core.TimeToLive;
 
-@RedisHash(value = "refreshToken", timeToLive = 60 * 60 * 3L)
+@RedisHash(value = "refreshToken")
 @AllArgsConstructor
 @Getter
 @Builder
 public class TokenEntity {
 
     @Id
-    private Long id;
+    private Long userId;
     private String refreshToken;
-    @Indexed
-    private String accessToken;
 
-    public static TokenEntity of(final Long id, final String refreshToken) {
+    @TimeToLive
+    private Long ttl;
+
+    public static TokenEntity of(final Long userId, final String refreshToken, final Long ttl) {
         return TokenEntity.builder()
-                .id(id)
+                .userId(userId)
                 .refreshToken(refreshToken)
+                .ttl(ttl)
                 .build();
     }
 

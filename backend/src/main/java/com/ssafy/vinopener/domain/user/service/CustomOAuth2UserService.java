@@ -31,12 +31,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuth2User oAuth2User = oAuth2UserService.loadUser(oAuth2UserRequest);
 
         //디버깅용 로그
-        log.debug("Loading OAuth2User: {}", oAuth2User);
-        log.debug("Authorities: {}", oAuth2User.getAuthorities());
-        log.debug("Attributes: {}", oAuth2User.getAttributes());
+        log.info("Loading OAuth2User: {}", oAuth2User);
+        log.info("Authorities: {}", oAuth2User.getAuthorities());
+        log.info("Attributes: {}", oAuth2User.getAttributes());
 
         if (oAuth2User.getAttributes().containsKey("email")) {
-            log.debug("User email: {}", oAuth2User.getAttributes().get("email"));
+            log.info("User email: {}", oAuth2User.getAttributes().get("email"));
         }
 
         return processOAuth2User(oAuth2UserRequest, oAuth2User);

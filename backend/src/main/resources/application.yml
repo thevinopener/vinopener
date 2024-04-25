@@ -21,6 +21,10 @@ spring:
             client-secret: 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
             scope: email, profile
             redirect-uri: http://localhost:8080/auth/callback/google
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 
 springdoc:
@@ -43,6 +47,9 @@ s3:
 
 oauth:
   authorizedRedirectUri: http://localhost:8080/auth/redirect
+
+redis:
+  ttl: 60
 
 ---
 
