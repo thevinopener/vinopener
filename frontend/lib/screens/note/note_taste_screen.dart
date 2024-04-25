@@ -1,10 +1,9 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/feed/feed_content_screen.dart';
+import 'package:frontend/screens/note/note_opinion_screen.dart';
 
-class FeedImageScreen extends StatelessWidget {
-  const FeedImageScreen({super.key});
+class NoteTasteScreen extends StatelessWidget {
+  const NoteTasteScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,22 +11,23 @@ class FeedImageScreen extends StatelessWidget {
       Navigator.push(
         context,
         CupertinoPageRoute(
-          builder: (context) => FeedContentScreen(),
+          builder: (context) => NoteOpinionScreen(),
         ),
       );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feed Image'),
+        title: Text('Note Taste'),
         actions: [
-          TextButton(
+          IconButton(
+            color: Colors.black,
             onPressed: navigateNext,
-            child: Text('다음'),
+            icon: Icon(Icons.navigate_next),
           ),
         ],
       ),
-      body: Center(child: Text('feed image')),
+      body: Center(child: Text('note tate')),
     );
   }
 }

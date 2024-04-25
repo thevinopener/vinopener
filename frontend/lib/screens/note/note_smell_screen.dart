@@ -1,10 +1,9 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/feed/feed_content_screen.dart';
+import 'package:frontend/screens/note/note_taste_screen.dart';
 
-class FeedImageScreen extends StatelessWidget {
-  const FeedImageScreen({super.key});
+class NoteSmellScreen extends StatelessWidget {
+  const NoteSmellScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,22 +11,23 @@ class FeedImageScreen extends StatelessWidget {
       Navigator.push(
         context,
         CupertinoPageRoute(
-          builder: (context) => FeedContentScreen(),
+          builder: (context) => NoteTasteScreen(),
         ),
       );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feed Image'),
+        title: Text('Note Smell'),
         actions: [
-          TextButton(
+          IconButton(
+            color: Colors.black,
             onPressed: navigateNext,
-            child: Text('다음'),
+            icon: Icon(Icons.navigate_next),
           ),
         ],
       ),
-      body: Center(child: Text('feed image')),
+      body: Center(child: Text('note smell')),
     );
   }
 }

@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           CameraSearchScreen(), // 0번 페이지
           RecommendScreen(), // 1번 페이지
-          FeedListScreen(), // 2번 페이지
+          FeedScreen(), // 2번 페이지
           NoteListScreen(), // 3번 페이지
           MyPageScreen(), // 4번 페이지
         ],
