@@ -1,9 +1,10 @@
 package com.ssafy.vinopener.domain.tastingnote.repository;
 
 import com.ssafy.vinopener.domain.tastingnote.data.entity.TastingNoteEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TastingNoteRepository extends JpaRepository<TastingNoteEntity, Long> {
 

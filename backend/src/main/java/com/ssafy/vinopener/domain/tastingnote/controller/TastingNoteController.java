@@ -10,21 +10,14 @@ import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
-import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/tasting-notes")
@@ -40,7 +33,7 @@ public class TastingNoteController {
      * @param userId                   유저 ID
      */
     @PostMapping
-    @Operation(security = @SecurityRequirement(name = "access-token"),
+    @Operation(security = @SecurityRequirement(name = "bearer-key"),
             responses = @ApiResponse(responseCode = "201", headers = @Header(name = "Location", description = "/tasting-notes/{tastingNoteId}"))
     )
     public ResponseEntity<Void> createTastingNote(
@@ -59,7 +52,7 @@ public class TastingNoteController {
      * @return 테이스팅노트 목록
      */
     @GetMapping
-    @Operation(security = @SecurityRequirement(name = "access-token"))
+    @Operation(security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<List<TastingNoteGetListResponse>> getListTastingNote(
             // TODO: pagination 추가
             @AuthenticationPrincipal(expression = "id") final Long userId
@@ -75,7 +68,7 @@ public class TastingNoteController {
      * @return 테이스팅노트
      */
     @GetMapping("/{tastingNoteId}")
-    @Operation(security = @SecurityRequirement(name = "access-token"))
+    @Operation(security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<TastingNoteGetResponse> getTastingNote(
             @PathVariable final Long tastingNoteId,
             @AuthenticationPrincipal(expression = "id") final Long userId
@@ -91,7 +84,7 @@ public class TastingNoteController {
      * @param userId                   유저 ID
      */
     @PutMapping("/{tastingNoteId}")
-    @Operation(security = @SecurityRequirement(name = "access-token"))
+    @Operation(security = @SecurityRequirement(name = "bearer-key"))
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> updateTastingNote(
             @PathVariable final Long tastingNoteId,
@@ -109,7 +102,7 @@ public class TastingNoteController {
      * @param userId        유저 ID
      */
     @DeleteMapping("/{tastingNoteId}")
-    @Operation(security = @SecurityRequirement(name = "access-token"))
+    @Operation(security = @SecurityRequirement(name = "bearer-key"))
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteTastingNote(
             @PathVariable final Long tastingNoteId,

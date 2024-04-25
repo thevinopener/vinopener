@@ -1,9 +1,10 @@
 package com.ssafy.vinopener.domain.tastingnote.data.dto.response;
 
 import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
+import lombok.Builder;
+
 import java.math.BigDecimal;
 import java.util.List;
-import lombok.Builder;
 
 @Builder
 public record TastingNoteGetResponse(
