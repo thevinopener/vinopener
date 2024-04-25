@@ -91,6 +91,7 @@ public class TastingNoteController {
      * @param userId                   유저 ID
      */
     @PutMapping("/{tastingNoteId}")
+    @Operation(security = @SecurityRequirement(name = "access-token"))
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> updateTastingNote(
             @PathVariable final Long tastingNoteId,
@@ -108,6 +109,7 @@ public class TastingNoteController {
      * @param userId        유저 ID
      */
     @DeleteMapping("/{tastingNoteId}")
+    @Operation(security = @SecurityRequirement(name = "access-token"))
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteTastingNote(
             @PathVariable final Long tastingNoteId,
