@@ -36,12 +36,13 @@ class _HomeScreenState extends State<HomeScreen> {
       body: PageView(
         controller: _pageController,
         children: [
-          CameraSearchScreen(), // 0번 페이지
-          RecommendScreen(), // 1번 페이지
-          FeedScreen(), // 2번 페이지
-          NoteListScreen(), // 3번 페이지
-          MyPageScreen(), // 4번 페이지
+          SafeArea(child: CameraSearchScreen()),  // 0번 페이지
+          SafeArea(child: RecommendScreen()), // 1번 페이지
+          SafeArea(child: FeedScreen()), // 2번 페이지
+          SafeArea(child: NoteListScreen()),  // 3번 페이지
+          SafeArea(child: MyPageScreen()),  // 4번 페이지
         ],
+
         onPageChanged: (index) {
           setState(() {
             _currentPageIndex = index;
