@@ -8,20 +8,20 @@ pipeline {
         DOCKER_COMPOSE_PROJECT_NAME = 'vinopener-backend'
     }
     stages {
-        stage('backend test') {
-            steps {
-                dir(BASE_DIR) {
-                    withGradle {
-                        sh './gradlew test'
-                    }
-                }
-            }
-        }
         stage('backend build') {
             steps {
                 dir(BASE_DIR) {
                     withGradle {
                         sh './gradlew bootJar'
+                    }
+                }
+            }
+        }
+        stage('backend test') {
+            steps {
+                dir(BASE_DIR) {
+                    withGradle {
+                        sh './gradlew test'
                     }
                 }
             }
