@@ -90,13 +90,11 @@ CREATE TABLE `wine_flavour`
 (
   `wine_flavour_id`  BIGINT PRIMARY KEY AUTO_INCREMENT,
   `wine_id`          BIGINT    NOT NULL,
-  `flavour_type_id`  BIGINT    NOT NULL,
   `flavour_taste_id` BIGINT    NOT NULL,
   `created_time`     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time`     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE (`wine_id`, `flavour_taste_id`),
   FOREIGN KEY (`wine_id`) REFERENCES `wine` (`wine_id`),
-  FOREIGN KEY (`flavour_type_id`) REFERENCES `flavour_type` (`flavour_type_id`),
   FOREIGN KEY (`flavour_taste_id`) REFERENCES `flavour_taste` (`flavour_taste_id`)
 );
 
@@ -121,7 +119,6 @@ CREATE TABLE `tasting_note`
   `tannin`          DECIMAL(2, 1) NOT NULL,
   `opinion`         VARCHAR(255)  NOT NULL,
   `rating`          DECIMAL(2, 1) NOT NULL,
-  `image_url`       VARCHAR(512),
   `created_time`    TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time`    TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
@@ -133,13 +130,11 @@ CREATE TABLE `tasting_note_flavour`
 (
   `tasting_note_flavour_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
   `tasting_note_id`         BIGINT    NOT NULL,
-  `flavour_type_id`         BIGINT    NOT NULL,
   `flavour_taste_id`        BIGINT    NOT NULL,
   `created_time`            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time`            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE (`tasting_note_id`, `flavour_taste_id`),
   FOREIGN KEY (`tasting_note_id`) REFERENCES `tasting_note` (`tasting_note_id`),
-  FOREIGN KEY (`flavour_type_id`) REFERENCES `flavour_type` (`flavour_type_id`),
   FOREIGN KEY (`flavour_taste_id`) REFERENCES `flavour_taste` (`flavour_taste_id`)
 );
 

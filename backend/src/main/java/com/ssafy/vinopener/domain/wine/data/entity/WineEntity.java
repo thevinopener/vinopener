@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -26,49 +27,50 @@ public class WineEntity extends BaseTimeEntity {
     @Column(name = "wine_id")
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull
     private String name;
 
-    @Column(length = 512, nullable = false)
+    @NotNull
     private String imageUrl;
 
-    @Column(nullable = false)
+    @NotNull
     private String grape;
 
-    @Column(nullable = false)
+    @NotNull
     private String winery;
 
-    @Column(nullable = false)
+    @NotNull
     private String country;
 
-    @Column(precision = 8, scale = 2, nullable = false)
+    @NotNull
     private BigDecimal price;
 
-    @Column(precision = 2, scale = 1, nullable = false)
+    @NotNull
     private BigDecimal rating;
 
-    @Column(nullable = false)
+    @NotNull
     private Integer vintage;
 
+    @NotNull
     @Column(columnDefinition = "ENUM")
     private WineType type;
 
-    @Column(precision = 8, scale = 7, nullable = false)
+    @NotNull
     private BigDecimal acidity;
 
-    @Column(precision = 8, scale = 7, nullable = false)
+    @NotNull
     private BigDecimal intensity;
 
-    @Column(precision = 8, scale = 7, nullable = false)
+    @NotNull
     private BigDecimal sweetness;
 
-    @Column(precision = 8, scale = 7, nullable = false)
+    @NotNull
     private BigDecimal tannin;
 
-    @Column(precision = 4, scale = 1, nullable = false)
+    @NotNull
     private BigDecimal abv;
 
-    @Column(nullable = false)
+    @NotNull
     private Integer view;
 
     public WineEntity increaseView() {

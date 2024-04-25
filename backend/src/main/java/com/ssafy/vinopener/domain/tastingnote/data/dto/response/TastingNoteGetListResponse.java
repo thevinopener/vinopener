@@ -6,14 +6,13 @@ import lombok.Builder;
 @Builder
 public record TastingNoteGetListResponse(
         Long id,
-        WineResponse wine,
+        WineGetListResponse wine,
         String opinion,
-        BigDecimal rating,
-        String imageUrl
+        BigDecimal rating
 ) {
 
     @Builder
-    public record WineResponse(
+    public record WineGetListResponse(
             Long id
             // TODO
     ) {

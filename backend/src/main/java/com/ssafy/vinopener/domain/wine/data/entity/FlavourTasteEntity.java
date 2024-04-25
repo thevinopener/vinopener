@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,10 +29,10 @@ public class FlavourTasteEntity extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "flavour_type_id", nullable = false, updatable = false)
+    @JoinColumn(name = "flavour_type_id", updatable = false)
     private FlavourTypeEntity flavourType;
 
-    @Column(length = 16, nullable = false)
+    @NotNull
     private String name;
 
 }

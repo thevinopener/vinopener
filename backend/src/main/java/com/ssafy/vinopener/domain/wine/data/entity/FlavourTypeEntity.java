@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +25,7 @@ public class FlavourTypeEntity extends BaseTimeEntity {
     @Column(name = "flavour_type_id")
     private Long id;
 
-    @Column(length = 16, nullable = false)
+    @NotNull
     private String name;
 
 }

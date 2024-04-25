@@ -1,14 +1,15 @@
 package com.ssafy.vinopener.global.common;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 import lombok.Getter;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+/**
+ * {@code schema.sql}에서 {@code DEFAULT CURRENT_TIMESTAMP}, {@code ON UPDATE CURRENT_TIMESTAMP}를 정의했습니다. 그러므로
+ * {@code @EntityListeners(AuditingEntityListener.class)}, {@code @CreatedDate}, {@code @LastModifiedDate}를 사용하지 않습니다.
+ */
 @MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
 @Getter
 public abstract class BaseTimeEntity {
 

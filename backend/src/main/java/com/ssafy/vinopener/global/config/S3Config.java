@@ -1,7 +1,6 @@
 package com.ssafy.vinopener.global.config;
 
 import com.ssafy.vinopener.global.config.props.S3Props;
-import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

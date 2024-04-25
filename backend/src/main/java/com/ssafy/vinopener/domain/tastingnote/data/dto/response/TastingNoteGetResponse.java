@@ -1,13 +1,15 @@
 package com.ssafy.vinopener.domain.tastingnote.data.dto.response;
 
+import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
 import java.math.BigDecimal;
+import java.util.List;
 import lombok.Builder;
 
 @Builder
 public record TastingNoteGetResponse(
         Long id,
-        WineResponse wine,
-        ColorResponse color,
+        TastingNoteGetWineResponse wine,
+        TastingNoteGetColorResponse color,
         BigDecimal sweetness,
         BigDecimal intensity,
         BigDecimal acidity,
@@ -15,21 +17,35 @@ public record TastingNoteGetResponse(
         BigDecimal tannin,
         String opinion,
         BigDecimal rating,
-        String imageUrl
+        List<TastingNoteGetFlavourResponse> flavours
 ) {
 
     @Builder
-    public record WineResponse(
-            Long id
-            // TODO
+    public record TastingNoteGetWineResponse(
+            Long id,
+            String name,
+            String imageUrl,
+            String winery,
+            String country,
+            WineType type
+            // TODO: wine flavours
     ) {
 
     }
 
     @Builder
-    public record ColorResponse(
+    public record TastingNoteGetColorResponse(
             Long id,
             String name
+    ) {
+
+    }
+
+    @Builder
+    public record TastingNoteGetFlavourResponse(
+            Long id,
+            String type,
+            String taste
     ) {
 
     }

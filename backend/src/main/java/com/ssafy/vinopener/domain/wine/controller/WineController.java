@@ -26,7 +26,7 @@ public class WineController {
      * @return 와인 목록
      */
     @GetMapping
-    public ResponseEntity<List<WineGetListResponse>> getList(
+    public ResponseEntity<List<WineGetListResponse>> getListWine(
             // TODO: pagination 추가
     ) {
         return ResponseEntity.ok(wineService.getList());
@@ -39,7 +39,7 @@ public class WineController {
      * @return 와인
      */
     @GetMapping("/{wineId}")
-    public ResponseEntity<WineGetResponse> get(
+    public ResponseEntity<WineGetResponse> getWine(
             @PathVariable final Long wineId
     ) {
         return ResponseEntity.ok(wineService.get(wineId));

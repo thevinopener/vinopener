@@ -1,7 +1,6 @@
 package com.ssafy.vinopener.domain.tastingnote.data.entity;
 
 import com.ssafy.vinopener.domain.wine.data.entity.FlavourTasteEntity;
-import com.ssafy.vinopener.domain.wine.data.entity.FlavourTypeEntity;
 import com.ssafy.vinopener.global.common.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,7 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Getter
-public class TastingNoteFlavour extends BaseTimeEntity {
+public class TastingNoteFlavourEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,15 +29,11 @@ public class TastingNoteFlavour extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "tasting_note_id", nullable = false, updatable = false)
+    @JoinColumn(name = "tasting_note_id", updatable = false)
     private TastingNoteEntity tastingNote;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "flavour_type_id", nullable = false, updatable = false)
-    private FlavourTypeEntity flavourType;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "flavour_taste_id", nullable = false, updatable = false)
+    @JoinColumn(name = "flavour_taste_id", updatable = false)
     private FlavourTasteEntity flavourTaste;
 
 }

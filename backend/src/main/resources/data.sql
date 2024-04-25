@@ -1,3 +1,7 @@
+INSERT INTO `user`
+  (user_id, email, nickname, image_url)
+VALUES (1, 'ssafy.c207@gmail.com', 'ssafy.c207', null);
+
 INSERT INTO `flavour_type`
 (flavour_type_id,
  name)

@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -30,38 +31,36 @@ public class TastingNoteEntity extends BaseTimeEntity {
     private Long id;
 
     // TODO: UserEntity
+    @NotNull
     private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "wine_id", nullable = false, updatable = false)
+    @JoinColumn(name = "wine_id", updatable = false)
     private WineEntity wine;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "color_id", nullable = false, updatable = false)
+    @JoinColumn(name = "color_id")
     private ColorEntity color;
 
-    @Column(precision = 2, scale = 1, nullable = false)
+    @NotNull
     private BigDecimal sweetness;
 
-    @Column(precision = 2, scale = 1, nullable = false)
+    @NotNull
     private BigDecimal intensity;
 
-    @Column(precision = 2, scale = 1, nullable = false)
+    @NotNull
     private BigDecimal acidity;
 
-    @Column(precision = 2, scale = 1, nullable = false)
+    @NotNull
     private BigDecimal alcohol;
 
-    @Column(precision = 2, scale = 1, nullable = false)
+    @NotNull
     private BigDecimal tannin;
 
-    @Column(nullable = false)
+    @NotNull
     private String opinion;
 
-    @Column(precision = 2, scale = 1, nullable = false)
+    @NotNull
     private BigDecimal rating;
-
-    @Column(length = 512, nullable = false)
-    private String imageUrl;
 
 }
