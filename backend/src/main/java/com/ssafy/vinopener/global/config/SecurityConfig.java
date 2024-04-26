@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -43,9 +42,8 @@ public class SecurityConfig {
         //로그인 구현 완료 이전 테스트용 설정
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/ws").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/tasting-notes").authenticated()
-                        .anyRequest().permitAll())
+                        .requestMatchers("/auth/**", "/v3/api-docs/**", "swagger-ui/**").permitAll()
+                        .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         //로그인 구현이 완료 되었을 때 아래 설정을 적용.
