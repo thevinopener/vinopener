@@ -25,11 +25,12 @@ public interface TastingNoteMapper {
     TastingNoteGetListResponse toGetListResponse(TastingNoteEntity entity);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user", source = "userId")
     @Mapping(target = "wine", source = "request.wineId")
     @Mapping(target = "color", source = "request.colorId")
     TastingNoteEntity toEntity(TastingNoteCreateRequest request, Long userId);
 
-    @Mapping(target = "userId", ignore = true)
+    @Mapping(target = "user", ignore = true)
     @Mapping(target = "wine", ignore = true)
     @Mapping(target = "color", source = "request.colorId")
     TastingNoteEntity toEntity(Long id, TastingNoteUpdateRequest request);

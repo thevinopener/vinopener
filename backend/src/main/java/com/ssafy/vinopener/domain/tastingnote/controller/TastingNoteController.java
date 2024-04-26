@@ -5,6 +5,7 @@ import com.ssafy.vinopener.domain.tastingnote.data.dto.request.TastingNoteUpdate
 import com.ssafy.vinopener.domain.tastingnote.data.dto.response.TastingNoteGetListResponse;
 import com.ssafy.vinopener.domain.tastingnote.data.dto.response.TastingNoteGetResponse;
 import com.ssafy.vinopener.domain.tastingnote.service.TastingNoteService;
+import com.ssafy.vinopener.global.common.UserDetailsId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,7 +16,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,7 +46,7 @@ public class TastingNoteController {
                     name = "Location", description = REQUEST_PATH + "/{tastingNoteId}")))
     public ResponseEntity<Void> createTastingNote(
             @RequestBody @Valid final TastingNoteCreateRequest tastingNoteCreateRequest,
-            @AuthenticationPrincipal(expression = "id") final Long userId
+            @UserDetailsId final Long userId
     ) {
         return ResponseEntity
                 .created(URI.create(REQUEST_PATH + tastingNoteService.create(tastingNoteCreateRequest, userId)))
@@ -63,7 +63,7 @@ public class TastingNoteController {
     @Operation(security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<List<TastingNoteGetListResponse>> getListTastingNote(
             // TODO: pagination 추가
-            @AuthenticationPrincipal(expression = "id") final Long userId
+            @UserDetailsId final Long userId
     ) {
         return ResponseEntity.ok(tastingNoteService.getList(userId));
     }
@@ -79,7 +79,7 @@ public class TastingNoteController {
     @Operation(security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<TastingNoteGetResponse> getTastingNote(
             @PathVariable final Long tastingNoteId,
-            @AuthenticationPrincipal(expression = "id") final Long userId
+            @UserDetailsId final Long userId
     ) {
         return ResponseEntity.ok(tastingNoteService.get(tastingNoteId, userId));
     }
@@ -97,7 +97,7 @@ public class TastingNoteController {
     public ResponseEntity<Void> updateTastingNote(
             @PathVariable final Long tastingNoteId,
             @RequestBody @Valid final TastingNoteUpdateRequest tastingNoteUpdateRequest,
-            @AuthenticationPrincipal(expression = "id") final Long userId
+            @UserDetailsId final Long userId
     ) {
         tastingNoteService.update(tastingNoteId, tastingNoteUpdateRequest, userId);
         return ResponseEntity.noContent().build();
@@ -114,7 +114,7 @@ public class TastingNoteController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteTastingNote(
             @PathVariable final Long tastingNoteId,
-            @AuthenticationPrincipal(expression = "id") final Long userId
+            @UserDetailsId final Long userId
     ) {
         tastingNoteService.delete(tastingNoteId, userId);
         return ResponseEntity.noContent().build();
