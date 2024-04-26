@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/models/wine_model.dart';
+import 'package:frontend/services/wine_service.dart';
 import 'package:frontend/widgets/wine_card_widget.dart';
 
 import '../../constants/colors.dart';
@@ -8,7 +10,7 @@ import '../../models/feed_model.dart';
 
 class MyPageScreen extends StatefulWidget {
   static List<Feed> dummyFeedList = [];
-  static List<Wine> dummyWineList = [];
+  static Future<List<Wine>> wineList = WineService.getWineList();
 
   const MyPageScreen({super.key});
 
@@ -25,7 +27,6 @@ class _MyPageScreenState extends State<MyPageScreen>
     super.initState();
     for (int i = 0; i < 11; i++) {
       MyPageScreen.dummyFeedList.add(Feed.dummy());
-      MyPageScreen.dummyWineList.add(Wine.dummy());
     }
     _tabController = TabController(length: 3, vsync: this); // 3개의 탭
   }
@@ -39,6 +40,7 @@ class _MyPageScreenState extends State<MyPageScreen>
   @override
   Widget build(BuildContext context) {
     double avatarRadius = 50;
+    final String defaultImageUrl = 'assets/default_wine.jpg';
 
     return Scaffold(
       body: Column(
@@ -53,6 +55,16 @@ class _MyPageScreenState extends State<MyPageScreen>
                   heightFactor: 0.625,
                   child: Image.network(
                     'https://picsum.photos/400/400',
+                    errorBuilder: (
+                      BuildContext context,
+                      Object exception,
+                      StackTrace? stackTrace,
+                    ) {
+                      return Image.asset(
+                        defaultImageUrl,
+                        fit: BoxFit.scaleDown,
+                      );
+                    },
                   ),
                 ),
               ),
@@ -97,30 +109,41 @@ class _MyPageScreenState extends State<MyPageScreen>
                   itemCount: MyPageScreen.dummyFeedList.length,
                   itemBuilder: (context, index) {
                     return Image.network(
-                        MyPageScreen.dummyFeedList[index].imageUrl);
+                      MyPageScreen.dummyFeedList[index].imageUrl,
+                    );
                   },
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                   ),
                 ),
-                GridView.builder(
-                  itemCount: MyPageScreen.dummyWineList.length,
-                  itemBuilder: (context, index) {
-                    return WineCard(wine: MyPageScreen.dummyWineList[index]);
+                FutureBuilder(
+                  future: MyPageScreen.wineList,
+                  builder: (
+                    BuildContext context,
+                    AsyncSnapshot<dynamic> snapshot,
+                  ) {
+                    if (snapshot.hasData) {
+                      return GridView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (
+                          context,
+                          index,
+                        ) {
+                          return WineCard(
+                            wine: snapshot.data![index],
+                          );
+                        },
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                        ),
+                      );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   },
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                  ),
                 ),
-                GridView.builder(
-                  itemCount: MyPageScreen.dummyWineList.length,
-                  itemBuilder: (context, index) {
-                    return WineCard(wine: MyPageScreen.dummyWineList[index]);
-                  },
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                  ),
-                ),
+                Text('cellar'),
               ],
             ),
           ),
