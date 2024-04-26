@@ -81,7 +81,7 @@ pipeline {
         failure {
             mattermostSend(
                 color: 'danger',
-                message: "FAIL: ${BRANCH_NAME} #${env.BUILD_ID}\n${env.BUILD_URL}"
+                message: "BACKEND FAIL: ${BRANCH_NAME} #${env.BUILD_ID}\n${env.BUILD_URL}"
             )
         }
     }
