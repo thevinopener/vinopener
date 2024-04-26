@@ -1,16 +1,17 @@
 // flutter
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 // Providers
 import 'package:frontend/providers/recommend_provider.dart';
 
-// Screens
-import 'package:frontend/screens/search/search_text_screen.dart';
-
 // constants
 import 'package:frontend/constants/fonts.dart';
+import 'package:frontend/constants/colors.dart';
+
+// Widgets
+import 'package:frontend/widgets/recommend_wine_type_widget.dart';
+
 import 'package:frontend/constants/colors.dart';
 
 class RecommendScreen extends StatefulWidget {
@@ -57,9 +58,9 @@ class _RecommendScreenState extends State {
                   },
                   carouselController: _carouselController,
                   options: CarouselOptions(
-                    height: MediaQuery.of(context).size.width,
+                    height: 250,
                     autoPlay: true,
-                    aspectRatio: 1,
+                    aspectRatio: 3,
                     onPageChanged: (index, reason) {
                       setState(() {
                         _current = index;
@@ -84,60 +85,26 @@ class _RecommendScreenState extends State {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('종류', style: TextStyle(fontSize: AppFontSizes.large)),
-                    Text('좋아하는 와인의 종류를 선택하세요',
+                    Text('종류',
+                        style: TextStyle(
+                          fontSize: AppFontSizes.large,
+                          fontWeight: FontWeight.w500,
+                        )
+                    ),
+                    Text('어떤 종류의 와인을 좋아하시나요?',
                         style: TextStyle(fontSize: AppFontSizes.mediumSmall)),
                     SizedBox(height: 20),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center, // 버튼을 시작점에 정렬
+                      mainAxisAlignment:
+                          MainAxisAlignment.center, // 버튼을 시작점에 정렬
                       children: [
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: Text('1'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: WineButtonColors.red,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 30, vertical: 30),
-                          ),
-                        ),
+                        RecommendWineTypeWidget('레드'),
                         Spacer(flex: 1),
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: Text('2'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: WineButtonColors.rose,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 30, vertical: 30),
-                          ),
-                        ),
+                        RecommendWineTypeWidget('로제'),
                         Spacer(flex: 1),
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: Text('3'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: WineButtonColors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 30, vertical: 30),
-                          ),
-                        ),
+                        RecommendWineTypeWidget('화이트'),
                         Spacer(flex: 1),
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: Text('4'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: WineButtonColors.sparkling,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 30, vertical: 30),
-                          ),
-                        ),
+                        RecommendWineTypeWidget('스파클링'),
                       ],
                     ),
                   ],
@@ -157,12 +124,13 @@ class _RecommendScreenState extends State {
                         Text(
                           '이런(추천1) 와인은 어떠세요?',
                           style: TextStyle(
-                            fontSize: AppFontSizes.mediumSmall,
+                            fontSize: AppFontSizes.mediumLarge,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         // SizedBox(height: 5), // 버튼과의 간격 추가
                         Container(
-                          height: 100, // 충분한 높이를 지정하여 버튼이 보일 수 있도록 설정
+                          height: 350, // 충분한 높이를 지정하여 버튼이 보일 수 있도록 설정
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal, // 가로 스크롤 설정
                             child: Row(
@@ -171,11 +139,22 @@ class _RecommendScreenState extends State {
                                 (index) => // 5개의 버튼을 생성
                                     Padding(
                                   padding: EdgeInsets.only(
-                                      right: index < 4 ? 10 : 0),
+                                      right: index < 4 ? 20 : 0),
                                   // 마지막 버튼을 제외하고 오른쪽 패딩 추가
                                   child: ElevatedButton(
                                     onPressed: () {},
-                                    child: Text('${index + 1}'), // 버튼에 숫자 표시
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        // 이미지
+                                        // 와인명
+                                        // 와이너리(제조사)
+                                        // 국가이미지
+                                        // 국가명
+                                        // 링크? 딥링크? -> onPressed() {}에다가 줘야함 / Navigator + API parameter 조합
+                                      ],
+                                    ), // 버튼 내부 구성 요소들
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor:
                                           WineButtonColors.sparkling,
@@ -184,7 +163,8 @@ class _RecommendScreenState extends State {
                                           borderRadius:
                                               BorderRadius.circular(5)),
                                       padding: EdgeInsets.symmetric(
-                                          horizontal: 30, vertical: 50),
+                                          horizontal: 100,
+                                          vertical: 150),
                                     ),
                                   ),
                                 ),
@@ -209,14 +189,15 @@ class _RecommendScreenState extends State {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '이런(추천2) 와인은 어떠세요?',
+                          '이런(추천1) 와인은 어떠세요?',
                           style: TextStyle(
-                            fontSize: AppFontSizes.mediumSmall,
+                            fontSize: AppFontSizes.mediumLarge,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         // SizedBox(height: 5), // 버튼과의 간격 추가
                         Container(
-                          height: 100, // 충분한 높이를 지정하여 버튼이 보일 수 있도록 설정
+                          height: 350, // 충분한 높이를 지정하여 버튼이 보일 수 있도록 설정
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal, // 가로 스크롤 설정
                             child: Row(
@@ -225,7 +206,7 @@ class _RecommendScreenState extends State {
                                     (index) => // 5개의 버튼을 생성
                                 Padding(
                                   padding: EdgeInsets.only(
-                                      right: index < 4 ? 10 : 0),
+                                      right: index < 4 ? 20 : 0),
                                   // 마지막 버튼을 제외하고 오른쪽 패딩 추가
                                   child: ElevatedButton(
                                     onPressed: () {},
@@ -238,7 +219,8 @@ class _RecommendScreenState extends State {
                                           borderRadius:
                                           BorderRadius.circular(5)),
                                       padding: EdgeInsets.symmetric(
-                                          horizontal: 30, vertical: 50),
+                                          horizontal: 100,
+                                          vertical: 150),
                                     ),
                                   ),
                                 ),
@@ -263,14 +245,15 @@ class _RecommendScreenState extends State {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '이런(추천3) 와인은 어떠세요?',
+                          '이런(추천1) 와인은 어떠세요?',
                           style: TextStyle(
-                            fontSize: AppFontSizes.mediumSmall,
+                            fontSize: AppFontSizes.mediumLarge,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         // SizedBox(height: 5), // 버튼과의 간격 추가
                         Container(
-                          height: 100, // 충분한 높이를 지정하여 버튼이 보일 수 있도록 설정
+                          height: 350, // 충분한 높이를 지정하여 버튼이 보일 수 있도록 설정
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal, // 가로 스크롤 설정
                             child: Row(
@@ -279,7 +262,7 @@ class _RecommendScreenState extends State {
                                     (index) => // 5개의 버튼을 생성
                                 Padding(
                                   padding: EdgeInsets.only(
-                                      right: index < 4 ? 10 : 0),
+                                      right: index < 4 ? 20 : 0),
                                   // 마지막 버튼을 제외하고 오른쪽 패딩 추가
                                   child: ElevatedButton(
                                     onPressed: () {},
@@ -292,7 +275,8 @@ class _RecommendScreenState extends State {
                                           borderRadius:
                                           BorderRadius.circular(5)),
                                       padding: EdgeInsets.symmetric(
-                                          horizontal: 30, vertical: 50),
+                                          horizontal: 100,
+                                          vertical: 150),
                                     ),
                                   ),
                                 ),
@@ -317,14 +301,15 @@ class _RecommendScreenState extends State {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '이런(추천4) 와인은 어떠세요?',
+                          '이런(추천1) 와인은 어떠세요?',
                           style: TextStyle(
-                            fontSize: AppFontSizes.mediumSmall,
+                            fontSize: AppFontSizes.mediumLarge,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         // SizedBox(height: 5), // 버튼과의 간격 추가
                         Container(
-                          height: 100, // 충분한 높이를 지정하여 버튼이 보일 수 있도록 설정
+                          height: 350, // 충분한 높이를 지정하여 버튼이 보일 수 있도록 설정
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal, // 가로 스크롤 설정
                             child: Row(
@@ -333,7 +318,7 @@ class _RecommendScreenState extends State {
                                     (index) => // 5개의 버튼을 생성
                                 Padding(
                                   padding: EdgeInsets.only(
-                                      right: index < 4 ? 10 : 0),
+                                      right: index < 4 ? 20 : 0),
                                   // 마지막 버튼을 제외하고 오른쪽 패딩 추가
                                   child: ElevatedButton(
                                     onPressed: () {},
@@ -346,7 +331,8 @@ class _RecommendScreenState extends State {
                                           borderRadius:
                                           BorderRadius.circular(5)),
                                       padding: EdgeInsets.symmetric(
-                                          horizontal: 30, vertical: 50),
+                                          horizontal: 100,
+                                          vertical: 150),
                                     ),
                                   ),
                                 ),
@@ -371,14 +357,15 @@ class _RecommendScreenState extends State {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '이런(추천5) 와인은 어떠세요?',
+                          '이런(추천1) 와인은 어떠세요?',
                           style: TextStyle(
-                            fontSize: AppFontSizes.mediumSmall,
+                            fontSize: AppFontSizes.mediumLarge,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         // SizedBox(height: 5), // 버튼과의 간격 추가
                         Container(
-                          height: 100, // 충분한 높이를 지정하여 버튼이 보일 수 있도록 설정
+                          height: 350, // 충분한 높이를 지정하여 버튼이 보일 수 있도록 설정
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal, // 가로 스크롤 설정
                             child: Row(
@@ -387,20 +374,19 @@ class _RecommendScreenState extends State {
                                     (index) => // 5개의 버튼을 생성
                                 Padding(
                                   padding: EdgeInsets.only(
-                                      right: index < 4 ? 10 : 0),
+                                      right: index < 4 ? 20 : 0),
                                   // 마지막 버튼을 제외하고 오른쪽 패딩 추가
                                   child: ElevatedButton(
                                     onPressed: () {},
                                     child: Text('${index + 1}'), // 버튼에 숫자 표시
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                      WineButtonColors.sparkling,
-                                      // 모든 버튼 같은 색상
+                                      backgroundColor: WineButtonColors.sparkling, // 모든 버튼 같은 색상
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                           BorderRadius.circular(5)),
                                       padding: EdgeInsets.symmetric(
-                                          horizontal: 30, vertical: 50),
+                                          horizontal: 100,
+                                          vertical: 150),
                                     ),
                                   ),
                                 ),
@@ -413,6 +399,7 @@ class _RecommendScreenState extends State {
                   ),
                 ),
                 // 와인 추천5 끝 #3-5
+
               ]),
             ),
           ),
