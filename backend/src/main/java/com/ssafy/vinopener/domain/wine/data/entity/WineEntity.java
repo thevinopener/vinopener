@@ -4,6 +4,8 @@ import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
 import com.ssafy.vinopener.global.common.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -52,6 +54,7 @@ public class WineEntity extends BaseTimeEntity {
     private Integer vintage;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM")
     private WineType type;
 
