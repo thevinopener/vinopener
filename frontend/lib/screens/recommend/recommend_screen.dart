@@ -7,7 +7,6 @@ import 'package:frontend/providers/recommend_provider.dart';
 
 // constants
 import 'package:frontend/constants/fonts.dart';
-import 'package:frontend/constants/colors.dart';
 
 // Widgets
 import 'package:frontend/widgets/recommend/recommend_wine_type_widget.dart';

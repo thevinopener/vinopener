@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 // constants
 import 'package:frontend/constants/fonts.dart';
 
+// TODO: 국가명 빼고, 국가명을 기준으로 카드 우상단에 동그란 국기 아이콘 넣기
 Widget RecommendWineCardWidget() {
-  return                         Container(
+  return Container(
     height: 350,
     child: SingleChildScrollView(
       scrollDirection: Axis.horizontal,
