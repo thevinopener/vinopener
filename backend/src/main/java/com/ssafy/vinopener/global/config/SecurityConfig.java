@@ -45,20 +45,29 @@ public class SecurityConfig {
                 .exceptionHandling(configurer -> configurer
                         .authenticationEntryPoint(problemSupport)
                         .accessDeniedHandler(problemSupport));
+
+        //로그인 구현 완료 이전 테스트용 설정
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/test1", "/test2", "/user/test").hasAnyAuthority("ROLE_USER")
                         .anyRequest().permitAll())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        //로그인 구현이 완료 되었을 때 아래 설정을 적용.
 //        http
-//                .oauth2Login(oAuth2LoginConfigurer -> oAuth2LoginConfigurer
-//                        .authorizationEndpoint(config -> config.baseUri("/v1/oauth2/authorize"))
-//                        .redirectionEndpoint(config -> config.baseUri("/v1/oauth2/callback/**")));
+//                .authorizeHttpRequests(auth -> auth
+//                        //로그인 시에는 Token 인증 패스
+//                        .requestMatchers(HttpMethod.POST, "/auth/login/**").permitAll()
+//                        //액세스토큰 만료로 인한 토큰 재발급시에도 Token 인증 패스
+//                        .requestMatchers(HttpMethod.GET, "/user/refresh/").permitAll()
+//                        .anyRequest().authenticated())
+//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         http
                 .oauth2Login(oAuth2LoginConfigurer -> oAuth2LoginConfigurer
                         // 최초 소셜로그인 버튼 클릭시 FE -> BE 로 요청되는 주소. 이떄 FE는, BE가 FE에 인가코드를 요청하기 위한 주소를 {authorizationEndpoint} 단계에서 넘겨준다.
                         .authorizationEndpoint(
-                                config -> config.baseUri("/auth/authorize")
+                                config -> config.baseUri("/auth/login")
                                         .authorizationRequestRepository(httpCookieOAuth2Repository)
                         )
                         // 이후 BE는 FE에 {redirect-url}로 Redirection 하면서 인가코드를 요청하게 되는데,
