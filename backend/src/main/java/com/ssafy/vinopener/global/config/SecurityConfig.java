@@ -1,6 +1,5 @@
 package com.ssafy.vinopener.global.config;
 
-import com.ssafy.vinopener.domain.user.service.CustomOAuth2UserService;
 import com.ssafy.vinopener.global.jwt.JwtAuthenticationFilter;
 import com.ssafy.vinopener.global.oauth2.AuthEntryPoint;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,6 @@ import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 public class SecurityConfig {
 
     private final SecurityProblemSupport problemSupport;
-    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter)
