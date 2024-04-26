@@ -12,6 +12,15 @@ spring:
   h2:
     console:
       enabled: false
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${OAUTH2_GOOGLE_CLIENT_ID}
+            client-secret: ${OAUTH2_GOOGLE_CLIENT_SECRET}
+            scope: email, profile
+            redirect-uri: ${OAUTH2_GOOGLE_REDIRECT_URI:http://localhost:8080/auth/callback/google}
 
 server:
   forward-headers-strategy: framework
@@ -35,6 +44,10 @@ s3:
   endpoint: ${S3_ENDPOINT}
   public-base-url: ${S3_PUBLIC_BASE_URL}
 
+
+redis:
+  ttl: 3600
+
 ---
 
 spring:
@@ -42,7 +55,7 @@ spring:
     activate:
       on-profile: test
   datasource:
-    url: jdbc:h2:mem:test
+    url: jdbc:h2:mem:test;NON_KEYWORDS=USER
     username: sa
     password:
 
