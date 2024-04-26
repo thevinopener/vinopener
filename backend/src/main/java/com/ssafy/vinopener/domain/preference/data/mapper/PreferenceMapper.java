@@ -18,8 +18,10 @@ public interface PreferenceMapper {
     PreferenceGetResponse toGetResponse(PreferenceEntity entity);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user", source = "userId")
     PreferenceEntity toEntity(PreferenceCreateOrUpdateRequest request, Long userId);
 
+    @Mapping(target = "user", source = "userId")
     PreferenceEntity toEntity(Long id, PreferenceCreateOrUpdateRequest request, Long userId);
 
 }

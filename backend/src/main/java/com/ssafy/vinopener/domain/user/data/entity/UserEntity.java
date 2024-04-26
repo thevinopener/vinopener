@@ -1,7 +1,11 @@
 package com.ssafy.vinopener.domain.user.data.entity;
 
 import com.ssafy.vinopener.global.common.BaseTimeEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,6 +25,5 @@ public class UserEntity extends BaseTimeEntity {
     private String email;
     private String nickname;
     private String imageUrl;
-    
 
 }

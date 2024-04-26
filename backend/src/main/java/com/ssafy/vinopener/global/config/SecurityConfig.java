@@ -43,7 +43,8 @@ public class SecurityConfig {
         //로그인 구현 완료 이전 테스트용 설정
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/test1", "/test2", "/user/test").hasAnyAuthority("ROLE_USER")
+                        .requestMatchers("/ws").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/tasting-notes").authenticated()
                         .anyRequest().permitAll())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
