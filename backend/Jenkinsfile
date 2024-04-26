@@ -46,7 +46,7 @@ pipeline {
                                         excludes: '',
                                         execCommand: """
                                             cd ${PUBLISH_OVER_SSH_CONFIG_NAME};
-                                            docker compose -p ${DOCKER_COMPOSE_PROJECT_NAME} up -d;
+                                            docker compose -p ${DOCKER_COMPOSE_PROJECT_NAME} up --build -d;
                                             docker image prune -f
                                         """,
                                         execTimeout: 120000,
@@ -81,7 +81,7 @@ pipeline {
         failure {
             mattermostSend(
                 color: 'danger',
-                message: "FAIL: Build #${env.BUILD_NUMBER}\n${env.BUILD_URL}"
+                message: "FAIL: ${BRANCH_NAME} #${env.BUILD_ID}\n${env.BUILD_URL}"
             )
         }
     }

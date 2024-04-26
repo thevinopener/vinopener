@@ -1,5 +1,6 @@
 package com.ssafy.vinopener.domain.wine.service;
 
+import com.ssafy.vinopener.domain.bookmark.repository.BookmarkRepository;
 import com.ssafy.vinopener.domain.wine.data.dto.response.WineGetListResponse;
 import com.ssafy.vinopener.domain.wine.data.dto.response.WineGetResponse;
 import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
@@ -18,6 +19,7 @@ public class WineService {
 
     private final WineRepository wineRepository;
     private final WineMapper wineMapper;
+    private final BookmarkRepository bookmarkRepository;
 
     /**
      * 와인 목록 조회
