@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS
 
 CREATE TABLE `user`
 (
-  `user_id`      BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `user_id`      BIGINT AUTO_INCREMENT PRIMARY KEY,
   `email`        VARCHAR(320) NOT NULL UNIQUE,
   `nickname`     VARCHAR(16)  NOT NULL UNIQUE,
   `image_url`    VARCHAR(512),
@@ -32,8 +32,8 @@ CREATE TABLE `user`
 
 CREATE TABLE `preference`
 (
-  `preference_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
-  `user_id`       BIGINT                                                             NOT NULL,
+  `preference_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `user_id`       BIGINT UNIQUE                                                      NOT NULL,
   `type`          ENUM ('RED', 'WHITE', 'ROSE', 'SPARKLING', 'DESSERT', 'FORTIFIED') NOT NULL,
   `min_abv`       INT                                                                NOT NULL,
   `max_abv`       INT                                                                NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE `preference`
 
 CREATE TABLE `flavour_type`
 (
-  `flavour_type_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `flavour_type_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
   `name`            VARCHAR(16) NOT NULL,
   `created_time`    TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time`    TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -55,7 +55,7 @@ CREATE TABLE `flavour_type`
 
 CREATE TABLE `flavour_taste`
 (
-  `flavour_taste_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `flavour_taste_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
   `flavour_type_id`  BIGINT      NOT NULL,
   `name`             VARCHAR(16) NOT NULL,
   `created_time`     TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -65,7 +65,7 @@ CREATE TABLE `flavour_taste`
 
 CREATE TABLE `wine`
 (
-  `wine_id`      BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `wine_id`      BIGINT AUTO_INCREMENT PRIMARY KEY,
   `name`         VARCHAR(255)                                                       NOT NULL,
   `image_url`    VARCHAR(512)                                                       NOT NULL,
   `grape`        VARCHAR(255)                                                       NOT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE `wine`
 
 CREATE TABLE `wine_flavour`
 (
-  `wine_flavour_id`  BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `wine_flavour_id`  BIGINT AUTO_INCREMENT PRIMARY KEY,
   `wine_id`          BIGINT    NOT NULL,
   `flavour_taste_id` BIGINT    NOT NULL,
   `created_time`     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -100,7 +100,7 @@ CREATE TABLE `wine_flavour`
 
 CREATE TABLE `color`
 (
-  `color_id`     BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `color_id`     BIGINT AUTO_INCREMENT PRIMARY KEY,
   `name`         VARCHAR(16) NOT NULL,
   `created_time` TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -108,7 +108,7 @@ CREATE TABLE `color`
 
 CREATE TABLE `tasting_note`
 (
-  `tasting_note_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `tasting_note_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
   `user_id`         BIGINT        NOT NULL,
   `wine_id`         BIGINT        NOT NULL,
   `color_id`        BIGINT        NOT NULL,
@@ -128,7 +128,7 @@ CREATE TABLE `tasting_note`
 
 CREATE TABLE `tasting_note_flavour`
 (
-  `tasting_note_flavour_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `tasting_note_flavour_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
   `tasting_note_id`         BIGINT    NOT NULL,
   `flavour_taste_id`        BIGINT    NOT NULL,
   `created_time`            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -140,7 +140,7 @@ CREATE TABLE `tasting_note_flavour`
 
 CREATE TABLE `feed`
 (
-  `feed_id`      BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `feed_id`      BIGINT AUTO_INCREMENT PRIMARY KEY,
   `user_id`      BIGINT       NOT NULL,
   `content`      VARCHAR(255) NOT NULL,
   `image_url`    VARCHAR(512) NOT NULL,
@@ -152,7 +152,7 @@ CREATE TABLE `feed`
 
 CREATE TABLE `feed_wine`
 (
-  `feed_wine_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `feed_wine_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
   `feed_id`      BIGINT    NOT NULL,
   `wine_id`      BIGINT    NOT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -164,7 +164,7 @@ CREATE TABLE `feed_wine`
 
 CREATE TABLE `feed_like`
 (
-  `feed_like_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `feed_like_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
   `feed_id`      BIGINT    NOT NULL,
   `user_id`      BIGINT    NOT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -176,7 +176,7 @@ CREATE TABLE `feed_like`
 
 CREATE TABLE `search`
 (
-  `search_id`    BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `search_id`    BIGINT AUTO_INCREMENT PRIMARY KEY,
   `user_id`      BIGINT       NOT NULL,
   `content`      VARCHAR(255) NOT NULL,
   `created_time` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -186,7 +186,7 @@ CREATE TABLE `search`
 
 CREATE TABLE `wine_view`
 (
-  `wine_view`    BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `wine_view`    BIGINT AUTO_INCREMENT PRIMARY KEY,
   `user_id`      BIGINT    NOT NULL,
   `wine_id`      BIGINT    NOT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -198,7 +198,7 @@ CREATE TABLE `wine_view`
 
 CREATE TABLE `bookmark`
 (
-  `bookmark_id`  BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `bookmark_id`  BIGINT AUTO_INCREMENT PRIMARY KEY,
   `user_id`      BIGINT    NOT NULL,
   `wine_id`      BIGINT    NOT NULL,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -210,7 +210,7 @@ CREATE TABLE `bookmark`
 
 CREATE TABLE `cellar_wine`
 (
-  `cellar_wine_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `cellar_wine_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
   `user_id`        BIGINT    NOT NULL,
   `wine_id`        BIGINT    NOT NULL,
   `finished_date`  DATE      NULL,
@@ -222,7 +222,7 @@ CREATE TABLE `cellar_wine`
 
 CREATE TABLE `user_chat_room`
 (
-  `user_chat_room_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `user_chat_room_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
   `creator_id`        BIGINT    NOT NULL,
   `partner_id`        BIGINT    NOT NULL,
   `created_time`      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -234,7 +234,7 @@ CREATE TABLE `user_chat_room`
 
 CREATE TABLE `user_chat`
 (
-  `user_chat_id`      BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `user_chat_id`      BIGINT AUTO_INCREMENT PRIMARY KEY,
   `user_chat_room_id` BIGINT       NOT NULL,
   `message`           VARCHAR(255) NOT NULL,
   `created_time`      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -244,7 +244,7 @@ CREATE TABLE `user_chat`
 
 CREATE TABLE `wine_chat`
 (
-  `wine_chat_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `wine_chat_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
   `wine_id`      BIGINT       NOT NULL,
   `user_id`      BIGINT       NOT NULL,
   `message`      VARCHAR(255) NOT NULL,
@@ -256,7 +256,7 @@ CREATE TABLE `wine_chat`
 
 CREATE TABLE `ai_chat`
 (
-  `ai_chat_id`   BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `ai_chat_id`   BIGINT AUTO_INCREMENT PRIMARY KEY,
   `user_id`      BIGINT       NOT NULL,
   `message`      VARCHAR(255) NOT NULL,
   `is_bot`       BOOLEAN      NOT NULL,
