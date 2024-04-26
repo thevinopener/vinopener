@@ -2,9 +2,7 @@ package com.ssafy.vinopener.global.config;
 
 import com.ssafy.vinopener.domain.user.service.CustomOAuth2UserService;
 import com.ssafy.vinopener.global.jwt.JwtAuthenticationFilter;
-import com.ssafy.vinopener.global.oauth2.HttpCookieOAuth2Repository;
-import com.ssafy.vinopener.global.oauth2.OAuth2AuthenticationFailureHandler;
-import com.ssafy.vinopener.global.oauth2.OAuth2AuthenticationSuccessHandler;
+import com.ssafy.vinopener.global.oauth2.AuthEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,9 +25,6 @@ public class SecurityConfig {
 
     private final SecurityProblemSupport problemSupport;
     private final CustomOAuth2UserService customOAuth2UserService;
-    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
-    private final HttpCookieOAuth2Repository httpCookieOAuth2Repository;
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter)
@@ -43,7 +38,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http
                 .exceptionHandling(configurer -> configurer
-                        .authenticationEntryPoint(problemSupport)
+//                        .authenticationEntryPoint(problemSupport)
+                        .authenticationEntryPoint(new AuthEntryPoint())
                         .accessDeniedHandler(problemSupport));
 
         //로그인 구현 완료 이전 테스트용 설정

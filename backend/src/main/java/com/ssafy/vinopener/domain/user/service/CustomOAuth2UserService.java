@@ -2,7 +2,6 @@ package com.ssafy.vinopener.domain.user.service;
 
 import com.ssafy.vinopener.domain.user.data.entity.UserEntity;
 import com.ssafy.vinopener.domain.user.repository.UserRepository;
-import com.ssafy.vinopener.global.oauth2.AuthProviderType;
 import com.ssafy.vinopener.global.oauth2.OAuth2UserInfo;
 import com.ssafy.vinopener.global.oauth2.OAuth2UserInfoFactory;
 import com.ssafy.vinopener.global.oauth2.UserPrincipal;

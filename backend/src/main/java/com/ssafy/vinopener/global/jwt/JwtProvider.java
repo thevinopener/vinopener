@@ -69,6 +69,24 @@ public class JwtProvider {
         return new UsernamePasswordAuthenticationToken(userPrincipal, null, List.of(userPrincipal::getAuthority));
     }
 
+    public Long getUserIdFromToken(String token) {
+        //AccessToken으로 userId 가져오기.
+        Claims payload;
+        try {
+            payload = Jwts.parser()
+                    .verifyWith(jwtProps.getAccessSecretKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (ExpiredJwtException e) {
+            throw new VinopenerException(JwtErrorCode.EXPIRED_TOKEN);
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new VinopenerException(JwtErrorCode.INVALID_TOKEN);
+        }
+
+        return payload.get(CLAIMS_ID, Long.class);
+    }
+
     private String issueToken(Claims claims, Duration expiration, SecretKey secretKey) {
         Date now = new Date();
         return Jwts.builder()

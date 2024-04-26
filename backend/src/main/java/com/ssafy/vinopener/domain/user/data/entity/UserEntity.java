@@ -2,11 +2,7 @@ package com.ssafy.vinopener.domain.user.data.entity;
 
 import com.ssafy.vinopener.global.common.BaseTimeEntity;
 import com.ssafy.vinopener.global.oauth2.OAuth2UserInfo;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,10 +31,3 @@ public class UserEntity extends BaseTimeEntity {
     }
 
 }
-
-/**
- * CREATE TABLE `User` ( `user_id`      BIGINT PRIMARY KEY AUTO_INCREMENT, `email`        VARCHAR(320) NOT NULL UNIQUE,
- * `nickname`     VARCHAR(16)  NOT NULL UNIQUE, `image_url`    VARCHAR(512), `created_time` TIMESTAMP    NOT NULL
- * DEFAULT CURRENT_TIMESTAMP, `updated_time` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
- * );
- */
