@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/feed/feed_screen.dart';
 
 class FeedContentScreen extends StatelessWidget {
   const FeedContentScreen({super.key});

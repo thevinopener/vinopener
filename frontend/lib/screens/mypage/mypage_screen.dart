@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/models/wine_model.dart';
 import 'package:frontend/services/wine_service.dart';
 import 'package:frontend/widgets/wine_card_widget.dart';
+import 'package:frontend/widgets/wine_item_widget.dart';
 
 import '../../constants/colors.dart';
 import '../../models/feed_model.dart';
@@ -40,7 +40,7 @@ class _MyPageScreenState extends State<MyPageScreen>
   @override
   Widget build(BuildContext context) {
     double avatarRadius = 50;
-    final String defaultImageUrl = 'assets/default_wine.jpg';
+    final String defaultImageUrl = 'assets/wine.jpg';
 
     return Scaffold(
       body: Column(
@@ -123,19 +123,16 @@ class _MyPageScreenState extends State<MyPageScreen>
                     AsyncSnapshot<dynamic> snapshot,
                   ) {
                     if (snapshot.hasData) {
-                      return GridView.builder(
+                      return ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (
                           context,
                           index,
                         ) {
-                          return WineCard(
+                          return WineItem(
                             wine: snapshot.data![index],
                           );
                         },
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                        ),
                       );
                     }
                     return const Center(
@@ -143,7 +140,7 @@ class _MyPageScreenState extends State<MyPageScreen>
                     );
                   },
                 ),
-                Text('cellar'),
+                Text('Cellar'),
               ],
             ),
           ),
