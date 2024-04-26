@@ -21,6 +21,7 @@ pipeline {
         }
         stage('frontend build') {
             when {
+                triggeredBy 'TimerTrigger'
                 branch MAIN_BRANCH
             }
             steps {
