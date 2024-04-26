@@ -111,12 +111,13 @@ class _RecommendScreenState extends State {
                 ),
                 // 와인 종류별 버튼 끝 #2
 
+                SizedBox(height: 30), // 섹션 간의 간격 추가
+                
                 // 와인 추천1 시작 #3-1
                 SizedBox(
                   width: double.infinity,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-                    // 전체 패딩 추가
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,41 +131,80 @@ class _RecommendScreenState extends State {
                         ),
                         // SizedBox(height: 5), // 버튼과의 간격 추가
                         Container(
-                          height: 350, // 충분한 높이를 지정하여 버튼이 보일 수 있도록 설정
+                          height: 350,
                           child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal, // 가로 스크롤 설정
+                            scrollDirection: Axis.horizontal,
                             child: Row(
                               children: List.generate(
                                 5,
-                                (index) => // 5개의 버튼을 생성
-                                    Padding(
-                                  padding: EdgeInsets.only(
-                                      right: index < 4 ? 20 : 0),
-                                  // 마지막 버튼을 제외하고 오른쪽 패딩 추가
+                                    (index) => Padding(
+                                  padding: EdgeInsets.only(right: index < 4 ? 20 : 0),
                                   child: ElevatedButton(
                                     onPressed: () {},
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
                                       children: [
-                                        // 이미지
-                                        // 와인명
-                                        // 와이너리(제조사)
-                                        // 국가이미지
-                                        // 국가명
-                                        // 링크? 딥링크? -> onPressed() {}에다가 줘야함 / Navigator + API parameter 조합
+                                        Container(
+                                          width: 200,  // 이미지 컨테이너의 크기 조정 부분
+                                          height: 150,
+                                          color: Colors.white12,  // 이미지 배경색
+                                          child: Image.asset(
+                                            'assets/images/dummy_wine.png',
+                                            fit: BoxFit.scaleDown,
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Vieilles Vigne Chorey-lès-Beaune 2018',
+                                              style: TextStyle(
+                                                fontSize: AppFontSizes.medium,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text('Michel Gay & Fils',
+                                              style: TextStyle(
+                                                fontSize: AppFontSizes.medium,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.orange,
+                                              ),),
+                                            SizedBox(height: 5),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                Image.asset('assets/images/ea.png',
+                                                  width: 20,
+                                                  height: 20,
+                                                ),
+                                                SizedBox(width: 10),
+                                                Text('스페인',
+                                                  style: TextStyle(
+                                                    fontSize: AppFontSizes.small,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+
+                                          ],
+                                        )
                                       ],
-                                    ), // 버튼 내부 구성 요소들
+                                    ),
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          WineButtonColors.sparkling,
-                                      // 모든 버튼 같은 색상
+                                      fixedSize: Size(200, 300),  // 버튼 크기를 조정
+                                      backgroundColor: Colors.white,
                                       shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 100,
-                                          vertical: 150),
+                                        borderRadius: BorderRadius.circular(5),
+                                        side: BorderSide(color: Colors.grey, width: 1),  // 회색 테두리 추가
+                                      ),
+                                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),  // ElevatedButton 내부 패딩 (좌상우하 순 설정)
                                     ),
                                   ),
                                 ),
@@ -183,13 +223,12 @@ class _RecommendScreenState extends State {
                   width: double.infinity,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-                    // 전체 패딩 추가
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '이런(추천1) 와인은 어떠세요?',
+                          '이런(추천2) 와인은 어떠세요?',
                           style: TextStyle(
                             fontSize: AppFontSizes.mediumLarge,
                             fontWeight: FontWeight.w500,
@@ -197,30 +236,80 @@ class _RecommendScreenState extends State {
                         ),
                         // SizedBox(height: 5), // 버튼과의 간격 추가
                         Container(
-                          height: 350, // 충분한 높이를 지정하여 버튼이 보일 수 있도록 설정
+                          height: 350,
                           child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal, // 가로 스크롤 설정
+                            scrollDirection: Axis.horizontal,
                             child: Row(
                               children: List.generate(
                                 5,
-                                    (index) => // 5개의 버튼을 생성
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      right: index < 4 ? 20 : 0),
-                                  // 마지막 버튼을 제외하고 오른쪽 패딩 추가
+                                    (index) => Padding(
+                                  padding: EdgeInsets.only(right: index < 4 ? 20 : 0),
                                   child: ElevatedButton(
                                     onPressed: () {},
-                                    child: Text('${index + 1}'), // 버튼에 숫자 표시
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      children: [
+                                        Container(
+                                          width: 200,  // 이미지 컨테이너의 크기 조정 부분
+                                          height: 150,
+                                          color: Colors.white12,  // 이미지 배경색
+                                          child: Image.asset(
+                                            'assets/images/dummy_wine.png',
+                                            fit: BoxFit.scaleDown,
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Vieilles Vigne Chorey-lès-Beaune 2018',
+                                              style: TextStyle(
+                                                fontSize: AppFontSizes.medium,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text('Michel Gay & Fils',
+                                              style: TextStyle(
+                                                fontSize: AppFontSizes.medium,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.orange,
+                                              ),),
+                                            SizedBox(height: 5),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                Image.asset('assets/images/ea.png',
+                                                  width: 20,
+                                                  height: 20,
+                                                ),
+                                                SizedBox(width: 10),
+                                                Text('스페인',
+                                                  style: TextStyle(
+                                                    fontSize: AppFontSizes.small,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                      WineButtonColors.sparkling,
-                                      // 모든 버튼 같은 색상
+                                      fixedSize: Size(200, 300),  // 버튼 크기를 조정
+                                      backgroundColor: Colors.white,
                                       shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(5)),
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 100,
-                                          vertical: 150),
+                                        borderRadius: BorderRadius.circular(5),
+                                        side: BorderSide(color: Colors.grey, width: 1),  // 회색 테두리 추가
+                                      ),
+                                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),  // ElevatedButton 내부 패딩 (좌상우하 순 설정)
                                     ),
                                   ),
                                 ),
@@ -239,13 +328,12 @@ class _RecommendScreenState extends State {
                   width: double.infinity,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-                    // 전체 패딩 추가
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '이런(추천1) 와인은 어떠세요?',
+                          '이런(추천3) 와인은 어떠세요?',
                           style: TextStyle(
                             fontSize: AppFontSizes.mediumLarge,
                             fontWeight: FontWeight.w500,
@@ -253,30 +341,80 @@ class _RecommendScreenState extends State {
                         ),
                         // SizedBox(height: 5), // 버튼과의 간격 추가
                         Container(
-                          height: 350, // 충분한 높이를 지정하여 버튼이 보일 수 있도록 설정
+                          height: 350,
                           child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal, // 가로 스크롤 설정
+                            scrollDirection: Axis.horizontal,
                             child: Row(
                               children: List.generate(
                                 5,
-                                    (index) => // 5개의 버튼을 생성
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      right: index < 4 ? 20 : 0),
-                                  // 마지막 버튼을 제외하고 오른쪽 패딩 추가
+                                    (index) => Padding(
+                                  padding: EdgeInsets.only(right: index < 4 ? 20 : 0),
                                   child: ElevatedButton(
                                     onPressed: () {},
-                                    child: Text('${index + 1}'), // 버튼에 숫자 표시
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      children: [
+                                        Container(
+                                          width: 200,  // 이미지 컨테이너의 크기 조정 부분
+                                          height: 150,
+                                          color: Colors.white12,  // 이미지 배경색
+                                          child: Image.asset(
+                                            'assets/images/dummy_wine.png',
+                                            fit: BoxFit.scaleDown,
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Vieilles Vigne Chorey-lès-Beaune 2018',
+                                              style: TextStyle(
+                                                fontSize: AppFontSizes.medium,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text('Michel Gay & Fils',
+                                              style: TextStyle(
+                                                fontSize: AppFontSizes.medium,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.orange,
+                                              ),),
+                                            SizedBox(height: 5),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                Image.asset('assets/images/ea.png',
+                                                  width: 20,
+                                                  height: 20,
+                                                ),
+                                                SizedBox(width: 10),
+                                                Text('스페인',
+                                                  style: TextStyle(
+                                                    fontSize: AppFontSizes.small,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                      WineButtonColors.sparkling,
-                                      // 모든 버튼 같은 색상
+                                      fixedSize: Size(200, 300),  // 버튼 크기를 조정
+                                      backgroundColor: Colors.white,
                                       shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(5)),
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 100,
-                                          vertical: 150),
+                                        borderRadius: BorderRadius.circular(5),
+                                        side: BorderSide(color: Colors.grey, width: 1),  // 회색 테두리 추가
+                                      ),
+                                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),  // ElevatedButton 내부 패딩 (좌상우하 순 설정)
                                     ),
                                   ),
                                 ),
@@ -295,13 +433,12 @@ class _RecommendScreenState extends State {
                   width: double.infinity,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-                    // 전체 패딩 추가
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '이런(추천1) 와인은 어떠세요?',
+                          '이런(추천4) 와인은 어떠세요?',
                           style: TextStyle(
                             fontSize: AppFontSizes.mediumLarge,
                             fontWeight: FontWeight.w500,
@@ -309,30 +446,80 @@ class _RecommendScreenState extends State {
                         ),
                         // SizedBox(height: 5), // 버튼과의 간격 추가
                         Container(
-                          height: 350, // 충분한 높이를 지정하여 버튼이 보일 수 있도록 설정
+                          height: 350,
                           child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal, // 가로 스크롤 설정
+                            scrollDirection: Axis.horizontal,
                             child: Row(
                               children: List.generate(
                                 5,
-                                    (index) => // 5개의 버튼을 생성
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      right: index < 4 ? 20 : 0),
-                                  // 마지막 버튼을 제외하고 오른쪽 패딩 추가
+                                    (index) => Padding(
+                                  padding: EdgeInsets.only(right: index < 4 ? 20 : 0),
                                   child: ElevatedButton(
                                     onPressed: () {},
-                                    child: Text('${index + 1}'), // 버튼에 숫자 표시
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      children: [
+                                        Container(
+                                          width: 200,  // 이미지 컨테이너의 크기 조정 부분
+                                          height: 150,
+                                          color: Colors.white12,  // 이미지 배경색
+                                          child: Image.asset(
+                                            'assets/images/dummy_wine.png',
+                                            fit: BoxFit.scaleDown,
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Vieilles Vigne Chorey-lès-Beaune 2018',
+                                              style: TextStyle(
+                                                fontSize: AppFontSizes.medium,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text('Michel Gay & Fils',
+                                              style: TextStyle(
+                                                fontSize: AppFontSizes.medium,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.orange,
+                                              ),),
+                                            SizedBox(height: 5),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                Image.asset('assets/images/ea.png',
+                                                  width: 20,
+                                                  height: 20,
+                                                ),
+                                                SizedBox(width: 10),
+                                                Text('스페인',
+                                                  style: TextStyle(
+                                                    fontSize: AppFontSizes.small,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                      WineButtonColors.sparkling,
-                                      // 모든 버튼 같은 색상
+                                      fixedSize: Size(200, 300),  // 버튼 크기를 조정
+                                      backgroundColor: Colors.white,
                                       shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(5)),
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 100,
-                                          vertical: 150),
+                                        borderRadius: BorderRadius.circular(5),
+                                        side: BorderSide(color: Colors.grey, width: 1),  // 회색 테두리 추가
+                                      ),
+                                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),  // ElevatedButton 내부 패딩 (좌상우하 순 설정)
                                     ),
                                   ),
                                 ),
@@ -351,13 +538,12 @@ class _RecommendScreenState extends State {
                   width: double.infinity,
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-                    // 전체 패딩 추가
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '이런(추천1) 와인은 어떠세요?',
+                          '이런(추천5) 와인은 어떠세요?',
                           style: TextStyle(
                             fontSize: AppFontSizes.mediumLarge,
                             fontWeight: FontWeight.w500,
@@ -365,28 +551,80 @@ class _RecommendScreenState extends State {
                         ),
                         // SizedBox(height: 5), // 버튼과의 간격 추가
                         Container(
-                          height: 350, // 충분한 높이를 지정하여 버튼이 보일 수 있도록 설정
+                          height: 350,
                           child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal, // 가로 스크롤 설정
+                            scrollDirection: Axis.horizontal,
                             child: Row(
                               children: List.generate(
                                 5,
-                                    (index) => // 5개의 버튼을 생성
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      right: index < 4 ? 20 : 0),
-                                  // 마지막 버튼을 제외하고 오른쪽 패딩 추가
+                                    (index) => Padding(
+                                  padding: EdgeInsets.only(right: index < 4 ? 20 : 0),
                                   child: ElevatedButton(
                                     onPressed: () {},
-                                    child: Text('${index + 1}'), // 버튼에 숫자 표시
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      children: [
+                                        Container(
+                                          width: 200,  // 이미지 컨테이너의 크기 조정 부분
+                                          height: 150,
+                                          color: Colors.white12,  // 이미지 배경색
+                                          child: Image.asset(
+                                            'assets/images/dummy_wine.png',
+                                            fit: BoxFit.scaleDown,
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Vieilles Vigne Chorey-lès-Beaune 2018',
+                                              style: TextStyle(
+                                                fontSize: AppFontSizes.medium,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text('Michel Gay & Fils',
+                                              style: TextStyle(
+                                                fontSize: AppFontSizes.medium,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.orange,
+                                              ),),
+                                            SizedBox(height: 5),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                Image.asset('assets/images/ea.png',
+                                                  width: 20,
+                                                  height: 20,
+                                                ),
+                                                SizedBox(width: 10),
+                                                Text('스페인',
+                                                  style: TextStyle(
+                                                    fontSize: AppFontSizes.small,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: WineButtonColors.sparkling, // 모든 버튼 같은 색상
+                                      fixedSize: Size(200, 300),  // 버튼 크기를 조정
+                                      backgroundColor: Colors.white,
                                       shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(5)),
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 100,
-                                          vertical: 150),
+                                        borderRadius: BorderRadius.circular(5),
+                                        side: BorderSide(color: Colors.grey, width: 1),  // 회색 테두리 추가
+                                      ),
+                                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),  // ElevatedButton 내부 패딩 (좌상우하 순 설정)
                                     ),
                                   ),
                                 ),
