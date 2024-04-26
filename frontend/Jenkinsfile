@@ -1,11 +1,14 @@
 pipeline {
     agent any
+    triggers {
+        cron('0 0 * * *') // 자정
+    }
+    tools {
+        jdk 'jdk-17'
+    }
     environment {
         BASE_DIR = 'frontend'
         MAIN_BRANCH = 'main'
-    }
-    triggers {
-        cron(' 0 0 * * *') // 자정
     }
     stages {
         stage('frontend test') {
@@ -22,7 +25,9 @@ pipeline {
             }
             steps {
                 dir(BASE_DIR) {
-                    sh 'flutter build apk --release --target-platform android-arm64 --split-per-abi'
+                    withGradle {
+                        sh 'flutter build apk --release --target-platform android-arm64 --split-per-abi'
+                    }
                 }
             }
         }
