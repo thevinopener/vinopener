@@ -3,6 +3,7 @@ package com.ssafy.vinopener.domain.preference.controller;
 import com.ssafy.vinopener.domain.preference.data.dto.request.PreferenceCreateOrUpdateRequest;
 import com.ssafy.vinopener.domain.preference.data.dto.response.PreferenceGetResponse;
 import com.ssafy.vinopener.domain.preference.service.PreferenceService;
+import com.ssafy.vinopener.global.common.UserDetailsId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,7 +13,6 @@ import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -41,7 +41,7 @@ public class PreferenceController {
                     name = "Location", description = REQUEST_PATH)))
     public ResponseEntity<Void> createPreference(
             @RequestBody @Valid final PreferenceCreateOrUpdateRequest preferenceCreateRequest,
-            @AuthenticationPrincipal(expression = "id") final Long userId
+            @UserDetailsId final Long userId
     ) {
         return ResponseEntity
                 .created(URI.create(REQUEST_PATH))
@@ -57,7 +57,7 @@ public class PreferenceController {
     @GetMapping
     @Operation(security = @SecurityRequirement(name = "bearer-key"))
     public ResponseEntity<PreferenceGetResponse> getPreference(
-            @AuthenticationPrincipal(expression = "id") final Long userId
+            @UserDetailsId final Long userId
     ) {
         return ResponseEntity.ok(preferenceService.get(userId));
     }
@@ -73,7 +73,7 @@ public class PreferenceController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> updatePreference(
             @RequestBody @Valid final PreferenceCreateOrUpdateRequest preferenceUpdateRequest,
-            @AuthenticationPrincipal(expression = "id") final Long userId
+            @UserDetailsId final Long userId
     ) {
         preferenceService.update(preferenceUpdateRequest, userId);
         return ResponseEntity.noContent().build();
