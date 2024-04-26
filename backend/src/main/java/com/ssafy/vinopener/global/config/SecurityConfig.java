@@ -57,24 +57,6 @@ public class SecurityConfig {
 //                        .anyRequest().authenticated())
 //                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-//        http
-//                .oauth2Login(oAuth2LoginConfigurer -> oAuth2LoginConfigurer
-//                        // 최초 소셜로그인 버튼 클릭시 FE -> BE 로 요청되는 주소. FE에서 /auth/login/** 으로 요청이 들어오면 Security가 해당 OAuth제공측의 페이지로 넘겨줌.
-//                        // 이때, 모든 과정이 끝나고 우리의 커스텀accessToken, refreshToken을 FE에 다시 보내줘야 하므로, FE측에선 redirect_url을 줘야함.
-//                        .authorizationEndpoint(
-//                                config -> config.baseUri("/auth/login")
-//                                        .authorizationRequestRepository(httpCookieOAuth2Repository)
-//                        )
-//                        // 사용자가 소셜 로그인을 성공했을 경우, redirectionEndpoint로 인가코드가 들어온다.
-//                        // Security는 그 인가코드를 OAuth제공자에게 보내 AccessToken(From OAuth제공 측)을 발급받고,
-//                        // customOAuth2UserService에서 그 AccessToken으로 사용자 정보를 받아와 우리의 DB에 등록한다.
-//                        .redirectionEndpoint(config -> config.baseUri("/auth/callback/**"))
-//                        .userInfoEndpoint(config -> config.userService(customOAuth2UserService))
-//                        // 위의 과정이 성공하면 SuccessHandler로 가서 authorizationEndpoint에 들어온 당시의 redirect_url로
-//                        // accessToken(우리꺼), refreshToken을 담아서 보낸다.
-//                        .successHandler(oAuth2AuthenticationSuccessHandler)
-//                        .failureHandler(oAuth2AuthenticationFailureHandler));
-
         return http.build();
     }
 

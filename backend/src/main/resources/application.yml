@@ -21,11 +21,6 @@ spring:
             client-secret: ${OAUTH2_GOOGLE_CLIENT_SECRET}
             scope: email, profile
             redirect-uri: ${OAUTH2_GOOGLE_REDIRECT_URI:http://localhost:8080/auth/callback/google}
-  data:
-    redis:
-      host: localhost
-      port: 6379
-
 
 springdoc:
   default-consumes-media-type: application/json;charset=UTF-8
@@ -45,8 +40,6 @@ s3:
   endpoint: ${S3_ENDPOINT}
   public-base-url: ${S3_PUBLIC_BASE_URL}
 
-oauth:
-  authorizedRedirectUri: http://localhost:8080/auth/redirect
 
 redis:
   ttl: 3600
