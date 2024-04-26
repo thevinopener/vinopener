@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+    environment {
+        BASE_DIR = 'frontend'
+        MAIN_BRANCH = 'main'
+    }
+    triggers {
+        cron(' 0 0 * * *') // 자정
+    }
+    stages {
+        stage('frontend test') {
+            steps {
+                dir(BASE_DIR) {
+                    sh 'flutter pub get'
+                    // sh 'flutter test'
+                }
+            }
+        }
+        stage('frontend build') {
+            when {
+                branch MAIN_BRANCH
+            }
+            steps {
+                dir(BASE_DIR) {
+                    sh 'flutter build apk --release --target-platform android-arm64 --split-per-abi'
+                }
+            }
+        }
+        stage('frontend deploy') {
+            when {
+                triggeredBy 'TimerTrigger'
+                branch MAIN_BRANCH
+            }
+            steps {
+                dir(BASE_DIR) {
+                    archiveArtifacts artifacts: 'build/app/outputs/flutter-apk/*.apk', fingerprint: true, followSymlinks: false, onlyIfSuccessful: true
+                }
+            }
+        }
+    }
+    post {
+        failure {
+            mattermostSend(
+                color: 'danger',
+                message: "FRONTEND FAIL: ${BRANCH_NAME} #${env.BUILD_ID}\n${env.BUILD_URL}"
+            )
+        }
+    }
+}
