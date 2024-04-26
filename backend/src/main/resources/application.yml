@@ -21,6 +21,9 @@ spring:
             client-secret: ${OAUTH2_GOOGLE_CLIENT_SECRET}
             scope: email, profile
             redirect-uri: ${OAUTH2_GOOGLE_REDIRECT_URI:http://localhost:8080/auth/callback/google}
+            profile-url: https://www.googleapis.com/userinfo/v2/me
+            access-token-url: https://oauth2.googleapis.com/token
+            authorization-code: authorization_code
 
 server:
   forward-headers-strategy: framework
@@ -33,6 +36,7 @@ springdoc:
 jwt:
   access-secret-key-base64: ${JWT_ACCESS_SECRET_KEY_BASE64:iAbBnFDrPJgglJr+yO0dC1qITxoCJcm1HB8ZiFWhtN19lWOdCaiPmvqXRTLmqe4cIdaT5X62swd/8lfp8rdw0Q==}
   access-expiration-seconds: ${JWT_ACCESS_EXPIRATION_SECONDS:300}
+  #  access-expiration-seconds: ${JWT_ACCESS_EXPIRATION_SECONDS:2592000}
   refresh-secret-key-base64: ${JWT_REFRESH_SECRET_KEY_BASE64:zxY3hKXBd6MPmmxha1rwte7GayIdjuzOTeD6nyuO7MockdamStat6G0nDF2T8EJP041sdz4eZxEPNJEGIXGmiQ==}
   refresh-expiration-seconds: ${JWT_REFRESH_EXPIRATION_SECONDS:86400}
 
