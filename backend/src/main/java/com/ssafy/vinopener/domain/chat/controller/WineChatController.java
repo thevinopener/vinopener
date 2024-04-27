@@ -2,6 +2,9 @@ package com.ssafy.vinopener.domain.chat.controller;
 
 import com.ssafy.vinopener.domain.chat.data.dto.response.WineChatGetOrGetListResponse;
 import com.ssafy.vinopener.domain.chat.service.WineChatService;
+import com.ssafy.vinopener.global.config.SwaggerConfig;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,7 @@ public class WineChatController {
      * @return 와인채팅 목록
      */
     @GetMapping
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<List<WineChatGetOrGetListResponse>> getListWineChat(
             @PathVariable final Long wineId
     ) {

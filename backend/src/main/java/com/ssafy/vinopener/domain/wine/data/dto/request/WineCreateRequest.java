@@ -1,5 +1,6 @@
 package com.ssafy.vinopener.domain.wine.data.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
 import com.ssafy.vinopener.global.config.TimeFormatConfig;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,6 +16,8 @@ import java.time.LocalDateTime;
 
 /**
  * DTO 예제입니다. 실제로 사용하지 않습니다. validation 어노테이션은 요청에서만 사용합니다.
+ * <p>
+ * 시간 포맷은 아래와 같이 {@code @Schema}, {@code @JsonFormat}를 설정하세요.
  */
 public record WineCreateRequest(
         @NotBlank @Size(max = 255) String name,
@@ -32,6 +35,7 @@ public record WineCreateRequest(
         @NotNull @Min(0) @Max(5) BigDecimal tannin,
         @NotNull @Min(0) @Max(5) BigDecimal abv,
         @Schema(type = "string", example = TimeFormatConfig.LOCAL_DATE_TIME_EXAMPLE)
+        @JsonFormat(pattern = TimeFormatConfig.LOCAL_DATE_TIME_PATTERN)
         @NotNull @FutureOrPresent LocalDateTime createdTime
 ) {
 

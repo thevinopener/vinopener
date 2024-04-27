@@ -13,8 +13,4 @@ public enum WineChatErrorCode implements ErrorCode {
     private final Status status;
     private final String detail;
 
-    public static class Details {
-
-    }
-
 }

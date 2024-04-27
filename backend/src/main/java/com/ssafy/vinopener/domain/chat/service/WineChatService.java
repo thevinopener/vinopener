@@ -4,15 +4,21 @@ import com.ssafy.vinopener.domain.chat.data.dto.request.WineChatCreateRequest;
 import com.ssafy.vinopener.domain.chat.data.dto.response.WineChatGetOrGetListResponse;
 import com.ssafy.vinopener.domain.chat.data.mapper.WineChatMapper;
 import com.ssafy.vinopener.domain.chat.repository.WineChatRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class WineChatService {
 
+    @PersistenceContext
+    private final EntityManager entityManager;
     private final WineChatRepository wineChatRepository;
     private final WineChatMapper wineChatMapper;
 
@@ -30,8 +36,10 @@ public class WineChatService {
             final Long wineId,
             final Long userId
     ) {
-        return wineChatMapper.toGetOrGetListResponse(wineChatRepository
-                .save(wineChatMapper.toEntity(wineChatCreateRequest, wineId, userId)));
+        var wineEntity = wineChatRepository.save(
+                wineChatMapper.toEntity(wineChatCreateRequest, wineId, userId));
+        log.info("wineEntity: {}", wineEntity);
+        return wineChatMapper.toGetOrGetListResponse(wineEntity);
     }
 
     /**

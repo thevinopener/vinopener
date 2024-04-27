@@ -13,7 +13,7 @@ public class ReferenceMapper {
     @PersistenceContext
     private final EntityManager entityManager;
 
-    public <T> T resolve(@TargetType final Class<T> entityClass, final Long id) {
+    public <T extends BaseEntity> T resolve(@TargetType final Class<T> entityClass, final Long id) {
         return entityManager.getReference(entityClass, id);
     }
 

@@ -7,6 +7,7 @@ spring:
     resources:
       add-mappings: false
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: validate
   h2:
@@ -24,6 +25,12 @@ spring:
             profile-url: https://www.googleapis.com/userinfo/v2/me
             access-token-url: https://oauth2.googleapis.com/token
             authorization-code: authorization_code
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+#      # RedisRepository 사용하지 않는 경우 설정할 것
+#      repositories:
+#        enabled: false
 
 server:
   forward-headers-strategy: framework
@@ -31,7 +38,6 @@ server:
 springdoc:
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
-  show-oauth2-endpoints: true
 
 jwt:
   access-secret-key-base64: ${JWT_ACCESS_SECRET_KEY_BASE64:iAbBnFDrPJgglJr+yO0dC1qITxoCJcm1HB8ZiFWhtN19lWOdCaiPmvqXRTLmqe4cIdaT5X62swd/8lfp8rdw0Q==}
