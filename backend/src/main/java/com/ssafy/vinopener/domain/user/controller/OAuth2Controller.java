@@ -1,5 +1,6 @@
 package com.ssafy.vinopener.domain.user.controller;
 
+import com.ssafy.vinopener.domain.user.service.OAuth2Service;
 import com.ssafy.vinopener.global.jwt.JwtProvider;
 import com.ssafy.vinopener.global.oauth2.GoogleClient;
 import com.ssafy.vinopener.global.oauth2.dto.response.GoogleAccountProfileResponse;
@@ -18,21 +19,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class OAuth2Controller {
 
+    private final OAuth2Service oAuth2Service;
     private final GoogleClient googleClient;
     private final JwtProvider jwtProvider;
 
-    //인증코드 받고
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam("authentication") String authentication,
             HttpServletResponse response,
             HttpServletRequest request) {
 
+        //액세스 토큰 요청
         String accessToken;
+
         try {
-            //액세스 토큰 받고
-            accessToken = googleClient.getGoogleAccessToken(authentication);
+            accessToken = oAuth2Service.requestAccessToken(authentication);
         } catch (LoginException e) {
-            //Exception 발생시 어떻게 할지 찾아서 구현 제대로. 이대로 두면 안됨.
             return (ResponseEntity<?>) ResponseEntity.notFound();
         }
 
