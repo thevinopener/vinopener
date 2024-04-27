@@ -51,7 +51,7 @@ s3:
   secret-access-key: ${S3_SECRET_ACCESS_KEY}
   region: ${S3_REGION:ap-northeast-2}
   bucket: ${S3_BUCKET}
-  endpoint: ${S3_ENDPOINT}
+  endpoint: ${S3_ENDPOINT:}
   public-base-url: ${S3_PUBLIC_BASE_URL}
 
 
