@@ -3,6 +3,9 @@ package com.ssafy.vinopener.domain.wine.controller;
 import com.ssafy.vinopener.domain.wine.data.dto.response.WineGetListResponse;
 import com.ssafy.vinopener.domain.wine.data.dto.response.WineGetResponse;
 import com.ssafy.vinopener.domain.wine.service.WineService;
+import com.ssafy.vinopener.global.config.SwaggerConfig;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +29,7 @@ public class WineController {
      * @return 와인 목록
      */
     @GetMapping
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<List<WineGetListResponse>> getListWine(
             // TODO: pagination 추가
     ) {
@@ -39,6 +43,7 @@ public class WineController {
      * @return 와인
      */
     @GetMapping("/{wineId}")
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<WineGetResponse> getWine(
             @PathVariable final Long wineId
     ) {

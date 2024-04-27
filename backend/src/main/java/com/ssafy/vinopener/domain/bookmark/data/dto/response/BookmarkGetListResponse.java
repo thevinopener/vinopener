@@ -1,17 +1,16 @@
 package com.ssafy.vinopener.domain.bookmark.data.dto.response;
 
-import com.ssafy.vinopener.domain.wine.data.dto.response.WineGetListResponse;
 import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
-import lombok.Builder;
 import java.math.BigDecimal;
-
+import lombok.Builder;
 
 @Builder
 public record BookmarkGetListResponse(
-    Long id,
-    WineGetListResponse wine
+        Long id,
+        WineGetListResponse wine
 
 ) {
+
     @Builder
     public record WineGetListResponse(
             Long id,
@@ -33,4 +32,5 @@ public record BookmarkGetListResponse(
     ) {
 
     }
+
 }

@@ -7,6 +7,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SecurityException;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.Date;
@@ -106,6 +108,8 @@ public class JwtProvider {
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
+        } catch (SecurityException | MalformedJwtException e) {
+            throw new VinopenerException(JwtErrorCode.MALFORMED_TOKEN);
         } catch (ExpiredJwtException e) {
             throw new VinopenerException(JwtErrorCode.EXPIRED_TOKEN);
         } catch (JwtException | IllegalArgumentException e) {

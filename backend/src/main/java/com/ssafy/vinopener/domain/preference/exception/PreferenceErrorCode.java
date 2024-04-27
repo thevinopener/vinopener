@@ -8,15 +8,9 @@ import org.zalando.problem.Status;
 @Getter
 @RequiredArgsConstructor
 public enum PreferenceErrorCode implements ErrorCode {
-    PREFERENCE_NOT_FOUND(Status.NOT_FOUND, Details.PREFERENCE_NOT_FOUND);
+    PREFERENCE_NOT_FOUND(Status.NOT_FOUND, "선호도를 찾을 수 없습니다.");
 
     private final Status status;
     private final String detail;
-
-    public static class Details {
-
-        private static final String PREFERENCE_NOT_FOUND = "선호도를 찾을 수 없습니다.";
-
-    }
 
 }
