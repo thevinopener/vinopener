@@ -68,35 +68,35 @@
         <entry key="flutter">
           <value>
             <list>
-              <option value="$USER_HOME$/scoop/apps/flutter/3.19.6/packages/flutter/lib" />
+              <option value="$USER_HOME$/scoop/apps/flutter/current/packages/flutter/lib" />
             </list>
           </value>
         </entry>
         <entry key="flutter_driver">
           <value>
             <list>
-              <option value="$USER_HOME$/scoop/apps/flutter/3.19.6/packages/flutter_driver/lib" />
+              <option value="$USER_HOME$/scoop/apps/flutter/current/packages/flutter_driver/lib" />
             </list>
           </value>
         </entry>
         <entry key="flutter_test">
           <value>
             <list>
-              <option value="$USER_HOME$/scoop/apps/flutter/3.19.6/packages/flutter_test/lib" />
+              <option value="$USER_HOME$/scoop/apps/flutter/current/packages/flutter_test/lib" />
             </list>
           </value>
         </entry>
         <entry key="fuchsia_remote_debug_protocol">
           <value>
             <list>
-              <option value="$USER_HOME$/scoop/apps/flutter/3.19.6/packages/fuchsia_remote_debug_protocol/lib" />
+              <option value="$USER_HOME$/scoop/apps/flutter/current/packages/fuchsia_remote_debug_protocol/lib" />
             </list>
           </value>
         </entry>
         <entry key="integration_test">
           <value>
             <list>
-              <option value="$USER_HOME$/scoop/apps/flutter/3.19.6/packages/integration_test/lib" />
+              <option value="$USER_HOME$/scoop/apps/flutter/current/packages/integration_test/lib" />
             </list>
           </value>
         </entry>
@@ -180,7 +180,7 @@
         <entry key="sky_engine">
           <value>
             <list>
-              <option value="$USER_HOME$/scoop/apps/flutter/3.19.6/bin/cache/pkg/sky_engine/lib" />
+              <option value="$USER_HOME$/scoop/apps/flutter/current/bin/cache/pkg/sky_engine/lib" />
             </list>
           </value>
         </entry>
@@ -295,12 +295,12 @@
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/vector_math-2.1.4/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/vm_service-13.0.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/webdriver-3.0.3/lib" />
-      <root url="file://$USER_HOME$/scoop/apps/flutter/3.19.6/bin/cache/pkg/sky_engine/lib" />
-      <root url="file://$USER_HOME$/scoop/apps/flutter/3.19.6/packages/flutter/lib" />
-      <root url="file://$USER_HOME$/scoop/apps/flutter/3.19.6/packages/flutter_driver/lib" />
-      <root url="file://$USER_HOME$/scoop/apps/flutter/3.19.6/packages/flutter_test/lib" />
-      <root url="file://$USER_HOME$/scoop/apps/flutter/3.19.6/packages/fuchsia_remote_debug_protocol/lib" />
-      <root url="file://$USER_HOME$/scoop/apps/flutter/3.19.6/packages/integration_test/lib" />
+      <root url="file://$USER_HOME$/scoop/apps/flutter/current/bin/cache/pkg/sky_engine/lib" />
+      <root url="file://$USER_HOME$/scoop/apps/flutter/current/packages/flutter/lib" />
+      <root url="file://$USER_HOME$/scoop/apps/flutter/current/packages/flutter_driver/lib" />
+      <root url="file://$USER_HOME$/scoop/apps/flutter/current/packages/flutter_test/lib" />
+      <root url="file://$USER_HOME$/scoop/apps/flutter/current/packages/fuchsia_remote_debug_protocol/lib" />
+      <root url="file://$USER_HOME$/scoop/apps/flutter/current/packages/integration_test/lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
