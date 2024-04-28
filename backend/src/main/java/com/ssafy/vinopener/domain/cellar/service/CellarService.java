@@ -27,7 +27,7 @@ public class CellarService {
     private final UserRepository userRepository;
 
     /**
-     * 셀러에 와인 추가
+     * 셀러에 아이템 추가
      *
      * @param request 셀러에 추가 요청
      * @param userId  유저 ID
@@ -43,7 +43,7 @@ public class CellarService {
                 .orElseThrow(() -> new VinopenerException(CellarErrorCode.WINE_NOT_FOUND));
 
         // 마신 날짜 null 여부 설정
-        LocalDate finishedDate = request.finishedDate() != null ? request.finishedDate() : LocalDate.now();
+        LocalDate finishedDate = request.finishedDate() != null ? request.finishedDate() : null;
 
         CellarEntity cellar = CellarEntity
                 .builder()
