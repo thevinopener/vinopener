@@ -1,6 +1,7 @@
 package com.ssafy.vinopener.global.config;
 
 import com.ssafy.vinopener.global.config.props.S3Props;
+import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,15 +19,19 @@ public class S3Config {
 
     @Bean
     public S3Client s3Client() {
-        return S3Client.builder()
+        var builder = S3Client.builder();
+        builder
                 .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(
                         s3Props.accessKeyId(),
                         s3Props.secretAccessKey())))
                 .region(Region.of(s3Props.region()))
                 .serviceConfiguration(S3Configuration.builder()
                         .pathStyleAccessEnabled(true)
-                        .build())
-                .build();
+                        .build());
+        if (!s3Props.endpoint().isEmpty()) {
+            builder.endpointOverride(URI.create(s3Props.endpoint()));
+        }
+        return builder.build();
     }
 
 }

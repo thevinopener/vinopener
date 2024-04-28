@@ -5,7 +5,8 @@ import com.ssafy.vinopener.domain.tastingnote.data.dto.request.TastingNoteUpdate
 import com.ssafy.vinopener.domain.tastingnote.data.dto.response.TastingNoteGetListResponse;
 import com.ssafy.vinopener.domain.tastingnote.data.dto.response.TastingNoteGetResponse;
 import com.ssafy.vinopener.domain.tastingnote.service.TastingNoteService;
-import com.ssafy.vinopener.global.common.UserDetailsId;
+import com.ssafy.vinopener.global.annotations.UserPrincipalId;
+import com.ssafy.vinopener.global.config.SwaggerConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,6 +15,7 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TastingNoteController {
 
     public static final String REQUEST_PATH = "/tasting-notes";
+    public static final String REQUEST_PATH_VARIABLE = "/{tastingNoteId}";
     private final TastingNoteService tastingNoteService;
 
     /**
@@ -41,12 +44,12 @@ public class TastingNoteController {
      * @param userId                   유저 ID
      */
     @PostMapping
-    @Operation(security = @SecurityRequirement(name = "bearer-key"),
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER),
             responses = @ApiResponse(responseCode = "201", headers = @Header(
-                    name = "Location", description = REQUEST_PATH + "/{tastingNoteId}")))
+                    name = HttpHeaders.LOCATION, description = REQUEST_PATH + REQUEST_PATH_VARIABLE)))
     public ResponseEntity<Void> createTastingNote(
             @RequestBody @Valid final TastingNoteCreateRequest tastingNoteCreateRequest,
-            @UserDetailsId final Long userId
+            @UserPrincipalId final Long userId
     ) {
         return ResponseEntity
                 .created(URI.create(REQUEST_PATH + tastingNoteService.create(tastingNoteCreateRequest, userId)))
@@ -60,10 +63,10 @@ public class TastingNoteController {
      * @return 테이스팅노트 목록
      */
     @GetMapping
-    @Operation(security = @SecurityRequirement(name = "bearer-key"))
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<List<TastingNoteGetListResponse>> getListTastingNote(
             // TODO: pagination 추가
-            @UserDetailsId final Long userId
+            @UserPrincipalId final Long userId
     ) {
         return ResponseEntity.ok(tastingNoteService.getList(userId));
     }
@@ -75,11 +78,11 @@ public class TastingNoteController {
      * @param userId        유저 ID
      * @return 테이스팅노트
      */
-    @GetMapping("/{tastingNoteId}")
-    @Operation(security = @SecurityRequirement(name = "bearer-key"))
+    @GetMapping(REQUEST_PATH_VARIABLE)
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<TastingNoteGetResponse> getTastingNote(
             @PathVariable final Long tastingNoteId,
-            @UserDetailsId final Long userId
+            @UserPrincipalId final Long userId
     ) {
         return ResponseEntity.ok(tastingNoteService.get(tastingNoteId, userId));
     }
@@ -91,13 +94,13 @@ public class TastingNoteController {
      * @param tastingNoteUpdateRequest 테이스팅노트 수정 요청
      * @param userId                   유저 ID
      */
-    @PutMapping("/{tastingNoteId}")
-    @Operation(security = @SecurityRequirement(name = "bearer-key"))
+    @PutMapping(REQUEST_PATH_VARIABLE)
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> updateTastingNote(
             @PathVariable final Long tastingNoteId,
             @RequestBody @Valid final TastingNoteUpdateRequest tastingNoteUpdateRequest,
-            @UserDetailsId final Long userId
+            @UserPrincipalId final Long userId
     ) {
         tastingNoteService.update(tastingNoteId, tastingNoteUpdateRequest, userId);
         return ResponseEntity.noContent().build();
@@ -109,12 +112,12 @@ public class TastingNoteController {
      * @param tastingNoteId 테이스팅노트 ID
      * @param userId        유저 ID
      */
-    @DeleteMapping("/{tastingNoteId}")
-    @Operation(security = @SecurityRequirement(name = "bearer-key"))
+    @DeleteMapping(REQUEST_PATH_VARIABLE)
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteTastingNote(
             @PathVariable final Long tastingNoteId,
-            @UserDetailsId final Long userId
+            @UserPrincipalId final Long userId
     ) {
         tastingNoteService.delete(tastingNoteId, userId);
         return ResponseEntity.noContent().build();

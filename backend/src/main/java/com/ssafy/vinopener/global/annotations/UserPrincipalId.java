@@ -1,4 +1,4 @@
-package com.ssafy.vinopener.global.common;
+package com.ssafy.vinopener.global.annotations;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -11,6 +11,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @AuthenticationPrincipal(expression = "id")
-public @interface UserDetailsId {
+public @interface UserPrincipalId {
 
 }

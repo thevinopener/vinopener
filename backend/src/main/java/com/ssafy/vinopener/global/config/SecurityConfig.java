@@ -1,7 +1,6 @@
 package com.ssafy.vinopener.global.config;
 
 import com.ssafy.vinopener.global.jwt.JwtAuthenticationFilter;
-import com.ssafy.vinopener.global.oauth2.AuthEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,10 +21,10 @@ import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 public class SecurityConfig {
 
     private final SecurityProblemSupport problemSupport;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
-    public SecurityFilterChain configure(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter)
-            throws Exception {
+    public SecurityFilterChain configure(final HttpSecurity http) throws Exception {
         http
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -35,14 +34,13 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http
                 .exceptionHandling(configurer -> configurer
-//                        .authenticationEntryPoint(problemSupport)
-                        .authenticationEntryPoint(new AuthEntryPoint())
+                        .authenticationEntryPoint(problemSupport)
                         .accessDeniedHandler(problemSupport));
 
         //로그인 구현 완료 이전 테스트용 설정
         http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/v3/api-docs/**", "swagger-ui/**").permitAll()
+                .authorizeHttpRequests(registry -> registry
+                        .requestMatchers("/auth/**", "/ws/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -6,11 +6,13 @@ import com.ssafy.vinopener.domain.chat.data.mapper.WineChatMapper;
 import com.ssafy.vinopener.domain.chat.repository.WineChatRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class WineChatService {
 
     private final WineChatRepository wineChatRepository;
@@ -30,8 +32,8 @@ public class WineChatService {
             final Long wineId,
             final Long userId
     ) {
-        return wineChatMapper.toGetOrGetListResponse(wineChatRepository
-                .save(wineChatMapper.toEntity(wineChatCreateRequest, wineId, userId)));
+        return wineChatMapper.toGetOrGetListResponse(wineChatRepository.save(
+                wineChatMapper.toEntity(wineChatCreateRequest, wineId, userId)));
     }
 
     /**

@@ -13,10 +13,12 @@ import org.mapstruct.ReportingPolicy;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface BookmarkMapper {
+
     BookmarkGetListResponse toGetListResponse(BookmarkEntity entity);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "wine", source = "wine")
-    @Mapping(target = "user.id", source="userId")
+    @Mapping(target = "user.id", source = "userId")
     BookmarkEntity toEntity(Long userId, BookmarkCreateRequest request, WineEntity wine);
+
 }

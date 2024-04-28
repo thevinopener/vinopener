@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/models/wine_model.dart';
 
 class WineCard extends StatelessWidget {
   final Wine wine;
-  final String defaultImageUrl = 'assets/default_wine.jpg';
+  final String defaultImageUrl = 'assets/wine.jpg';
 
   const WineCard({super.key, required this.wine});
 
