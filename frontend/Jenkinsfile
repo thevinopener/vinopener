@@ -37,15 +37,7 @@ pipeline {
         }
         stage('Build') {
             when {
-                anyOf {
-                    allOf {
-                        triggeredBy 'TimerTrigger'
-                        branch mainBranch
-                    }
-                    not {
-                        triggeredBy 'TimerTrigger'
-                    }
-                }
+                branch mainBranch
             }
             steps {
                 dir(baseDir) {
