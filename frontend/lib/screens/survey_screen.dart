@@ -62,12 +62,6 @@ class _SurveyScreenState extends State<SurveyScreen> {
       acidity: _acidity,
       bitterness: _bitterness,
     );
-    print(survey.kind);
-    print(survey.alcoholEnd);
-    print(survey.alcoholStart);
-    print(survey.sweetness);
-    print(survey.acidity);
-    print(survey.bitterness);
     // Process the survey data here, e.g., send to server or store locally
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => HomeScreen()),

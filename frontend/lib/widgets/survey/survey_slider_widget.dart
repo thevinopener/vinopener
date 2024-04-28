@@ -45,7 +45,6 @@ class _SliderExampleState extends State<SurveySlider> {
         ),
         child: Slider(
           activeColor: AppColors.primary,
-          inactiveColor: AppColors.primary.withOpacity(0.3),
           value: _currentSliderValue,
           min: 0,
           max: 100,
