@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="Flutter Plugins" type="FlutterPluginsLibraryType">
     <CLASSES>
-      <root url="file://$USER_HOME$/scoop/apps/flutter/3.19.6/packages/integration_test" />
+      <root url="file://C:/flutter/packages/integration_test" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
