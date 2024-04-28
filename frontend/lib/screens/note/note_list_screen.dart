@@ -26,7 +26,10 @@ class NoteListScreen extends StatelessWidget {
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
             ),
           ),
-          FilledButton(onPressed: addNote, child: Text('Add Note'))
+          FilledButton(
+            onPressed: addNote,
+            child: Text('Add Note'),
+          ),
         ],
       ),
     );

@@ -1,15 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
+import 'package:frontend/models/feed_model.dart';
 import 'package:frontend/models/wine_model.dart';
+import 'package:frontend/screens/feed/feed_detail_screen.dart';
+import 'package:frontend/screens/mypage/mypage_setting_screen.dart';
 import 'package:frontend/services/wine_service.dart';
-import 'package:frontend/widgets/wine_card_widget.dart';
 import 'package:frontend/widgets/wine_item_widget.dart';
 
-import '../../constants/colors.dart';
-import '../../models/feed_model.dart';
-
 class MyPageScreen extends StatefulWidget {
-  static List<Feed> dummyFeedList = [];
+  static List<FeedModel> dummyFeedList = [];
   static Future<List<Wine>> wineList = WineService.getWineList();
 
   const MyPageScreen({super.key});
@@ -26,7 +27,7 @@ class _MyPageScreenState extends State<MyPageScreen>
   void initState() {
     super.initState();
     for (int i = 0; i < 11; i++) {
-      MyPageScreen.dummyFeedList.add(Feed.dummy());
+      MyPageScreen.dummyFeedList.add(FeedModel.dummy());
     }
     _tabController = TabController(length: 3, vsync: this); // 3개의 탭
   }
@@ -69,10 +70,25 @@ class _MyPageScreenState extends State<MyPageScreen>
                 ),
               ),
               Positioned(
+                top: 10,
+                right: 10,
+                child: IconButton(
+                  icon: Icon(Icons.settings),
+                  color: Colors.white,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => MyPageSettingScreen(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Positioned(
                 bottom: -avatarRadius,
                 child: CircleAvatar(
-                  backgroundImage:
-                      NetworkImage('https://avatar.iran.liara.run/public'),
+                  backgroundImage: AssetImage('assets/images/penguin.jpg'),
                   radius: avatarRadius,
                 ),
               ),
@@ -108,8 +124,20 @@ class _MyPageScreenState extends State<MyPageScreen>
                 GridView.builder(
                   itemCount: MyPageScreen.dummyFeedList.length,
                   itemBuilder: (context, index) {
-                    return Image.network(
-                      MyPageScreen.dummyFeedList[index].imageUrl,
+                    return GestureDetector(
+                      onTap: () {
+                        // Navigate to the new screen here
+                        // Example:
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => FeedDetailScreen(),
+                          ),
+                        );
+                      },
+                      child: Image.network(
+                        MyPageScreen.dummyFeedList[index].imageUrl,
+                      ),
                     );
                   },
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
