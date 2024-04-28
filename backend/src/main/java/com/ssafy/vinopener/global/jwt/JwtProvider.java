@@ -88,6 +88,25 @@ public class JwtProvider {
         return payload.get(CLAIMS_ID, Long.class);
     }
 
+    public Long parseId(String token) {
+        Claims payload;
+        try {
+            payload = Jwts.parser()
+                    .verifyWith(jwtProps.getAccessSecretKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (SecurityException | MalformedJwtException e) {
+            throw new VinopenerException(JwtErrorCode.MALFORMED_TOKEN);
+        } catch (ExpiredJwtException e) {
+            throw new VinopenerException(JwtErrorCode.EXPIRED_TOKEN);
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new VinopenerException(JwtErrorCode.INVALID_TOKEN);
+        }
+
+        return Long.parseLong(payload.getId());
+    }
+
     private String issueAccessToken(Claims claims) {
         return issueToken(
                 claims,

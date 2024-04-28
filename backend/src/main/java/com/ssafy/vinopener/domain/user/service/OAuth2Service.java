@@ -1,9 +1,12 @@
 package com.ssafy.vinopener.domain.user.service;
 
+import com.ssafy.vinopener.domain.user.data.entity.TokenEntity;
 import com.ssafy.vinopener.domain.user.data.entity.UserEntity;
 import com.ssafy.vinopener.domain.user.exception.OAuth2ErrorCode;
+import com.ssafy.vinopener.domain.user.repository.TokenRepository;
 import com.ssafy.vinopener.domain.user.repository.UserRepository;
 import com.ssafy.vinopener.global.exception.VinopenerException;
+import com.ssafy.vinopener.global.jwt.JwtProvider;
 import com.ssafy.vinopener.global.oauth2.GoogleClient;
 import com.ssafy.vinopener.global.oauth2.dto.response.GoogleAccountProfileResponse;
 import javax.security.auth.login.LoginException;
@@ -16,6 +19,8 @@ public class OAuth2Service {
 
     private final GoogleClient googleClient;
     private final UserRepository userRepository;
+    private final JwtProvider jwtProvider;
+    private final TokenRepository tokenRepository;
 
     public String requestAccessToken(String authentication) {
         try {
@@ -45,8 +50,22 @@ public class OAuth2Service {
         else {
             user = registerUser(profile);
         }
-
         return user;
+    }
+
+    public String refreshAccessToken(String bearerToken, String oldRefreshToken) {
+        String accessToken = bearerToken.substring(7);
+        Long userId = jwtProvider.parseId(accessToken);
+        TokenEntity token = tokenRepository.findById(userId).orElse(null);
+        if (token != null && oldRefreshToken.equals(token.getRefreshToken())) {
+            UserEntity user = userRepository.findById(userId).orElse(null);
+            if (user != null) {
+                return jwtProvider.issueUserAccessToken(user);
+            }
+        } else {
+            throw new VinopenerException(OAuth2ErrorCode.REFRESH_TOKEN_UNAUTHORIZED);
+        }
+        return null;
     }
 
     private UserEntity registerUser(GoogleAccountProfileResponse profile) {

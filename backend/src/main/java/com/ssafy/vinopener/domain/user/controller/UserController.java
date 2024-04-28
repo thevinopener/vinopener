@@ -8,12 +8,16 @@ import com.ssafy.vinopener.global.config.props.JwtProps;
 import com.ssafy.vinopener.global.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
@@ -38,6 +42,34 @@ public class UserController {
         String accessToken = jwtProvider.issueUserAccessToken(user);
 
         return "Test : " + accessToken;
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserEntity> getMyInfo(@RequestHeader("Authorization") String accessToken) {
+
+        UserEntity user = userService.getUserByToken(accessToken);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserEntity> getUserInfo(@PathVariable("userId") Long userId) {
+
+        UserEntity user = userService.getUserByUserId(userId);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String accessToken) {
+        userService.deleteTokenByToken(accessToken);
+        return ResponseEntity.noContent().build();
     }
 
 }
