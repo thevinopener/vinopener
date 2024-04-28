@@ -2,10 +2,11 @@
 
 ## plugins
 
-- GitLab Branch Source
+- Pipeline Utility Steps
+- Pipeline: Stage View
 - Pipeline: Multibranch build strategy extension
 - Publish Over SSH
-- Pipeline: Stage View
+- GitLab Branch Source
 - Mattermost Notification
 
 ## start

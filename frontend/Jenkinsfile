@@ -1,45 +1,85 @@
+#!/usr/bin/env groovy
+
 pipeline {
     agent any
     triggers {
-        cron('0 0 * * *') // 자정
+        cron('0 9,18 * * 1-5') // 평일 9시, 18시에 실행
     }
     tools {
         jdk 'jdk-17'
     }
     environment {
-        BASE_DIR = 'frontend'
-        MAIN_BRANCH = 'main'
+        mainBranch = 'main'
+        baseDir = 'frontend'
+        artifactDir = 'build/app/outputs/flutter-apk'
+        gitlabHost = 'lab.ssafy.com'
+        gitLabProjectId = '626713'
     }
     stages {
-        stage('frontend test') {
+        stage('Test') {
+            when {
+                anyOf {
+                    allOf {
+                        triggeredBy 'TimerTrigger'
+                        branch mainBranch
+                    }
+                    not {
+                        triggeredBy 'TimerTrigger'
+                    }
+                }
+            }
             steps {
-                dir(BASE_DIR) {
+                dir(baseDir) {
                     sh 'flutter pub get'
                     // sh 'flutter test'
                 }
             }
         }
-        stage('frontend build') {
+        stage('Build') {
             when {
-                triggeredBy 'TimerTrigger'
-                branch MAIN_BRANCH
+                anyOf {
+                    allOf {
+                        triggeredBy 'TimerTrigger'
+                        branch mainBranch
+                    }
+                    not {
+                        triggeredBy 'TimerTrigger'
+                    }
+                }
             }
             steps {
-                dir(BASE_DIR) {
+                dir(baseDir) {
                     withGradle {
                         sh 'flutter build apk --release --target-platform android-arm64 --split-per-abi'
                     }
                 }
             }
         }
-        stage('frontend deploy') {
+        stage('Release GitLab') {
             when {
                 triggeredBy 'TimerTrigger'
-                branch MAIN_BRANCH
+                branch mainBranch
             }
             steps {
-                dir(BASE_DIR) {
-                    archiveArtifacts artifacts: 'build/app/outputs/flutter-apk/*.apk', fingerprint: true, followSymlinks: false, onlyIfSuccessful: true
+                dir("${baseDir}/${artifactDir}") {
+                    script {
+                        releaseTagName = 'v' + java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern('yyyy.MM.dd.HH'))
+                        releaseName = "${releaseTagName} Release of Vinopener Flutter"
+                        artifactName = findFiles(glob: '*.apk')[0].name
+                        artifactHashName = findFiles(glob: '*.apk.*')[0].name
+                    }
+                    archiveArtifacts artifacts: "$artifactName, $artifactHashName", fingerprint: true, followSymlinks: false, onlyIfSuccessful: true
+                }
+                withCredentials([string(credentialsId: 'gitlab-personal-access-token', variable: 'privateToken')]) {
+                    sh """
+                        curl --request POST 'https://${gitlabHost}/api/v4/projects/${gitLabProjectId}/releases' \
+                        --header 'Content-Type: application/json' \
+                        --header 'PRIVATE-TOKEN: $privateToken' \
+                        --data '{ "name": "${releaseName}", "tag_name": "${releaseTagName}", "ref": "${mainBranch}", "assets": { "links": [ \
+                            { "name": "${artifactName}", "url": "${env.BUILD_URL}artifact/${artifactName}" }, \
+                            { "name": "${artifactHashName}", "url": "${env.BUILD_URL}artifact/${artifactHashName}" } \
+                        ] } }'
+                    """
                 }
             }
         }
