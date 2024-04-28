@@ -34,6 +34,12 @@ public class BookmarkController {
     public static final String REQUEST_PATH_VARIABLE = "/{bookmarkId}";
     private final BookmarkService bookmarkService;
 
+    /**
+     * 즐겨찾기 생성
+     * @param bookmarkCreateRequest  즐겨찾기 생성 요청
+     * @param userId                 유저 ID
+     * @return                       생성된 즐겨찾기 PATH
+     */
     @PostMapping
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER),
             responses = @ApiResponse(responseCode = "201", headers = @Header(
@@ -47,6 +53,11 @@ public class BookmarkController {
                 .build();
     }
 
+    /**
+     *  즐겨찾기 목록 조회
+     * @param userId  유저 ID
+     * @return        즐겨찾기 목록
+     */
     @GetMapping
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<List<BookmarkGetListResponse>> getListBookmark(
@@ -57,6 +68,11 @@ public class BookmarkController {
         return ResponseEntity.ok(bookmarks);
     }
 
+    /**
+     * 즐겨찾기 삭제
+     * @param bookmarkId  삭제할 즐겨찾기 ID
+     * @param userId      유저 ID
+     */
     @DeleteMapping("/{bookmarkId}")
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     @ResponseStatus(HttpStatus.NO_CONTENT)
