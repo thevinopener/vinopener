@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
+import 'package:frontend/constants/fonts.dart';
 
 class SurveyRangeSlider extends StatefulWidget {
-  const SurveyRangeSlider({super.key});
+  final Function(RangeValues) onRangeSelected; // 상위 위젯에서 범위 변경을 처리할 수 있도록 콜백 추가
+
+  const SurveyRangeSlider({Key? key, required this.onRangeSelected}) : super(key: key);
 
   @override
   State<SurveyRangeSlider> createState() => _SliderExampleState();
@@ -36,7 +39,12 @@ class _SliderExampleState extends State<SurveyRangeSlider> {
         data: SliderThemeData(
           trackHeight: 8.0,
           rangeThumbShape: RoundRangeSliderThumbShape(enabledThumbRadius: 10.0),
-          // Overlay shape 제거 혹은 변경
+          valueIndicatorShape: RectangularSliderValueIndicatorShape(),
+          valueIndicatorColor: AppColors.primary,
+          valueIndicatorTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: AppFontSizes.small,
+          ),
         ),
         child: RangeSlider(
           activeColor: AppColors.primary,
@@ -52,6 +60,7 @@ class _SliderExampleState extends State<SurveyRangeSlider> {
             setState(() {
               _currentRangeValues = values;
             });
+            widget.onRangeSelected(values); // 상위 위젯에 변경사항 전달
           },
         ),
       ),
