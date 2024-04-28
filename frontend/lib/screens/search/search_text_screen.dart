@@ -7,6 +7,7 @@ class SearchTextScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false, // 키보드가 나타날 때 리사이즈하지 않도록 설정
       body: Column(
         children: [
           Container(
@@ -25,7 +26,7 @@ class SearchTextScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(30), // 테두리 둥글게
             ),
             child: TextField(
-              autofocus: true,  // 텍스트 상자에 자동 포커스 되면서 키보드 켜짐
+              autofocus: true, // 텍스트 상자에 자동 포커스 되면서 키보드 켜짐
               decoration: InputDecoration(
                 hintText: '와인 검색',
                 prefixIcon: Icon(Icons.search), // 검색 아이콘
@@ -55,34 +56,18 @@ class SearchTextScreen extends StatelessWidget {
               ),
             ),
           ),
-          Text(
-            '최근 검색',
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text('최근 검색'),
+            ],
           ),
-          Expanded(
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Column(
-                    children: [
-                      SliverPadding(
-                        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                        sliver: SliverList(
-                          delegate: SliverChildListDelegate([
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                // 최근 검색 내역 등 나머지 위젯들 구현
-                              ],
-                            ),
-                          ]),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          Container(
+            margin: EdgeInsets.all(3),
+            width: double.infinity,
+            height: 500,
+            color: Colors.amber,
+            child: Text('data'),
           ),
         ],
       ),
