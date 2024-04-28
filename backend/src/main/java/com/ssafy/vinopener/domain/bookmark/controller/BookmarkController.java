@@ -43,7 +43,7 @@ public class BookmarkController {
             @UserPrincipalId final Long userId
     ) {
         return ResponseEntity
-                .created(URI.create(REQUEST_PATH + bookmarkService.create(bookmarkCreateRequest, userId)))
+                .created(URI.create(REQUEST_PATH + "/" + bookmarkService.create(bookmarkCreateRequest, userId)))
                 .build();
     }
 
