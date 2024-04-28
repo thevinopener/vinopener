@@ -21,6 +21,7 @@ services:
       - "443:443/udp"
     environment:
       - TZ=Asia/Seoul
+      - LC_ALL=C.UTF-8
     volumes:
       - caddy_data:/data
       - caddy_config:/config
@@ -41,7 +42,9 @@ services:
       - 8080
     environment:
       - TZ=Asia/Seoul
+      - LC_ALL=C.UTF-8
       - SPRING_PROFILES_ACTIVE=prod
+      - REDIS_HOST=redis
       - MARIADB_HOST=mariadb:3306
       - MARIADB_DATABASE
       - MARIADB_USER

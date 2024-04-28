@@ -1,18 +1,18 @@
-class Feed {
+class FeedModel {
   final int userId;
   final int feedId;
   final String content;
   final String imageUrl;
   final bool isPublic;
 
-  Feed(
+  FeedModel(
       {required this.userId,
       required this.feedId,
       required this.content,
       required this.imageUrl,
       required this.isPublic});
 
-  Feed.dummy()
+  FeedModel.dummy()
       : userId = 1,
         feedId = 101,
         content = 'This is a sample feed content.',

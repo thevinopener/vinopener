@@ -26,7 +26,8 @@ services:
 
   jenkins:
     container_name: jenkins
-    image: docker.io/jenkins/jenkins:jdk21
+    image: jenkins-flutter
+    build: .
     restart: on-failure
     networks:
       - jenkins
@@ -35,12 +36,7 @@ services:
     environment:
       - TZ=Asia/Seoul
     volumes:
-      - /usr/bin/docker:/usr/bin/docker:ro
-      - /usr/libexec/docker/cli-plugins/docker-compose:/usr/libexec/docker/cli-plugins/docker-compose:ro
-      - /var/run/docker.sock:/var/run/docker.sock
       - jenkins_data:/var/jenkins_home
-    group_add:
-      - ${DOCKER_GROUP_ID:-999}
 
 volumes:
   caddy_data:

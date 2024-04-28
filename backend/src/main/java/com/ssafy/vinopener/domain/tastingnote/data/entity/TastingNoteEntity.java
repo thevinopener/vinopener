@@ -1,5 +1,6 @@
 package com.ssafy.vinopener.domain.tastingnote.data.entity;
 
+import com.ssafy.vinopener.domain.user.data.entity.UserEntity;
 import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
 import com.ssafy.vinopener.global.common.BaseTimeEntity;
 import jakarta.persistence.Column;
@@ -30,9 +31,9 @@ public class TastingNoteEntity extends BaseTimeEntity {
     @Column(name = "tasting_note_id")
     private Long id;
 
-    // TODO: UserEntity
-    @NotNull
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", updatable = false)
+    private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "wine_id", updatable = false)

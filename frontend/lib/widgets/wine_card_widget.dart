@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/models/wine_model.dart';
 
 class WineCard extends StatelessWidget {
   final Wine wine;
+  final String defaultImageUrl = 'assets/wine.jpg';
 
   const WineCard({super.key, required this.wine});
 
@@ -16,7 +16,21 @@ class WineCard extends StatelessWidget {
         height: 800,
         child: Column(
           children: [
-            Image.network('https://picsum.photos/120/120'),
+            Container(
+              width: 120,
+              height: 120,
+              child: Image.network(
+                '${wine.imageUrl}',
+                fit: BoxFit.scaleDown,
+                errorBuilder: (
+                  BuildContext context,
+                  Object exception,
+                  StackTrace? stackTrace,
+                ) {
+                  return Image.asset(defaultImageUrl, fit: BoxFit.scaleDown);
+                },
+              ),
+            ),
             Text(
               '${wine.winery}',
               style: TextStyle(
@@ -27,6 +41,7 @@ class WineCard extends StatelessWidget {
               '${wine.name}',
               style: TextStyle(
                 fontSize: 10,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
