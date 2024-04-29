@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/note/note_color_screen.dart';
-import 'package:frontend/screens/survey_screen.dart';
+
 
 import '../../constants/fonts.dart';
 
