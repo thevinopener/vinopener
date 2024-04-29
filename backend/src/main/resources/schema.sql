@@ -270,3 +270,14 @@ CREATE TABLE `ai_chat`
   `updated_time` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 );
+
+CREATE TABLE `ai_chat`
+(
+  `ai_chat_id`   BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `user_id`      BIGINT       NOT NULL,
+  `message`      VARCHAR(255) NOT NULL,
+  `is_bot`       BOOLEAN      NOT NULL,
+  `created_time` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+);
