@@ -22,7 +22,9 @@ public interface TastingNoteMapper {
     @Mapping(target = "flavours", source = "flavourEntities")
     TastingNoteGetResponse toGetResponse(TastingNoteEntity entity, List<TastingNoteFlavourEntity> flavourEntities);
 
-    TastingNoteGetListResponse toGetListResponse(TastingNoteEntity entity);
+    @Mapping(target = "flavours", source = "flavourEntities")
+    TastingNoteGetListResponse toGetListResponse(TastingNoteEntity entity,
+            List<TastingNoteFlavourEntity> flavourEntities);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", source = "userId")
