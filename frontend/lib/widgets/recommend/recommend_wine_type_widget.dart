@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/constants/colors.dart';
 
+// Screen
+import 'package:frontend/screens/search/search_result_screen.dart';
+
 // 색상 매핑 함수
 Color getColorFromWineButtonColor(String color) {
   switch (color) {
@@ -19,9 +22,18 @@ Color getColorFromWineButtonColor(String color) {
   }
 }
 
-Widget RecommendWineTypeWidget(String text) {
+// void _handleSubmitted(String value) {
+//   // 여기서 입력된 값을 사용하여 화면 이동 또는 다른 로직을 수행
+//   print("입력된 값: $value");
+//   // 다음 화면으로 이동:
+//   Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultScreen(value)));
+// }
+
+Widget RecommendWineTypeWidget(BuildContext context, String text) {
   return ElevatedButton(
-    onPressed: () {},
+    onPressed: () {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultScreen(text)));
+    },
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,

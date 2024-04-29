@@ -53,7 +53,7 @@ public class CellarController {
             @UserPrincipalId final Long userId
     ) {
         return ResponseEntity
-                .created(URI.create(REQUEST_PATH + cellarService.create(cellarCreateRequest, userId)))
+                .created(URI.create(REQUEST_PATH + "/" + cellarService.create(cellarCreateRequest, userId)))
                 .build();
     }
 

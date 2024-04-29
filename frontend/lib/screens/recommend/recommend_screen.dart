@@ -96,13 +96,13 @@ class _RecommendScreenState extends State {
                       mainAxisAlignment:
                           MainAxisAlignment.center, // 버튼을 시작점에 정렬
                       children: [
-                        RecommendWineTypeWidget('레드'),
+                        RecommendWineTypeWidget(context, '레드'),
                         Spacer(flex: 1),
-                        RecommendWineTypeWidget('로제'),
+                        RecommendWineTypeWidget(context, '로제'),
                         Spacer(flex: 1),
-                        RecommendWineTypeWidget('화이트'),
+                        RecommendWineTypeWidget(context, '화이트'),
                         Spacer(flex: 1),
-                        RecommendWineTypeWidget('스파클링'),
+                        RecommendWineTypeWidget(context, '스파클링'),
                       ],
                     ),
                   ],

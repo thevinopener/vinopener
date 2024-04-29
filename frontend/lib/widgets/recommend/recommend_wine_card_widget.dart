@@ -16,7 +16,9 @@ Widget RecommendWineCardWidget() {
               (index) => Padding(
             padding: EdgeInsets.only(right: index < 4 ? 20 : 0),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                // TODO: 여기에 클릭했을 때 로직 작성
+              },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
