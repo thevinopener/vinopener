@@ -1,8 +1,8 @@
-package com.ssafy.vinopener.domain.chat.data.mapper;
+package com.ssafy.vinopener.domain.wine.data.mapper;
 
-import com.ssafy.vinopener.domain.chat.data.dto.request.WineChatCreateRequest;
-import com.ssafy.vinopener.domain.chat.data.dto.response.WineChatGetOrGetListResponse;
-import com.ssafy.vinopener.domain.chat.data.entity.WineChatEntity;
+import com.ssafy.vinopener.domain.wine.data.dto.request.WineChatCreateRequest;
+import com.ssafy.vinopener.domain.wine.data.dto.response.WineChatGetOrGetListResponse;
+import com.ssafy.vinopener.domain.wine.data.entity.WineChatEntity;
 import com.ssafy.vinopener.global.common.ReferenceMapper;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

@@ -1,9 +1,9 @@
-package com.ssafy.vinopener.domain.chat.service;
+package com.ssafy.vinopener.domain.wine.service;
 
-import com.ssafy.vinopener.domain.chat.data.dto.request.WineChatCreateRequest;
-import com.ssafy.vinopener.domain.chat.data.dto.response.WineChatGetOrGetListResponse;
-import com.ssafy.vinopener.domain.chat.data.mapper.WineChatMapper;
-import com.ssafy.vinopener.domain.chat.repository.WineChatRepository;
+import com.ssafy.vinopener.domain.wine.data.dto.request.WineChatCreateRequest;
+import com.ssafy.vinopener.domain.wine.data.dto.response.WineChatGetOrGetListResponse;
+import com.ssafy.vinopener.domain.wine.data.mapper.WineChatMapper;
+import com.ssafy.vinopener.domain.wine.repository.WineChatRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

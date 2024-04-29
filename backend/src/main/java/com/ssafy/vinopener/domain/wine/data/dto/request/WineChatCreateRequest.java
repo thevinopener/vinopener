@@ -1,4 +1,4 @@
-package com.ssafy.vinopener.domain.chat.data.dto.request;
+package com.ssafy.vinopener.domain.wine.data.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

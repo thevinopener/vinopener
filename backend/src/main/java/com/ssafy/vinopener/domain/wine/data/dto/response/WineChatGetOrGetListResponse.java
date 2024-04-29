@@ -1,4 +1,4 @@
-package com.ssafy.vinopener.domain.chat.data.dto.response;
+package com.ssafy.vinopener.domain.wine.data.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.vinopener.global.config.TimeFormatConfig;

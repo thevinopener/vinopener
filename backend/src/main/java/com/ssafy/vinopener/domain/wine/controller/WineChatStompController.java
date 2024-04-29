@@ -1,8 +1,8 @@
-package com.ssafy.vinopener.domain.chat.controller;
+package com.ssafy.vinopener.domain.wine.controller;
 
-import com.ssafy.vinopener.domain.chat.data.dto.request.WineChatCreateRequest;
-import com.ssafy.vinopener.domain.chat.data.dto.response.WineChatGetOrGetListResponse;
-import com.ssafy.vinopener.domain.chat.service.WineChatService;
+import com.ssafy.vinopener.domain.wine.data.dto.request.WineChatCreateRequest;
+import com.ssafy.vinopener.domain.wine.data.dto.response.WineChatGetOrGetListResponse;
+import com.ssafy.vinopener.domain.wine.service.WineChatService;
 import jakarta.validation.Valid;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
