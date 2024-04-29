@@ -36,6 +36,7 @@ public class FeedEntity extends BaseTimeEntity {
 
     private String imageUrl;
 
+    @Column(name = "is_public")
     private boolean isPublic;
 
 }

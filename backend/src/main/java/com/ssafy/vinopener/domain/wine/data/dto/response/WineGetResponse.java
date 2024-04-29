@@ -8,6 +8,7 @@ import lombok.Builder;
 public record WineGetResponse(
         Long id,
         String name,
+        String seoName,
         String imageUrl,
         String grape,
         String winery,

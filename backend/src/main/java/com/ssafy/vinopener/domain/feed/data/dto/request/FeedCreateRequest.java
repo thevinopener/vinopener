@@ -1,14 +1,18 @@
 package com.ssafy.vinopener.domain.feed.data.dto.request;
 
-import java.util.List;
+import jakarta.validation.constraints.NotNull;
+import java.util.Set;
 import org.springframework.web.multipart.MultipartFile;
 
 public record FeedCreateRequest(
-        String content,
+        @NotNull String content,
         MultipartFile imageFile,
-        boolean isPublic,
+        @NotNull boolean isPublic,
 
-        List<Long> wineIds
+        Set<Long> feedLikeId,
+
+        Set<Long> feedWineId
+
 ) {
 
 }
