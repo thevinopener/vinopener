@@ -11,7 +11,6 @@ import com.ssafy.vinopener.global.jwt.JwtProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -60,7 +58,6 @@ public class UserController {
 
         String accessToken = token.substring(7);
         Long id = jwtProvider.parseId(accessToken);
-        log.info("Long id : {}", id);
         String email = "ssafy.c207@gmail.com";
         String nickname = "ssafy";
 
@@ -111,7 +108,6 @@ public class UserController {
     @DeleteMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> logout(@RequestHeader("Authorization") String accessToken) {
-        log.info("Logout : " + accessToken);
         userService.deleteTokenByToken(accessToken);
         return ResponseEntity.noContent().build();
     }
