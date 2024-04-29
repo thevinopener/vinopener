@@ -32,13 +32,10 @@ public class FeedEntity extends BaseTimeEntity {
     @JoinColumn(name = "user_id", updatable = false)
     UserEntity user;
 
-    @Column(name = "content")
     private String content;
 
-    @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "is_public")
     private Boolean is_public;
 
 }
