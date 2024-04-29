@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:frontend/screens/search/search_result_screen.dart';
-import 'package:frontend/screens/search/search_camera_screen.dart';
+import 'package:frontend/widgets/search/search_bar_widget.dart';
 
 // constants
 import 'package:frontend/constants/fonts.dart';
@@ -30,15 +30,15 @@ class _SearchWinePageState extends State<SearchTextScreen> {
     ["More Wine Name 2020", "와이너리11", "국가11"],
   ];
 
-  TextEditingController _controller = TextEditingController();
-
-  void _handleSubmitted(String value) {
-    // 여기서 입력된 값을 사용하여 화면 이동 또는 다른 로직을 수행
-    print("입력된 값: $value");
-    // 다음 화면으로 이동:
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => SearchResultScreen(value)));
-  }
+  // TextEditingController _controller = TextEditingController();
+  //
+  // void _handleSubmitted(String value) {
+  //   // 여기서 입력된 값을 사용하여 화면 이동 또는 다른 로직을 수행
+  //   print("입력된 값: $value");
+  //   // 다음 화면으로 이동:
+  //   Navigator.push(context,
+  //       MaterialPageRoute(builder: (context) => SearchResultScreen(value)));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -48,72 +48,7 @@ class _SearchWinePageState extends State<SearchTextScreen> {
         children: [
           // #1 검색바 시작
           Flexible(
-            child: Container(
-              margin: EdgeInsets.all(10),
-              padding:
-                  EdgeInsets.symmetric(horizontal: 10, vertical: 3), // 좌우 패딩
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.orange, width: 2),
-                borderRadius: BorderRadius.circular(30), // 테두리 둥글게
-              ),
-              child: Row(
-                children: [
-                  // Flexible(
-                  //   child: IconButton(
-                  //     icon: Icon(Icons.arrow_back),
-                  //     onPressed: () {
-                  //       // 뒤로 가기 아이콘 동작 구현
-                  //       Navigator.push(context, MaterialPageRoute(builder: (context) => SearchCameraScreen()));
-                  //     },
-                  //   ),
-                  // ),
-                  Flexible(
-                    flex: 8,
-                    child: TextField(
-                      controller: _controller, // 컨트롤러 연결 -> X버튼 누르면 없어지는 것과 연결됨
-                      autofocus: true, // 텍스트 상자에 자동 포커스 되면서 키보드 켜짐
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: '와인 검색',
-                        hintStyle:
-                            TextStyle(color: Colors.grey), // hint 텍스트의 색상 설정
-                        prefixIcon: Icon(Icons.search), // 검색 아이콘
-                        border: InputBorder.none, // 밑줄 제거
-                      ),
-                      onSubmitted: _handleSubmitted, // 완료 버튼 클릭 이벤트
-                    ),
-                  ),
-                  Flexible(
-                    child: IconButton(
-                      icon: Icon(Icons.camera_alt_outlined),
-                      alignment: Alignment.center,
-                      onPressed: () {
-                        // 카메라 아이콘 동작 구현
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SearchCameraScreen()));
-                      },
-                    ),
-                  ),
-                  Flexible(
-                    child: IconButton(
-                      icon: Icon(Icons.close),
-                      alignment: Alignment.center,
-                      onPressed: () {
-                        // X 아이콘 동작 구현
-                        setState(() {
-                          _controller.clear();
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            child: SearchBarWidget(), // 검색바 위젯
           ),
           // #1 검색바 끝
           Flexible(
