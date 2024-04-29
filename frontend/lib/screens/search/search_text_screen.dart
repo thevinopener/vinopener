@@ -20,6 +20,14 @@ class _SearchWinePageState extends State<SearchTextScreen> {
     ["Vieilles Vigne Chorey-lès-Beaune 2018", "와이너리1", "국가1"],
     ["Another Wine Name 2019", "와이너리2", "국가2"],
     ["More Wine Name 2020", "와이너리3", "국가3"],
+    ["More Wine Name 2020", "와이너리4", "국가4"],
+    ["More Wine Name 2020", "와이너리5", "국가5"],
+    ["More Wine Name 2020", "와이너리6", "국가6"],
+    ["More Wine Name 2020", "와이너리7", "국가7"],
+    ["More Wine Name 2020", "와이너리8", "국가8"],
+    ["More Wine Name 2020", "와이너리9", "국가9"],
+    ["More Wine Name 2020", "와이너리10", "국가10"],
+    ["More Wine Name 2020", "와이너리11", "국가11"],
   ];
 
   TextEditingController _controller = TextEditingController();
@@ -206,7 +214,7 @@ class _SearchWinePageState extends State<SearchTextScreen> {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  wineNames[index][  ],
+                                                  wineNames[index][1],
                                                   style: TextStyle(
                                                     fontSize:
                                                         AppFontSizes.mediumSmall,
@@ -250,7 +258,7 @@ class _SearchWinePageState extends State<SearchTextScreen> {
                                               ),
                                               SizedBox(width: 10),
                                               Text(
-                                                '스페인',
+                                                wineNames[index][2],
                                                 style: TextStyle(
                                                   fontSize: AppFontSizes.small,
                                                   fontWeight: FontWeight.w400,
