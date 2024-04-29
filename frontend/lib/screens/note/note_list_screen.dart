@@ -34,10 +34,7 @@ class NoteListScreen extends StatelessWidget {
             )
           ],
           shape: Border(bottom: BorderSide(color: Colors.grey))),
-      body: Column(
-        children: [
-         ]
-      ),
+      body: Column(children: []),
     );
   }
 }

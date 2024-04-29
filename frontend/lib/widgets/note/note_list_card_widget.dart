@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../models/wine_model.dart';
 
-class noteCard extends StatelessWidget{
+class NoteCard extends StatelessWidget{
   final Wine wine;
 
-  const noteCard({super.key, required this.wine});
+  const NoteCard({super.key, required this.wine});
 
   @override
   Widget build(BuildContext context) {
