@@ -1,12 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/fonts.dart';
-import 'package:frontend/models/feed_model.dart';
+import 'package:frontend/models/feed.dart';
 import 'package:frontend/screens/feed/feed_img_screen.dart';
-import 'package:frontend/widgets/common/templates/feed_widget.dart';
+import 'package:frontend/services/feed_service.dart';
+import 'package:frontend/widgets/common/templates/feed_item_widget.dart';
 
-class FeedScreen extends StatelessWidget {
-  const FeedScreen({super.key});
+class FeedScreen extends StatefulWidget {
+  FeedScreen({super.key});
+
+  @override
+  State<FeedScreen> createState() => _FeedScreenState();
+}
+
+class _FeedScreenState extends State<FeedScreen> {
+  final Future<List<Feed>> feedList = FeedService.getFeedList();
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +44,22 @@ class FeedScreen extends StatelessWidget {
             )
           ],
           shape: Border(bottom: BorderSide(color: Colors.grey))),
-      body: ListView.builder(
-        itemCount: 5,
-        itemBuilder: (BuildContext context, int index) {
-          return Column(
-            children: [
-              SizedBox(height: 20),
-              Feed(
-                feedModel: FeedModel.dummy(),
-              ),
-            ],
+      body: FutureBuilder(
+        future: feedList,
+        builder: (
+          BuildContext context,
+          AsyncSnapshot<dynamic> snapshot,
+        ) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                return FeedItem(feed: snapshot.data[index]);
+              },
+            );
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
           );
         },
       ),

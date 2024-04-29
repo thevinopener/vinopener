@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
-import 'package:frontend/models/feed_model.dart';
+import 'package:frontend/models/feed.dart';
 import 'package:frontend/models/wine_model.dart';
 import 'package:frontend/screens/feed/feed_detail_screen.dart';
 import 'package:frontend/screens/mypage/mypage_setting_screen.dart';
+import 'package:frontend/services/feed_service.dart';
 import 'package:frontend/services/wine_service.dart';
 import 'package:frontend/widgets/wine_item_widget.dart';
 
 class MyPageScreen extends StatefulWidget {
-  static List<FeedModel> dummyFeedList = [];
   static Future<List<Wine>> wineList = WineService.getWineList();
 
   const MyPageScreen({super.key});
@@ -23,12 +23,11 @@ class _MyPageScreenState extends State<MyPageScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  final Future<List<Feed>> myFeedList = FeedService.getMyFeedList();
+
   @override
   void initState() {
     super.initState();
-    for (int i = 0; i < 11; i++) {
-      MyPageScreen.dummyFeedList.add(FeedModel.dummy());
-    }
     _tabController = TabController(length: 3, vsync: this); // 3개의 탭
   }
 
@@ -121,28 +120,40 @@ class _MyPageScreenState extends State<MyPageScreen>
             child: TabBarView(
               controller: _tabController,
               children: [
-                GridView.builder(
-                  itemCount: MyPageScreen.dummyFeedList.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        // Navigate to the new screen here
-                        // Example:
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => FeedDetailScreen(),
-                          ),
-                        );
-                      },
-                      child: Image.network(
-                        MyPageScreen.dummyFeedList[index].imageUrl,
-                      ),
+                FutureBuilder(
+                  future: myFeedList,
+                  builder: (
+                    BuildContext context,
+                    AsyncSnapshot<dynamic> snapshot,
+                  ) {
+                    if (snapshot.hasData) {
+                      return GridView.builder(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) =>
+                                      FeedDetailScreen(snapshot.data[index]),
+                                ),
+                              );
+                            },
+                            child: Image.asset(
+                              snapshot.data[index].imageUrl,
+                            ),
+                          );
+                        },
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                        ),
+                      );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
                     );
                   },
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                  ),
                 ),
                 FutureBuilder(
                   future: MyPageScreen.wineList,
