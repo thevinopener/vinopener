@@ -53,7 +53,7 @@ class _SelectedStatus extends State<SelectKindButton> {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: <String>['레드', '화이트', '로제', '포트', '스파클링', '디저트', '잘 모르겠음']
+        children: <String>['레드', '화이트', '로제', '포트', '스파클링', '디저트']
             .map(_buildButton)
             .toList(),
       ),

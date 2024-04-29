@@ -1,18 +1,18 @@
 class Survey{
-  final Set<String> kind;
-  final int alcoholStart;
-  final int alcoholEnd;
+  final Set<String> type;
+  final int minAbv;
+  final int maxAbv;
   final int sweetness;
   final int acidity;
-  final int bitterness;
+  final int tannin;
 
   Survey({
-    required this.kind,
-    required this.alcoholStart,
-    required this.alcoholEnd,
+    required this.type,
+    required this.maxAbv,
+    required this.minAbv,
     required this.sweetness,
     required this.acidity,
-    required this.bitterness,
+    required this.tannin,
 });
 
 }
