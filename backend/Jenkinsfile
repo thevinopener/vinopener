@@ -1,52 +1,56 @@
 pipeline {
     agent any
+    tools {
+        jdk 'jdk-21'
+        gradle 'gradle-8.7'
+    }
     environment {
-        BASE_DIR = 'backend'
-        MAIN_BRANCH = 'main'
-        CREDENTIAL_DOTENV_NAME = 'vinopener-backend-dotenv'
-        PUBLISH_OVER_SSH_CONFIG_NAME = 'vinopener-backend-ssh-publish'
-        DOCKER_COMPOSE_PROJECT_NAME = 'vinopener-backend'
+        mainBranch = 'main'
+        baseDir = 'backend'
+        credentialDotenvName = 'vinopener-backend-dotenv'
+        publishOverSshConfigName = 'vinopener-backend-ssh-publish'
+        dockerComposeProjectName = 'vinopener-backend'
     }
     stages {
         stage('backend build') {
             steps {
-                dir(BASE_DIR) {
+                dir(baseDir) {
                     withGradle {
-                        sh './gradlew bootJar'
+                        sh 'gradle bootJar'
                     }
                 }
             }
         }
         stage('backend test') {
             steps {
-                dir(BASE_DIR) {
+                dir(baseDir) {
                     withGradle {
-                        sh './gradlew test'
+                        sh 'gradle test'
                     }
                 }
             }
         }
         stage('backend deploy') {
             when {
-                branch MAIN_BRANCH
+                branch mainBranch
             }
             steps {
-                dir(BASE_DIR) {
-                    withCredentials([file(credentialsId: CREDENTIAL_DOTENV_NAME, variable: 'DOTENV')]) {
-                        sh 'cp $DOTENV .env'
+                dir(baseDir) {
+                    withCredentials([file(credentialsId: credentialDotenvName, variable: 'dotenv')]) {
+                        sh 'cp $dotenv .env'
                     }
                     sshPublisher(
                         failOnError: true,
                         publishers: [
                             sshPublisherDesc(
-                                configName: PUBLISH_OVER_SSH_CONFIG_NAME,
+                                configName: publishOverSshConfigName,
                                 transfers: [
                                     sshTransfer(
                                         cleanRemote: false,
                                         excludes: '',
                                         execCommand: """
-                                            cd ${PUBLISH_OVER_SSH_CONFIG_NAME};
-                                            docker compose -p ${DOCKER_COMPOSE_PROJECT_NAME} up --build -d;
+                                            cd ${publishOverSshConfigName};
+                                            docker compose -p ${dockerComposeProjectName} up --build -d;
                                             docker image prune -f
                                         """,
                                         execTimeout: 120000,
@@ -54,7 +58,7 @@ pipeline {
                                         makeEmptyDirs: false,
                                         noDefaultExcludes: false,
                                         patternSeparator: '[, ]+',
-                                        remoteDirectory: PUBLISH_OVER_SSH_CONFIG_NAME,
+                                        remoteDirectory: publishOverSshConfigName,
                                         remoteDirectorySDF: false,
                                         removePrefix: '',
                                         sourceFiles: 'build/libs/*.jar, src/main/resources/*.sql, Caddyfile, Dockerfile, docker-compose.yml, .env'
@@ -70,7 +74,7 @@ pipeline {
             }
             post {
                 always {
-                    dir(BASE_DIR) {
+                    dir(baseDir) {
                         sh 'rm -f .env'
                     }
                 }
