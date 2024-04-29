@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
+import 'package:frontend/models/feed.dart';
+import 'package:frontend/services/feed_service.dart';
 
 class FeedContentScreen extends StatefulWidget {
   final File? imageFile;
@@ -19,8 +21,8 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
   @override
   Widget build(BuildContext context) {
     void postFeed() {
+      FeedService.postFeed(Feed.dummy());
       Navigator.popUntil(context, (route) => route.isFirst);
-      print('post feed');
     }
 
     return Scaffold(
