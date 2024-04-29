@@ -18,12 +18,14 @@ import java.util.Date;
 import java.util.List;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtProvider {
 
     private static final String CLAIMS_ID = "id";
@@ -96,6 +98,8 @@ public class JwtProvider {
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
+            log.info("payload: {}", payload);
+
         } catch (SecurityException | MalformedJwtException e) {
             throw new VinopenerException(JwtErrorCode.MALFORMED_TOKEN);
         } catch (ExpiredJwtException e) {
@@ -104,7 +108,7 @@ public class JwtProvider {
             throw new VinopenerException(JwtErrorCode.INVALID_TOKEN);
         }
 
-        return Long.parseLong(payload.getId());
+        return Long.parseLong(payload.get("id").toString());
     }
 
     private String issueAccessToken(Claims claims) {

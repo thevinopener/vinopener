@@ -49,7 +49,7 @@ public class OAuth2Controller {
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(
             @RequestHeader("Authorization") String accessToken,
-            @RequestHeader("refresh-roken") String refreshToken
+            @RequestHeader("refresh-token") String refreshToken
     ) {
         String newAccessToken = oAuth2Service.refreshAccessToken(accessToken, refreshToken);
 
