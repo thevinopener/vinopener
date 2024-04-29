@@ -25,8 +25,8 @@ final List<List<String>> wineNames = [
 
 Widget SearchWineListWidget(BuildContext context) {
   return Container(
-    margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-    width: double.infinity,
+    // margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+    // width: double.infinity,
     // color: Colors.amber, // TODO: 영역구분 임시 색칠
     child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),

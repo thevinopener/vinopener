@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
+// flutter
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
+// screens
 import 'package:frontend/widgets/search/search_bar_widget.dart';
 
 // constants

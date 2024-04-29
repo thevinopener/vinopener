@@ -1,39 +1,54 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
-// constants
+import 'package:frontend/widgets/search/search_bar_widget.dart';
+import 'package:frontend/widgets/search/search_wine_list_widget.dart';
+import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/constants/colors.dart';
 
 class SearchResultScreen extends StatefulWidget {
-  // 사용자가 검색한 값을 저장할 변수
   final String searchValue;
 
-  // 생성자를 통해 검색 값 받기
   SearchResultScreen(this.searchValue);
 
+  @override
   _SearchResultPageState createState() => _SearchResultPageState();
 }
 
 class _SearchResultPageState extends State<SearchResultScreen> {
-  TextEditingController _controller = TextEditingController();
-
-  void _handleSubmitted(String value) {
-    // 여기서 입력된 값을 사용하여 화면 이동 또는 다른 로직을 수행
-    print("입력된 값: $value");
-    // 예를 들어, 다음 화면으로 이동:
-    // Navigator.push(context, MaterialPageRoute(builder: (context) => NewPage(value)));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            margin: EdgeInsets.all(10),
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3), // 좌우 패딩
-            child: Text('검색한 단어: ${widget.searchValue}'), // 전달받은 검색 값을 화면에 표시
+          SearchBarWidget(),
+          Padding(
+            padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+            child: Text(
+              '\"${widget.searchValue}\" 검색 결과',
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 16,  // 조정 가능한 폰트 크기
+              ),
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              '총 11 건 검색완료',
+              style: TextStyle(
+                color: Colors.deepOrange,
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Expanded(
+            child: SearchWineListWidget(context),
           ),
         ],
       ),
