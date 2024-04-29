@@ -67,6 +67,7 @@ CREATE TABLE `wine`
 (
   `wine_id`      BIGINT AUTO_INCREMENT PRIMARY KEY,
   `name`         VARCHAR(255)                                                       NOT NULL,
+  `seo_name`     VARCHAR(255)                                                       NOT NULL,
   `image_url`    VARCHAR(512)                                                       NOT NULL,
   `grape`        VARCHAR(255)                                                       NOT NULL,
   `winery`       VARCHAR(255)                                                       NOT NULL,
