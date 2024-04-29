@@ -24,12 +24,7 @@ public class GoogleClient {
     // https://docs.spring.io/spring-framework/reference/integration/rest-clients.html restClient 문서 참고
     private RestClient restClient = RestClient.create();
 
-    public GoogleAccountProfileResponse getGoogleAccountProfile(final String code) throws LoginException {
-        final String accessToken = requestGoogleAccessToken(code);
-        return requestGoogleAccountProfile(accessToken);
-    }
-
-    private String requestGoogleAccessToken(final String code) throws LoginException {
+    public String getGoogleAccessToken(final String code) throws LoginException {
         final String decodedCode = URLDecoder.decode(code, StandardCharsets.UTF_8);
         final HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
@@ -54,10 +49,9 @@ public class GoogleClient {
         return Optional.ofNullable(response)
                 .orElseThrow(() -> new LoginException("NOT_FOUND_GOOGLE_ACCESS_TOKEN_RESPONSE"))
                 .accessToken();
-
     }
 
-    public GoogleAccountProfileResponse requestGoogleAccountProfile(final String accessToken) {
+    public GoogleAccountProfileResponse getGoogleAccountProfile(final String accessToken) {
         final HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
         final HttpEntity<GoogleAccessTokenRequest> httpEntity = new HttpEntity<>(headers);
