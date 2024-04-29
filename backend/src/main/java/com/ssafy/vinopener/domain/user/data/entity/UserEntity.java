@@ -26,4 +26,11 @@ public class UserEntity extends BaseTimeEntity {
     private String nickname;
     private String imageUrl;
 
+    public UserEntity update(UserEntity user) {
+        this.email = user.getEmail();
+        this.nickname = user.getNickname();
+        this.imageUrl = user.getImageUrl();
+        return this;
+    }
+
 }

@@ -1,5 +1,8 @@
 package com.ssafy.vinopener.global.jwt;
 
+import com.ssafy.vinopener.domain.user.data.entity.TokenEntity;
+import com.ssafy.vinopener.domain.user.data.entity.UserEntity;
+import com.ssafy.vinopener.domain.user.repository.TokenRepository;
 import com.ssafy.vinopener.global.config.props.JwtProps;
 import com.ssafy.vinopener.global.exception.VinopenerException;
 import com.ssafy.vinopener.global.oauth2.UserPrincipal;
@@ -28,35 +31,31 @@ public class JwtProvider {
     private static final String CLAIMS_AUTHORITY = "authority";
     private final JwtProps jwtProps;
     private final Base64.Decoder decoder = Base64.getDecoder();
+    private final TokenRepository tokenRepository;
+    private final long REDIS_TTL = 3600;
 
-    public String issueUserAccessToken(UserPrincipal principal) {
+    public String issueUserAccessToken(UserEntity user) {
+
         return issueAccessToken(Jwts.claims()
-                .add(CLAIMS_ID, principal.getId())
-                .add(CLAIMS_EMAIL, principal.getEmail())
-                .add(CLAIMS_AUTHORITY, principal.getAuthority())
+                .add(CLAIMS_ID, user.getId())
+                .add(CLAIMS_EMAIL, user.getEmail())
+                .add(CLAIMS_AUTHORITY, "ROLE_USER")
                 .build());
     }
 
-    public String issueUserRefreshToken(UserPrincipal principal) {
-        return issueRefreshToken(Jwts.claims()
-                .add(CLAIMS_ID, principal.getId())
+    public String issueUserRefreshToken(UserEntity user) {
+        String refreshToken = issueRefreshToken(Jwts.claims()
+                .add(CLAIMS_ID, user.getId())
                 .build());
-    }
 
-    public String issueAccessToken(Claims claims) {
-        return issueToken(
-                claims,
-                jwtProps.getAccessExpiration(),
-                jwtProps.getAccessSecretKey()
-        );
-    }
+        TokenEntity token = TokenEntity.builder()
+                .userId(user.getId())
+                .refreshToken(refreshToken)
+                .ttl(REDIS_TTL)
+                .build();
+        tokenRepository.save(token);
 
-    public String issueRefreshToken(Claims claims) {
-        return issueToken(
-                claims,
-                jwtProps.getRefreshExpiration(),
-                jwtProps.getRefreshSecretKey()
-        );
+        return refreshToken;
     }
 
     public Authentication getAuthentication(String accessToken) {
@@ -87,6 +86,42 @@ public class JwtProvider {
         }
 
         return payload.get(CLAIMS_ID, Long.class);
+    }
+
+    public Long parseId(String token) {
+        Claims payload;
+        try {
+            payload = Jwts.parser()
+                    .verifyWith(jwtProps.getAccessSecretKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+
+        } catch (SecurityException | MalformedJwtException e) {
+            throw new VinopenerException(JwtErrorCode.MALFORMED_TOKEN);
+        } catch (ExpiredJwtException e) {
+            throw new VinopenerException(JwtErrorCode.EXPIRED_TOKEN);
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new VinopenerException(JwtErrorCode.INVALID_TOKEN);
+        }
+
+        return Long.parseLong(payload.get("id").toString());
+    }
+
+    private String issueAccessToken(Claims claims) {
+        return issueToken(
+                claims,
+                jwtProps.getAccessExpiration(),
+                jwtProps.getAccessSecretKey()
+        );
+    }
+
+    private String issueRefreshToken(Claims claims) {
+        return issueToken(
+                claims,
+                jwtProps.getRefreshExpiration(),
+                jwtProps.getRefreshSecretKey()
+        );
     }
 
     private String issueToken(Claims claims, Duration expiration, SecretKey secretKey) {

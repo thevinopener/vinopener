@@ -33,6 +33,9 @@ public class WineEntity extends BaseTimeEntity {
     private String name;
 
     @NotNull
+    private String seoName;
+
+    @NotNull
     private String imageUrl;
 
     @NotNull
