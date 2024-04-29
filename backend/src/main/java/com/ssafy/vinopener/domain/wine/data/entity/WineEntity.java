@@ -33,7 +33,6 @@ public class WineEntity extends BaseTimeEntity {
     private String name;
 
     @NotNull
-    @Column(name = "seo_name")
     private String seoName;
 
     @NotNull
