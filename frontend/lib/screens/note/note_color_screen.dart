@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/note/note_smell_screen.dart';
+import 'package:frontend/widgets/common/atoms/wine_color_widget.dart';
+
+import '../../constants/colors.dart';
 
 class NoteColorScreen extends StatelessWidget {
   const NoteColorScreen({super.key});
@@ -28,7 +31,7 @@ class NoteColorScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Center(child: Text('note color')),
+      body: WineColor(wineColor: WineColors.wineColorMap["밑집색"]!, colorName: "밑집색",)
     );
   }
 }
