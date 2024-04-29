@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
  */
 public record WineCreateRequest(
         @NotBlank @Size(max = 255) String name,
-
         @NotBlank @Size(max = 255) String seoName,
         @NotBlank @Size(max = 512) String imageUrl,
         @NotBlank @Size(max = 255) String grape,
