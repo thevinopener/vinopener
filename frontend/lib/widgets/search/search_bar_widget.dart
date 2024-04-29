@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screens/search/search_result_screen.dart';
 import 'package:frontend/screens/search/search_camera_screen.dart';
 
+// constants
+import 'package:frontend/constants/fonts.dart';
+
 class SearchBarWidget extends StatefulWidget {
   @override
   _SearchBarWidgetState createState() => _SearchBarWidgetState();
