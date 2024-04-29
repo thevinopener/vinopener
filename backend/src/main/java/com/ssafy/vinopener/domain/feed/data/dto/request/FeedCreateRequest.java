@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 public record FeedCreateRequest(
         String content,
         MultipartFile imageFile,
-        Boolean is_public,
+        boolean isPublic,
 
         List<Long> wineIds
 ) {
