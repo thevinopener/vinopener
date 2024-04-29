@@ -96,6 +96,7 @@ public class TastingNoteService {
             final Long userId
     ) {
         checkExists(tastingNoteId, userId);
+        tastingNoteFlavourRepository.deleteAllByTastingNoteId(tastingNoteId);
         tastingNoteRepository.save(tastingNoteMapper.toEntity(tastingNoteId, tastingNoteUpdateRequest));
     }
 
