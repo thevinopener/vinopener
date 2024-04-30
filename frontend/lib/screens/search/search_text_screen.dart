@@ -1,5 +1,6 @@
 // flutter
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/search/search_result_screen.dart';
 
 // screens
 import 'package:frontend/widgets/search/search_bar_widget.dart';
@@ -9,10 +10,37 @@ import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/widgets/search/search_wine_list_widget.dart';
 
 class SearchTextScreen extends StatefulWidget {
-  _SearchWinePageState createState() => _SearchWinePageState();
+  _SearchTextScreenState createState() => _SearchTextScreenState();
 }
 
-class _SearchWinePageState extends State<SearchTextScreen> {
+final List<String> recentSearchList = [
+  "양희승이 좋아하는 와인",
+  "전원빈이 좋아하는 와인",
+  "최지웅이 좋아하는 와인",
+  "고영훈이 좋아하는 와인",
+  "한정수가 좋아하는 와인",
+  "박희찬이 좋아하는 와인",
+  "양희승이 좋아하는 와인",
+  "전원빈이 좋아하는 와인",
+  "최지웅이 좋아하는 와인",
+  "고영훈이 좋아하는 와인",
+  "한정수가 좋아하는 와인",
+  "박희찬이 좋아하는 와인",
+  "양희승이 좋아하는 와인",
+  "전원빈이 좋아하는 와인",
+  "최지웅이 좋아하는 와인",
+  "고영훈이 좋아하는 와인",
+  "한정수가 좋아하는 와인",
+  "박희찬이 좋아하는 와인",
+  "양희승이 좋아하는 와인",
+  "전원빈이 좋아하는 와인",
+  "최지웅이 좋아하는 와인",
+  "고영훈이 좋아하는 와인",
+  "한정수가 좋아하는 와인",
+  "박희찬이 좋아하는 와인",
+];
+
+class _SearchTextScreenState extends State<SearchTextScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,14 +49,14 @@ class _SearchWinePageState extends State<SearchTextScreen> {
         children: [
           // #1 검색바 시작
           Flexible(
-            child: SearchBarWidget(), // 검색바 위젯
+            child: SearchBarWidget(autoFocus: true, contextType: SearchContext.searchTextScreen,), // 검색바 위젯
           ),
           // #1 검색바 끝
 
           // #2 최근검색, 검색기록삭제 시작
           Flexible(
             child: Container(
-              margin: EdgeInsets.fromLTRB(10, 5, 5, 0),
+              margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -40,16 +68,14 @@ class _SearchWinePageState extends State<SearchTextScreen> {
                     ),
                   ),
                   TextButton(
-                      onPressed: () => {
-                        // TODO: 검색기록삭제 로직 작성
-                      },
-                      child: Text(
-                        '검색 기록 삭제',
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w400
-                        ),
-                      ),
+                    onPressed: () => {
+                      // TODO: 검색기록삭제 로직 작성
+                    },
+                    child: Text(
+                      '전체기록삭제',
+                      style: TextStyle(
+                          color: Colors.red, fontWeight: FontWeight.w400),
+                    ),
                   ),
                 ],
               ),
@@ -60,7 +86,39 @@ class _SearchWinePageState extends State<SearchTextScreen> {
           // #3 검색 기록 시작
           Flexible(
             flex: 9,
-            child: SearchWineListWidget(context),
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              child: Column(
+                // mainAxisAlignment: MainAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(
+                  recentSearchList.length,
+                  (index) => Padding(
+                    padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultScreen(recentSearchList[index]),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            recentSearchList[index],
+                            style: TextStyle(
+                                color: Colors.black, fontWeight: FontWeight.w400, fontSize: AppFontSizes.mediumSmall),
+                          ),
+                        ),
+                        IconButton(onPressed: () {}, icon: Icon(Icons.clear), iconSize: 20,)
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
           // #3 검색 기록 끝
         ],
