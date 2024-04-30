@@ -4,23 +4,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
-import 'package:frontend/screens/feed/feed_content_screen.dart';
+import 'package:frontend/services/user_service.dart';
 import 'package:image_picker/image_picker.dart';
 
-class FeedImageScreen extends StatefulWidget {
-  const FeedImageScreen({super.key});
+class MyPageCoverScreen extends StatefulWidget {
+  const MyPageCoverScreen({super.key});
 
   @override
-  State<FeedImageScreen> createState() => _FeedImageScreenState();
+  State<MyPageCoverScreen> createState() => _MyPageCoverScreenState();
 }
 
-class _FeedImageScreenState extends State<FeedImageScreen> {
+class _MyPageCoverScreenState extends State<MyPageCoverScreen> {
   File? _imageFile;
   final _imagePicker = ImagePicker();
 
   Future pickImageFromGallery() async {
     final pickedImage =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
+    await _imagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       _imageFile = File(pickedImage!.path);
@@ -30,49 +30,39 @@ class _FeedImageScreenState extends State<FeedImageScreen> {
   Future showOptions() async {
     showCupertinoModalPopup(
       context: context,
-      builder: (context) => CupertinoActionSheet(
-        actions: [
-          CupertinoActionSheetAction(
-            child: Text(
-              '사진첩',
-              style: TextStyle(
-                color: AppColors.primary,
-                fontSize: AppFontSizes.mediumSmall,
+      builder: (context) =>
+          CupertinoActionSheet(
+            actions: [
+              CupertinoActionSheetAction(
+                child: Text(
+                  '사진첩',
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontSize: AppFontSizes.mediumSmall,
+                  ),
+                ),
+                onPressed: () {
+                  // close the options modal
+                  Navigator.of(context).pop();
+                  // get image from gallery
+                  pickImageFromGallery();
+                },
               ),
-            ),
-            onPressed: () {
-              // close the options modal
-              Navigator.of(context).pop();
-              // get image from gallery
-              pickImageFromGallery();
-            },
+            ],
           ),
-        ],
-      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    void navigateNext() {
-      Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => FeedContentScreen(
-            imageFile: _imageFile,
-          ),
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.of(context).pop(),
-          icon: Icon(Icons.close),
+          icon: Icon(Icons.navigate_before),
         ),
         title: Text(
-          '이미지 업로드',
+          '커버 변경',
           style: TextStyle(
             fontSize: AppFontSizes.mediumSmall,
             fontWeight: FontWeight.bold,
@@ -81,9 +71,12 @@ class _FeedImageScreenState extends State<FeedImageScreen> {
         centerTitle: true,
         actions: [
           TextButton(
-            onPressed: navigateNext,
+            onPressed: () {
+              UserService.changeCover();
+              Navigator.popUntil(context, (route) => route.isFirst);
+            },
             child: Text(
-              '다음',
+              '완료',
               style: TextStyle(
                 fontSize: AppFontSizes.mediumSmall,
                 color: AppColors.primary,
@@ -94,21 +87,19 @@ class _FeedImageScreenState extends State<FeedImageScreen> {
         ],
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 20),
           _imageFile == null
               ? Image.asset(
-                  'assets/images/wine.jpg',
-                  width: 400,
-                  height: 400,
-                )
+            'assets/images/wine.jpg',
+            width: 400,
+            height: 400,
+          )
               : Image.file(
-                  _imageFile!,
-                  width: 400,
-                  height: 400,
-                  fit: BoxFit.cover,
-                ),
+            _imageFile!,
+            width: 400,
+            height: 400,
+            fit: BoxFit.cover,
+          ),
           SizedBox(height: 20),
           Center(
             child: TextButton(

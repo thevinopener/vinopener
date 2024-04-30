@@ -33,46 +33,51 @@ class _FeedItemState extends State<FeedItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/penguin.jpg'),
-                ),
-                SizedBox(width: 20),
-                Text('전원빈'),
-              ],
-            ),
-            Text('${widget.feed.createdTime}'),
-          ],
-        ),
-        SizedBox(height: 20),
-        Image.asset('assets/images/wine.jpg'),
-        SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                IconButton(
-                  onPressed: _toggleLike,
-                  icon: Icon(isLiked ? Icons.favorite : Icons.favorite_outline),
-                ),
-                Text('${likeCount}'),
-              ],
-            ),
-            Icon(Icons.ios_share),
-          ],
-        ),
-        SizedBox(height: 20),
-        Text('${widget.feed.content}'),
-        SizedBox(height: 20),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: AssetImage('${widget.feed.user.imageUrl}'),
+                  ),
+                  SizedBox(width: 20),
+                  Text('전원빈'),
+                ],
+              ),
+              Text('${widget.feed.createdTime}'),
+            ],
+          ),
+          SizedBox(height: 20),
+          Image.asset('${widget.feed.imageUrl}'),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                    padding: EdgeInsets.all(0),
+                    onPressed: _toggleLike,
+                    icon: Icon(isLiked ? Icons.favorite : Icons.favorite_outline),
+                  ),
+                  Text('${likeCount}'),
+                ],
+              ),
+              Spacer(),
+              Icon(Icons.ios_share),
+            ],
+          ),
+          Text('${widget.feed.content}'),
+          SizedBox(height: 20),
+        ],
+      ),
     );
   }
 }

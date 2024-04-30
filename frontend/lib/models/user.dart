@@ -4,7 +4,7 @@ class User {
   String? imageUrl;
   String? refreshToken;
 
-  User({required String email, required String nickname, required String imageUrl, required String refreshToken});
+  User({required this.email, required this.nickname, required this.imageUrl, required this.refreshToken});
 
   static User dummy() {
     return User(
@@ -13,5 +13,10 @@ class User {
       imageUrl: 'assets/images/penguin.jpg',
       refreshToken: 'refresh',
     );
+  }
+
+  @override
+  String toString() {
+    return 'User{email: $email, nickname: $nickname, imageUrl: $imageUrl, refreshToken: $refreshToken}';
   }
 }
