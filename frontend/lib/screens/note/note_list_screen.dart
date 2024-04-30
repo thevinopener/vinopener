@@ -1,9 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/note/note_color_screen.dart';
-import 'package:frontend/screens/survey_screen.dart';
+import 'package:frontend/widgets/note/note_list_card_widget.dart';
+
+
+import '../../constants/fonts.dart';
+import '../../models/note_model.dart';
 
 class NoteListScreen extends StatelessWidget {
+
+  final Note note = Note.dummy();
+  final  List<Note> notes = List.generate(10, (index) => Note.dummy());
+
   @override
   Widget build(BuildContext context) {
     void addNote() {
@@ -15,36 +23,31 @@ class NoteListScreen extends StatelessWidget {
       );
     }
 
-    void goSurvey(){
-      Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => SurveyScreen(),
-          ),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Note'),
-      ),
-      body: Column(
-        children: [
-          const Center(
-            child: Text(
-              'note_list_screen.dart',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+          title: Text(
+            'Tasting Note',
+            style: TextStyle(
+              fontSize: AppFontSizes.large,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          FilledButton(onPressed: addNote, child: Text('Add Note')),
-          const Center(
-            child: Text(
-              'temp_survey',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
-            ),
-          ),
-          FilledButton(onPressed: goSurvey, child: Text('survey')),
-        ],
+          actions: [
+            IconButton(
+              color: Colors.black,
+              onPressed: addNote,
+              icon: Icon(Icons.add),
+            )
+          ],
+          shape: Border(bottom: BorderSide(color: Colors.grey))),
+      body: ListView.builder(
+        itemCount: notes.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),  // 좌우 패딩을 추가하여 카드 중앙 정렬
+            child: NoteCard(note: notes[index]),
+          );
+        },
       ),
     );
   }

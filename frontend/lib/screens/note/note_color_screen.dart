@@ -1,6 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/note/note_smell_screen.dart';
+import 'package:frontend/widgets/common/atoms/wine_color_widget.dart';
+import 'package:frontend/widgets/common/atoms/wine_flavour_widget.dart';
+
+import '../../constants/colors.dart';
+import '../../models/note_model.dart';
 
 class NoteColorScreen extends StatelessWidget {
   const NoteColorScreen({super.key});
@@ -28,7 +33,7 @@ class NoteColorScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Center(child: Text('note color')),
+
     );
   }
 }
