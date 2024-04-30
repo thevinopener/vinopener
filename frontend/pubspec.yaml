@@ -22,6 +22,7 @@ dependencies:
 
   # for nation flag
   flag: ^7.0.0
+  flutter_radar_chart: ^0.2.1
 
 flutter:
   uses-material-design: true
