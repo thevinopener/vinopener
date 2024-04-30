@@ -8,18 +8,43 @@ import 'package:frontend/screens/search/search_camera_screen.dart';
 // constants
 import 'package:frontend/constants/fonts.dart';
 
+enum SearchContext { searchTextScreen, searchResultScreen }
+
 class SearchBarWidget extends StatefulWidget {
+
+  final String searchValue;
+  final bool autoFocus;
+  final SearchContext contextType;
+
+  SearchBarWidget({
+    this.autoFocus = false,
+    this.searchValue = '',
+    this.contextType = SearchContext.searchTextScreen,
+  });
+
   @override
   _SearchBarWidgetState createState() => _SearchBarWidgetState();
 }
 
 class _SearchBarWidgetState extends State<SearchBarWidget> {
-  TextEditingController _controller = TextEditingController();
+
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.searchValue);
+  }
 
   void _handleSubmitted(String value) {
     print("입력된 값: $value");
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => SearchResultScreen(value)));
+    if (widget.contextType == SearchContext.searchTextScreen) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => SearchResultScreen(value)));
+    } else {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => SearchResultScreen(value)));
+    }
   }
 
   @override
@@ -49,7 +74,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
             child: TextField(
               controller: _controller,
               // 컨트롤러 연결 -> X버튼 누르면 없어지는 것과 연결됨
-              autofocus: true,
+              autofocus: widget.autoFocus,
               // 텍스트 상자에 자동 포커스 되면서 키보드 켜짐
               style: TextStyle(
                 color: Colors.black,

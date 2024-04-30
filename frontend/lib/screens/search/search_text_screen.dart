@@ -10,7 +10,7 @@ import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/widgets/search/search_wine_list_widget.dart';
 
 class SearchTextScreen extends StatefulWidget {
-  _SearchWinePageState createState() => _SearchWinePageState();
+  _SearchTextScreenState createState() => _SearchTextScreenState();
 }
 
 final List<String> recentSearchList = [
@@ -40,7 +40,7 @@ final List<String> recentSearchList = [
   "박희찬이 좋아하는 와인",
 ];
 
-class _SearchWinePageState extends State<SearchTextScreen> {
+class _SearchTextScreenState extends State<SearchTextScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +49,7 @@ class _SearchWinePageState extends State<SearchTextScreen> {
         children: [
           // #1 검색바 시작
           Flexible(
-            child: SearchBarWidget(), // 검색바 위젯
+            child: SearchBarWidget(autoFocus: true, contextType: SearchContext.searchTextScreen,), // 검색바 위젯
           ),
           // #1 검색바 끝
 
