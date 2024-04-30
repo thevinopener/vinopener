@@ -42,6 +42,12 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.security:spring-security-test'
 
+  // https://github.com/querydsl/querydsl
+  implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
+  annotationProcessor 'com.querydsl:querydsl-apt:5.1.0:jakarta'
+  annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+  annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+
   // https://github.com/zalando/problem-spring-web
   implementation 'org.zalando:problem-spring-web:0.29.1'
   implementation 'org.zalando:jackson-datatype-problem:0.27.1'

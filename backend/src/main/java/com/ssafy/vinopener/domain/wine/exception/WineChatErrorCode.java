@@ -1,4 +1,4 @@
-package com.ssafy.vinopener.domain.chat.exception;
+package com.ssafy.vinopener.domain.wine.exception;
 
 import com.ssafy.vinopener.global.exception.ErrorCode;
 import lombok.Getter;

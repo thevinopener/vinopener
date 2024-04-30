@@ -1,7 +1,6 @@
-package com.ssafy.vinopener.domain.chat.data.entity;
+package com.ssafy.vinopener.domain.wine.data.entity;
 
 import com.ssafy.vinopener.domain.user.data.entity.UserEntity;
-import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
 import com.ssafy.vinopener.global.common.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

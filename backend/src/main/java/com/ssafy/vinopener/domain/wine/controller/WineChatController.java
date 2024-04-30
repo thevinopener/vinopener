@@ -1,7 +1,7 @@
-package com.ssafy.vinopener.domain.chat.controller;
+package com.ssafy.vinopener.domain.wine.controller;
 
-import com.ssafy.vinopener.domain.chat.data.dto.response.WineChatGetOrGetListResponse;
-import com.ssafy.vinopener.domain.chat.service.WineChatService;
+import com.ssafy.vinopener.domain.wine.data.dto.response.WineChatGetOrGetListResponse;
+import com.ssafy.vinopener.domain.wine.service.WineChatService;
 import com.ssafy.vinopener.global.config.SwaggerConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
