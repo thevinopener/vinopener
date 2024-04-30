@@ -27,8 +27,7 @@ public class AiChatService {
             final AiChatCreateRequest preferenceCreateRequest,
             final Long userId
     ) {
-        aiChatRepository
-                .save(aiChatMapper.toEntity(preferenceCreateRequest, userId));
+        aiChatRepository.save(aiChatMapper.toEntity(preferenceCreateRequest, userId));
     }
 
     /**
