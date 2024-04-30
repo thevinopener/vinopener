@@ -12,7 +12,7 @@ import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/constants/colors.dart';
 
 // 예제 데이터 리스트
-List<List<String>> wineNames = [
+List<List<String>> wineList = [
   ["More Wine Name 2020", "와이너리3", "국가3", "port"],
   ["More Wine Name 2020", "와이너리3", "국가3", "red"],
   ["More Wine Name 2020", "와이너리3", "국가3", "red"],
@@ -36,7 +36,7 @@ Widget SearchWineListWidget(BuildContext context) {
         scrollDirection: Axis.vertical,
         child: Column(
           children: List.generate(
-            wineNames.length, // 리스트 개수에 따라 동적으로 생성
+            wineList.length, // 리스트 개수에 따라 동적으로 생성
             (index) => Padding(
               padding: EdgeInsets.fromLTRB(10, 3, 10, 3),
               child: ElevatedButton(
@@ -71,7 +71,7 @@ Widget SearchWineListWidget(BuildContext context) {
                             ),
                             Container(
                               alignment: Alignment.topLeft,
-                              child: wineLabel(wineNames[index][3]),
+                              child: wineLabel(wineList[index][3]),
                             ),
                           ],
                         ),
@@ -98,7 +98,7 @@ Widget SearchWineListWidget(BuildContext context) {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        wineNames[index][1],
+                                        wineList[index][1],
                                         style: TextStyle(
                                           fontSize: AppFontSizes.mediumSmall,
                                           color: Colors.black,
@@ -124,7 +124,7 @@ Widget SearchWineListWidget(BuildContext context) {
                               Flexible(
                                 flex: 2,
                                 child: Text(
-                                  wineNames[index][0],
+                                  wineList[index][0],
                                   style: TextStyle(
                                     fontSize: AppFontSizes.medium,
                                     color: Colors.black,
@@ -142,7 +142,7 @@ Widget SearchWineListWidget(BuildContext context) {
                                     ),
                                     SizedBox(width: 10),
                                     Text(
-                                      wineNames[index][2],
+                                      wineList[index][2],
                                       style: TextStyle(
                                         fontSize: AppFontSizes.small,
                                         fontWeight: FontWeight.w400,
