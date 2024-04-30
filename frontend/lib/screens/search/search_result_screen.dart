@@ -28,7 +28,7 @@ class _SearchResultPageState extends State<SearchResultScreen> {
               '\"${widget.searchValue}\" 검색 결과',
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                fontSize: 16,  // 조정 가능한 폰트 크기
+                fontSize: 16, // 조정 가능한 폰트 크기
               ),
               softWrap: true,
               overflow: TextOverflow.ellipsis,
