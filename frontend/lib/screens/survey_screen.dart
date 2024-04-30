@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
+import 'package:frontend/services/survey_service.dart';
 import 'package:frontend/widgets/survey/survey_select_widget.dart';
 import 'package:frontend/widgets/survey/survey_range_slider_widget.dart';
 import 'package:frontend/widgets/survey/survey_slider_widget.dart';
@@ -8,7 +9,7 @@ import 'package:frontend/models/survey_model.dart';
 import 'home_screen.dart'; // 홈 화면을 import
 
 class SurveyScreen extends StatefulWidget {
-  const SurveyScreen({Key? key}) : super(key: key);
+  SurveyScreen({Key? key}) : super(key: key);
 
   @override
   _SurveyScreenState createState() => _SurveyScreenState();
@@ -21,6 +22,7 @@ class _SurveyScreenState extends State<SurveyScreen> {
   int _sweetness = 50;
   int _acidity = 50;
   int _bitterness = 50;
+
 
   void _updateKind(Set<String> kinds) {
     setState(() {
@@ -55,13 +57,14 @@ class _SurveyScreenState extends State<SurveyScreen> {
 
   void _submitSurvey() {
     final survey = Survey(
-      kind: _selectedKinds,
-      alcoholStart: _alcoholStart.toInt(),
-      alcoholEnd: _alcoholEnd.toInt(),
+      type: _selectedKinds,
+      minAbv: _alcoholStart.toInt(),
+      maxAbv: _alcoholEnd.toInt(),
       sweetness: _sweetness,
       acidity: _acidity,
-      bitterness: _bitterness,
+      tannin: _bitterness,
     );
+    SurveyService.postSurvey(survey);
     // Process the survey data here, e.g., send to server or store locally
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => HomeScreen()),

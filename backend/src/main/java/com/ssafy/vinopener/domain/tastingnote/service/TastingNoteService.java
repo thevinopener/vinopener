@@ -57,7 +57,9 @@ public class TastingNoteService {
             final Long userId
     ) {
         return tastingNoteRepository.findAllByUserId(userId).stream()
-                .map(tastingNoteMapper::toGetListResponse)
+                .map(entity -> tastingNoteMapper
+                        .toGetListResponse(entity, tastingNoteFlavourRepository
+                                .findAllByTastingNoteId(entity.getId())))
                 .toList();
     }
 
@@ -94,6 +96,7 @@ public class TastingNoteService {
             final Long userId
     ) {
         checkExists(tastingNoteId, userId);
+        tastingNoteFlavourRepository.deleteAllByTastingNoteId(tastingNoteId);
         tastingNoteRepository.save(tastingNoteMapper.toEntity(tastingNoteId, tastingNoteUpdateRequest));
     }
 
@@ -103,6 +106,7 @@ public class TastingNoteService {
      * @param tastingNoteId 테이스팅노트 ID
      * @param userId        유저 ID
      */
+    @Transactional
     public void delete(
             final Long tastingNoteId,
             final Long userId

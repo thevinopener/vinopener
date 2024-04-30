@@ -33,15 +33,20 @@ CREATE TABLE `user`
 CREATE TABLE `preference`
 (
   `preference_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
-  `user_id`       BIGINT UNIQUE                                                      NOT NULL,
-  `type`          ENUM ('RED', 'WHITE', 'ROSE', 'SPARKLING', 'DESSERT', 'FORTIFIED') NOT NULL,
-  `min_abv`       INT                                                                NOT NULL,
-  `max_abv`       INT                                                                NOT NULL,
-  `sweetness`     DECIMAL(2, 1)                                                      NOT NULL,
-  `acidity`       DECIMAL(2, 1)                                                      NOT NULL,
-  `tannin`        DECIMAL(2, 1)                                                      NOT NULL,
-  `created_time`  TIMESTAMP                                                          NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_time`  TIMESTAMP                                                          NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `user_id`       BIGINT UNIQUE NOT NULL,
+  `is_red`        BOOLEAN       NOT NULL DEFAULT FALSE,
+  `is_white`      BOOLEAN       NOT NULL DEFAULT FALSE,
+  `is_rose`       BOOLEAN       NOT NULL DEFAULT FALSE,
+  `is_sparkling`  BOOLEAN       NOT NULL DEFAULT FALSE,
+  `is_dessert`    BOOLEAN       NOT NULL DEFAULT FALSE,
+  `is_fortified`  BOOLEAN       NOT NULL DEFAULT FALSE,
+  `min_abv`       INT           NOT NULL,
+  `max_abv`       INT           NOT NULL,
+  `sweetness`     INT           NOT NULL,
+  `acidity`       INT           NOT NULL,
+  `tannin`        INT           NOT NULL,
+  `created_time`  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time`  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 );
 

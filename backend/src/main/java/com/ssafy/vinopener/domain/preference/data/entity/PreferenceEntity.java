@@ -1,12 +1,9 @@
 package com.ssafy.vinopener.domain.preference.data.entity;
 
 import com.ssafy.vinopener.domain.user.data.entity.UserEntity;
-import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
 import com.ssafy.vinopener.global.common.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,7 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,9 +34,22 @@ public class PreferenceEntity extends BaseTimeEntity {
     private UserEntity user;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "ENUM")
-    private WineType type;
+    private Boolean isRed;
+
+    @NotNull
+    private Boolean isWhite;
+
+    @NotNull
+    private Boolean isRose;
+
+    @NotNull
+    private Boolean isSparkling;
+
+    @NotNull
+    private Boolean isDessert;
+
+    @NotNull
+    private Boolean isFortified;
 
     @NotNull
     private Integer minAbv;
@@ -49,12 +58,12 @@ public class PreferenceEntity extends BaseTimeEntity {
     private Integer maxAbv;
 
     @NotNull
-    private BigDecimal sweetness;
+    private Integer sweetness;
 
     @NotNull
-    private BigDecimal acidity;
+    private Integer acidity;
 
     @NotNull
-    private BigDecimal tannin;
+    private Integer tannin;
 
 }

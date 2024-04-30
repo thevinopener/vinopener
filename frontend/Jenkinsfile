@@ -7,6 +7,7 @@ pipeline {
     }
     tools {
         jdk 'jdk-17'
+        gradle 'gradle-7.6'
     }
     environment {
         mainBranch = 'main'
