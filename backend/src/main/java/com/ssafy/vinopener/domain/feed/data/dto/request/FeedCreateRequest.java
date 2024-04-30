@@ -9,9 +9,7 @@ public record FeedCreateRequest(
         MultipartFile imageFile,
         @NotNull boolean isPublic,
 
-        Set<Long> feedLikeId,
-
-        Set<Long> feedWineId
+        @NotNull Set<Long> wineIds
 
 ) {
 

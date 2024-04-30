@@ -36,7 +36,11 @@ public class FeedEntity extends BaseTimeEntity {
 
     private String imageUrl;
 
-    @Column(name = "is_public")
     private boolean isPublic;
+
+    // "is로 인해 Lombok 자동 설정이 인식 못하는 문제로 직접 getter() 생성
+    public boolean getIsPublic() {
+        return isPublic;
+    }
 
 }

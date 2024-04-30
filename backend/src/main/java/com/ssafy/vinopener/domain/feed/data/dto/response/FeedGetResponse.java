@@ -2,8 +2,6 @@ package com.ssafy.vinopener.domain.feed.data.dto.response;
 
 import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.Builder;
 
 @Builder
@@ -12,17 +10,15 @@ public record FeedGetResponse(
         String content,
         String imageUrl,
         boolean isPublic,
-        FeedGetWineResponse wine,
-        List<FeedGetLikeResponse> likes,
-        String userNickname,
-        String userImageUrl,
-        LocalDateTime createdTime
+
+        FeedGetLikeResponse like,
+        FeedGetWineResponse wine
+//        LocalDateTime createdTime
 
 ) {
 
     @Builder
     public record FeedGetWineResponse(
-
             Long id,
             String name,
             String seoName,
@@ -47,8 +43,8 @@ public record FeedGetResponse(
     @Builder
     public record FeedGetLikeResponse(
             Long id,
-            Long feedId,
-            Long userId
+            String nickname,
+            String imageUrl
     ) {
 
     }

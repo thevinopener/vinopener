@@ -3,54 +3,65 @@ package com.ssafy.vinopener.domain.feed.data.mapper;
 import com.ssafy.vinopener.domain.feed.data.dto.response.FeedGetListResponse.FeedGetListWineResponse;
 import com.ssafy.vinopener.domain.feed.data.dto.response.FeedGetResponse.FeedGetWineResponse;
 import com.ssafy.vinopener.domain.feed.data.entity.FeedWineEntity;
+import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
 import com.ssafy.vinopener.global.common.ReferenceMapper;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         unmappedTargetPolicy = ReportingPolicy.ERROR,
-        uses = {ReferenceMapper.class, FeedWineMapper.class})
+        uses = {ReferenceMapper.class, WineEntity.class})
 public interface FeedWineMapper {
 
-    @Mapping(source = "wine.id", target = "id")
-    @Mapping(source = "wine.name", target = "name")
-    @Mapping(source = "wine.seoName", target = "seoName")
-    @Mapping(source = "wine.imageUrl", target = "imageUrl")
-    @Mapping(source = "wine.grape", target = "grape")
-    @Mapping(source = "wine.winery", target = "winery")
-    @Mapping(source = "wine.country", target = "country")
-    @Mapping(source = "wine.price", target = "price")
-    @Mapping(source = "wine.rating", target = "rating")
-    @Mapping(source = "wine.vintage", target = "vintage")
-    @Mapping(source = "wine.type", target = "type")
-    @Mapping(source = "wine.acidity", target = "acidity")
-    @Mapping(source = "wine.intensity", target = "intensity")
-    @Mapping(source = "wine.sweetness", target = "sweetness")
-    @Mapping(source = "wine.tannin", target = "tannin")
-    @Mapping(source = "wine.abv", target = "abv")
-    @Mapping(source = "wine.view", target = "view")
-    FeedGetWineResponse toWineResponse(FeedWineEntity entity);
+    @Mappings({
+            @Mapping(target = "id", source = "feedWineEntity.wine.id"),
+            @Mapping(target = "name", source = "feedWineEntity.wine.name"),
+            @Mapping(target = "seoName", source = "feedWineEntity.wine.seoName"),
+            @Mapping(target = "imageUrl", source = "feedWineEntity.wine.imageUrl"),
+            @Mapping(target = "grape", source = "feedWineEntity.wine.grape"),
+            @Mapping(target = "winery", source = "feedWineEntity.wine.winery"),
+            @Mapping(target = "country", source = "feedWineEntity.wine.country"),
+            @Mapping(target = "price", source = "feedWineEntity.wine.price"),
+            @Mapping(target = "rating", source = "feedWineEntity.wine.rating"),
+            @Mapping(target = "vintage", source = "feedWineEntity.wine.vintage"),
+            @Mapping(target = "type", source = "feedWineEntity.wine.type"),
+            @Mapping(target = "acidity", source = "feedWineEntity.wine.acidity"),
+            @Mapping(target = "intensity", source = "feedWineEntity.wine.intensity"),
+            @Mapping(target = "sweetness", source = "feedWineEntity.wine.sweetness"),
+            @Mapping(target = "tannin", source = "feedWineEntity.wine.tannin"),
+            @Mapping(target = "abv", source = "feedWineEntity.wine.abv"),
+            @Mapping(target = "view", source = "feedWineEntity.wine.view")
+    })
+    FeedGetWineResponse toWineResponse(FeedWineEntity feedWineEntity);
 
-    @Mapping(source = "wine.id", target = "id")
-    @Mapping(source = "wine.name", target = "name")
-    @Mapping(source = "wine.seoName", target = "seoName")
-    @Mapping(source = "wine.imageUrl", target = "imageUrl")
-    @Mapping(source = "wine.grape", target = "grape")
-    @Mapping(source = "wine.winery", target = "winery")
-    @Mapping(source = "wine.country", target = "country")
-    @Mapping(source = "wine.price", target = "price")
-    @Mapping(source = "wine.rating", target = "rating")
-    @Mapping(source = "wine.vintage", target = "vintage")
-    @Mapping(source = "wine.type", target = "type")
-    @Mapping(source = "wine.acidity", target = "acidity")
-    @Mapping(source = "wine.intensity", target = "intensity")
-    @Mapping(source = "wine.sweetness", target = "sweetness")
-    @Mapping(source = "wine.tannin", target = "tannin")
-    @Mapping(source = "wine.abv", target = "abv")
-    @Mapping(source = "wine.view", target = "view")
-    FeedGetListWineResponse toWineListResponse(FeedWineEntity entity);
+    @Mappings({
+            @Mapping(target = "id", source = "feedWineEntity.wine.id"),
+            @Mapping(target = "name", source = "feedWineEntity.wine.name"),
+            @Mapping(target = "seoName", source = "feedWineEntity.wine.seoName"),
+            @Mapping(target = "imageUrl", source = "feedWineEntity.wine.imageUrl"),
+            @Mapping(target = "grape", source = "feedWineEntity.wine.grape"),
+            @Mapping(target = "winery", source = "feedWineEntity.wine.winery"),
+            @Mapping(target = "country", source = "feedWineEntity.wine.country"),
+            @Mapping(target = "price", source = "feedWineEntity.wine.price"),
+            @Mapping(target = "rating", source = "feedWineEntity.wine.rating"),
+            @Mapping(target = "vintage", source = "feedWineEntity.wine.vintage"),
+            @Mapping(target = "type", source = "feedWineEntity.wine.type"),
+            @Mapping(target = "acidity", source = "feedWineEntity.wine.acidity"),
+            @Mapping(target = "intensity", source = "feedWineEntity.wine.intensity"),
+            @Mapping(target = "sweetness", source = "feedWineEntity.wine.sweetness"),
+            @Mapping(target = "tannin", source = "feedWineEntity.wine.tannin"),
+            @Mapping(target = "abv", source = "feedWineEntity.wine.abv"),
+            @Mapping(target = "view", source = "feedWineEntity.wine.view")
+    })
+    FeedGetListWineResponse toWineListResponse(FeedWineEntity feedWineEntity);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "feed", source = "feedId")
+    @Mapping(target = "wine", source = "wineId")
+    FeedWineEntity toEntity(Long feedId, Long wineId);
 
 }
