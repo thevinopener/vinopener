@@ -1,11 +1,11 @@
 // flutter
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/constants/label.dart';
+import 'package:frontend/constants/wineLabel.dart';
 
 // screens
 import 'package:frontend/screens/search/search_detail_screen.dart';
-import 'package:frontend/constants/label.dart';
+import 'package:frontend/constants/wineLabel.dart';
 
 // constants
 import 'package:frontend/constants/fonts.dart';
@@ -56,21 +56,30 @@ Widget SearchWineListWidget(BuildContext context) {
                     children: [
                       // 사진 부분 시작
                       Flexible(
-                        flex: 4,
+                        flex: 3,
                         child: Stack(
                           children: [
                             Container(
                               width: double.maxFinite, // 이미지 컨테이너의 크기 조정 부분
                               height: 200,
+                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                               // color: Colors.white, // 이미지 배경색
-                              // color: Color(0xFFF8F8F8),
+                              // color: Color(0xFFF0F0F0), // 이미지 배경색
+                              decoration: BoxDecoration(
+                                color: Colors.white, // 얘랑 위에 이미지 배경색이랑 겹치면 중복설정이라 에러남
+                                borderRadius: BorderRadius.circular(5), // 모서리 둥글게
+                                border: Border.all(
+                                  color: Colors.black, // 테두리 색상
+                                  width: 1, // 테두리 두께
+                                ),
+                              ),
                               child: Image.asset(
                                 'assets/images/dummy_wine.png',
                                 fit: BoxFit.scaleDown,
                               ),
                             ),
                             Container(
-                              alignment: Alignment.topLeft,
+                              alignment: Alignment.bottomCenter,
                               child: wineLabel(wineList[index][3]),
                             ),
                           ],
@@ -83,7 +92,7 @@ Widget SearchWineListWidget(BuildContext context) {
                         flex: 6,
                         child: Container(
                           margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                          padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                          // padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           width: double.maxFinite,
                           height: double.maxFinite,
                           child: Column(
