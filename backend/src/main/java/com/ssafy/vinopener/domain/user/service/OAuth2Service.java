@@ -72,6 +72,7 @@ public class OAuth2Service {
         UserEntity user = UserEntity.builder()
                 .email(profile.email())
                 .nickname(profile.name())
+                .imageUrl(profile.picture())
                 .build();
 
         return userRepository.save(user);

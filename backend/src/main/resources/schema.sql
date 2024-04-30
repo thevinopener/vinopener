@@ -271,13 +271,26 @@ CREATE TABLE `ai_chat`
   FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 );
 
-CREATE TABLE `ai_chat`
+CREATE TABLE `content_recommendation`
 (
-  `ai_chat_id`   BIGINT AUTO_INCREMENT PRIMARY KEY,
-  `user_id`      BIGINT       NOT NULL,
-  `message`      VARCHAR(255) NOT NULL,
-  `is_bot`       BOOLEAN      NOT NULL,
-  `created_time` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_time` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+  `recommendation_id`           BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `wine_id`                     BIGINT                          NOT NULL,
+  `content_recommendation_type` ENUM ('VIEW', 'RATE', 'CELLAR') NOT NULL,
+  `created_time`                TIMESTAMP                       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time`                TIMESTAMP                       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE (`wine_id`, `content_recommendation_type`),
+  FOREIGN KEY (`wine_id`) REFERENCES `wine` (`wine_id`)
+);
+
+CREATE TABLE `behavior_recommendation`
+(
+  `recommendation_id`            BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `user_id`                      BIGINT                              NOT NULL,
+  `wine_id`                      BIGINT                              NOT NULL,
+  `behavior_recommendation_type` ENUM ('TASTING_NOTE', 'PREFERENCE') NOT NULL,
+  `created_time`                 TIMESTAMP                           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time`                 TIMESTAMP                           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE (`user_id`, `wine_id`, `behavior_recommendation_type`),
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  FOREIGN KEY (`wine_id`) REFERENCES `wine` (`wine_id`)
 );

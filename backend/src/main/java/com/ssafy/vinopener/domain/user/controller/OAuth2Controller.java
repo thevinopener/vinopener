@@ -57,4 +57,11 @@ public class OAuth2Controller {
         return ResponseEntity.ok(token);
     }
 
+    @PostMapping("/testAccessToken")
+    public ResponseEntity<?> testAccessToken(@RequestParam("token") String token) {
+        UserEntity user = oAuth2Service.loadUser(token);
+
+        return ResponseEntity.ok(user);
+    }
+
 }
