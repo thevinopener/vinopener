@@ -18,8 +18,8 @@ public class RecommendationController {
 
     @GetMapping("/view")
     public ResponseEntity<?> viewRecommendation() {
-        List<RecommendationGetListResponse> recoomendationList = recommendationService.getViewRecommendation();
-        return ResponseEntity.ok().build();
+        List<RecommendationGetListResponse> recommendationList = recommendationService.getViewRecommendation();
+        return ResponseEntity.ok(recommendationList);
     }
 
     @GetMapping("/cellar")

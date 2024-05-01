@@ -37,6 +37,6 @@ public class ContentRecommendationEntity extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "content_recommendation_type")
-    private ContentRecommendationType ContentRecommendationType;
+    private ContentRecommendationType contentRecommendationType;
 
 }

@@ -2,6 +2,7 @@ package com.ssafy.vinopener.domain.recommendation.data.entity;
 
 import com.ssafy.vinopener.domain.recommendation.data.entity.enums.BehaviorRecommendationType;
 import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
+import com.ssafy.vinopener.global.common.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Getter
-public class BehaviorRecommendationEntity {
+public class BehaviorRecommendationEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
