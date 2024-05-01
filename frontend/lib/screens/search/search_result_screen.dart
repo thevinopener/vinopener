@@ -47,8 +47,8 @@ class _SearchResultPageState extends State<SearchResultScreen> {
                 fontWeight: FontWeight.w500,
                 fontSize: 16,
               ),
-              softWrap: true,
-              overflow: TextOverflow.ellipsis,
+              softWrap: true, // 감싸주는 애
+              overflow: TextOverflow.ellipsis,  // 글자수 넘치면 ... 으로 바꿔주는애
             ),
           ),
           SizedBox(height: 5),
