@@ -24,12 +24,14 @@ public class RecommendationController {
 
     @GetMapping("/cellar")
     public ResponseEntity<?> cellarRecommendation() {
+        //Cellar의 경우, CellarRepository에서 GroupBy 와인으로 묶고, 각 와인별 유저 수를 내림차순으로 정렬하는 쿼리를 작성해야함.
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/rate")
     public ResponseEntity<?> rateRecommendation() {
-        return ResponseEntity.ok().build();
+        List<RecommendationGetListResponse> recommendationList = recommendationService.getRateRecommendation();
+        return ResponseEntity.ok(recommendationList);
     }
 
     @GetMapping("/preference")

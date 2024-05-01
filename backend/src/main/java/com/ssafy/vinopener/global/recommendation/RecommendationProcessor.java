@@ -12,6 +12,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,13 +26,20 @@ public class RecommendationProcessor {
     private final RecommendationMapper recommendationMapper;
     private final ContentRecommendationRepository contentRecommendationRepository;
 
-    public void createRecommendation() {
-        List<WineEntity> wineList = wineRepository.findAll(Sort.by(Sort.Direction.DESC, "view"));
+    public void createRecommendation(ContentRecommendationType type) {
+        String columnName = "";
+        switch (type) {
+            case VIEW -> columnName = "view";
+            case RATE -> columnName = "rating";
+            case CELLAR -> columnName = "cellar";
+
+        }
+        List<WineEntity> wineList = wineRepository.findAll(Sort.by(Direction.DESC, columnName));
 
         for (int i = 0; i < 10; i++) {
             ContentRecommendationEntity recommendationEntity = ContentRecommendationEntity.builder()
                     .wine(wineList.get(i))
-                    .contentRecommendationType(ContentRecommendationType.VIEW)
+                    .contentRecommendationType(type)
                     .build();
 
             contentRecommendationRepository.save(recommendationEntity);

@@ -35,7 +35,7 @@ public class RecommendationService {
         if (!contentRecommendationEntityList.isEmpty()) {
 
             Duration duration = Duration.between(
-                    contentRecommendationEntityList.get(0).getCreatedTime(),
+                    contentRecommendationEntityList.getFirst().getCreatedTime(),
                     LocalDateTime.now()
             );
             //createTime 으로부터 아직 갱신 시간이 되지 않았다.
@@ -49,7 +49,7 @@ public class RecommendationService {
             // 갱신 시간이 지나 새로 갱신해야할 경우
             else {
                 contentRecommendationRepository.deleteAllByContentRecommendationType(ContentRecommendationType.VIEW);
-                recommendationProcessor.createRecommendation();
+                recommendationProcessor.createRecommendation(ContentRecommendationType.VIEW);
                 return contentRecommendationRepository.findAllByContentRecommendationType(
                                 ContentRecommendationType.VIEW)
                         .stream().map(recommendationMapper::toGetListResponse)
@@ -58,7 +58,7 @@ public class RecommendationService {
         }
         // 최초 실행시엔 테이블이 비어있을 수 있음.
         else {
-            recommendationProcessor.createRecommendation();
+            recommendationProcessor.createRecommendation(ContentRecommendationType.VIEW);
             return contentRecommendationRepository.findAllByContentRecommendationType(ContentRecommendationType.VIEW)
                     .stream().map(recommendationMapper::toGetListResponse)
                     .toList();
@@ -71,7 +71,45 @@ public class RecommendationService {
     }
 
     public List<RecommendationGetListResponse> getRateRecommendation() {
-        return null;
+
+        List<ContentRecommendationEntity> contentRecommendationEntityList
+                = contentRecommendationRepository.findAllByContentRecommendationType(
+                ContentRecommendationType.RATE
+        );
+
+        log.info("contentRecommendationEntityList: {}", contentRecommendationEntityList);
+
+        if (!contentRecommendationEntityList.isEmpty()) {
+
+            Duration duration = Duration.between(
+                    contentRecommendationEntityList.getFirst().getCreatedTime(),
+                    LocalDateTime.now()
+            );
+            //createTime 으로부터 아직 갱신 시간이 되지 않았다.
+            if (duration.toHours() < 3) {
+                return contentRecommendationRepository.findAllByContentRecommendationType(
+                                ContentRecommendationType.RATE)
+                        .stream().map(recommendationMapper::toGetListResponse)
+                        .toList();
+
+            }
+            // 갱신 시간이 지나 새로 갱신해야할 경우
+            else {
+                contentRecommendationRepository.deleteAllByContentRecommendationType(ContentRecommendationType.RATE);
+                recommendationProcessor.createRecommendation(ContentRecommendationType.RATE);
+                return contentRecommendationRepository.findAllByContentRecommendationType(
+                                ContentRecommendationType.RATE)
+                        .stream().map(recommendationMapper::toGetListResponse)
+                        .toList();
+            }
+        }
+        // 최초 실행시엔 테이블이 비어있을 수 있음.
+        else {
+            recommendationProcessor.createRecommendation(ContentRecommendationType.RATE);
+            return contentRecommendationRepository.findAllByContentRecommendationType(ContentRecommendationType.RATE)
+                    .stream().map(recommendationMapper::toGetListResponse)
+                    .toList();
+        }
     }
 
     public List<RecommendationGetListResponse> getPreferenceRecommendation() {
