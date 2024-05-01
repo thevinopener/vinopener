@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: ${SPRING_PROFILES_ACTIVE:local}
+    active: ${SPRING_PROFILES_ACTIVE:test}
   application:
     name: vinopener
   web:
@@ -79,22 +79,10 @@ spring:
   config:
     activate:
       on-profile: local
-#  datasource:
-#    url: jdbc:mariadb://localhost:3306/vinopener
-#    username: ssafy
-#    password: ssafy
-
   datasource:
-
-    # local
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/s10p31c207?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mariadb://localhost:3306/vinopener
     username: ssafy
     password: ssafy
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: update  # 데이터베이스 스키마를 자동으로 업데이트
 
 ---
 
