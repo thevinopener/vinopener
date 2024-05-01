@@ -1,18 +1,18 @@
 // flutter
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/constants/label.dart';
+import 'package:frontend/constants/wineLabel.dart';
 
 // screens
 import 'package:frontend/screens/search/search_detail_screen.dart';
-import 'package:frontend/constants/label.dart';
+import 'package:frontend/constants/wineLabel.dart';
 
 // constants
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/constants/colors.dart';
 
 // 예제 데이터 리스트
-List<List<String>> wineNames = [
+List<List<String>> wineList = [
   ["More Wine Name 2020", "와이너리3", "국가3", "port"],
   ["More Wine Name 2020", "와이너리3", "국가3", "red"],
   ["More Wine Name 2020", "와이너리3", "국가3", "red"],
@@ -36,7 +36,7 @@ Widget SearchWineListWidget(BuildContext context) {
         scrollDirection: Axis.vertical,
         child: Column(
           children: List.generate(
-            wineNames.length, // 리스트 개수에 따라 동적으로 생성
+            wineList.length, // 리스트 개수에 따라 동적으로 생성
             (index) => Padding(
               padding: EdgeInsets.fromLTRB(10, 3, 10, 3),
               child: ElevatedButton(
@@ -56,22 +56,31 @@ Widget SearchWineListWidget(BuildContext context) {
                     children: [
                       // 사진 부분 시작
                       Flexible(
-                        flex: 4,
+                        flex: 3,
                         child: Stack(
                           children: [
                             Container(
                               width: double.maxFinite, // 이미지 컨테이너의 크기 조정 부분
                               height: 200,
+                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                               // color: Colors.white, // 이미지 배경색
-                              // color: Color(0xFFF8F8F8),
+                              // color: Color(0xFFF0F0F0), // 이미지 배경색
+                              decoration: BoxDecoration(
+                                color: Colors.white, // 얘랑 위에 이미지 배경색이랑 겹치면 중복설정이라 에러남
+                                borderRadius: BorderRadius.circular(5), // 모서리 둥글게
+                                border: Border.all(
+                                  color: Colors.black, // 테두리 색상
+                                  width: 1, // 테두리 두께
+                                ),
+                              ),
                               child: Image.asset(
                                 'assets/images/dummy_wine.png',
                                 fit: BoxFit.scaleDown,
                               ),
                             ),
                             Container(
-                              alignment: Alignment.topLeft,
-                              child: wineLabel(wineNames[index][3]),
+                              alignment: Alignment.bottomCenter,
+                              child: wineLabel(wineList[index][3]),
                             ),
                           ],
                         ),
@@ -83,7 +92,7 @@ Widget SearchWineListWidget(BuildContext context) {
                         flex: 6,
                         child: Container(
                           margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                          padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                          // padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           width: double.maxFinite,
                           height: double.maxFinite,
                           child: Column(
@@ -98,7 +107,7 @@ Widget SearchWineListWidget(BuildContext context) {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        wineNames[index][1],
+                                        wineList[index][1],
                                         style: TextStyle(
                                           fontSize: AppFontSizes.mediumSmall,
                                           color: Colors.black,
@@ -124,7 +133,7 @@ Widget SearchWineListWidget(BuildContext context) {
                               Flexible(
                                 flex: 2,
                                 child: Text(
-                                  wineNames[index][0],
+                                  wineList[index][0],
                                   style: TextStyle(
                                     fontSize: AppFontSizes.medium,
                                     color: Colors.black,
@@ -142,7 +151,7 @@ Widget SearchWineListWidget(BuildContext context) {
                                     ),
                                     SizedBox(width: 10),
                                     Text(
-                                      wineNames[index][2],
+                                      wineList[index][2],
                                       style: TextStyle(
                                         fontSize: AppFontSizes.small,
                                         fontWeight: FontWeight.w400,

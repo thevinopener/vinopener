@@ -70,6 +70,10 @@ dependencies {
 
   // https://mvnrepository.com/artifact/software.amazon.awssdk/s3
   implementation 'software.amazon.awssdk:s3:2.+'
+
+  // 양희승의 영역.. 야발 search는 크롤링이 안되면 화면에 데이터를 뭘 뿌려야되는지 몰라서 제가 크롤링 합니다 씨이이ㅣㅣ이ㅣㅣㅣ이이ㅏ바ㅏㄹ
+  implementation 'mysql:mysql-connector-java:8.0.29'
+
 }
 
 tasks.named('test') {
@@ -82,3 +86,4 @@ tasks {
     doNotTrackState("See https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/102")
   }
 }
+apply plugin: 'java'
