@@ -9,7 +9,7 @@ import lombok.Builder;
 @Builder
 public record WineChatGetOrGetListResponse(
         Long id,
-        WineChatGetListUserResponse user,
+        WineChatGetListResponseUser user,
         String message,
         @Schema(type = "string", example = TimeFormatConfig.LOCAL_DATE_TIME_EXAMPLE)
         @JsonFormat(pattern = TimeFormatConfig.LOCAL_DATE_TIME_PATTERN)
@@ -17,7 +17,7 @@ public record WineChatGetOrGetListResponse(
 ) {
 
     @Builder
-    public record WineChatGetListUserResponse(
+    public record WineChatGetListResponseUser(
             Long id,
             String nickname
     ) {

@@ -21,10 +21,9 @@ public class S3Service {
 
     public URI putObject(final String keyPrefix, final MultipartFile file)
             throws NoSuchAlgorithmException, IOException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        String fileHash = HexFormat.of().formatHex(digest.digest(file.getBytes()));
-        String key = keyPrefix + fileHash + ".jpg";
-
+        final var digest = MessageDigest.getInstance("SHA-256");
+        final var fileHash = HexFormat.of().formatHex(digest.digest(file.getBytes()));
+        final var key = keyPrefix + fileHash + ".jpg";
         s3Client.putObject(builder -> builder
                         .bucket(s3Props.bucket())
                         .key(key)

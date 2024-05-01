@@ -54,6 +54,10 @@ s3:
   endpoint: ${S3_ENDPOINT:}
   public-base-url: ${S3_PUBLIC_BASE_URL}
 
+openai:
+  api-key: ${OPENAI_API_KEY}
+  organization-id: ${OPENAI_ORGANIZATION_ID}
+  project-id: ${OPENAI_PROJECT_ID}
 
 redis:
   ttl: 3600
