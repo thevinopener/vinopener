@@ -71,23 +71,23 @@ class _FeedImageScreenState extends State<FeedImageScreen> {
           onPressed: () => Navigator.of(context).pop(),
           icon: Icon(Icons.close),
         ),
-        title: Center(
-          child: Text(
-            '이미지 업로드',
-            style: TextStyle(
-              fontSize: AppFontSizes.mediumSmall,
-              fontWeight: FontWeight.bold,
-            ),
+        title: Text(
+          '이미지 업로드',
+          style: TextStyle(
+            fontSize: AppFontSizes.mediumSmall,
+            fontWeight: FontWeight.bold,
           ),
         ),
+        centerTitle: true,
         actions: [
           TextButton(
             onPressed: navigateNext,
             child: Text(
               '다음',
               style: TextStyle(
-                fontSize: AppFontSizes.medium,
+                fontSize: AppFontSizes.mediumSmall,
                 color: AppColors.primary,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),

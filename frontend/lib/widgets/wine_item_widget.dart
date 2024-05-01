@@ -11,7 +11,6 @@ class WineItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     void showDetail() {
       Navigator.push(
         context,
@@ -22,50 +21,49 @@ class WineItem extends StatelessWidget {
     }
 
     return GestureDetector(
-      child: Container(
-        width: 360,
-        height: 100,
-        child: Card.outlined(
-          clipBehavior: Clip.antiAlias,
-          child: Row(
-            children: [
-              Container(
-                width: 100,
-                height: 100,
-                child: Image.asset(
-                  'assets/images/wine.jpg',
-                  fit: BoxFit.cover,
+        child: Container(
+          width: 360,
+          height: 100,
+          child: Card.outlined(
+            clipBehavior: Clip.antiAlias,
+            child: Row(
+              children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  child: Image.network(
+                    wine.imageUrl!,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('${wine.winery}'),
-                        Text(
-                          '${wine.name}',
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        NationFlag(height: 20, width: 20),
-                        SizedBox(width: 5),
-                        Text('${wine.country}')
-                      ],
-                    ),
-                  ],
+                Expanded(
+                  child: Column(
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('${wine.winery}'),
+                          Text(
+                            '${wine.name}',
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          NationFlag(height: 20, width: 20),
+                          SizedBox(width: 5),
+                          Text('${wine.country}')
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-      onTap: showDetail
-    );
+        onTap: showDetail);
   }
 }
