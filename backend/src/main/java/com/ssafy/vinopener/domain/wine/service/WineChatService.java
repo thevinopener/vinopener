@@ -6,13 +6,11 @@ import com.ssafy.vinopener.domain.wine.data.mapper.WineChatMapper;
 import com.ssafy.vinopener.domain.wine.repository.WineChatRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class WineChatService {
 
     private final WineChatRepository wineChatRepository;

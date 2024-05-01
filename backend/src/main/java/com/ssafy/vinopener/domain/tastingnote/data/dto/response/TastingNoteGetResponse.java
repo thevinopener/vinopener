@@ -6,14 +6,14 @@ import com.ssafy.vinopener.global.config.TimeFormatConfig;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 import lombok.Builder;
 
 @Builder
 public record TastingNoteGetResponse(
         Long id,
-        TastingNoteGetWineResponse wine,
-        TastingNoteGetColorResponse color,
+        TastingNoteGetResponseWine wine,
+        TastingNoteGetResponseColor color,
         BigDecimal sweetness,
         BigDecimal intensity,
         BigDecimal acidity,
@@ -21,14 +21,14 @@ public record TastingNoteGetResponse(
         BigDecimal tannin,
         String opinion,
         BigDecimal rating,
-        Set<TastingNoteGetFlavourResponse> flavours,
+        List<TastingNoteGetResponseFlavour> flavours,
         @Schema(type = "string", example = TimeFormatConfig.LOCAL_DATE_TIME_EXAMPLE)
         @JsonFormat(pattern = TimeFormatConfig.LOCAL_DATE_TIME_PATTERN)
         LocalDateTime updatedTime
 ) {
 
     @Builder
-    public record TastingNoteGetWineResponse(
+    public record TastingNoteGetResponseWine(
             Long id,
             String name,
             String imageUrl,
@@ -40,7 +40,7 @@ public record TastingNoteGetResponse(
     }
 
     @Builder
-    public record TastingNoteGetColorResponse(
+    public record TastingNoteGetResponseColor(
             Long id,
             String name
     ) {
@@ -48,7 +48,7 @@ public record TastingNoteGetResponse(
     }
 
     @Builder
-    public record TastingNoteGetFlavourResponse(
+    public record TastingNoteGetResponseFlavour(
             Long id,
             String type,
             String taste

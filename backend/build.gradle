@@ -24,17 +24,15 @@ repositories {
 }
 
 dependencies {
-  implementation 'org.springframework.boot:spring-boot-starter-actuator'
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-//    implementation 'org.springframework.boot:spring-boot-starter-pulsar'
+//  implementation 'org.springframework.boot:spring-boot-starter-kafka'
   implementation 'org.springframework.boot:spring-boot-starter-security'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.boot:spring-boot-starter-websocket'
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
   compileOnly 'org.projectlombok:lombok'
-  developmentOnly 'org.springframework.boot:spring-boot-devtools'
   runtimeOnly 'com.h2database:h2'
   runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -71,9 +69,10 @@ dependencies {
   // https://mvnrepository.com/artifact/software.amazon.awssdk/s3
   implementation 'software.amazon.awssdk:s3:2.+'
 
-  // 양희승의 영역.. 야발 search는 크롤링이 안되면 화면에 데이터를 뭘 뿌려야되는지 몰라서 제가 크롤링 합니다 씨이이ㅣㅣ이ㅣㅣㅣ이이ㅏ바ㅏㄹ
-  implementation 'mysql:mysql-connector-java:8.0.29'
-
+  // https://github.com/sashirestela/simple-openai
+  implementation('io.github.sashirestela:simple-openai:2.3.2') {
+    exclude group: 'org.slf4j', module: 'slf4j-simple'
+  }
 }
 
 tasks.named('test') {

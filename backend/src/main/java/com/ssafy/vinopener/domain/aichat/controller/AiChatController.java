@@ -1,6 +1,7 @@
 package com.ssafy.vinopener.domain.aichat.controller;
 
 import com.ssafy.vinopener.domain.aichat.data.dto.request.AiChatCreateRequest;
+import com.ssafy.vinopener.domain.aichat.data.dto.response.AiChatCreateResponse;
 import com.ssafy.vinopener.domain.aichat.data.dto.response.AiChatGetListResponse;
 import com.ssafy.vinopener.domain.aichat.service.AiChatService;
 import com.ssafy.vinopener.global.annotations.UserPrincipalId;
@@ -32,6 +33,8 @@ public class AiChatController {
 
     /**
      * AI채팅 생성
+     * <p>
+     * 챗봇의 응답을 반환합니다.
      *
      * @param aiChatCreateRequest AI채팅 생성 요청
      * @param userId              유저 ID
@@ -40,7 +43,7 @@ public class AiChatController {
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER),
             responses = @ApiResponse(responseCode = "201", headers = @Header(
                     name = HttpHeaders.LOCATION, description = REQUEST_PATH)))
-    public ResponseEntity<Void> createAiChat(
+    public ResponseEntity<AiChatCreateResponse> createAiChat(
             @RequestBody @Valid final AiChatCreateRequest aiChatCreateRequest,
             @UserPrincipalId final Long userId
     ) {
