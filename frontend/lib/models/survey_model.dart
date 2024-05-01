@@ -1,4 +1,4 @@
-class Survey{
+class Survey {
   final Set<String> type;
   final int minAbv;
   final int maxAbv;
@@ -13,6 +13,5 @@ class Survey{
     required this.sweetness,
     required this.acidity,
     required this.tannin,
-});
-
+  });
 }

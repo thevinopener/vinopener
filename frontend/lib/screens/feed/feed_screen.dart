@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/models/feed.dart';
+import 'package:frontend/providers/user_provider.dart';
 import 'package:frontend/screens/feed/feed_img_screen.dart';
 import 'package:frontend/services/feed_service.dart';
 import 'package:frontend/widgets/common/templates/feed_item_widget.dart';
+import 'package:provider/provider.dart';
 
 class FeedScreen extends StatefulWidget {
   FeedScreen({super.key});
@@ -18,6 +20,9 @@ class _FeedScreenState extends State<FeedScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final user = Provider.of<UserProvider>(context).user;
+
     void addFeed() {
       Navigator.push(
         context,

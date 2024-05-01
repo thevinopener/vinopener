@@ -36,13 +36,12 @@ class _HomeScreenState extends State<HomeScreen> {
       body: PageView(
         controller: _pageController,
         children: [
-          SafeArea(child: SearchCameraScreen()),  // 0번 페이지
+          SafeArea(child: SearchCameraScreen()), // 0번 페이지
           SafeArea(child: RecommendScreen()), // 1번 페이지
           SafeArea(child: FeedScreen()), // 2번 페이지
-          SafeArea(child: NoteListScreen()),  // 3번 페이지
-          SafeArea(child: MyPageScreen()),  // 4번 페이지
+          SafeArea(child: NoteListScreen()), // 3번 페이지
+          SafeArea(child: MyPageScreen()), // 4번 페이지
         ],
-
         onPageChanged: (index) {
           setState(() {
             _currentPageIndex = index;
@@ -52,21 +51,26 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
       ),
-      bottomNavigationBar: _currentPageIndex != 0 ? BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: bottomBarProvider.currentIndex,
-        onTap: (index) {
-          bottomBarProvider.setIndex(index);
-          _pageController.jumpToPage(index + 1); // 페이지 컨트롤러의 인덱스 조정
-        },
-        selectedItemColor: Colors.orange,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.comment), label: 'Feed'),
-          BottomNavigationBarItem(icon: Icon(Icons.edit_note), label: 'Note'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'My Page'),
-        ],
-      ) : null,
+      bottomNavigationBar: _currentPageIndex != 0
+          ? BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              currentIndex: bottomBarProvider.currentIndex,
+              onTap: (index) {
+                bottomBarProvider.setIndex(index);
+                _pageController.jumpToPage(index + 1); // 페이지 컨트롤러의 인덱스 조정
+              },
+              selectedItemColor: Colors.orange,
+              items: [
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.comment), label: 'Feed'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.edit_note), label: 'Note'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.person), label: 'My Page'),
+              ],
+            )
+          : null,
     );
   }
 }

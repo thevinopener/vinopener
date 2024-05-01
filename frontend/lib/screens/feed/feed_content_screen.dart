@@ -1,10 +1,14 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/models/feed.dart';
+import 'package:frontend/models/user.dart';
+import 'package:frontend/models/wine_model.dart';
 import 'package:frontend/services/feed_service.dart';
+import 'package:frontend/widgets/common/molecules/custom_list_tile_widget.dart';
 
 class FeedContentScreen extends StatefulWidget {
   final File? imageFile;
@@ -16,12 +20,25 @@ class FeedContentScreen extends StatefulWidget {
 }
 
 class _FeedContentScreenState extends State<FeedContentScreen> {
-  bool isPrivate = false;
+  List<Wine> wineList = [];
+  String? content;
+  bool isPublic = true;
+  TextEditingController contentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     void postFeed() {
-      FeedService.postFeed(Feed.dummy());
+      content = contentController.text;
+      FeedService.postFeed(
+        Feed(
+          user: User.dummy(),
+          imageUrl: 'assets/images/wine.jpg',
+          content: content,
+          isPublic: isPublic,
+          likeCount: 0,
+          createdTime: DateTime.now(),
+        ),
+      );
       Navigator.popUntil(context, (route) => route.isFirst);
     }
 
@@ -31,23 +48,23 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
           onPressed: () => Navigator.of(context).pop(),
           icon: Icon(Icons.navigate_before),
         ),
-        title: Center(
-          child: Text(
-            '피드 작성',
-            style: TextStyle(
-              fontSize: AppFontSizes.mediumSmall,
-              fontWeight: FontWeight.bold,
-            ),
+        title: Text(
+          '피드 작성',
+          style: TextStyle(
+            fontSize: AppFontSizes.mediumSmall,
+            fontWeight: FontWeight.bold,
           ),
         ),
+        centerTitle: true,
         actions: [
           TextButton(
             onPressed: postFeed,
             child: Text(
               '완료',
               style: TextStyle(
-                fontSize: AppFontSizes.medium,
+                fontSize: AppFontSizes.mediumSmall,
                 color: AppColors.primary,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
@@ -69,66 +86,85 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                     height: 400,
                     fit: BoxFit.cover,
                   ),
-            SizedBox(height: 20),
-            Text(
-              '와인 선택',
-              style: TextStyle(
-                fontSize: AppFontSizes.mediumSmall,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text('와인 검색창'),
-            Text('와인 카드'),
-            SizedBox(height: 20),
-            Text(
-              '피드 내용',
-              style: TextStyle(
-                fontSize: AppFontSizes.mediumSmall,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            TextField(
-              decoration: InputDecoration(
-                hintText: '내용을 입력하세요.',
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(
-                    color: Colors.transparent,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 10),
+                  Text(
+                    '와인 선택',
+                    style: TextStyle(
+                      fontSize: AppFontSizes.mediumSmall,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            Text(
-              '피드 설정',
-              style: TextStyle(
-                fontSize: AppFontSizes.mediumSmall,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.visibility_off_outlined),
-              title: Text('공개 여부'),
-              trailing: Switch(
-                value: isPrivate,
-                onChanged: (bool value) {
-                  setState(() {
-                    isPrivate = !isPrivate;
-                  });
-                },
-                activeColor: AppColors.primary,
-                inactiveTrackColor: AppColors.primaryLight,
-                thumbColor: MaterialStateProperty.resolveWith(
-                  (states) {
-                    if (states.contains(MaterialState.selected)) {
-                      return Colors.white; // 예를 들어 선택된 상태일 때는 빨간색으로
-                    }
-                    return Colors.grey; // 기본 상태는 흰색
-                  },
-                ),
+                  Text('와인 카드'),
+                  SizedBox(height: 10),
+                  Text(
+                    '피드 내용',
+                    style: TextStyle(
+                      fontSize: AppFontSizes.mediumSmall,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10), // 텍스트 필드의 둥근 모서리
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5), // 그림자 색상 및 투명도
+                          spreadRadius: 1, // 그림자의 범위 확장
+                          blurRadius: 3, // 그림자의 흐림 정도
+                          offset: Offset(0, 2), // 그림자의 위치 조정 (x, y)
+                        ),
+                      ],
+                    ),
+                    child: TextField(
+                      controller: contentController,
+                      decoration: InputDecoration(
+                        hintText: '내용을 입력하세요.',
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    '피드 설정',
+                    style: TextStyle(
+                      fontSize: AppFontSizes.mediumSmall,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  CustomListTile(
+                    leadingIcon: Icons.visibility_off_outlined,
+                    title: '공개 여부',
+                    trailing: Switch(
+                      value: isPublic,
+                      onChanged: (bool value) {
+                        setState(() {
+                          isPublic = !isPublic;
+                        });
+                      },
+                      activeColor: AppColors.primary,
+                      activeTrackColor: AppColors.primary,
+                      inactiveTrackColor: Colors.grey,
+                      thumbColor: MaterialStateProperty.all(Colors.white),
+                      trackOutlineColor:
+                          MaterialStateProperty.all(Colors.transparent),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 class CustomListTile extends StatelessWidget {
   final IconData leadingIcon;
   final String title;
+  final Widget? trailing;
+  final VoidCallback? onTap;
 
   const CustomListTile(
-      {super.key, required this.leadingIcon, required this.title});
+      {super.key, required this.leadingIcon, required this.title, this.trailing, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,8 @@ class CustomListTile extends StatelessWidget {
       child: ListTile(
         leading: Icon(leadingIcon),
         title: Text(title),
+        trailing: trailing,
+        onTap: onTap,
       ),
     );
   }

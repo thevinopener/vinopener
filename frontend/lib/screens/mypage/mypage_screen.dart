@@ -4,15 +4,15 @@ import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/models/feed.dart';
 import 'package:frontend/models/wine_model.dart';
+import 'package:frontend/providers/user_provider.dart';
 import 'package:frontend/screens/feed/feed_detail_screen.dart';
 import 'package:frontend/screens/mypage/mypage_setting_screen.dart';
 import 'package:frontend/services/feed_service.dart';
 import 'package:frontend/services/wine_service.dart';
 import 'package:frontend/widgets/wine_item_widget.dart';
+import 'package:provider/provider.dart';
 
 class MyPageScreen extends StatefulWidget {
-  static Future<List<Wine>> wineList = WineService.getWineList();
-
   const MyPageScreen({super.key});
 
   @override
@@ -24,6 +24,8 @@ class _MyPageScreenState extends State<MyPageScreen>
   late TabController _tabController;
 
   final Future<List<Feed>> myFeedList = FeedService.getMyFeedList();
+  final Future<List<Wine>> bookmarkList = WineService.getWineList();
+  final Future<List<Wine>> cellarList = WineService.getWineList();
 
   @override
   void initState() {
@@ -39,8 +41,8 @@ class _MyPageScreenState extends State<MyPageScreen>
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context).user;
     double avatarRadius = 50;
-    final String defaultImageUrl = 'assets/wine.jpg';
 
     return Scaffold(
       body: Column(
@@ -61,7 +63,7 @@ class _MyPageScreenState extends State<MyPageScreen>
                       StackTrace? stackTrace,
                     ) {
                       return Image.asset(
-                        defaultImageUrl,
+                        '${user.imageUrl}',
                         fit: BoxFit.scaleDown,
                       );
                     },
@@ -87,7 +89,7 @@ class _MyPageScreenState extends State<MyPageScreen>
               Positioned(
                 bottom: -avatarRadius,
                 child: CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/penguin.jpg'),
+                  backgroundImage: AssetImage('${user.imageUrl}'),
                   radius: avatarRadius,
                 ),
               ),
@@ -98,7 +100,7 @@ class _MyPageScreenState extends State<MyPageScreen>
             height: avatarRadius,
           ),
           Text(
-            'Nickname',
+            '${user.nickname}',
             style: TextStyle(
               fontSize: AppFontSizes.mediumSmall,
               fontWeight: FontWeight.bold,
@@ -156,7 +158,7 @@ class _MyPageScreenState extends State<MyPageScreen>
                   },
                 ),
                 FutureBuilder(
-                  future: MyPageScreen.wineList,
+                  future: bookmarkList,
                   builder: (
                     BuildContext context,
                     AsyncSnapshot<dynamic> snapshot,

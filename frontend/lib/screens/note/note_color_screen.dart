@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/note/note_smell_screen.dart';
+import 'package:frontend/widgets/note/note_taste_widget.dart';
 
-import '../../widgets/common/atoms/wine_taste_param_widget.dart';
 
 class NoteColorScreen extends StatelessWidget {
   const NoteColorScreen({super.key});
@@ -29,13 +29,8 @@ class NoteColorScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Container(
-        child: TasteParam(
-            acidity: 4.5,
-            alcohol: 3.5,
-            sweetness: 2.5,
-            tannin: 2.5,
-            intensity: 3.5),
+      body: SingleChildScrollView(
+        child: NoteTaste(acidity: 3.5, alcohol: 2.0, tannin: 3.5,sweetness: 2.5, intensity: 4.0,),
       ),
     );
   }
