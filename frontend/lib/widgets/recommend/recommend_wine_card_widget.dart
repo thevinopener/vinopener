@@ -1,11 +1,9 @@
-// flutter
 import 'package:flutter/material.dart';
 
-// constants
-import 'package:frontend/constants/fonts.dart';
+Widget RecommendWineCardWidget(BuildContext context) {
+  double screenWidth = MediaQuery.of(context).size.width;  // 장치의 화면 너비를 얻습니다.
+  double cardWidth = screenWidth * 0.4;  // 각 카드의 너비를 화면 너비의 40%로 설정합니다.
 
-// TODO: 국가명 빼고, 국가명을 기준으로 카드 우상단에 동그란 국기 아이콘 넣기
-Widget RecommendWineCardWidget() {
   return Container(
     height: 350,
     child: SingleChildScrollView(
@@ -14,19 +12,19 @@ Widget RecommendWineCardWidget() {
         children: List.generate(
           5,
               (index) => Padding(
-            padding: EdgeInsets.only(right: index < 4 ? 20 : 0),
+            padding: EdgeInsets.only(right: 20, left: index == 0 ? 20 : 0),  // 첫 번째 요소에 왼쪽 패딩을 추가
             child: ElevatedButton(
               onPressed: () {
-                // TODO: 여기에 클릭했을 때 로직 작성
+                // 클릭 시 수행할 작업
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Container(
-                    width: 200,  // 이미지 컨테이너의 크기 조정 부분
+                    width: cardWidth,  // 동적으로 계산된 너비를 사용
                     height: 150,
-                    color: Colors.white12,  // 이미지 배경색
+                    color: Colors.white12,
                     child: Image.asset(
                       'assets/images/dummy_wine.png',
                       fit: BoxFit.scaleDown,
@@ -40,7 +38,7 @@ Widget RecommendWineCardWidget() {
                       Text(
                         'Vieilles Vigne Chorey-lès-Beaune 2018',
                         style: TextStyle(
-                          fontSize: AppFontSizes.medium,
+                          fontSize: 16,
                           fontWeight: FontWeight.w500,
                           color: Colors.black,
                         ),
@@ -48,22 +46,20 @@ Widget RecommendWineCardWidget() {
                       SizedBox(height: 5),
                       Text('Michel Gay & Fils',
                         style: TextStyle(
-                          fontSize: AppFontSizes.medium,
+                          fontSize: 16,
                           fontWeight: FontWeight.w400,
                           color: Colors.orange,
-                        ),),
+                        ),
+                      ),
                       SizedBox(height: 5),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Image.asset('assets/images/ea.png',
-                            width: 20,
-                            height: 20,
-                          ),
+                          Image.asset('assets/images/ea.png', width: 20, height: 20),
                           SizedBox(width: 10),
                           Text('스페인',
                             style: TextStyle(
-                              fontSize: AppFontSizes.small,
+                              fontSize: 14,
                               fontWeight: FontWeight.w400,
                               color: Colors.black,
                             ),
@@ -75,13 +71,13 @@ Widget RecommendWineCardWidget() {
                 ],
               ),
               style: ElevatedButton.styleFrom(
-                fixedSize: Size(200, 300),  // 버튼 크기를 조정
+                fixedSize: Size(cardWidth, 300),  // 동적으로 계산된 너비를 사용
                 backgroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
-                  side: BorderSide(color: Colors.grey, width: 1),  // 회색 테두리 추가
+                  side: BorderSide(color: Colors.grey, width: 1),
                 ),
-                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),  // ElevatedButton 내부 패딩 (좌상우하 순 설정)
+                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
               ),
             ),
           ),

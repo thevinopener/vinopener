@@ -8,6 +8,7 @@ import 'package:frontend/models/note_model.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:frontend/widgets/recommend/recommend_wine_card_widget.dart';
 
 class SearchDetailScreen extends StatefulWidget {
   @override
@@ -426,6 +427,13 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                   children: [
                     Text('아로마'),
                     SizedBox(height: 10),
+                    SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      child: Row(
+                        // TODO: 여기에 아로마 노트들
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -433,14 +441,30 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
 
               // #4 다른와인추천 시작
               Container(
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                // padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                // margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 width: double.maxFinite,
-                height: 300,
+                height: 400,
                 decoration: BoxDecoration(
                   color: Colors.blue,
                 ),
-                child: Row(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                      child: Text(
+                        '이런 와인은 어떠세요?',
+                        style: TextStyle(
+                          fontSize: AppFontSizes.large,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    RecommendWineCardWidget(context),  // 가로스크롤 와인추천카드 위젯
+                  ],
+                ),
               ),
               // #4 다른와인추천 끝
 
@@ -453,7 +477,11 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                 decoration: BoxDecoration(
                   color: Colors.purple,
                 ),
-                child: Column(),
+                child: Column(
+                  children: [
+                    // TODO: 여기에 기타세부정보들
+                  ],
+                ),
               ),
               // #5 와인 기타 세부정보 끝
 
