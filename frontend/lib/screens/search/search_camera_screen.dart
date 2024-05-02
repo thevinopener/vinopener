@@ -115,12 +115,23 @@ class _SearchCameraScreenState extends State<SearchCameraScreen>
         width: double.infinity,
         child: Stack(
           children: [
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+            Text(
+              'Camera',
+              style: TextStyle(
+                fontSize: AppFontSizes.large,
+              ),
+=======
+>>>>>>> Stashed changes
             Column(
               children: <Widget>[
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.black,
+<<<<<<< Updated upstream
                       border: Border.all(
                         color: controller != null &&
                                 controller!.value.isRecordingVideo
@@ -128,6 +139,15 @@ class _SearchCameraScreenState extends State<SearchCameraScreen>
                             : Colors.grey,
                         width: 3.0,
                       ),
+=======
+                      // border: Border.all(
+                      //   color: controller != null &&
+                      //           controller!.value.isRecordingVideo
+                      //       ? Colors.redAccent
+                      //       : Colors.grey,
+                      //   width: 3.0,
+                      // ),
+>>>>>>> Stashed changes
                     ),
                     //     child: Padding(
                     //       padding: const EdgeInsets.all(1.0),
@@ -151,6 +171,10 @@ class _SearchCameraScreenState extends State<SearchCameraScreen>
                   ),
                 ),
               ],
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
             ),
           ],
         ),
