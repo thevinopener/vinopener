@@ -1,14 +1,16 @@
 // flutter
-import 'package:flutter/cupertino.dart';
+import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
-import 'package:frontend/models/note_model.dart';
+
+// constant
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
-import 'package:step_progress_indicator/step_progress_indicator.dart';
+
+// widgets
 import 'package:frontend/widgets/recommend/recommend_wine_card_widget.dart';
+
+// library
+import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
 
 class SearchDetailScreen extends StatefulWidget {
   @override
@@ -16,6 +18,15 @@ class SearchDetailScreen extends StatefulWidget {
 }
 
 class _SearchDetailScreenState extends State<SearchDetailScreen> {
+  final ValueNotifier<double> _acidNotifier = ValueNotifier(0);
+  final ValueNotifier<double> _bodyNotifier = ValueNotifier(0);
+  final ValueNotifier<double> _sweetNotifier = ValueNotifier(0);
+  final ValueNotifier<double> _tanninNotifier = ValueNotifier(0);
+  final double _acid = 3.5;
+  final double _body = 2.7;
+  final double _sweet = 1.6;
+  final double _tannin = 4.5;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,8 +50,8 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                 // margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 width: double.maxFinite,
                 decoration: BoxDecoration(
-                    color: Colors.red,
-                    ),
+                  // color: Colors.red,
+                ),
 
                 // #1-1 와인이미지, 국기 시작
                 child: Column(
@@ -53,7 +64,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                         Container(
                           alignment: Alignment.center,
                           width: double.maxFinite, // 이미지 컨테이너의 크기 조정 부분
-                          height: 400,
+                          height: 300,
                           margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                           decoration: BoxDecoration(
                             color:
@@ -85,7 +96,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                             alignment: Alignment
                                 .center, // Container 내부에서 중앙 정렬이 필요하면 사용
                             padding:
-                            EdgeInsets.symmetric(horizontal: 10.0), // 좌우 패딩
+                                EdgeInsets.symmetric(horizontal: 10.0), // 좌우 패딩
                             height: 40, // 텍스트 컨테이너의 세로 크기
                             width: 40,
                             decoration: BoxDecoration(
@@ -126,7 +137,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                             ),
                             softWrap: true, // 감싸주는 애
                             overflow:
-                            TextOverflow.ellipsis, // 글자수 넘치면 ... 으로 바꿔주는애
+                                TextOverflow.ellipsis, // 글자수 넘치면 ... 으로 바꿔주는애
                           ),
                           Text(
                             '빈티지',
@@ -224,10 +235,10 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                 padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                 margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                 width: double.maxFinite,
-                height: 200, // 450
+                height: 150, // 450
                 decoration: BoxDecoration(
-                    color: Colors.grey,
-                    ),
+                  // color: Colors.grey,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -241,177 +252,190 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                     ),
                     SizedBox(height: 10),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Column(
-                          children: <Widget>[
-                            Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                CircularStepProgressIndicator(
-                                  totalSteps: 50, // 전체 step 수
-                                  currentStep: 35, // 선택할 step 수
-                                  stepSize: 5, // 안채워진 부분 굵기
-                                  selectedStepSize: 10, // 채워진부분 굵기
-                                  unselectedColor:
-                                      AppColors.primaryLight, // 안채워진 부분 색깔
-                                  selectedColor: AppColors.primary, // 채워진 부분 색깔
-                                  padding: 0, // 뭔가 시작점 같은데 건들 ㄴ
-                                  width: 70, // 동그란 그래프 가로폭
-                                  height: 70, // 동그란 그래프 세로폭
-                                  roundedCap: (_, __) => true,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          width: 80,
+                          // decoration: const BoxDecoration(
+                          //   gradient: LinearGradient(
+                          //     begin: Alignment.topLeft,
+                          //     end: Alignment.bottomRight,
+                          //     colors: [
+                          //       AppColors.primary,
+                          //       AppColors.secondary,
+                          //     ],
+                          //   ),
+                          // ),
+                          child: DashedCircularProgressBar.aspectRatio(
+                            aspectRatio: 1, // width ÷ height
+                            valueNotifier: _acidNotifier,
+                            progress: _acid * 20,
+                            startAngle: 225,
+                            sweepAngle: 270,
+                            foregroundColor: AppColors.primary, // 채울 선 색깔
+                            backgroundColor: AppColors.primaryLight, // 안채울 선 색깔
+                            foregroundStrokeWidth: 11, // 채워진 선 굵기
+                            backgroundStrokeWidth: 10, // 안채울 선 굵기
+                            animation: true, // 애니메이션 여부
+                            seekSize: 0, // 동그라미 크기
+                            seekColor: const Color(0xffeeeeee), // 동그라미 색깔
+                            child: Center(
+                              child: ValueListenableBuilder(
+                                valueListenable: _acidNotifier,
+                                builder: (_, double value, __) => Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      // '${value.toInt()}',
+                                      '${_acid}',
+                                      style: const TextStyle(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      '산미',
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  '3.5',
-                                  style: TextStyle(
-                                    color: AppColors.primary,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: AppFontSizes.large,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              '산미',
-                              style: TextStyle(
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: AppFontSizes.medium,
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                        Column(
-                          children: <Widget>[
-                            Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                CircularStepProgressIndicator(
-                                  totalSteps: 50, // 전체 step 수
-                                  currentStep: 27, // 선택할 step 수
-                                  stepSize: 5, // 안채워진 부분 굵기
-                                  selectedStepSize: 10, // 채워진부분 굵기
-                                  unselectedColor:
-                                      AppColors.primaryLight, // 안채워진 부분 색깔
-                                  selectedColor: AppColors.primary, // 채워진 부분 색깔
-                                  padding: 0, // 뭔가 시작점 같은데 건들 ㄴ
-                                  width: 70, // 동그란 그래프 가로폭
-                                  height: 70, // 동그란 그래프 세로폭
-                                  roundedCap: (_, __) => true,
+                        Container(
+                          width: 80,
+                          child: DashedCircularProgressBar.aspectRatio(
+                            aspectRatio: 1, // width ÷ height
+                            valueNotifier: _bodyNotifier,
+                            progress: _body * 20,
+                            startAngle: 225,
+                            sweepAngle: 270,
+                            foregroundColor: AppColors.primary, // 채울 선 색깔
+                            backgroundColor: AppColors.primaryLight, // 안채울 선 색깔
+                            foregroundStrokeWidth: 11, // 채워진 선 굵기
+                            backgroundStrokeWidth: 10, // 안채울 선 굵기
+                            animation: true, // 애니메이션 여부
+                            seekSize: 0, // 동그라미 크기
+                            seekColor: const Color(0xffeeeeee), // 동그라미 색깔
+                            child: Center(
+                              child: ValueListenableBuilder(
+                                valueListenable: _bodyNotifier,
+                                builder: (_, double value, __) => Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      // '${value.toInt()}',
+                                      '${_body}',
+                                      style: const TextStyle(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      '바디감',
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  '2.7',
-                                  style: TextStyle(
-                                    color: AppColors.primary,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: AppFontSizes.large,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              '바디감',
-                              style: TextStyle(
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: AppFontSizes.medium,
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                        Column(
-                          children: <Widget>[
-                            Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                CircularStepProgressIndicator(
-                                  totalSteps: 50, // 전체 step 수
-                                  currentStep: 16, // 선택할 step 수
-                                  stepSize: 5, // 안채워진 부분 굵기
-                                  selectedStepSize: 10, // 채워진부분 굵기
-                                  unselectedColor:
-                                      AppColors.primaryLight, // 안채워진 부분 색깔
-                                  selectedColor: AppColors.primary, // 채워진 부분 색깔
-                                  padding: 0, // 뭔가 시작점 같은데 건들 ㄴ
-                                  width: 70, // 동그란 그래프 가로폭
-                                  height: 70, // 동그란 그래프 세로폭
-                                  roundedCap: (_, __) => true,
+                        Container(
+                          width: 80,
+                          child: DashedCircularProgressBar.aspectRatio(
+                            aspectRatio: 1, // width ÷ height
+                            valueNotifier: _sweetNotifier,
+                            progress: _sweet * 20,
+                            startAngle: 225,
+                            sweepAngle: 270,
+                            foregroundColor: AppColors.primary, // 채울 선 색깔
+                            backgroundColor: AppColors.primaryLight, // 안채울 선 색깔
+                            foregroundStrokeWidth: 11, // 채워진 선 굵기
+                            backgroundStrokeWidth: 10, // 안채울 선 굵기
+                            animation: true, // 애니메이션 여부
+                            seekSize: 0, // 동그라미 크기
+                            seekColor: const Color(0xffeeeeee), // 동그라미 색깔
+                            child: Center(
+                              child: ValueListenableBuilder(
+                                valueListenable: _sweetNotifier,
+                                builder: (_, double value, __) => Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '${_sweet}',
+                                      style: const TextStyle(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      '당도',
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  '1.6',
-                                  style: TextStyle(
-                                    color: AppColors.primary,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: AppFontSizes.large,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              '당도',
-                              style: TextStyle(
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: AppFontSizes.medium,
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                        Column(
-                          children: <Widget>[
-                            Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                CircularStepProgressIndicator(
-                                  totalSteps: 50, // 전체 step 수
-                                  currentStep: 45, // 선택할 step 수
-                                  stepSize: 5, // 안채워진 부분 굵기
-                                  selectedStepSize: 10, // 채워진부분 굵기
-                                  unselectedColor:
-                                      AppColors.primaryLight, // 안채워진 부분 색깔
-                                  selectedColor: AppColors.primary, // 채워진 부분 색깔
-                                  padding: 0, // 뭔가 시작점 같은데 건들 ㄴ
-                                  width: 70, // 동그란 그래프 가로폭
-                                  height: 70, // 동그란 그래프 세로폭
-                                  roundedCap: (_, __) => true,
+                        Container(
+                          width: 80,
+                          child: DashedCircularProgressBar.aspectRatio(
+                            aspectRatio: 1, // width ÷ height
+                            valueNotifier: _tanninNotifier,
+                            progress: _tannin * 20,
+                            startAngle: 225,
+                            sweepAngle: 270,
+                            foregroundColor: AppColors.primary, // 채울 선 색깔
+                            backgroundColor: AppColors.primaryLight, // 안채울 선 색깔
+                            foregroundStrokeWidth: 11, // 채워진 선 굵기
+                            backgroundStrokeWidth: 10, // 안채울 선 굵기
+                            animation: true, // 애니메이션 여부
+                            seekSize: 0, // 동그라미 크기
+                            seekColor: const Color(0xffeeeeee), // 동그라미 색깔
+                            child: Center(
+                              child: ValueListenableBuilder(
+                                valueListenable: _tanninNotifier,
+                                builder: (_, double value, __) => Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '${_tannin}',
+                                      style: const TextStyle(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      '타닌',
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  '4.5',
-                                  style: TextStyle(
-                                    color: AppColors.primary,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: AppFontSizes.large,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              '타닌',
-                              style: TextStyle(
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: AppFontSizes.medium,
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
+
               // #2 풍미 끝
 
               // #3 아로마 시작
@@ -431,8 +455,8 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                       physics: BouncingScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       child: Row(
-                        // TODO: 여기에 아로마 노트들
-                      ),
+                          // TODO: 여기에 아로마 노트들
+                          ),
                     ),
                   ],
                 ),
@@ -462,7 +486,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                         ),
                       ),
                     ),
-                    RecommendWineCardWidget(context),  // 가로스크롤 와인추천카드 위젯
+                    RecommendWineCardWidget(context), // 가로스크롤 와인추천카드 위젯
                   ],
                 ),
               ),
