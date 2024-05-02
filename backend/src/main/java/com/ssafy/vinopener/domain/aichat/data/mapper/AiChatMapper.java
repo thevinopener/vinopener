@@ -6,14 +6,18 @@ import com.ssafy.vinopener.domain.aichat.data.dto.AiChatCreateUserMessageInfo;
 import com.ssafy.vinopener.domain.aichat.data.dto.AiChatCreateUserMessageInfo.AiChatCreateUserMessageInfoState;
 import com.ssafy.vinopener.domain.aichat.data.dto.request.AiChatCreateRequest;
 import com.ssafy.vinopener.domain.aichat.data.dto.response.AiChatCreateResponse;
+import com.ssafy.vinopener.domain.aichat.data.dto.response.AiChatCreateResponse.AiChatCreateResponseCommand;
+import com.ssafy.vinopener.domain.aichat.data.dto.response.AiChatCreateResponse.AiChatCreateResponseCommand.CommandFlavour;
 import com.ssafy.vinopener.domain.aichat.data.dto.response.AiChatGetListResponse;
 import com.ssafy.vinopener.domain.aichat.data.entity.AiChatEntity;
+import com.ssafy.vinopener.domain.tastingnote.data.entity.ColorEntity;
+import com.ssafy.vinopener.domain.wine.data.entity.FlavourTasteEntity;
 import com.ssafy.vinopener.global.common.ReferenceMapper;
+import java.util.List;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
-import org.springframework.lang.Nullable;
 
 @Mapper(componentModel = "spring",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
@@ -21,8 +25,16 @@ import org.springframework.lang.Nullable;
         uses = {ReferenceMapper.class})
 public interface AiChatMapper {
 
-    AiChatCreateResponse toCreateResponse(AiChatEntity entity,
-            @Nullable AiChatCreateResponseAiMessageInfoCommand command);
+    @Mapping(target = "command", source = "responseCommand")
+    AiChatCreateResponse toCreateResponse(AiChatEntity entity, AiChatCreateResponseCommand responseCommand);
+
+    @Mapping(target = "color", source = "colorEntity")
+    @Mapping(target = "flavours", source = "flavourEntities")
+    AiChatCreateResponseCommand toCreateResponseCommand(AiChatCreateResponseAiMessageInfoCommand infoCommand,
+            ColorEntity colorEntity, List<FlavourTasteEntity> flavourEntities);
+
+    @Mapping(target = "taste", source = "name")
+    CommandFlavour map(FlavourTasteEntity entity);
 
     AiChatGetListResponse toGetListResponse(AiChatEntity entity);
 
