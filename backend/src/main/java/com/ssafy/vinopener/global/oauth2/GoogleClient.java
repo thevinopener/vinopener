@@ -9,14 +9,19 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import javax.security.auth.login.LoginException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestTemplate;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class GoogleClient {
 
     private final GoogleClientProps googleClientProps;
@@ -52,14 +57,27 @@ public class GoogleClient {
     }
 
     public GoogleAccountProfileResponse getGoogleAccountProfile(final String accessToken) {
-        final HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
-        final HttpEntity<GoogleAccessTokenRequest> httpEntity = new HttpEntity<>(headers);
-        return restClient.get()
-                .uri(googleClientProps.profileUrl())
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .body(GoogleAccountProfileResponse.class);
+//        final HttpHeaders headers = new HttpHeaders();
+//        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+//        final HttpEntity<GoogleAccessTokenRequest> httpEntity = new HttpEntity<>(headers);
+//        return restClient.get()
+//                .uri(googleClientProps.profileUrl())Z
+//                .accept(MediaType.APPLICATION_JSON)
+//                .retrieve()
+//                .body(GoogleAccountProfileResponse.class);
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + accessToken);
+        HttpEntity request = new HttpEntity(headers);
+
+        ResponseEntity<GoogleAccountProfileResponse> response = restTemplate.exchange(
+                googleClientProps.profileUrl(),
+                HttpMethod.GET,
+                request,
+                GoogleAccountProfileResponse.class
+        );
+
+        return response.getBody();
     }
 
 }
