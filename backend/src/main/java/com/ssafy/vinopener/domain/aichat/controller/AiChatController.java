@@ -38,6 +38,7 @@ public class AiChatController {
      *
      * @param aiChatCreateRequest AI채팅 생성 요청
      * @param userId              유저 ID
+     * @return AI채팅 챗봇 응답
      */
     @PostMapping
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER),

@@ -7,12 +7,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
-import org.springframework.lang.Nullable;
 
 @Builder
 public record AiChatCreateResponse(
         Long id,
-        @Nullable AiChatCreateResponseCommand command,
+        AiChatCreateResponseCommand command,
         String message,
         @Schema(type = "string", example = TimeFormatConfig.LOCAL_DATE_TIME_EXAMPLE)
         @JsonFormat(pattern = TimeFormatConfig.LOCAL_DATE_TIME_PATTERN)

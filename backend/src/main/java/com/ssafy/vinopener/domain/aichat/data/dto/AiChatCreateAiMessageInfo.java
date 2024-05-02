@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.Builder;
-import org.springframework.lang.Nullable;
 
 /**
  * openai snake_case 권장
@@ -13,15 +12,15 @@ import org.springframework.lang.Nullable;
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record AiChatCreateAiMessageInfo(
-        @Nullable AiChatCreateResponseAiMessageInfoCommand command,
+        AiChatCreateResponseAiMessageInfoCommand command,
         String message
 ) {
 
     @Builder
     public record AiChatCreateResponseAiMessageInfoCommand(
             CommandSection section,
-            CommandColor color,
-            List<CommandFlavour> flavours,
+            String color,
+            List<String> flavours,
             BigDecimal sweetness,
             BigDecimal intensity,
             BigDecimal acidity,
@@ -40,22 +39,6 @@ public record AiChatCreateAiMessageInfo(
             RATING,
             COMPLETE,
             EXIT
-        }
-
-        @Builder
-        public record CommandColor(
-                Long id,
-                String name
-        ) {
-
-        }
-
-        @Builder
-        public record CommandFlavour(
-                Long id,
-                String taste
-        ) {
-
         }
 
     }

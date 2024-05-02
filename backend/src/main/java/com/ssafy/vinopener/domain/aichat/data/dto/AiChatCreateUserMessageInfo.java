@@ -17,11 +17,12 @@ public record AiChatCreateUserMessageInfo(
 ) {
 
     @Builder
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public record AiChatCreateUserMessageInfoState(
             Boolean created,
-            String wineName,
-            String colorName,
-            List<String> flavourTasteNames,
+            String wine,
+            String color,
+            List<String> flavours,
             BigDecimal sweetness,
             BigDecimal intensity,
             BigDecimal acidity,
