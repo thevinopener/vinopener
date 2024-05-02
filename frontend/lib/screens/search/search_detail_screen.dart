@@ -1,99 +1,637 @@
 // flutter
+import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+// constant
+import 'package:frontend/constants/colors.dart';
+import 'package:frontend/constants/fonts.dart';
+
+// widgets
+import 'package:frontend/widgets/recommend/recommend_wine_card_widget.dart';
+
+// library
+import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
+
 class SearchDetailScreen extends StatefulWidget {
+  @override
   _SearchDetailScreenState createState() => _SearchDetailScreenState();
 }
 
 class _SearchDetailScreenState extends State<SearchDetailScreen> {
+  final ValueNotifier<double> _acidNotifier = ValueNotifier(0);
+  final ValueNotifier<double> _bodyNotifier = ValueNotifier(0);
+  final ValueNotifier<double> _sweetNotifier = ValueNotifier(0);
+  final ValueNotifier<double> _tanninNotifier = ValueNotifier(0);
+  final double _acid = 3.5;
+  final double _body = 2.7;
+  final double _sweet = 1.6;
+  final double _tannin = 4.5;
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(height: 50,),
-        Container(
-          width: 300,
-          height: 10,
+    return Scaffold(
+      appBar: AppBar(
+          title: Text(
+        '세부정보',
+        style: TextStyle(
+          color: Colors.black,
+        ),
+      )),
+      body: Container(
+        color: Colors.white,
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          scrollDirection: Axis.vertical,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // #1 와인정보 시작
               Container(
-                width: double.infinity,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                // margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                width: double.maxFinite,
+                decoration: BoxDecoration(
+                    // color: Colors.red,
+                    ),
+
+                // #1-1 와인이미지, 국기 시작
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const SizedBox(width: 30),
-                    const SizedBox(width: 30),
-                    const SizedBox(width: 30),
-                    const SizedBox(width: 30),
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          width: double.maxFinite, // 이미지 컨테이너의 크기 조정 부분
+                          height: 300,
+                          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          decoration: BoxDecoration(
+                            color:
+                                Colors.white, // 얘랑 위에 이미지 배경색이랑 겹치면 중복설정이라 에러남
+                            borderRadius: BorderRadius.circular(5), // 모서리 둥글게
+                            // border: Border.all(
+                            //   color: Colors.grey, // 테두리 색상
+                            //   width: 1, // 테두리 두께
+                            // ),
+                          ),
+                          child: Image.asset(
+                            'assets/images/dummy_wine.png',
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ),
+                        Positioned(
+                          top: 20,
+                          right: 20,
+                          child: Image.asset(
+                            'assets/images/ea.png',
+                            width: 40,
+                            height: 40,
+                          ),
+                        ),
+                        Positioned(
+                          top: 70, // 이미지 하단에서부터의 위치
+                          right: 20,
+                          child: Container(
+                            alignment: Alignment
+                                .center, // Container 내부에서 중앙 정렬이 필요하면 사용
+                            padding:
+                                EdgeInsets.symmetric(horizontal: 10.0), // 좌우 패딩
+                            height: 40, // 텍스트 컨테이너의 세로 크기
+                            width: 40,
+                            decoration: BoxDecoration(
+                              color: WineButtonColors.red,
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    // #1-1 와인이미지, 국기 끝
+
+                    // #1-2 와인 주요 세부정보 시작
+
+                    Container(
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      child: Column(
+                        children: [
+                          Text(
+                            // '프릿츠 하크 브라우네베르거 유퍼 존넨누어 리슬링 트로켄베어렌아우스레제', // 세상에서 가장 긴 와인이름
+                            // '와인명와인명와인명와인명와인명와인명와인명와인명와인명와인명와인명와인명와인명와인명와인명와인명와인명와인명와인명와인명와인명와인명와인명', // 여기 안넘으면 안터짐 ㄱㅊ
+                            '롬바흐, 시그니처 엑스트라 브뤼 프리미에 크뤼 블랑 드 누아',
+                            // 'testtest',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: AppFontSizes.mediumLarge,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            softWrap: true, // 감싸주는 애
+                          ),
+                          Text(
+                            '와이너리명',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: AppFontSizes.medium,
+                              fontWeight: FontWeight.w300,
+                            ),
+                            softWrap: true, // 감싸주는 애
+                            overflow:
+                                TextOverflow.ellipsis, // 글자수 넘치면 ... 으로 바꿔주는애
+                          ),
+                          Text(
+                            '빈티지',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: AppFontSizes.mediumLarge,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.star,
+                                color: AppColors.primary,
+                              ),
+                              Text(
+                                ' 4.6',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: AppFontSizes.large,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // TODO: API 붙일 때, boolean 여부로 버튼 변경 추가 필요
+                                Container(
+                                  width: double.maxFinite,
+                                  child: ElevatedButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      '즐겨찾기 추가',
+                                      style: TextStyle(
+                                          color: AppColors.primary,
+                                          fontSize: AppFontSizes.medium,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.white,
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      side: BorderSide(
+                                          color: AppColors.primary, width: 2),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: double.maxFinite,
+                                  child: ElevatedButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      '셀러 추가',
+                                      style: TextStyle(
+                                          color: AppColors.secondary,
+                                          fontSize: AppFontSizes.medium,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      // backgroundColor: AppColors.secondary,
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      side: BorderSide(
+                                        color: AppColors.secondary,
+                                        width: 2,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // #1-2 와인 주요 세부정보 끝
                   ],
                 ),
               ),
+              // #1 와인정보 끝
+
+              // #2 풍미 시작
               Container(
-                width: 300,
-                height: 6,
-                padding: const EdgeInsets.only(right: 111.11),
-                decoration: ShapeDecoration(
-                  color: Colors.white.withOpacity(0.10000000149011612),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                width: double.maxFinite,
+                height: 150, // 450
+                decoration: BoxDecoration(
+                    // color: Colors.grey,
+                    ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: 188.89,
-                      height: 6,
-                      decoration: ShapeDecoration(
-                        color: Color(0xFFCFDC00),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
+                    Text(
+                      '풍미',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: AppFontSizes.mediumLarge,
                       ),
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          width: 80,
+                          // decoration: const BoxDecoration(
+                          //   gradient: LinearGradient(
+                          //     begin: Alignment.topLeft,
+                          //     end: Alignment.bottomRight,
+                          //     colors: [
+                          //       AppColors.primary,
+                          //       AppColors.secondary,
+                          //     ],
+                          //   ),
+                          // ),
+                          child: DashedCircularProgressBar.aspectRatio(
+                            aspectRatio: 1, // width ÷ height
+                            valueNotifier: _acidNotifier,
+                            progress: _acid * 20,
+                            startAngle: 225,
+                            sweepAngle: 270,
+                            foregroundColor: AppColors.primary, // 채울 선 색깔
+                            backgroundColor: AppColors.primaryLight, // 안채울 선 색깔
+                            foregroundStrokeWidth: 11, // 채워진 선 굵기
+                            backgroundStrokeWidth: 10, // 안채울 선 굵기
+                            animation: true, // 애니메이션 여부
+                            seekSize: 0, // 동그라미 크기
+                            seekColor: const Color(0xffeeeeee), // 동그라미 색깔
+                            child: Center(
+                              child: ValueListenableBuilder(
+                                valueListenable: _acidNotifier,
+                                builder: (_, double value, __) => Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      // '${value.toInt()}',
+                                      '${_acid}',
+                                      style: const TextStyle(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      '산미',
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 80,
+                          child: DashedCircularProgressBar.aspectRatio(
+                            aspectRatio: 1, // width ÷ height
+                            valueNotifier: _bodyNotifier,
+                            progress: _body * 20,
+                            startAngle: 225,
+                            sweepAngle: 270,
+                            foregroundColor: AppColors.primary, // 채울 선 색깔
+                            backgroundColor: AppColors.primaryLight, // 안채울 선 색깔
+                            foregroundStrokeWidth: 11, // 채워진 선 굵기
+                            backgroundStrokeWidth: 10, // 안채울 선 굵기
+                            animation: true, // 애니메이션 여부
+                            seekSize: 0, // 동그라미 크기
+                            seekColor: const Color(0xffeeeeee), // 동그라미 색깔
+                            child: Center(
+                              child: ValueListenableBuilder(
+                                valueListenable: _bodyNotifier,
+                                builder: (_, double value, __) => Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      // '${value.toInt()}',
+                                      '${_body}',
+                                      style: const TextStyle(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      '바디감',
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 80,
+                          child: DashedCircularProgressBar.aspectRatio(
+                            aspectRatio: 1, // width ÷ height
+                            valueNotifier: _sweetNotifier,
+                            progress: _sweet * 20,
+                            startAngle: 225,
+                            sweepAngle: 270,
+                            foregroundColor: AppColors.primary, // 채울 선 색깔
+                            backgroundColor: AppColors.primaryLight, // 안채울 선 색깔
+                            foregroundStrokeWidth: 11, // 채워진 선 굵기
+                            backgroundStrokeWidth: 10, // 안채울 선 굵기
+                            animation: true, // 애니메이션 여부
+                            seekSize: 0, // 동그라미 크기
+                            seekColor: const Color(0xffeeeeee), // 동그라미 색깔
+                            child: Center(
+                              child: ValueListenableBuilder(
+                                valueListenable: _sweetNotifier,
+                                builder: (_, double value, __) => Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '${_sweet}',
+                                      style: const TextStyle(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      '당도',
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 80,
+                          child: DashedCircularProgressBar.aspectRatio(
+                            aspectRatio: 1, // width ÷ height
+                            valueNotifier: _tanninNotifier,
+                            progress: _tannin * 20,
+                            startAngle: 225,
+                            sweepAngle: 270,
+                            foregroundColor: AppColors.primary, // 채울 선 색깔
+                            backgroundColor: AppColors.primaryLight, // 안채울 선 색깔
+                            foregroundStrokeWidth: 11, // 채워진 선 굵기
+                            backgroundStrokeWidth: 10, // 안채울 선 굵기
+                            animation: true, // 애니메이션 여부
+                            seekSize: 0, // 동그라미 크기
+                            seekColor: const Color(0xffeeeeee), // 동그라미 색깔
+                            child: Center(
+                              child: ValueListenableBuilder(
+                                valueListenable: _tanninNotifier,
+                                builder: (_, double value, __) => Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '${_tannin}',
+                                      style: const TextStyle(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 20),
+                                    ),
+                                    Text(
+                                      '타닌',
+                                      style: const TextStyle(
+                                          color: AppColors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
+              // #2 풍미 끝
+
+              // #3 아로마 시작
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                width: double.maxFinite,
+                height: 300,
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                ),
+                child: Column(
+                  children: [
+                    Text('아로마'),
+                    SizedBox(height: 10),
+                    SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      child: Row(
+                          // TODO: 여기에 아로마 노트들
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              // #3 아로마 끝
+
+              // #4 다른와인추천 시작
+              Container(
+                // padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                // margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                width: double.maxFinite,
+                height: 400,
+                decoration: BoxDecoration(
+                    // color: Colors.blue,
+                    ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                      child: Text(
+                        '이런 와인은 어떠세요?',
+                        style: TextStyle(
+                          fontSize: AppFontSizes.large,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    RecommendWineCardWidget(context), // 가로스크롤 와인추천카드 위젯
+                  ],
+                ),
+              ),
+              // #4 다른와인추천 끝
+
+              // #5 와인 기타 세부정보 시작
+              Container(
+                // padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                // margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                width: double.maxFinite,
+                height: 240,
+                decoration: BoxDecoration(
+                  // color: Colors.black12,
+                  // color: Colors.purple,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                      child: Text(
+                        '세부정보',
+                        style: TextStyle(
+                          fontSize: AppFontSizes.large,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                      margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                'assets/images/alcohol_content.png',
+                                width: 30,
+                                height: 30,
+                              ),
+                              SizedBox(width: 30),
+                              Text(
+                                '20%',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: AppFontSizes.mediumLarge,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                'assets/images/grapes.png',
+                                width: 30,
+                                height: 30,
+                              ),
+                              SizedBox(width: 30),
+                              Text(
+                                'Touriga Francesa',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: AppFontSizes.mediumLarge,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                'assets/images/region.png',
+                                width: 30,
+                                height: 30,
+                              ),
+                              SizedBox(width: 30),
+                              Text(
+                                'United States, Napa Vally',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: AppFontSizes.mediumLarge,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+
+                    ),
+                  ],
+                ),
+              ),
+              // #5 와인 기타 세부정보 끝
+
+              // #6 테이스팅노트 작성 버튼 시작
+              Container(
+                margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                width: double.maxFinite,
+                // height: 100,
+                decoration: BoxDecoration(
+                    // color: Colors.grey,
+                    ),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Container(
+                    // padding: EdgeInsets.all(10),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.edit_note_outlined,
+                            color: AppColors.white,
+                          ),
+                          Text(
+                            '  테이스팅노트 작성하기',
+                            style: TextStyle(
+                              fontSize: AppFontSizes.medium,
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ]),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    elevation: 0,
+                  ),
+                ),
+              ),
+              // #6 테이스팅노트 작성 버튼 끝
             ],
           ),
         ),
-      ],
+      ),
     );
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: Text(
-    //       'Detail',
-    //       style: TextStyle(
-    //         color: Colors.black,
-    //       ),
-    //     )
-    //   ),
-    //   body: Column(
-    //     children: [
-    //       // #1 와인정보 시작
-    //         // d
-    //       // #1 와인정보 끝
-    //
-    //       // #2 아로마노트 시작
-    //       // #2 아로마노트 끝
-    //
-    //       // #3 맛 오각형 시작
-    //       // #3 맛 오각형 끝
-    //
-    //       // #4 다른와인추천 시작
-    //       // #4 다른와인추천 끝
-    //
-    //       // #5 BottmBar
-    //     ],
-    //   ),
-    // );
   }
 }
