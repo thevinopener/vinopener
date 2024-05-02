@@ -1,5 +1,6 @@
 // flutter
 import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // constant
@@ -50,8 +51,8 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                 // margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 width: double.maxFinite,
                 decoration: BoxDecoration(
-                  // color: Colors.red,
-                ),
+                    // color: Colors.red,
+                    ),
 
                 // #1-1 와인이미지, 국기 시작
                 child: Column(
@@ -237,8 +238,8 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                 width: double.maxFinite,
                 height: 150, // 450
                 decoration: BoxDecoration(
-                  // color: Colors.grey,
-                ),
+                    // color: Colors.grey,
+                    ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -469,8 +470,8 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                 width: double.maxFinite,
                 height: 400,
                 decoration: BoxDecoration(
-                  // color: Colors.blue,
-                ),
+                    // color: Colors.blue,
+                    ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -493,16 +494,100 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
 
               // #5 와인 기타 세부정보 시작
               Container(
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                // padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                // margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 width: double.maxFinite,
-                height: 300,
+                height: 240,
                 decoration: BoxDecoration(
-                  color: Colors.purple,
+                  // color: Colors.black12,
+                  // color: Colors.purple,
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // TODO: 여기에 기타세부정보들
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                      child: Text(
+                        '세부정보',
+                        style: TextStyle(
+                          fontSize: AppFontSizes.large,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                      margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                'assets/images/alcohol_content.png',
+                                width: 30,
+                                height: 30,
+                              ),
+                              SizedBox(width: 30),
+                              Text(
+                                '20%',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: AppFontSizes.mediumLarge,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                'assets/images/grapes.png',
+                                width: 30,
+                                height: 30,
+                              ),
+                              SizedBox(width: 30),
+                              Text(
+                                'Touriga Francesa',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: AppFontSizes.mediumLarge,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                'assets/images/region.png',
+                                width: 30,
+                                height: 30,
+                              ),
+                              SizedBox(width: 30),
+                              Text(
+                                'United States, Napa Vally',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: AppFontSizes.mediumLarge,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+
+                    ),
                   ],
                 ),
               ),
@@ -510,7 +595,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
 
               // #6 테이스팅노트 작성 버튼 시작
               Container(
-                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
                 width: double.maxFinite,
                 // height: 100,
                 decoration: BoxDecoration(
