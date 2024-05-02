@@ -40,7 +40,7 @@ public class BehaviorRecommendationEntity extends BaseTimeEntity {
     private WineEntity wine;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "behavior_recommendation_type")
+    @Column(name = "behavior_recommendation_type", columnDefinition = "ENUM")
     private BehaviorRecommendationType behaviorRecommendationType;
 
 }
