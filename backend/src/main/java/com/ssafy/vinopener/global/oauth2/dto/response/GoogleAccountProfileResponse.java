@@ -1,16 +1,18 @@
 package com.ssafy.vinopener.global.oauth2.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 
 @Builder
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record GoogleAccountProfileResponse(
-        @JsonProperty("id") String id,
-        @JsonProperty("given_name") String givenName,
-        @JsonProperty("name") String name,
-        @JsonProperty("email") String email,
-        @JsonProperty("verified_email") Boolean verifiedEmail,
-        @JsonProperty("picture") String picture
+        String id,
+        String givenName,
+        String name,
+        String email,
+        Boolean verifiedEmail,
+        String picture
 ) {
 
 }
