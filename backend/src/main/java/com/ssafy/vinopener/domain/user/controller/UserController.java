@@ -107,6 +107,7 @@ public class UserController {
      */
     @DeleteMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<?> logout(@RequestHeader("Authorization") String accessToken) {
         userService.deleteTokenByToken(accessToken);
         return ResponseEntity.noContent().build();
