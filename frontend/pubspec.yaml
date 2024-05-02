@@ -15,9 +15,10 @@ dependencies:
   smooth_page_indicator: ^1.1.0
 
   # Search_Detail_Screen
-#  step_progress_indicator: ^1.0.2
-#  simple_circular_progress_bar: ^1.0.2
   dashed_circular_progress_bar: ^0.0.6
+
+  # Search_Camera_Screen
+  camera: ^0.10.5+9
 
   # for gallery image
   image_picker: ^1.1.0
