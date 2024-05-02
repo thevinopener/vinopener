@@ -13,7 +13,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SecurityException;
 import java.time.Duration;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import javax.crypto.SecretKey;
@@ -30,9 +29,8 @@ public class JwtProvider {
     private static final String CLAIMS_EMAIL = "email";
     private static final String CLAIMS_AUTHORITY = "authority";
     private final JwtProps jwtProps;
-    private final Base64.Decoder decoder = Base64.getDecoder();
     private final TokenRepository tokenRepository;
-    private final long REDIS_TTL = 3600;
+    private final long REDIS_TTL = 86400;
 
     public String issueUserAccessToken(UserEntity user) {
 
@@ -68,24 +66,6 @@ public class JwtProvider {
                 .build();
 
         return new UsernamePasswordAuthenticationToken(userPrincipal, null, List.of(userPrincipal::getAuthority));
-    }
-
-    public Long getUserIdFromToken(String token) {
-        //AccessToken으로 userId 가져오기.
-        Claims payload;
-        try {
-            payload = Jwts.parser()
-                    .verifyWith(jwtProps.getAccessSecretKey())
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
-        } catch (ExpiredJwtException e) {
-            throw new VinopenerException(JwtErrorCode.EXPIRED_TOKEN);
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new VinopenerException(JwtErrorCode.INVALID_TOKEN);
-        }
-
-        return payload.get(CLAIMS_ID, Long.class);
     }
 
     public Long parseId(String token) {

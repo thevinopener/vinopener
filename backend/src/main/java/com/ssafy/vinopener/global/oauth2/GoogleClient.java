@@ -57,14 +57,7 @@ public class GoogleClient {
     }
 
     public GoogleAccountProfileResponse getGoogleAccountProfile(final String accessToken) {
-//        final HttpHeaders headers = new HttpHeaders();
-//        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
-//        final HttpEntity<GoogleAccessTokenRequest> httpEntity = new HttpEntity<>(headers);
-//        return restClient.get()
-//                .uri(googleClientProps.profileUrl())Z
-//                .accept(MediaType.APPLICATION_JSON)
-//                .retrieve()
-//                .body(GoogleAccountProfileResponse.class);
+
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);

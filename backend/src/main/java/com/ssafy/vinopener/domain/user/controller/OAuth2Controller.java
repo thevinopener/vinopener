@@ -4,8 +4,6 @@ import com.ssafy.vinopener.domain.user.data.entity.UserEntity;
 import com.ssafy.vinopener.domain.user.service.OAuth2Service;
 import com.ssafy.vinopener.global.jwt.JwtProvider;
 import com.ssafy.vinopener.global.oauth2.GoogleClient;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -26,14 +24,10 @@ public class OAuth2Controller {
     private final JwtProvider jwtProvider;
 
     @PostMapping("/login/google")
-    public ResponseEntity<?> login(@RequestParam("code") String code,
-            HttpServletResponse response,
-            HttpServletRequest request) {
+    public ResponseEntity<?> login(@RequestParam("token") String token) {
 
-        //액세스 토큰 요청
-        String oAuth2AccessToken = oAuth2Service.requestAccessToken(code);
         //프로필 정보 요청 및 가입여부 확인 후 유저 정보 return
-        UserEntity user = oAuth2Service.loadUser(oAuth2AccessToken);
+        UserEntity user = oAuth2Service.loadUser(token);
         String accessToken = jwtProvider.issueUserAccessToken(user);
         String refreshToken = jwtProvider.issueUserRefreshToken(user);
 
