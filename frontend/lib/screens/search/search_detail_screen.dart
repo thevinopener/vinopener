@@ -435,7 +435,6 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                   ],
                 ),
               ),
-
               // #2 풍미 끝
 
               // #3 아로마 시작
@@ -470,7 +469,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                 width: double.maxFinite,
                 height: 400,
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  // color: Colors.blue,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

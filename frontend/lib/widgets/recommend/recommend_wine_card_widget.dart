@@ -21,16 +21,24 @@ Widget RecommendWineCardWidget(BuildContext context) {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
-                    width: cardWidth,  // 동적으로 계산된 너비를 사용
-                    height: 150,
-                    color: Colors.white12,
-                    child: Image.asset(
-                      'assets/images/dummy_wine.png',
-                      fit: BoxFit.scaleDown,
-                    ),
+                  Stack(
+                    children: [
+                      Container(
+                        width: cardWidth,  // 동적으로 계산된 너비를 사용
+                        height: 190,
+                        color: Colors.white12,
+                        // color: Colors.orange,
+                        child: Image.asset(
+                          'assets/images/dummy_wine.png',
+                          fit: BoxFit.scaleDown,
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Image.asset('assets/images/ea.png', width: 20, height: 20),
+                      )
+                    ],
                   ),
-                  SizedBox(height: 10),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -50,21 +58,6 @@ Widget RecommendWineCardWidget(BuildContext context) {
                           fontWeight: FontWeight.w400,
                           color: Colors.orange,
                         ),
-                      ),
-                      SizedBox(height: 5),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Image.asset('assets/images/ea.png', width: 20, height: 20),
-                          SizedBox(width: 10),
-                          Text('스페인',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   )
