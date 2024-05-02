@@ -2,8 +2,10 @@ package com.ssafy.vinopener.domain.feed.data.mapper;
 
 import com.ssafy.vinopener.domain.feed.data.dto.response.FeedGetListResponse.FeedGetListWineResponse;
 import com.ssafy.vinopener.domain.feed.data.dto.response.FeedGetResponse.FeedGetWineResponse;
+import com.ssafy.vinopener.domain.feed.data.entity.FeedEntity;
 import com.ssafy.vinopener.domain.feed.data.entity.FeedWineEntity;
 import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
+import com.ssafy.vinopener.domain.wine.data.mapper.WineMapper;
 import com.ssafy.vinopener.global.common.ReferenceMapper;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -14,7 +16,7 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         unmappedTargetPolicy = ReportingPolicy.ERROR,
-        uses = {ReferenceMapper.class, WineEntity.class})
+        uses = {ReferenceMapper.class, WineMapper.class})
 public interface FeedWineMapper {
 
     @Mappings({
@@ -60,8 +62,8 @@ public interface FeedWineMapper {
     FeedGetListWineResponse toWineListResponse(FeedWineEntity feedWineEntity);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "feed", source = "feedId")
-    @Mapping(target = "wine", source = "wineId")
-    FeedWineEntity toEntity(Long feedId, Long wineId);
+    @Mapping(target = "feed", source = "feed")
+    @Mapping(target = "wine", source = "wine")
+    FeedWineEntity toEntity(FeedEntity feed, WineEntity wine);
 
 }

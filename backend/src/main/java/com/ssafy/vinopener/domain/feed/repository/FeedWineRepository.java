@@ -13,7 +13,7 @@ public interface FeedWineRepository extends JpaRepository<FeedWineEntity, Long> 
     List<FeedWineEntity> findAllByFeedId(Long feedId);
 
     @EntityGraph(attributePaths = {"wine"})
-    FeedWineEntity findByFeedId(Long feedId);
+    List<FeedWineEntity> findByFeedId(Long feedId);
 
     // feedId를 가진 모든 FeedWineEntity 객체 삭제.
     void deleteAllByFeedId(Long feedId);

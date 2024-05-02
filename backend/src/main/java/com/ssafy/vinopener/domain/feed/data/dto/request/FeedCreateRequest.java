@@ -6,6 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public record FeedCreateRequest(
         @NotNull String content,
+
+        // 피드 내용 이미지
         MultipartFile imageFile,
         @NotNull boolean isPublic,
 

@@ -10,6 +10,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +39,12 @@ public class FeedEntity extends BaseTimeEntity {
     private String imageUrl;
 
     private boolean isPublic;
+
+    @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY)
+    private List<FeedWineEntity> wine;
+
+    @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY)
+    private List<FeedLikeEntity> like;
 
     // "is로 인해 Lombok 자동 설정이 인식 못하는 문제로 직접 getter() 생성
     public boolean getIsPublic() {
