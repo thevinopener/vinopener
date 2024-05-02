@@ -6,8 +6,10 @@ import 'package:flutter/widgets.dart';
 import 'package:frontend/models/note_model.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
+import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class SearchDetailScreen extends StatefulWidget {
+  @override
   _SearchDetailScreenState createState() => _SearchDetailScreenState();
 }
 
@@ -213,12 +215,12 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                                           backgroundColor: AppColors.white,
                                           elevation: 0,
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
                                           side: BorderSide(
-                                            color: AppColors.primary,
-                                            width: 2
-                                          ),
+                                              color: AppColors.primary,
+                                              width: 2),
                                         ),
                                       ),
                                     ),
@@ -237,11 +239,12 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                                           // backgroundColor: AppColors.secondary,
                                           elevation: 0,
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
                                           side: BorderSide(
-                                              color: AppColors.secondary,
-                                              width: 2,
+                                            color: AppColors.secondary,
+                                            width: 2,
                                           ),
                                         ),
                                       ),
@@ -265,11 +268,193 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 width: double.maxFinite,
-                height: 500,
+                height: 200, // 450
                 decoration: BoxDecoration(
-                  color: Colors.orange,
+                  // color: Colors.grey,
                 ),
-                child: Column(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '풍미',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: AppFontSizes.mediumLarge,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          children: <Widget>[
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                CircularStepProgressIndicator(
+                                  totalSteps: 50, // 전체 step 수
+                                  currentStep: 35, // 선택할 step 수
+                                  stepSize: 5, // 안채워진 부분 굵기
+                                  selectedStepSize: 10, // 채워진부분 굵기
+                                  unselectedColor:
+                                      AppColors.primaryLight, // 안채워진 부분 색깔
+                                  selectedColor: AppColors.primary, // 채워진 부분 색깔
+                                  padding: 0, // 뭔가 시작점 같은데 건들 ㄴ
+                                  width: 70, // 동그란 그래프 가로폭
+                                  height: 70, // 동그란 그래프 세로폭
+                                  roundedCap: (_, __) => true,
+                                ),
+                                Text(
+                                  '3.5',
+                                  style: TextStyle(
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: AppFontSizes.large,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              '산미',
+                              style: TextStyle(
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w500,
+                                fontSize: AppFontSizes.medium,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                CircularStepProgressIndicator(
+                                  totalSteps: 50, // 전체 step 수
+                                  currentStep: 27, // 선택할 step 수
+                                  stepSize: 5, // 안채워진 부분 굵기
+                                  selectedStepSize: 10, // 채워진부분 굵기
+                                  unselectedColor:
+                                      AppColors.primaryLight, // 안채워진 부분 색깔
+                                  selectedColor: AppColors.primary, // 채워진 부분 색깔
+                                  padding: 0, // 뭔가 시작점 같은데 건들 ㄴ
+                                  width: 70, // 동그란 그래프 가로폭
+                                  height: 70, // 동그란 그래프 세로폭
+                                  roundedCap: (_, __) => true,
+                                ),
+                                Text(
+                                  '2.7',
+                                  style: TextStyle(
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: AppFontSizes.large,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              '바디감',
+                              style: TextStyle(
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w500,
+                                fontSize: AppFontSizes.medium,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                CircularStepProgressIndicator(
+                                  totalSteps: 50, // 전체 step 수
+                                  currentStep: 16, // 선택할 step 수
+                                  stepSize: 5, // 안채워진 부분 굵기
+                                  selectedStepSize: 10, // 채워진부분 굵기
+                                  unselectedColor:
+                                      AppColors.primaryLight, // 안채워진 부분 색깔
+                                  selectedColor: AppColors.primary, // 채워진 부분 색깔
+                                  padding: 0, // 뭔가 시작점 같은데 건들 ㄴ
+                                  width: 70, // 동그란 그래프 가로폭
+                                  height: 70, // 동그란 그래프 세로폭
+                                  roundedCap: (_, __) => true,
+                                ),
+                                Text(
+                                  '1.6',
+                                  style: TextStyle(
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: AppFontSizes.large,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              '당도',
+                              style: TextStyle(
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w500,
+                                fontSize: AppFontSizes.medium,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                CircularStepProgressIndicator(
+                                  totalSteps: 50, // 전체 step 수
+                                  currentStep: 45, // 선택할 step 수
+                                  stepSize: 5, // 안채워진 부분 굵기
+                                  selectedStepSize: 10, // 채워진부분 굵기
+                                  unselectedColor:
+                                      AppColors.primaryLight, // 안채워진 부분 색깔
+                                  selectedColor: AppColors.primary, // 채워진 부분 색깔
+                                  padding: 0, // 뭔가 시작점 같은데 건들 ㄴ
+                                  width: 70, // 동그란 그래프 가로폭
+                                  height: 70, // 동그란 그래프 세로폭
+                                  roundedCap: (_, __) => true,
+                                ),
+                                Text(
+                                  '4.5',
+                                  style: TextStyle(
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: AppFontSizes.large,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              '타닌',
+                              style: TextStyle(
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w500,
+                                fontSize: AppFontSizes.medium,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
               // #2 풍미 끝
 
@@ -282,7 +467,12 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                 decoration: BoxDecoration(
                   color: Colors.green,
                 ),
-                child: Column(),
+                child: Column(
+                  children: [
+                    Text('아로마'),
+                    SizedBox(height: 10),
+                  ],
+                ),
               ),
               // #3 아로마 끝
 
