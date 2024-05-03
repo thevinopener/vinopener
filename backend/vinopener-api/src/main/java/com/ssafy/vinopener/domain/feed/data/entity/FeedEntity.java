@@ -52,4 +52,8 @@ public class FeedEntity extends BaseTimeEntity {
         return isPublic;
     }
 
+    public void switchPublic() {
+        this.isPublic = !isPublic;
+    }
+
 }
