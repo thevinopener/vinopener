@@ -1,13 +1,13 @@
 // flutter
-import 'dart:ui';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // constant
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
+import 'package:frontend/screens/note/note_color_screen.dart';
 
-// widgets
+// pages & widgets & models
+import 'package:frontend/screens/note/note_color_screen.dart';
 import 'package:frontend/widgets/recommend/recommend_wine_card_widget.dart';
 import 'package:frontend/widgets/common/atoms/wine_flavour_widget.dart';
 import 'package:frontend/models/note_model.dart';
@@ -462,8 +462,8 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                 width: double.maxFinite,
                 height: 150,
                 decoration: BoxDecoration(
-                  // color: Colors.green,
-                ),
+                    // color: Colors.green,
+                    ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -637,7 +637,15 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                     // color: Colors.grey,
                     ),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    // TODO: 해당 와인 객체정보 가지고 NoteColorScreen 페이지로 라우팅
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NoteColorScreen(),
+                      ),
+                    );
+                  },
                   child: Container(
                     // padding: EdgeInsets.all(10),
                     child: Row(
@@ -648,7 +656,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                             color: AppColors.white,
                           ),
                           Text(
-                            '  테이스팅노트 작성하기',
+                            '테이스팅노트 작성하기',
                             style: TextStyle(
                               fontSize: AppFontSizes.medium,
                               color: AppColors.white,
