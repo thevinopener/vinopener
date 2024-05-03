@@ -489,7 +489,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                             child: WineFlavour(
                                 flavour:
-                                    Flavour(id: 0, taste: aromaList[index])),
+                                    Flavour(id: 0, taste: aromaList[index]), isSelected:false,),
                           ),
                         ),
                       ),

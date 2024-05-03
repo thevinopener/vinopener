@@ -46,7 +46,7 @@ class NoteSmellScreen extends StatelessWidget {
               SizedBox(height: 10,),
               Text('어떠한 향기가 나나요?', style: TextStyle(fontSize: AppFontSizes.mediumSmall),),
               SizedBox(height: 30,),
-              NoteFlavour(),
+              NoteFlavour(flavourId: [68, 72, 1, 14, 16, 52],),
               SizedBox(height: 20,)
             ],
           ),
