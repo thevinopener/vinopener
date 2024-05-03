@@ -12,16 +12,17 @@ pipeline {
         dockerComposeProjectName = 'vinopener-backend'
     }
     stages {
-        stage('backend build') {
+        stage('Build') {
             steps {
                 dir("$baseDir") {
                     withGradle {
                         sh 'gradle -p vinopener-api bootJar'
+                        sh 'gradle -p vinopener-batch bootJar'
                     }
                 }
             }
         }
-        stage('backend test') {
+        stage('Test') {
             steps {
                 dir(baseDir) {
                     withGradle {
@@ -30,7 +31,7 @@ pipeline {
                 }
             }
         }
-        stage('backend deploy') {
+        stage('Deploy SSH') {
             when {
                 branch mainBranch
             }
