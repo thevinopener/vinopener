@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/screens/note/note_smell_screen.dart';
 
 import '../../models/wine_model.dart';
-import '../../widgets/note/note_select_color_widgit.dart';
+import '../../widgets/note/note_select_color_widget.dart';
 import '../../widgets/note/note_wine_card.dart';
 
 class NoteColorScreen extends StatelessWidget {
@@ -27,13 +28,6 @@ class NoteColorScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Color'),
-        actions: [
-          IconButton(
-            color: Colors.black,
-            onPressed: navigateNext,
-            icon: Icon(Icons.navigate_next),
-          )
-        ],
       ),
       body: SingleChildScrollView(
           child: Container(
@@ -47,13 +41,34 @@ class NoteColorScreen extends StatelessWidget {
 
                 SizedBox(height: 20,),
                 Text('색상', style: TextStyle(fontSize: AppFontSizes.large),),
+                SizedBox(height: 10,),
                 Text('와인의 색상을 선택해 주세요', style: TextStyle(fontSize: AppFontSizes.mediumSmall),),
                 SizedBox(height: 30,),
                 NoteColor(),
+                SizedBox(height: 20,),
+
               ],
             ),
           ),
       ),
+      persistentFooterButtons: [
+        Container(
+          height: 40,
+          width: double.infinity, // 버튼을 컨테이너 전체 너비로 확장
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            boxShadow: [], // 그림자 제거
+          ),
+          child: TextButton(
+            onPressed: navigateNext,
+            child: Text("다음", style: TextStyle(color: Colors.white)),
+            style: TextButton.styleFrom(
+              backgroundColor: AppColors.primary, // 버튼 배경 색상
+              padding: EdgeInsets.symmetric(horizontal: 30), // 내부 여백
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

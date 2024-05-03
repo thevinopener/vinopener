@@ -33,6 +33,9 @@ dependencies:
   #for common
   custom_rating_bar: ^2.0.5
 
+  #Note_Color_Screen
+  accordion: ^2.6.0
+
 flutter:
   uses-material-design: true
   assets:
