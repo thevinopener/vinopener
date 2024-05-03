@@ -68,6 +68,24 @@ services:
     depends_on:
       - redis
       - mariadb
+
+  vinopener-batch:
+    container_name: vinopener-batch
+    image: vinopener-batch
+    build: vinopener-batch
+    restart: on-failure
+    networks:
+      - db
+    environment:
+      - TZ=Asia/Seoul
+      - LC_ALL=C.UTF-8
+      - SPRING_PROFILES_ACTIVE=prod
+      - MARIADB_HOST=mariadb:3306
+      - MARIADB_DATABASE
+      - MARIADB_USER
+      - MARIADB_PASSWORD
+    depends_on:
+      - mariadb
   
   redis:
     container_name: redis

@@ -1,6 +1,6 @@
 plugins {
   id 'java'
-  id 'org.springframework.boot' version '3.2.4'
+  id 'org.springframework.boot' version '3.2.5'
   id 'io.spring.dependency-management' version '1.1.4'
   id 'org.springdoc.openapi-gradle-plugin' version '1.8.0'
   id 'org.ec4j.editorconfig' version '0.1.0'
@@ -26,18 +26,19 @@ repositories {
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
   implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-//  implementation 'org.springframework.boot:spring-boot-starter-kafka'
   implementation 'org.springframework.boot:spring-boot-starter-security'
   implementation 'org.springframework.boot:spring-boot-starter-validation'
   implementation 'org.springframework.boot:spring-boot-starter-web'
   implementation 'org.springframework.boot:spring-boot-starter-websocket'
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+//    implementation 'org.springframework.kafka:spring-kafka'
   compileOnly 'org.projectlombok:lombok'
   runtimeOnly 'com.h2database:h2'
   runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
   annotationProcessor 'org.projectlombok:lombok'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//  testImplementation 'org.springframework.kafka:spring-kafka-test'
   testImplementation 'org.springframework.security:spring-security-test'
 
   // https://github.com/querydsl/querydsl
@@ -70,7 +71,7 @@ dependencies {
   implementation 'software.amazon.awssdk:s3:2.+'
 
   // https://github.com/sashirestela/simple-openai
-  implementation('io.github.sashirestela:simple-openai:2.3.2') {
+  implementation('io.github.sashirestela:simple-openai:2.3.3') {
     exclude group: 'org.slf4j', module: 'slf4j-simple'
   }
 }
