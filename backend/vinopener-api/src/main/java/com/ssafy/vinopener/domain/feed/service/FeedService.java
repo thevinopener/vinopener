@@ -4,6 +4,7 @@ import com.ssafy.vinopener.domain.feed.data.dto.request.FeedCreateRequest;
 import com.ssafy.vinopener.domain.feed.data.dto.response.FeedGetListResponse;
 import com.ssafy.vinopener.domain.feed.data.dto.response.FeedGetResponse;
 import com.ssafy.vinopener.domain.feed.data.entity.FeedEntity;
+import com.ssafy.vinopener.domain.feed.data.entity.FeedLikeEntity;
 import com.ssafy.vinopener.domain.feed.data.entity.FeedWineEntity;
 import com.ssafy.vinopener.domain.feed.data.mapper.FeedLikeMapper;
 import com.ssafy.vinopener.domain.feed.data.mapper.FeedMapper;
@@ -12,6 +13,7 @@ import com.ssafy.vinopener.domain.feed.exception.FeedErrorCode;
 import com.ssafy.vinopener.domain.feed.repository.FeedLikeRepository;
 import com.ssafy.vinopener.domain.feed.repository.FeedRepository;
 import com.ssafy.vinopener.domain.feed.repository.FeedWineRepository;
+import com.ssafy.vinopener.domain.user.data.entity.UserEntity;
 import com.ssafy.vinopener.domain.user.exception.UserErrorCode;
 import com.ssafy.vinopener.domain.user.repository.UserRepository;
 import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
@@ -139,6 +141,36 @@ public class FeedService {
         int totalLikes = feedLikeRepository.countByFeedId(feed.getId());
         List<FeedWineEntity> wines = feedWineRepository.findByFeedId(feedId);
         return Optional.of(feedMapper.toGetResponse(feed, wines, totalLikes));
+    }
+
+    @Transactional
+    public void deleteMyFeed(
+            final Long feedId,
+            final Long userId
+    ) {
+        feedExists(feedId);
+        feedRepository.deleteByIdAndUserId(feedId, userId);
+    }
+
+    @Transactional
+    public void switchLike(
+            Long feedId, Long userId
+    ) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new VinopenerException(UserErrorCode.USER_NOT_FOUND));
+        FeedEntity feed = feedRepository.findById(feedId)
+                .orElseThrow(() -> new VinopenerException(FeedErrorCode.FEED_NOT_FOUND));
+
+        Optional<FeedLikeEntity> like = feedLikeRepository.findByFeedIdAndUserId(feedId, userId);
+        if (like.isPresent()) {
+            feedLikeRepository.deleteByFeedIdAndUserId(feedId, userId);
+        } else {
+            FeedLikeEntity newLike = FeedLikeEntity.builder()
+                    .feed(feed)
+                    .user(user)
+                    .build();
+            feedLikeRepository.save(newLike);
+        }
     }
 
     private void feedExists(

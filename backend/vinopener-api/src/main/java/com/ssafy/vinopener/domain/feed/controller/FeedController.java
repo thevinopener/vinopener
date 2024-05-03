@@ -20,13 +20,17 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -122,6 +126,45 @@ public class FeedController {
             @PathVariable("userId") final Long userId
     ) {
         return ResponseEntity.ok(feedService.getMyFeed(feedId, userId));
+    }
+
+    /**
+     * 내  피드 삭제
+     *
+     * @param feedId 피드 ID
+     * @param userId 유저 ID
+     */
+    @DeleteMapping(REQUEST_PATH_VARIABLE)
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> deleteMyFeed(
+            @PathVariable final Long feedId,
+            @RequestParam final Long userId
+    ) {
+        feedService.deleteMyFeed(feedId, userId);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 좋아요 ON / OFF
+     *
+     * @param feedId 피드 ID
+     * @param userId 유저 ID
+     */
+    @PostMapping("/like" + REQUEST_PATH_VARIABLE)
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> switchLike(
+            @PathVariable final Long feedId,
+            @UserPrincipalId final Long userId
+    ) {
+        try {
+            feedService.switchLike(feedId, userId);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
 }
