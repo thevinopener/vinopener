@@ -18,10 +18,19 @@ class NoteCard extends StatelessWidget {
       width: dimension * 0.91,
       height: dimension * 0.5,
       decoration: ShapeDecoration(
+        color: AppColors.white,
         shape: RoundedRectangleBorder(
           side: BorderSide(width: 1, color: Color(0xFFCACACB)),
           borderRadius: BorderRadius.circular(12),
         ),
+        shadows: [
+          BoxShadow(
+            color: Color(0x1418274B),
+            blurRadius: 4,
+            offset: Offset(0, 4),
+            spreadRadius: -2,
+          )
+        ],
       ),
       child: Row(
         children: [
@@ -31,7 +40,8 @@ class NoteCard extends StatelessWidget {
               Container(
                 width: dimension * 0.09,
                 decoration: ShapeDecoration(
-                  color: WineColors.wineColorMap[note.color.name] ?? Colors.transparent,
+                  color: WineColors.wineColorMap[note.color.name] ??
+                      Colors.transparent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12),
@@ -44,6 +54,9 @@ class NoteCard extends StatelessWidget {
               Container(
                 width: dimension * 0.31,
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      bottomLeft: Radius.circular(12)),
                   image: DecorationImage(
                     image: NetworkImage(note.wine.imageUrl),
                     fit: BoxFit.fitHeight, // 이미지가 컨테이너를 꽉 채우도록 설정
@@ -53,7 +66,7 @@ class NoteCard extends StatelessWidget {
             ],
           ),
           Container(
-            padding: EdgeInsets.only(left: dimension*0.03),
+            padding: EdgeInsets.only(left: dimension * 0.03),
             width: dimension * 0.5,
             decoration: BoxDecoration(
               border: Border(
@@ -73,14 +86,20 @@ class NoteCard extends StatelessWidget {
                   children: [
                     Text(
                       note.wine.winery,
-                      style: TextStyle(fontSize: AppFontSizes.mediumSmall, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: AppFontSizes.mediumSmall,
+                          fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text(
                       note.wine.name,
                       style: TextStyle(fontSize: AppFontSizes.small),
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                     Row(
                       children: [
                         NationFlag(height: 12, width: 12),
@@ -102,7 +121,12 @@ class NoteCard extends StatelessWidget {
                             .map((flavour) => Padding(
                                   padding: const EdgeInsets.only(right: 5),
                                   // 각 향 요소 사이에 오른쪽 패딩 추가
-                                  child: Text(flavour.taste, style: TextStyle(fontSize: AppFontSizes.verySmall, color: AppColors.black),),
+                                  child: Text(
+                                    flavour.taste,
+                                    style: TextStyle(
+                                        fontSize: AppFontSizes.verySmall,
+                                        color: AppColors.black),
+                                  ),
                                 ))
                             .toList(),
                       ),

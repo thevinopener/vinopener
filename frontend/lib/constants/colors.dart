@@ -34,3 +34,20 @@ class WineColors {
     "황갈색": Color(0xFF853C29),
   };
 }
+
+class WineColorsId {
+  static const Map<String,int> wineColorIdMap = {
+    "밑집색": 1,
+    "노란색": 2,
+    "황금색": 3,
+    "호박색": 4,
+    "갈색": 5,
+    "구리색": 6,
+    "연어색": 7,
+    "분홍색": 8,
+    "루비색": 9,
+    "보라색": 10,
+    "석류색": 11,
+    "황갈색": 12,
+  };
+}

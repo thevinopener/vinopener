@@ -17,7 +17,7 @@ class NoteWine {
       required this.name,
       required this.imageUrl,
       required this.winery,
-      required this.country});
+      required this.country,});
 
   factory NoteWine.fromJson(Map<String, dynamic> json) {
     return NoteWine(
