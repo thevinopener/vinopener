@@ -154,7 +154,8 @@ public class FeedService {
 
     @Transactional
     public void switchLike(
-            Long feedId, Long userId
+            final Long feedId,
+            final Long userId
     ) {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new VinopenerException(UserErrorCode.USER_NOT_FOUND));
@@ -173,19 +174,24 @@ public class FeedService {
         }
     }
 
+    @Transactional
+    public void switchPublic(
+            final Long feedId,
+            final Long userId
+    ) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> new VinopenerException(UserErrorCode.USER_NOT_FOUND));
+        FeedEntity feed = feedRepository.findById(feedId)
+                .orElseThrow(() -> new VinopenerException(FeedErrorCode.FEED_NOT_FOUND));
+
+        feed.switchPublic();
+    }
+
     private void feedExists(
             final Long feedId
     ) {
         feedRepository.findById(feedId)
                 .orElseThrow(() -> new VinopenerException(FeedErrorCode.FEED_NOT_FOUND));
     }
-
-
-    /*
-    1. 전체 피드::getList()           -> findByAll
-    2. 상세조회::get()                -> findByFeedId
-    3. 내 피드 목록::getMyList()      -> findByAllIdAndUserId
-    4. 내 피드 상세 조회::getMyFeed() -> findByIdAndUserId
-     */
 
 }

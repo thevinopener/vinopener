@@ -47,7 +47,6 @@ public class FeedController {
      *
      * @param feedCreateRequest 피드 생성 요청
      * @param userId            유저 ID
-     * @return
      */
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER),
@@ -129,7 +128,7 @@ public class FeedController {
     }
 
     /**
-     * 내  피드 삭제
+     * 내 피드 삭제
      *
      * @param feedId 피드 ID
      * @param userId 유저 ID
@@ -164,7 +163,27 @@ public class FeedController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
         }
+    }
 
+    /**
+     * 공개 여부 ON / OFF
+     *
+     * @param feedId 피드 ID
+     * @param userId 유저 ID
+     */
+    @PostMapping("/public" + REQUEST_PATH_VARIABLE)
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> switchPublic(
+            @PathVariable final Long feedId,
+            @UserPrincipalId final Long userId
+    ) {
+        try {
+            feedService.switchPublic(feedId, userId);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 }
