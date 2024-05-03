@@ -89,16 +89,7 @@ public class FeedService {
 
     @Transactional(readOnly = true)
     public List<FeedGetListResponse> getList() {
-//        List<FeedEntity> feeds = feedRepository.findAll();
-//        return feeds.stream()
-//                .map(feed -> {
-//                    int totalLikes = feedLikeRepository.countByFeedId(feed.getId());
-//                    List<FeedWineEntity> feedWines = feedWineRepository.findByFeedId(feed.getId());
-//                    return feedMapper.toGetListResponse(feed, feedWines, totalLikes);
-//                })
-//                .toList();
-
-        List<FeedEntity> feeds = feedRepository.findAllWithWinesAndLikes();
+        List<FeedEntity> feeds = feedRepository.findAll();
 
         return feeds.stream()
                 .map(feed -> {
@@ -111,16 +102,16 @@ public class FeedService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<FeedGetResponse> get(
+    public FeedGetResponse getFeed(
             Long feedId
     ) {
         feedExists(feedId);
-        FeedEntity feed = feedRepository.findById(feedId).get();
+        FeedEntity feed = feedRepository.findById(feedId)
+                .orElseThrow(() -> new VinopenerException(FeedErrorCode.FEED_NOT_FOUND));
         int totalLikes = feedLikeRepository.countByFeedId(feed.getId());
         List<FeedWineEntity> wines = feedWineRepository.findByFeedId(feedId);
 
-        FeedGetResponse result = feedMapper.toGetResponse(feed, wines, totalLikes);
-        return Optional.of(result);
+        return feedMapper.toGetResponse(feed, wines, totalLikes);
     }
 
     @Transactional(readOnly = true)
@@ -143,7 +134,8 @@ public class FeedService {
             final Long userId
     ) {
         feedExists(feedId);
-        FeedEntity feed = feedRepository.findByIdAndUserId(feedId, userId).get();
+        FeedEntity feed = feedRepository.findByIdAndUserId(feedId, userId)
+                .orElseThrow(() -> new VinopenerException(FeedErrorCode.FEED_NOT_FOUND));
         int totalLikes = feedLikeRepository.countByFeedId(feed.getId());
         List<FeedWineEntity> wines = feedWineRepository.findByFeedId(feedId);
         return Optional.of(feedMapper.toGetResponse(feed, wines, totalLikes));
