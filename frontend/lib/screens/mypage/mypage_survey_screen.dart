@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
-import 'package:frontend/services/survey_service.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:frontend/widgets/survey/survey_select_widget.dart';
 import 'package:frontend/widgets/survey/survey_range_slider_widget.dart';
