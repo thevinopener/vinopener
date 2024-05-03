@@ -14,9 +14,9 @@ pipeline {
     stages {
         stage('backend build') {
             steps {
-                dir(baseDir) {
+                dir("$baseDir") {
                     withGradle {
-                        sh 'gradle bootJar'
+                        sh 'gradle -p vinopener-api bootJar'
                     }
                 }
             }
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 dir(baseDir) {
                     withGradle {
-                        sh 'gradle test'
+                        sh 'gradle -p vinopener-api test'
                     }
                 }
             }
@@ -61,7 +61,7 @@ pipeline {
                                         remoteDirectory: publishOverSshConfigName,
                                         remoteDirectorySDF: false,
                                         removePrefix: '',
-                                        sourceFiles: 'build/libs/*.jar, src/main/resources/*.sql, Caddyfile, Dockerfile, docker-compose.yml, .env'
+                                        sourceFiles: 'vinopener-api/build/libs/*.jar, vinopener-api/src/main/resources/*.sql, vinopener-api/Dockerfile, Caddyfile, docker-compose.yml, .env'
                                     )
                                 ],
                                 usePromotionTimestamp: false,

@@ -32,7 +32,7 @@ services:
   vinopener-api:
     container_name: vinopener-api
     image: vinopener-api
-    build: .
+    build: vinopener-api
     restart: on-failure
     networks:
       - api
@@ -52,12 +52,6 @@ services:
       - OAUTH2_GOOGLE_CLIENT_ID
       - OAUTH2_GOOGLE_CLIENT_SECRET
       - OAUTH2_GOOGLE_REDIRECT_URI
-      - OAUTH2_NAVER_CLIENT_ID
-      - OAUTH2_NAVER_CLIENT_SECRET
-      - OAUTH2_NAVER_REDIRECT_URI
-      - OAUTH2_KAKAO_CLIENT_ID
-      - OAUTH2_KAKAO_CLIENT_SECRET
-      - OAUTH2_KAKAO_REDIRECT_URI
       - JWT_ACCESS_SECRET_KEY_BASE64
       - JWT_ACCESS_EXPIRATION_SECONDS
       - JWT_REFRESH_SECRET_KEY_BASE64
@@ -68,6 +62,9 @@ services:
       - S3_BUCKET
       - S3_ENDPOINT
       - S3_PUBLIC_BASE_URL
+      - OPENAI_API_KEY
+      - OPENAI_ORGANIZATION_ID
+      - OPENAI_PROJECT_ID
     depends_on:
       - redis
       - mariadb
