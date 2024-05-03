@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/models/feed.dart';
 
 class FeedItem extends StatefulWidget {
-  Feed feed;
+  final Feed feed;
 
   FeedItem({super.key, required this.feed});
 

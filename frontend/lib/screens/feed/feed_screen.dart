@@ -22,6 +22,7 @@ class _FeedScreenState extends State<FeedScreen> {
   Widget build(BuildContext context) {
 
     final user = Provider.of<UserProvider>(context).user;
+    print(user);
 
     void addFeed() {
       Navigator.push(

@@ -3,7 +3,7 @@ import 'package:frontend/models/feed.dart';
 import 'package:frontend/widgets/common/templates/feed_item_widget.dart';
 
 class FeedDetailScreen extends StatelessWidget {
-  Feed feed;
+  final Feed feed;
 
   FeedDetailScreen(this.feed);
 
