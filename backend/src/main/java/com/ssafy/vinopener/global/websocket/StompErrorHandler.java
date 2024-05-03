@@ -18,7 +18,7 @@ public class StompErrorHandler extends StompSubProtocolErrorHandler {
             @Nullable final Message<byte[]> clientMessage,
             final Throwable ex
     ) {
-        if (ex instanceof VinopenerException e) {
+        if (ex instanceof final VinopenerException e) {
             final var accessor = StompHeaderAccessor.create(StompCommand.ERROR);
             accessor.setMessage(e.getTitle());
             accessor.setLeaveMutable(true);
