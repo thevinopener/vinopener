@@ -9,7 +9,7 @@ import 'package:frontend/screens/feed/feed_detail_screen.dart';
 import 'package:frontend/screens/mypage/mypage_setting_screen.dart';
 import 'package:frontend/services/feed_service.dart';
 import 'package:frontend/services/wine_service.dart';
-import 'package:frontend/widgets/wine_item_widget.dart';
+import 'package:frontend/widgets/wine/wine_item_widget.dart';
 import 'package:provider/provider.dart';
 
 class MyPageScreen extends StatefulWidget {
@@ -181,7 +181,12 @@ class _MyPageScreenState extends State<MyPageScreen>
                     );
                   },
                 ),
-                Text('Cellar'),
+                Column(
+                  children: [
+                    WineItem(wine: Wine.dummy()),
+                    WineItem(wine: Wine.dummy()),
+                  ],
+                ),
               ],
             ),
           ),

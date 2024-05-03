@@ -25,7 +25,8 @@ class Wine {
         winery = 'Shafer',
         name = 'Shafer Hillside Select Cabernet Sauvignon 2019',
         imageUrl = 'https://picsum.photos/200/200',
-        type = 'Red';
+        country = 'korea',
+        type = 'red';
 
   Wine({
     this.id,

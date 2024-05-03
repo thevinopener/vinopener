@@ -1,0 +1,31 @@
+spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+  application:
+    name: vinopener-batch
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:mariadb://localhost:3306/vinopener
+    username: ssafy
+    password: ssafy
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:mariadb://${MARIADB_HOST}/${MARIADB_DATABASE}
+    username: ${MARIADB_USER}
+    password: ${MARIADB_PASSWORD}
