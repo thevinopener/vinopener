@@ -6,7 +6,7 @@ import com.ssafy.vinopener.global.config.TimeFormatConfig;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 import lombok.Builder;
 
 @Builder
@@ -21,7 +21,7 @@ public record TastingNoteGetResponse(
         BigDecimal tannin,
         String opinion,
         BigDecimal rating,
-        List<TastingNoteGetResponseFlavour> flavours,
+        Set<TastingNoteGetResponseFlavour> flavours,
         @Schema(type = "string", example = TimeFormatConfig.LOCAL_DATE_TIME_EXAMPLE)
         @JsonFormat(pattern = TimeFormatConfig.LOCAL_DATE_TIME_PATTERN)
         LocalDateTime updatedTime
