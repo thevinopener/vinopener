@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/note/note_color_screen.dart';
-import 'package:frontend/screens/search/search_text_screen.dart';
 
 import 'package:frontend/widgets/note/note_list_card_widget.dart';
 

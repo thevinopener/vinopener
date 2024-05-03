@@ -8,7 +8,6 @@ import 'package:frontend/widgets/note/note_select_flavour_widget.dart';
 
 import '../../models/wine_model.dart';
 
-import '../../widgets/note/note_select_color_widget.dart';
 import '../../widgets/note/note_wine_card.dart';
 import 'note_taste_screen.dart';
 
