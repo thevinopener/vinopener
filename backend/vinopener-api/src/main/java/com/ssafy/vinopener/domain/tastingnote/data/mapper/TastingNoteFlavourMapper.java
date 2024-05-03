@@ -2,6 +2,7 @@ package com.ssafy.vinopener.domain.tastingnote.data.mapper;
 
 import com.ssafy.vinopener.domain.tastingnote.data.dto.response.TastingNoteGetListResponse.TastingNoteGetListResponseFlavour;
 import com.ssafy.vinopener.domain.tastingnote.data.dto.response.TastingNoteGetResponse.TastingNoteGetResponseFlavour;
+import com.ssafy.vinopener.domain.tastingnote.data.entity.TastingNoteEntity;
 import com.ssafy.vinopener.domain.tastingnote.data.entity.TastingNoteFlavourEntity;
 import com.ssafy.vinopener.global.common.ReferenceMapper;
 import org.mapstruct.InjectionStrategy;
@@ -23,8 +24,7 @@ public interface TastingNoteFlavourMapper {
     TastingNoteGetListResponseFlavour toFlavourListResponse(TastingNoteFlavourEntity entity);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "tastingNote", source = "tastingNoteId")
     @Mapping(target = "flavourTaste", source = "flavourTasteId")
-    TastingNoteFlavourEntity toEntity(Long tastingNoteId, Long flavourTasteId);
+    TastingNoteFlavourEntity toEntity(TastingNoteEntity tastingNote, Long flavourTasteId);
 
 }

@@ -15,7 +15,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -67,7 +68,8 @@ public class TastingNoteEntity extends BaseTimeEntity {
     @NotNull
     private BigDecimal rating;
 
-    @OneToMany(mappedBy = "tastingNote", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<TastingNoteFlavourEntity> flavours;
+    @Builder.Default
+    @OneToMany(mappedBy = "tastingNote", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TastingNoteFlavourEntity> flavours = new HashSet<>();
 
 }

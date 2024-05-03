@@ -52,7 +52,7 @@ public class TastingNoteController {
             @UserPrincipalId final Long userId
     ) {
         return ResponseEntity
-                .created(URI.create(REQUEST_PATH + tastingNoteService.create(tastingNoteCreateRequest, userId)))
+                .created(URI.create(REQUEST_PATH + "/" + tastingNoteService.create(tastingNoteCreateRequest, userId)))
                 .build();
     }
 

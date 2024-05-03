@@ -1,7 +1,7 @@
 package com.ssafy.vinopener.domain.tastingnote.data.dto.response;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 import lombok.Builder;
 
 @Builder
@@ -10,7 +10,7 @@ public record TastingNoteGetListResponse(
         TastingNoteGetListResponseWine wine,
         TastingNoteGetListResponseColor color,
         BigDecimal rating,
-        List<TastingNoteGetListResponseFlavour> flavours
+        Set<TastingNoteGetListResponseFlavour> flavours
 ) {
 
     @Builder

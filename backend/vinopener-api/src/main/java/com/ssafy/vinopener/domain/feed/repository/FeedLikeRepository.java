@@ -11,14 +11,15 @@ public interface FeedLikeRepository extends JpaRepository<FeedLikeEntity, Long> 
     @EntityGraph(attributePaths = {"user"})
     List<FeedLikeEntity> findAllByFeedId(Long feedId);
 
-//    @EntityGraph(attributePaths = {"user"})
-//    List<FeedLikeEntity> findByFeedId(Long feedId);
-
+    // 좋아요
     @EntityGraph(attributePaths = {"user"})
     Optional<FeedLikeEntity> findByFeedIdAndUserId(Long feedId, Long userId);
 
+    // 좋아요 취소
+    void deleteByFeedIdAndUserId(Long feedId, Long userId);
+
     int countByFeedId(Long feedId);
 
-    void deleteAllByFeedId(Long feedId);
+//    void deleteAllByFeedId(Long feedId);
 
 }

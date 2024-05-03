@@ -2,6 +2,7 @@ package com.ssafy.vinopener.domain.feed.data.entity;
 
 import com.ssafy.vinopener.domain.user.data.entity.UserEntity;
 import com.ssafy.vinopener.global.common.BaseTimeEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -40,15 +41,19 @@ public class FeedEntity extends BaseTimeEntity {
 
     private boolean isPublic;
 
-    @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FeedWineEntity> wine;
 
-    @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FeedLikeEntity> like;
 
     // "is로 인해 Lombok 자동 설정이 인식 못하는 문제로 직접 getter() 생성
     public boolean getIsPublic() {
         return isPublic;
+    }
+
+    public void switchPublic() {
+        this.isPublic = !isPublic;
     }
 
 }
