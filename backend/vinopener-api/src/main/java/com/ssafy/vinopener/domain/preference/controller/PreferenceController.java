@@ -45,6 +45,7 @@ public class PreferenceController {
             @RequestBody @Valid final PreferenceCreateOrUpdateRequest preferenceCreateRequest,
             @UserPrincipalId final Long userId
     ) {
+        preferenceService.create(preferenceCreateRequest, userId);
         return ResponseEntity
                 .created(URI.create(REQUEST_PATH))
                 .build();

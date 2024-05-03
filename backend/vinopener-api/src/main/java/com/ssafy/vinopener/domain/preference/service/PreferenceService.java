@@ -20,16 +20,16 @@ public class PreferenceService {
     /**
      * 선호도 생성
      *
-     * @param preferenceCreateRequest 선호도 생성 요청
-     * @param userId                  유저 ID
+     * @param createRequest 선호도 생성 요청
+     * @param userId        유저 ID
      */
     @Transactional
     public void create(
-            final PreferenceCreateOrUpdateRequest preferenceCreateRequest,
+            final PreferenceCreateOrUpdateRequest createRequest,
             final Long userId
     ) {
         preferenceRepository
-                .save(preferenceMapper.toEntity(preferenceCreateRequest, userId));
+                .save(preferenceMapper.toEntity(createRequest, userId));
     }
 
     /**
@@ -50,18 +50,18 @@ public class PreferenceService {
     /**
      * 선호도 수정
      *
-     * @param preferenceUpdateRequest 선호도 수정 요청
-     * @param userId                  유저 ID
+     * @param updateRequest 선호도 수정 요청
+     * @param userId        유저 ID
      */
     @Transactional
     public void update(
-            final PreferenceCreateOrUpdateRequest preferenceUpdateRequest,
+            final PreferenceCreateOrUpdateRequest updateRequest,
             final Long userId
     ) {
         var preferenceId = preferenceRepository.findByUserId(userId)
                 .orElseThrow(() -> new VinopenerException(PreferenceErrorCode.PREFERENCE_NOT_FOUND))
                 .getId();
-        preferenceRepository.save(preferenceMapper.toEntity(preferenceId, preferenceUpdateRequest, userId));
+        preferenceRepository.save(preferenceMapper.toEntity(preferenceId, updateRequest, userId));
     }
 
 }
