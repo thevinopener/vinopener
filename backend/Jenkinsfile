@@ -61,7 +61,7 @@ pipeline {
                                         remoteDirectory: publishOverSshConfigName,
                                         remoteDirectorySDF: false,
                                         removePrefix: '',
-                                        sourceFiles: 'vinopener-api/build/libs/*.jar, vinopener-api/src/main/resources/*.sql, vinopener-api/Dockerfile, Caddyfile, docker-compose.yml, .env'
+                                        sourceFiles: 'vinopener-api/build/libs/*.jar, vinopener-api/src/main/resources/*.sql, vinopener-api/Dockerfile, vinopener-batch/build/libs/*.jar, vinopener-batch/Dockerfile, Caddyfile, docker-compose.yml, .env'
                                     )
                                 ],
                                 usePromotionTimestamp: false,
