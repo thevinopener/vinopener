@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 
-class WineColor extends StatelessWidget {
+class WineColorBlock extends StatelessWidget {
   final Color wineColor;
   final String colorName;
 
-  const WineColor({super.key, required this.wineColor, required this.colorName});
+  const WineColorBlock({super.key, required this.wineColor, required this.colorName});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class WineColor extends StatelessWidget {
             ),
           ),
           Container(
-            height: dimension / 2,
+            height: dimension / 3,
             alignment: Alignment.center,
             decoration: ShapeDecoration(
               color: AppColors.white,
