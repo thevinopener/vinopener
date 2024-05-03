@@ -30,7 +30,7 @@ Widget SearchWineListWidget(BuildContext context) {
   return Container(
     // margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
     // width: double.infinity,
-    // color: Colors.amber, // TODO: 영역구분 임시 색칠
+    // color: Colors.amber,
     child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         scrollDirection: Axis.vertical,

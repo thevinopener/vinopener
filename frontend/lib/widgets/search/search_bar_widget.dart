@@ -1,5 +1,6 @@
 // flutter
 import 'package:flutter/material.dart';
+import 'package:camera/camera.dart';
 
 // screens
 import 'package:frontend/screens/search/search_result_screen.dart';
@@ -29,11 +30,28 @@ class SearchBarWidget extends StatefulWidget {
 class _SearchBarWidgetState extends State<SearchBarWidget> {
 
   late TextEditingController _controller;
+  late List<CameraDescription> cameras;
+  late CameraDescription firstCamera;
+  bool _isCameraInitialized = false;
 
   @override
   void initState() {
     super.initState();
+    _initCameras();
     _controller = TextEditingController(text: widget.searchValue);
+  }
+
+  Future<void> _initCameras() async {
+    try {
+      cameras = await availableCameras();
+      firstCamera = cameras.first;
+      setState(() {
+        _isCameraInitialized = true;
+      });
+    } catch (e) {
+      print('카메라를 초기화하는 중 에러 발생: $e');
+      // 에러 처리 로직 추가
+    }
   }
 
   void _handleSubmitted(String value) {
@@ -93,13 +111,15 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
             child: IconButton(
               icon: Icon(Icons.camera_alt_outlined),
               alignment: Alignment.center,
-              onPressed: () {
-                // 카메라 아이콘 동작 구현
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SearchCameraScreen()));
-              },
+              onPressed: _isCameraInitialized
+                  ? () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SearchCameraScreen(camera: firstCamera),
+                  ),
+                );
+              }
+                  : null, // 카메라 초기화가 완료되지 않았을 때는 버튼 비활성화
             ),
           ),
           Flexible(
