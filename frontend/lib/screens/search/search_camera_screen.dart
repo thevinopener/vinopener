@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:frontend/constants/colors.dart';
+import 'package:scanner_overlay/scanner_overlay.dart';
+import 'dart:ui'; // ImageFilter를 사용하기 위해 추가
+import 'package:focused_area_ocr_flutter/focused_area_ocr_flutter.dart';
 
 class SearchCameraScreen extends StatefulWidget {
   final CameraDescription camera;
@@ -19,6 +22,9 @@ class SearchCameraScreen extends StatefulWidget {
 class _SearchCameraScreenState extends State<SearchCameraScreen> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
+
+  final StreamController<String> controller = StreamController<String>();
+  final double _textViewHeight = 80.0;
 
   @override
   void initState() {
@@ -42,6 +48,12 @@ class _SearchCameraScreenState extends State<SearchCameraScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).viewPadding.top;
+    final Offset focusedAreaCenter = Offset(
+      0,
+      (statusBarHeight + kToolbarHeight + _textViewHeight) / 2,
+    );
+
     return Scaffold(
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
@@ -62,109 +74,128 @@ class _SearchCameraScreenState extends State<SearchCameraScreen> {
 
                   // CameraPreview(_controller),
 
-                  ShaderMask(
-                    shaderCallback: (Rect bounds) {
-                      return LinearGradient(
-                        colors: [Colors.black.withOpacity(0.5), Colors.transparent],
-                        stops: [0.0, 1.0],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height));
+                  FocusedAreaOCRView(
+                    onScanText: (text) {
+                      controller.add(text); // 인식된 텍스트를 StreamController에 추가
                     },
-                    blendMode: BlendMode.dstOut,
-                    child: Container(
-                      color: Colors.black.withOpacity(0.5),
-                      alignment: Alignment.center,
-                      child: Positioned(
-                        top: 10,
-                        left: 10,
-                        child: Container(
-                          width: 250,
-                          height: 400,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                          ),
-                        ),
-                      )
-                    ),
+                    focusedAreaCenter: focusedAreaCenter, // 초점 영역의 중심 위치 설정
                   ),
-
-                  // 전체 블러 처리된 가운데 집중 박스
-                  // Container(
-                  //   width: double.maxFinite,
-                  //   height: double.maxFinite,
-                  //   decoration: BoxDecoration(
-                  //     color: Colors.black.withOpacity(0.5),
-                  //   ),
-                  // ),
-                  //
-                  // Positioned(
-                  //   top: 80,
-                  //   bottom: 250,
-                  //   left: 30,
-                  //   right: 30,
-                  //   child: Container(
-                  //     width: 250,
-                  //     height: 400,
-                  //   color: Colors.orange,
-                  //   // decoration: BoxDecoration(
-                  //   //   color: Colors.black.withOpacity(0.5),
-                  //   // ),
-                  // ),
-                  // ),
-
-                  //   child: Center(
-                  //     child: ClipOval(
-                  //       child: Container(
-                  //         height: 400,
-                  //         width: 400,
-                  //         color: Colors.transparent,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // 상단 뒤로가기 버튼
-
-                  // 라벨 <> 메뉴판 전환버튼
-
-                  // 좌측하단 이미지 피커
-
-                  // 사진촬영 버튼
-                  Positioned(
-                    bottom: 10, // 하단에서 10 픽셀 위치
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Material(
-                        // Material 위젯 추가
-                        color: Colors.transparent, // Material 배경을 투명하게 설정
-                        child: InkWell(
-                          onTap: () async {
-                            try {
-                              await _initializeControllerFuture;
-                              final image = await _controller.takePicture();
-                              if (!mounted) return;
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => DisplayPictureScreen(
-                                      imagePath: image.path),
-                                ),
-                              );
-                            } catch (e) {
-                              print('카메라 오류: $e');
-                            }
+                  Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(16.0),
+                        width: double.infinity,
+                        height: _textViewHeight,
+                        color: Colors.black,
+                        child: StreamBuilder<String>(
+                          stream:
+                              controller.stream, // StreamController에서 스트림 받아오기
+                          builder: (BuildContext context,
+                              AsyncSnapshot<String> snapshot) {
+                            return Text(
+                              snapshot.data != null
+                                  ? snapshot.data!
+                                  : '', // 인식된 텍스트 표시
+                              style: const TextStyle(color: Colors.white),
+                            );
                           },
-                          borderRadius:
-                              BorderRadius.circular(40), // 아이콘 크기에 맞게 조정
-                          child: Icon(
-                            Icons.circle,
-                            color: Colors.white,
-                            size: 80,
+                        ),
+                      ),
+
+                      // 스캐너 모양
+                      Positioned(
+                        top: 50,
+                        bottom: 250,
+                        left: 30,
+                        right: 30,
+                        child: ScannerOverlay(
+                          height: 350,
+                          width: 350,
+                          borderColor: Colors.green,
+                          borderRadius: 10,
+                          borderThickness: 5,
+                        ),
+                      ),
+
+                      // 전체 블러 처리된 가운데 집중 박스
+                      // Container(
+                      //   width: double.maxFinite,
+                      //   height: double.maxFinite,
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.black.withOpacity(0.5),
+                      //   ),
+                      // ),
+                      //
+                      // Positioned(
+                      //   top: 80,
+                      //   bottom: 250,
+                      //   left: 30,
+                      //   right: 30,
+                      //   child: Container(
+                      //     width: 250,
+                      //     height: 400,
+                      //   color: Colors.orange,
+                      //   // decoration: BoxDecoration(
+                      //   //   color: Colors.black.withOpacity(0.5),
+                      //   // ),
+                      // ),
+                      // ),
+
+                      //   child: Center(
+                      //     child: ClipOval(
+                      //       child: Container(
+                      //         height: 400,
+                      //         width: 400,
+                      //         color: Colors.transparent,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      // 상단 뒤로가기 버튼
+
+                      // 라벨 <> 메뉴판 전환버튼
+
+                      // 좌측하단 이미지 피커
+
+                      // 사진촬영 버튼
+                      Positioned(
+                        bottom: 10, // 하단에서 10 픽셀 위치
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Material(
+                            // Material 위젯 추가
+                            color: Colors.transparent, // Material 배경을 투명하게 설정
+                            child: InkWell(
+                              onTap: () async {
+                                try {
+                                  await _initializeControllerFuture;
+                                  final image = await _controller.takePicture();
+                                  if (!mounted) return;
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          DisplayPictureScreen(
+                                              imagePath: image.path),
+                                    ),
+                                  );
+                                } catch (e) {
+                                  print('카메라 오류: $e');
+                                }
+                              },
+                              borderRadius:
+                                  BorderRadius.circular(40), // 아이콘 크기에 맞게 조정
+                              child: Icon(
+                                Icons.circle,
+                                color: Colors.white,
+                                size: 80,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),
@@ -222,4 +253,3 @@ class HolePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
-
