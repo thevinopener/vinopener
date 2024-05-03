@@ -2,6 +2,7 @@ package com.ssafy.vinopener.global.recommendation;
 
 import com.querydsl.core.Tuple;
 import com.ssafy.vinopener.domain.cellar.repository.CellarRepositoryQueryImpl;
+import com.ssafy.vinopener.domain.preference.data.entity.PreferenceEntity;
 import com.ssafy.vinopener.domain.preference.repository.PreferenceRepository;
 import com.ssafy.vinopener.domain.recommendation.data.entity.ContentRecommendationEntity;
 import com.ssafy.vinopener.domain.recommendation.data.entity.enums.ContentRecommendationType;
@@ -71,6 +72,11 @@ public class RecommendationProcessor {
 
         }
 
+    }
+
+    public List<WineEntity> processCosineSimilarity(List<WineEntity> wineList, PreferenceEntity preference) {
+
+        return List.of();
     }
 
 }

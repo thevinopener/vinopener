@@ -1,21 +1,29 @@
 package com.ssafy.vinopener.domain.recommendation.service;
 
 import com.ssafy.vinopener.domain.cellar.repository.CellarRepositoryQueryImpl;
+import com.ssafy.vinopener.domain.preference.data.entity.PreferenceEntity;
+import com.ssafy.vinopener.domain.preference.data.mapper.PreferenceMapper;
+import com.ssafy.vinopener.domain.preference.exception.PreferenceErrorCode;
+import com.ssafy.vinopener.domain.preference.repository.PreferenceRepository;
 import com.ssafy.vinopener.domain.recommendation.data.dto.response.RecommendationGetListResponse;
 import com.ssafy.vinopener.domain.recommendation.data.entity.ContentRecommendationEntity;
 import com.ssafy.vinopener.domain.recommendation.data.entity.enums.ContentRecommendationType;
 import com.ssafy.vinopener.domain.recommendation.data.mapper.RecommendationMapper;
 import com.ssafy.vinopener.domain.recommendation.repository.BehaviorRecommendationRepository;
 import com.ssafy.vinopener.domain.recommendation.repository.ContentRecommendationRepository;
+import com.ssafy.vinopener.domain.recommendation.repository.RecommendationRepositoryQueryImpl;
+import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
+import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
+import com.ssafy.vinopener.global.exception.VinopenerException;
 import com.ssafy.vinopener.global.jwt.JwtProvider;
 import com.ssafy.vinopener.global.recommendation.RecommendationProcessor;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +37,10 @@ public class RecommendationService {
     private final JwtProvider jwtProvider;
     private final CellarRepositoryQueryImpl cellarRepositoryQueryImpl;
     private final int RENEWAL_HOUR = 3;
+    private final PreferenceRepository preferenceRepository;
+    private final PreferenceMapper preferenceMapper;
+    private final RecommendationRepositoryQueryImpl recommendationRepositoryQuery;
+    private final RecommendationRepositoryQueryImpl recommendationRepositoryQueryImpl;
 
     public List<RecommendationGetListResponse> getViewRecommendation() {
         List<ContentRecommendationEntity> contentRecommendationEntityList
@@ -154,7 +166,21 @@ public class RecommendationService {
         }
     }
 
-    public List<RecommendationGetListResponse> getPreferenceRecommendation() {
+    public List<RecommendationGetListResponse> getPreferenceRecommendation(Long userId) {
+        PreferenceEntity preferenceEntity = preferenceRepository.findByUserId(userId).orElse(null);
+        if (preferenceEntity == null) {
+            throw new VinopenerException(PreferenceErrorCode.PREFERENCE_NOT_FOUND);
+        }
+
+        // 사용자가 선호하는 타입의 와인만 먼저 DB에서 골라낸다.
+        Set<WineType> wineTypeSet = preferenceMapper.map(preferenceEntity);
+        List<WineEntity> wineEntityList = recommendationRepositoryQueryImpl.findByWineTypeSet(wineTypeSet);
+
+        // 선택된 WineList와 사용자의 선호도를 각각 코사인 유사도로 비교하여 가장 유사한 와인을 가져 10개 가져온다.
+        List<WineEntity> resultList
+                = recommendationProcessor.processCosineSimilarity(wineEntityList, preferenceEntity);
+        // 그 10개를 behavior_recommendation 테이블에 넣는다(생성 및 업데이트).
+
         return null;
     }
 
