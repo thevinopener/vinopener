@@ -1,154 +1,97 @@
-// flutter
-import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
-
-// constants
-import 'package:frontend/constants/fonts.dart';
-
-// pub.dev
-import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:camera/camera.dart';
 
 class SearchCameraScreen extends StatefulWidget {
-  const SearchCameraScreen({super.key});
+  final CameraDescription camera;
+
+  const SearchCameraScreen({
+    super.key,
+    required this.camera,
+  });
 
   @override
-  _SearchCameraScreenState createState() => _SearchCameraScreenState();
+  State<SearchCameraScreen> createState() => _SearchCameraScreenState();
 }
 
-void _logError(String code, String? message) {
-  // ignore: avoid_print
-  print('Error: $code${message == null ? '' : '\nError Message: $message'}');
-}
-
-class _SearchCameraScreenState extends State<SearchCameraScreen>
-    with WidgetsBindingObserver, TickerProviderStateMixin {
-  CameraController? controller;
-  XFile? imageFile;
-  // XFile? videoFile;  비디오 안씀
-  // VoidCallback? videoPlayerListener;
-  bool enableAudio = true;
-  double _minAvailableExposureOffset = 0.0;
-  double _maxAvailableExposureOffset = 0.0;
-  double _currentExposureOffset = 0.0;
-  late AnimationController _flashModeControlRowAnimationController;
-  late Animation<double> _flashModeControlRowAnimation;
-  late AnimationController _exposureModeControlRowAnimationController;
-  late Animation<double> _exposureModeControlRowAnimation;
-  late AnimationController _focusModeControlRowAnimationController;
-  late Animation<double> _focusModeControlRowAnimation;
-  double _minAvailableZoom = 1.0;
-  double _maxAvailableZoom = 1.0;
-  double _currentScale = 1.0;
-  double _baseScale = 1.0;
-
-  // Counting pointers (number of user fingers on screen)
-  int _pointers = 0;
+class _SearchCameraScreenState extends State<SearchCameraScreen> {
+  late CameraController _controller;
+  late Future<void> _initializeControllerFuture;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
-
-    _flashModeControlRowAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
+    _controller = CameraController(
+        widget.camera,
+        ResolutionPreset.medium,
+        enableAudio: false // 오디오를 사용하지 않습니다.
     );
-    _flashModeControlRowAnimation = CurvedAnimation(
-      parent: _flashModeControlRowAnimationController,
-      curve: Curves.easeInCubic,
-    );
-    _exposureModeControlRowAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    _exposureModeControlRowAnimation = CurvedAnimation(
-      parent: _exposureModeControlRowAnimationController,
-      curve: Curves.easeInCubic,
-    );
-    _focusModeControlRowAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    _focusModeControlRowAnimation = CurvedAnimation(
-      parent: _focusModeControlRowAnimationController,
-      curve: Curves.easeInCubic,
-    );
+    // 컨트롤러 초기화와 함께 플래시를 꺼진 상태로 설정
+    _initializeControllerFuture = _controller.initialize().then((_) {
+      if (mounted) {
+        _controller.setFlashMode(FlashMode.off);
+      }
+    });
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    _flashModeControlRowAnimationController.dispose();
-    _exposureModeControlRowAnimationController.dispose();
+    _controller.dispose();
     super.dispose();
   }
-
-  // #docregion AppLifecycle
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    final CameraController? cameraController = controller;
-
-    // App state changed before we got the chance to initialize.
-    if (cameraController == null || !cameraController.value.isInitialized) {
-      return;
-    }
-
-    if (state == AppLifecycleState.inactive) {
-      cameraController.dispose();
-    } else if (state == AppLifecycleState.resumed) {
-      // _initializeCameraController(cameraController.description);
-    }
-  }
-  // #enddocregion AppLifecycle
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.orange,
-        height: double.maxFinite,
-        width: double.infinity,
-        child: Stack(
-          children: [],
-        ),
+      appBar: AppBar(title: const Text('카메라 화면')),
+      body: FutureBuilder<void>(
+        future: _initializeControllerFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            // 카메라 미리보기 활성화
+            return CameraPreview(_controller);
+          } else {
+            // 로딩 인디케이터 표시
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.camera_alt),
+        onPressed: () async {
+          try {
+            await _initializeControllerFuture;
+
+            final image = await _controller.takePicture();
+
+            if (!mounted) return;
+
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => DisplayPictureScreen(imagePath: image.path),
+              ),
+            );
+          } catch (e) {
+            print('카메라 오류: $e');
+          }
+        },
       ),
     );
   }
 }
 
-// Widget _cameraPreviewWidget() {
-//   final CameraController? cameraController = controller;
-//
-//   if (cameraController == null || !cameraController.value.isInitialized) {
-//     return const Text(
-//       'Tap a camera',
-//       style: TextStyle(
-//         color: Colors.white,
-//         fontSize: 24.0,
-//         fontWeight: FontWeight.w900,
-//       ),
-//     );
-//   } else {
-//     return Listener(
-//       onPointerDown: (_) => _pointers++,
-//       onPointerUp: (_) => _pointers--,
-//       child: CameraPreview(
-//         controller!,
-//         child: LayoutBuilder(
-//             builder: (BuildContext context, BoxConstraints constraints) {
-//               return GestureDetector(
-//                 behavior: HitTestBehavior.opaque,
-//                 onScaleStart: _handleScaleStart,
-//                 onScaleUpdate: _handleScaleUpdate,
-//                 onTapDown: (TapDownDetails details) =>
-//                     onViewFinderTap(details, constraints),
-//               );
-//             }),
-//       ),
-//     );
-//   }
+// 찍은 사진을 보여주는 위젯
+class DisplayPictureScreen extends StatelessWidget {
+  final String imagePath;
+
+  const DisplayPictureScreen({super.key, required this.imagePath});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('캡쳐 화면')),
+      body: Image.file(File(imagePath)),
+    );
+  }
+}
