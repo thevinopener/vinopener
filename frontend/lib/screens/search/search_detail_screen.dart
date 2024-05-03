@@ -9,6 +9,8 @@ import 'package:frontend/constants/fonts.dart';
 
 // widgets
 import 'package:frontend/widgets/recommend/recommend_wine_card_widget.dart';
+import 'package:frontend/widgets/common/atoms/wine_flavour_widget.dart';
+import 'package:frontend/models/note_model.dart';
 
 // library
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
@@ -27,6 +29,21 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
   final double _body = 2.7;
   final double _sweet = 1.6;
   final double _tannin = 4.5;
+
+  final List<String> aromaList = [
+    "딸기",
+    "블루베리",
+    "오디",
+    "올리브",
+    "자두",
+    "무화과",
+    "용과",
+    "청배",
+    "복숭아",
+    "리치",
+    "풍선껌",
+    "라벤더"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -248,7 +265,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                       '풍미',
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: AppFontSizes.mediumLarge,
+                        fontSize: AppFontSizes.large,
                       ),
                     ),
                     SizedBox(height: 10),
@@ -440,23 +457,42 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
 
               // #3 아로마 시작
               Container(
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                 width: double.maxFinite,
-                height: 300,
+                height: 150,
                 decoration: BoxDecoration(
-                  color: Colors.green,
+                  // color: Colors.green,
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('아로마'),
+                    Container(
+                      // padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                      child: Text(
+                        '아로마',
+                        style: TextStyle(
+                          fontSize: AppFontSizes.large,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
                     SizedBox(height: 10),
                     SingleChildScrollView(
                       physics: BouncingScrollPhysics(),
-                      scrollDirection: Axis.vertical,
+                      scrollDirection: Axis.horizontal,
                       child: Row(
-                          // TODO: 여기에 아로마 노트들
+                        children: List.generate(
+                          aromaList.length,
+                          (index) => Padding(
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: WineFlavour(
+                                flavour:
+                                    Flavour(id: 0, taste: aromaList[index])),
                           ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -499,9 +535,9 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                 width: double.maxFinite,
                 height: 240,
                 decoration: BoxDecoration(
-                  // color: Colors.black12,
-                  // color: Colors.purple,
-                ),
+                    // color: Colors.black12,
+                    // color: Colors.purple,
+                    ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -586,7 +622,6 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                           ),
                         ],
                       ),
-
                     ),
                   ],
                 ),
