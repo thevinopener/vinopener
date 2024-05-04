@@ -16,7 +16,7 @@ class NoteWineCard extends StatelessWidget {
 
     return Container(
       width: dimension * 0.91,
-      height: dimension * 0.5,
+      height: dimension * 0.4,
       decoration: ShapeDecoration(
         color: AppColors.white,
         shape: RoundedRectangleBorder(
@@ -37,7 +37,7 @@ class NoteWineCard extends StatelessWidget {
           Stack(
             children: [
               Container(
-                width: dimension * 0.31,
+                width: dimension * 0.35,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12),

@@ -15,6 +15,10 @@ class Wine {
   double? tannin;
   double? abv;
   int? view;
+  List<String>? flavours;
+  bool? isBookmarked;
+  bool? isAddedToCellar;
+  int? countOfNotes;
 
   Wine.dummy()
       : id = 1,
@@ -41,6 +45,10 @@ class Wine {
     this.tannin,
     this.abv,
     this.view,
+    this.flavours,
+    this.isBookmarked,
+    this.isAddedToCellar,
+    this.countOfNotes,
   });
 
   Wine.fromJson(Map<String, dynamic> json) {
@@ -60,6 +68,10 @@ class Wine {
     tannin = json['tannin'];
     abv = json['abv'];
     view = json['view'];
+    flavours = json['flavours'];
+    isBookmarked = json['isBookmarked'];
+    isAddedToCellar = json['isAddedToCellar'];
+    countOfNotes = json['countOfNotes'];
   }
 
   Map<String, dynamic> toJson() {
@@ -80,6 +92,10 @@ class Wine {
     data['tannin'] = this.tannin;
     data['abv'] = this.abv;
     data['view'] = this.view;
+    data['flavours'] = this.flavours;
+    data['isBookmarked'] = this.isBookmarked;
+    data['isAddedToCellar'] = this.isAddedToCellar;
+    data['countOfNotes'] = this.countOfNotes;
     return data;
   }
 }
