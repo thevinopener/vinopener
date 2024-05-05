@@ -5746,3 +5746,24 @@ VALUES (1, 83),    -- 바닐라
        (120, 52),  -- 제비꽃
        (121, 89),  -- 초콜릿
        (121, 83); -- 바닐라
+
+INSERT INTO `feed`
+  (feed_id, user_id, content, image_url, is_public)
+VALUES (1, 1, '첫 번째 피드에요', 'https://picsum.photos/200/300', true),
+       (2, 1, '두 번째 피드에요 ', 'https://picsum.photos/200/300', true),
+       (3, 1, '세 번째 피드에요', 'https://picsum.photos/200/300', true),
+       (4, 1, '네 번째 피드에요', 'https://picsum.photos/200/300', true),
+       (5, 1, '다섯 번째 피드에요', 'https://picsum.photos/200/300', true);
+
+INSERT INTO `cellar_wine`
+  (cellar_wine_id, user_id, wine_id)
+VALUES (1, 1, 1),
+       (2, 1, 2),
+       (3, 1, 3),
+       (4, 1, 4),
+       (5, 1, 5),
+       (6, 1, 6),
+       (7, 1, 7),
+       (8, 1, 8),
+       (9, 1, 9),
+       (10, 1, 10);
