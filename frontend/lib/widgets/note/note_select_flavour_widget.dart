@@ -186,7 +186,7 @@ class _NoteFlavourState extends State<NoteFlavour> {
       itemBuilder: (context, index) {
         final flavour = flavours[index];
         final isSelected = selectedFlavourIdsSet.contains(flavour.id);
-        return InkWell(
+        return GestureDetector(
           onTap: () {
             setState(() {
               if (isSelected) {
@@ -230,6 +230,7 @@ class _NoteFlavourState extends State<NoteFlavour> {
         headerBorderColorOpened: AppColors.white,
         rightIcon: const Icon(Icons.keyboard_arrow_down, color: Colors.black54, size: 25),
         headerPadding: const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
+        openAndCloseAnimation: false,
         children: [
           AccordionSection(
             isOpen: currentlyOpen == 'redFruits',

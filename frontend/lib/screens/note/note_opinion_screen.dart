@@ -1,4 +1,5 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
@@ -42,7 +43,8 @@ class NoteOpinionScreen extends StatelessWidget {
               Text('자유롭게 의견을 적어보세요!', style: TextStyle(fontSize: AppFontSizes.mediumSmall),),
               SizedBox(height: 30,),
               NoteOpinion(wineRate: wine.rating ?? 3.0),
-              SizedBox(height: 20,)
+              SizedBox(height: 20,),
+
             ],
           ),
         ),

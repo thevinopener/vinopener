@@ -1,6 +1,5 @@
-import 'package:custom_rating_bar/custom_rating_bar.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 
 class NoteOpinion extends StatefulWidget {
@@ -61,25 +60,26 @@ class _NoteOpinionState extends State<NoteOpinion> {
                       fontSize: AppFontSizes.large,
                       fontWeight: FontWeight.bold)),
               SizedBox(width: 20),
-              RatingBar(
+              RatingBar.builder(
                 initialRating: wineRate,
-                isHalfAllowed: true,
-                onRatingChanged: (value) {
+                minRating: 0,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemCount: 5,
+                itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                onRatingUpdate: (rating) {
                   setState(() {
-                    wineRate = value; // 상태 업데이트
+                    wineRate = rating; // 상태 업데이트
                     // 텍스트와 별점을 함께 출력
                     print(
                         'Opinion: ${opinionController.text}, Current Rating: ${wineRate.toStringAsFixed(1)}');
                   });
                 },
-                filledIcon: Icons.star,
-                emptyIcon: Icons.star_border,
-                emptyColor: Colors.grey,
-                filledColor: AppColors.primary,
-                halfFilledColor: AppColors.primary,
-                halfFilledIcon: Icons.star_half,
-                maxRating: 5,
-              )
+              ),
             ],
           )
         ],
