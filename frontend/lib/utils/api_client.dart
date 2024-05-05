@@ -5,7 +5,7 @@ class ApiClient {
   late Dio dio;
 
   //
-  static String _testAccessToken =
+  static String _accessToken =
       "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwiZW1haWwiOiJzc2FmeS5jMjA3QGdtYWlsLmNvbSIsImF1dGhvcml0eSI6IlJPTEVfVVNFUiIsImlhdCI6MTcxNDExNDAwNCwiZXhwIjoxNzE2NzA2MDA0fQ.6TPdV_E8u9TYTx0DW2FgNLQjsg7MlQE91TqCs86i1U9-R3xP8m_hsssdnkeoUVgt-Gj-jBtWQCNtx2DXyiK-cA";
 
   factory ApiClient() {
@@ -28,10 +28,14 @@ class ApiClient {
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
-          options.headers["Authorization"] = "Bearer $_testAccessToken";
+          options.headers["Authorization"] = "Bearer $_accessToken";
           return handler.next(options);
         },
       ),
     );
+  }
+
+  static set accessToken(String value) {
+    _accessToken = value;
   }
 }

@@ -580,6 +580,7 @@ class _WineDetailScreenState extends State<WineDetailScreen> {
                                     flavour: Flavour(
                                         id: 0,
                                         taste: widget.wine.flavours![index]),
+                                    isSelected: false,
                                   ),
                                 ),
                               ),

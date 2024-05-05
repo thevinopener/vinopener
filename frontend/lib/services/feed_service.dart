@@ -12,9 +12,10 @@ class FeedService {
 
   static Future<List<Feed>> getFeedList() async {
     List<Feed> feedList = [];
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 2; i++) {
       feedList.add(Feed.dummy());
     }
+    print('getFeedList');
     return feedList;
   }
 

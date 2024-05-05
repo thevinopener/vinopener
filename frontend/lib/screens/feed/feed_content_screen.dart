@@ -65,7 +65,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
       content = contentController.text;
       FeedService.postFeed(
         Feed(
-          user: User.dummy(),
+          user: UserModel.dummy(),
           imageUrl: 'assets/images/wine.jpg',
           content: content,
           isPublic: isPublic,

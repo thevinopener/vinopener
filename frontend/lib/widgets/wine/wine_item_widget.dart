@@ -22,7 +22,8 @@ class WineItem extends StatelessWidget {
           Navigator.push(
               context,
               CupertinoPageRoute(
-                  builder: (context) => WineDetailScreen(wine: Wine.dummy())));
+                  builder: (context) =>
+                      WineDetailScreen(wine: Wine.dummy())));
         },
         child: Container(
           // color: Colors.white,

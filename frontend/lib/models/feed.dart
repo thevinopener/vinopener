@@ -2,7 +2,7 @@ import 'package:frontend/models/user.dart';
 import 'package:frontend/models/wine_model.dart';
 
 class Feed {
-  User user;
+  UserModel user;
   DateTime createdTime;
   String? imageUrl;
   int likeCount;
@@ -18,7 +18,7 @@ class Feed {
       wineList.add(Wine.dummy());
     }
     return Feed(
-      user: User.dummy(),
+      user: UserModel.dummy(),
       imageUrl: 'https://picsum.photos/200/300',
       content: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
       isPublic: true,
