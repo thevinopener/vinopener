@@ -27,12 +27,12 @@ class NoteListScreen extends StatelessWidget {
       );
     }
 
-    void viewDetail() {
+    void viewDetail(int id) {
       Navigator.push(
         context,
         CupertinoPageRoute(
           //추후 SearchTextScreen()로 변경
-          builder: (context) =>NoteResultScreen(),
+          builder: (context) =>NoteResultScreen(id: id),
         ),
       );
     }
@@ -59,7 +59,7 @@ class NoteListScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),  // 좌우 패딩을 추가하여 카드 중앙 정렬
-            child: NoteCard(note: notes[index]),
+            child: GestureDetector(child: NoteCard(note: notes[index]), onTap: ()=> viewDetail(notes[index].id),),
           );
         },
       ),

@@ -7,9 +7,11 @@ import '../../constants/fonts.dart';
 import '../../models/note_model.dart';
 
 class NoteResultScreen extends StatelessWidget {
-
+  final int id;
   final Note note = Note.dummy();
   final  List<Note> notes = List.generate(10, (index) => Note.dummy());
+
+  NoteResultScreen({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
