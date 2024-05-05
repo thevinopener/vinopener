@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
+import 'package:frontend/constants/icon.dart';
 import 'package:frontend/widgets/note/note_select_flavour_widget.dart';
 
 
@@ -26,6 +27,10 @@ class NoteSmellScreen extends StatelessWidget {
         ),
       );
     }
+    List<int> convertFlavoursToIds(List<String>? flavours) {
+      if (flavours == null) return [];
+      return flavours.map((flavour) => WineFlavourId.FlavourId[flavour] ?? -1).toList();
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -46,7 +51,7 @@ class NoteSmellScreen extends StatelessWidget {
               SizedBox(height: 10,),
               Text('어떠한 향기가 나나요?', style: TextStyle(fontSize: AppFontSizes.mediumSmall),),
               SizedBox(height: 30,),
-              NoteFlavour(flavourId: [68, 72, 1, 14, 16, 52],),
+              NoteFlavour(flavourId:convertFlavoursToIds(wine.flavours),),
               SizedBox(height: 20,)
             ],
           ),

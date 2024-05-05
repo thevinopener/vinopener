@@ -65,7 +65,7 @@ class _NoteFlavourState extends State<NoteFlavour> {
     Flavour(taste: "붉은자두", id: 63),
     Flavour(taste: "석류", id: 64),
     Flavour(taste: "체리", id: 65),
-    Flavour(taste: "크랜베리", id: 66),
+    Flavour(taste: "크렌베리", id: 66),
     Flavour(taste: "토마토", id: 67),
   ];
 

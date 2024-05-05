@@ -25,8 +25,21 @@ class Wine {
         winery = 'Shafer',
         name = 'Shafer Hillside Select Cabernet Sauvignon 2019',
         imageUrl = 'https://picsum.photos/200/200',
-        country = 'korea',
-        type = 'red';
+        country = 'USA',
+        price = 299.99,
+        rating = 3.5,
+        vintage = 2019,
+        type = 'Red',
+        acidity = 3.5,
+        intensity = 4.0,
+        sweetness = 2.5,
+        tannin = 3.5,
+        abv = 14.9,
+        view = 157,
+        flavours = ['딸기', '블루베리', '오크', '육두구'],
+        isBookmarked = true,
+        isAddedToCellar = false,
+        countOfNotes = 5;
 
   Wine({
     this.id,
