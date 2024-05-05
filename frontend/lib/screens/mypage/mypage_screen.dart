@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/models/feed.dart';
@@ -9,7 +10,7 @@ import 'package:frontend/screens/feed/feed_detail_screen.dart';
 import 'package:frontend/screens/mypage/mypage_setting_screen.dart';
 import 'package:frontend/services/feed_service.dart';
 import 'package:frontend/services/wine_service.dart';
-import 'package:frontend/widgets/wine/wine_item_widget.dart';
+import 'package:frontend/widgets/common/molecules/wine_item_widget.dart';
 import 'package:provider/provider.dart';
 
 class MyPageScreen extends StatefulWidget {
@@ -23,14 +24,18 @@ class _MyPageScreenState extends State<MyPageScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  final Future<List<Feed>> myFeedList = FeedService.getMyFeedList();
-  final Future<List<Wine>> bookmarkList = WineService.getWineList();
-  final Future<List<Wine>> cellarList = WineService.getWineList();
+  late Future<List<Feed>> myFeedList;
+  late Future<List<Wine>> bookmarkList;
+  late Future<List<Wine>> cellarList;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this); // 3개의 탭
+
+    myFeedList = FeedService.getMyFeedList();
+    bookmarkList = WineService.getWineList();
+    cellarList = WineService.getCellarList();
   }
 
   @override
@@ -143,7 +148,11 @@ class _MyPageScreenState extends State<MyPageScreen>
                                   builder: (context) =>
                                       FeedDetailScreen(snapshot.data[index]),
                                 ),
-                              );
+                              ).then((_) {
+                                setState(() {
+                                  myFeedList = FeedService.getMyFeedList();
+                                });
+                              });
                             },
                             child: Image.network(
                               snapshot.data[index].imageUrl,
@@ -187,11 +196,13 @@ class _MyPageScreenState extends State<MyPageScreen>
                     );
                   },
                 ),
-                Column(
-                  children: [
-                    WineItem(wine: Wine.dummy()),
-                    WineItem(wine: Wine.dummy()),
-                  ],
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      WineItem(wine: Wine.dummy()),
+                      WineItem(wine: Wine.dummy()),
+                    ],
+                  ),
                 ),
               ],
             ),

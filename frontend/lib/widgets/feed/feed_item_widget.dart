@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/feed.dart';
+import 'package:frontend/providers/feed/feed_tab_state_provider.dart';
 import 'package:frontend/services/feed_service.dart';
 import 'package:frontend/utils/date_time_util.dart';
-
-import '../molecules/wine_item_widget.dart';
+import 'package:frontend/widgets/common/molecules/wine_item_widget.dart';
+import 'package:frontend/widgets/common/templates/wine_detail_template.dart';
+import 'package:provider/provider.dart';
 
 class FeedItem extends StatefulWidget {
   final Feed feed;
@@ -54,7 +57,7 @@ class _FeedItemState extends State<FeedItem> {
                     backgroundImage:
                         NetworkImage('${widget.feed.user.imageUrl}'),
                   ),
-                  SizedBox(width: 20),
+                  SizedBox(width: 10),
                   Text('${widget.feed.user.nickname}'),
                 ],
               ),
@@ -68,7 +71,7 @@ class _FeedItemState extends State<FeedItem> {
             height: 400,
             fit: BoxFit.cover,
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -87,10 +90,20 @@ class _FeedItemState extends State<FeedItem> {
               Icon(Icons.ios_share),
             ],
           ),
-          SizedBox(height: 20),
           Column(
             children: widget.feed.wineList
-                    ?.map((wine) => GestureDetector(child: WineItem(wine: wine)))
+                    ?.map((wine) => GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) =>
+                                    WineDetailScreen(wine: wine)),
+                          ).then((_) =>
+                              Provider.of<FeedTabState>(context, listen: false)
+                                  .setFeedList());
+                        },
+                        child: WineItem(wine: wine)))
                     .toList() ??
                 [],
           ),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "12158695753",
+    "project_id": "vinopener-dd490",
+    "storage_bucket": "vinopener-dd490.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12158695753:android:8832ff4b6a6d6e934a4298",
+        "android_client_info": {
+          "package_name": "com.vinopener.frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk-Hllv-RuoVdHVF-JQjHIj--FstcrOmE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
