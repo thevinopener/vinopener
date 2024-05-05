@@ -10,7 +10,7 @@ class User {
     return User(
       email: 'jeon@ssafy.com',
       nickname: '전원빈',
-      imageUrl: 'assets/images/penguin.jpg',
+      imageUrl: 'https://picsum.photos/200/300',
       refreshToken: 'refresh',
     );
   }

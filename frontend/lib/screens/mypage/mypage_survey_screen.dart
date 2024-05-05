@@ -55,7 +55,7 @@ class _MyPageSurveyScreenState extends State<MyPageSurveyScreen> {
 
   void _updateSurvey() {
     final survey = Survey(
-      type: _selectedKinds,
+      types: _selectedKinds,
       minAbv: _alcoholStart.toInt(),
       maxAbv: _alcoholEnd.toInt(),
       sweetness: _sweetness,

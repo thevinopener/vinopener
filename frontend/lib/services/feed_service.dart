@@ -23,6 +23,7 @@ class FeedService {
     for (int i = 0; i < 10; i++) {
       myFeedList.add(Feed.dummy());
     }
+    print('getMyFeedList');
     return myFeedList;
   }
 
@@ -36,5 +37,13 @@ class FeedService {
 
   static void setFeedPublic(Feed feed) async {
     print('setFeedPublic');
+  }
+
+  static void likeFeed() async {
+    print('likeFeed');
+  }
+
+  static void cancelLikeOnFeed() async {
+    print('cancelLikeOnFeed');
   }
 }

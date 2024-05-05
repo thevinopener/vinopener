@@ -81,8 +81,14 @@ class NoteWineCard extends StatelessWidget {
                 SizedBox(height: 15),
                 Row(
                   children: [
-                    NationFlag(height: 12, width: 12),
-                    SizedBox(width: 5,),
+                    NationFlag(
+                      country: 'United States',
+                      height: 12,
+                      width: 12,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
                     Text(
                       wine.country ?? 'Unknown Country', // 널 대체 텍스트
                       style: TextStyle(fontSize: AppFontSizes.small),

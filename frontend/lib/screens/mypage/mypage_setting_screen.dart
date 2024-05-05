@@ -24,7 +24,7 @@ class MyPageSettingScreen extends StatelessWidget {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: AssetImage('${user.imageUrl}'),
+                    backgroundImage: NetworkImage('${user.imageUrl}'),
                     radius: 20,
                   ),
                   SizedBox(width: 20),

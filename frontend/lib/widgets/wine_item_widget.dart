@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/wine_model.dart';
-import 'package:frontend/screens/wine/wine_detail_screen.dart';
 import 'package:frontend/widgets/common/atoms/nation_flag_widget.dart';
+import 'package:frontend/widgets/common/templates/wine_detail_template.dart';
 
 class WineItem extends StatelessWidget {
   final Wine wine;
@@ -52,7 +52,11 @@ class WineItem extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          NationFlag(height: 20, width: 20),
+                          NationFlag(
+                            country: 'United States',
+                            height: 20,
+                            width: 20,
+                          ),
                           SizedBox(width: 5),
                           Text('${wine.country}')
                         ],

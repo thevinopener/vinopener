@@ -1,10 +1,7 @@
 import 'package:frontend/models/survey_model.dart';
+import 'package:frontend/utils/api_client.dart';
 
 class UserService {
-
-  static void logout() async {
-    print('logout');
-  }
 
   static void changeCover() async {
     print('changeCover');
@@ -15,6 +12,10 @@ class UserService {
   }
 
   static void updateSurvey(Survey survey) async {
-    print('updateSurvey');
+    await ApiClient().dio.put('/preference', data: survey.toJson());
+  }
+
+  static void logout() async {
+    await ApiClient().dio.delete('/users/logout');
   }
 }

@@ -102,7 +102,11 @@ class NoteCard extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        NationFlag(height: 12, width: 12),
+                        NationFlag(
+                          country: 'United States',
+                          height: 12,
+                          width: 12,
+                        ),
                         Text(
                           note.wine.country,
                           style: TextStyle(fontSize: AppFontSizes.small),
