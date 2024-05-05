@@ -56,7 +56,10 @@ class _MyPageScreenState extends State<MyPageScreen>
                   alignment: Alignment.bottomCenter,
                   heightFactor: 0.625,
                   child: Image.network(
-                    'https://picsum.photos/400/400',
+                    'https://picsum.photos/200/300',
+                    width: 400,
+                    height: 400,
+                    fit: BoxFit.cover,
                     errorBuilder: (
                       BuildContext context,
                       Object exception,
@@ -64,7 +67,7 @@ class _MyPageScreenState extends State<MyPageScreen>
                     ) {
                       return Image.asset(
                         '${user.imageUrl}',
-                        fit: BoxFit.scaleDown,
+                        fit: BoxFit.cover,
                       );
                     },
                   ),
@@ -89,7 +92,7 @@ class _MyPageScreenState extends State<MyPageScreen>
               Positioned(
                 bottom: -avatarRadius,
                 child: CircleAvatar(
-                  backgroundImage: AssetImage('${user.imageUrl}'),
+                  backgroundImage: NetworkImage('${user.imageUrl}'),
                   radius: avatarRadius,
                 ),
               ),
@@ -142,8 +145,11 @@ class _MyPageScreenState extends State<MyPageScreen>
                                 ),
                               );
                             },
-                            child: Image.asset(
+                            child: Image.network(
                               snapshot.data[index].imageUrl,
+                              width: 135,
+                              height: 135,
+                              fit: BoxFit.cover,
                             ),
                           );
                         },

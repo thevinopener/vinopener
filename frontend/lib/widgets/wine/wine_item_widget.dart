@@ -1,7 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/constants/wineLabel.dart';
 import 'package:frontend/models/wine_model.dart';
+import 'package:frontend/screens/search/search_detail_screen.dart';
+import 'package:frontend/widgets/common/atoms/nation_flag_widget.dart';
+import 'package:frontend/widgets/common/templates/wine_detail_template.dart';
 
 class WineItem extends StatelessWidget {
   final Wine wine;
@@ -15,10 +19,10 @@ class WineItem extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () {
           // 클릭 시 해당 와인 이름을 SearchResultScreen에 전달
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => SearchDetailScreen()));
+          Navigator.push(
+              context,
+              CupertinoPageRoute(
+                  builder: (context) => WineDetailScreen(wine: Wine.dummy())));
         },
         child: Container(
           // color: Colors.white,
@@ -74,8 +78,7 @@ class WineItem extends StatelessWidget {
                     children: [
                       Flexible(
                         child: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
@@ -87,19 +90,6 @@ class WineItem extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            // Flexible(
-                            //   child: IconButton(
-                            //     alignment: Alignment.centerRight,
-                            //     onPressed: () {},
-                            //     icon: Icon(Icons.star_outline),
-                            //     iconSize: 27,
-                            //     padding:
-                            //         EdgeInsets.zero, // 패딩 제거하여 더 우측 끝으로
-                            //     constraints:
-                            //         BoxConstraints(), // 제약 조건 최소화
-                            //     color: AppColors.primary,
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),
@@ -117,10 +107,10 @@ class WineItem extends StatelessWidget {
                         flex: 2,
                         child: Row(
                           children: [
-                            Image.asset(
-                              'assets/images/ea.png',
-                              width: 20,
+                            NationFlag(
+                              country: '${wine.country}',
                               height: 20,
+                              width: 20,
                             ),
                             SizedBox(width: 10),
                             Text(
@@ -146,8 +136,7 @@ class WineItem extends StatelessWidget {
           fixedSize: Size(double.infinity, 150),
           // 버튼 크기를 조정
           backgroundColor: Colors.white,
-          elevation:
-          0,
+          elevation: 0,
           // Fucking 그림자 제거 -> 이거 없으면 회색같이 나옴 ElevatedButton의 특징임 젠장.
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),

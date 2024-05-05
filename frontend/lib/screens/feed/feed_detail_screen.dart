@@ -11,8 +11,10 @@ class FeedDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Feed Detail')),
-      body: FeedItem(
-        feed: feed,
+      body: SingleChildScrollView(
+        child: FeedItem(
+          feed: feed,
+        ),
       ),
     );
   }
