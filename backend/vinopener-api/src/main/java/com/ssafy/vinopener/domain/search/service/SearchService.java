@@ -57,7 +57,7 @@ public class SearchService {
     }
 
     /**
-     * 검색 기록 삭제
+     * 검색 기록 개별 삭제
      *
      * @param searchId 검색 기록 ID
      * @param userId   유저 ID
@@ -68,6 +68,18 @@ public class SearchService {
             final Long userId
     ) {
         searchRepository.deleteByIdAndUserId(searchId, userId);
+    }
+
+    /**
+     * 검색 기록 전체 삭제
+     *
+     * @param userId 유저 ID
+     */
+    @Transactional
+    public void deleteAll(
+            final Long userId
+    ) {
+        searchRepository.deleteAllByUserId(userId);
     }
 
 }

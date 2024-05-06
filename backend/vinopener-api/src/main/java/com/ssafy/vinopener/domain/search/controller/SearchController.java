@@ -69,12 +69,12 @@ public class SearchController {
     }
 
     /**
-     * 검색 기록 삭제
+     * 검색 기록 개별 삭제
      *
      * @param searchId 검색 기록 ID
      * @param userId   유저 ID
      */
-    @DeleteMapping(REQUEST_PATH_VARIABLE)
+    @DeleteMapping("/each" + "/{searchId}")
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> delete(
@@ -82,6 +82,21 @@ public class SearchController {
             @RequestParam final Long userId
     ) {
         searchService.delete(searchId, userId);
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 검색 기록 전체 삭제
+     *
+     * @param userId 유저 ID
+     */
+    @DeleteMapping("/all" + "/{userId}")
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> deleteAll(
+            @RequestParam final Long userId
+    ) {
+        searchService.deleteAll(userId);
         return ResponseEntity.noContent().build();
     }
 

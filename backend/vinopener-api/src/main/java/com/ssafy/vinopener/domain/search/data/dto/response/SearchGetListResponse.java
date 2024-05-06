@@ -5,7 +5,6 @@ import lombok.Builder;
 @Builder
 public record SearchGetListResponse(
         Long id,
-
         Long userId,
         String content
 ) {
