@@ -4,7 +4,7 @@ import 'package:frontend/constants/colors.dart';
 import 'package:frontend/widgets/common/atoms/wine_color_widget.dart';
 import 'package:frontend/widgets/common/atoms/wine_taste_chart_widget.dart';
 import 'package:frontend/widgets/common/atoms/wine_taste_param_widget.dart';
-import 'package:frontend/widgets/note/note_detail_card.dart';
+import 'package:frontend/widgets/note/note_detail_card_widget.dart';
 import 'package:intl/intl.dart';
 
 import '../../constants/fonts.dart';

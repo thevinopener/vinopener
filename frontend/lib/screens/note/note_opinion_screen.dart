@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
-import 'package:frontend/widgets/note/note_write_opinion.dart';
+import 'package:frontend/widgets/note/note_write_opinion_widget.dart';
 
 
 
 import '../../models/wine_model.dart';
 
-import '../../widgets/note/note_wine_card.dart';
+import '../../widgets/note/note_wine_card_widget.dart';
 
 class NoteOpinionScreen extends StatelessWidget {
   const NoteOpinionScreen({super.key});

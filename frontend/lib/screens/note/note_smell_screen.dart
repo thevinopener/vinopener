@@ -9,7 +9,7 @@ import 'package:frontend/widgets/note/note_select_flavour_widget.dart';
 
 import '../../models/wine_model.dart';
 
-import '../../widgets/note/note_wine_card.dart';
+import '../../widgets/note/note_wine_card_widget.dart';
 import 'note_taste_screen.dart';
 
 class NoteSmellScreen extends StatelessWidget {
