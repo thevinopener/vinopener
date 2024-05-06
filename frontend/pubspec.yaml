@@ -37,6 +37,7 @@ dependencies:
   accordion: ^2.6.0
 
   flutter_rating_bar: ^4.0.1
+  intl: ^0.17.0
 
 flutter:
   uses-material-design: true

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/note/note_color_screen.dart';
 import 'package:frontend/screens/note/note_search_screen.dart';
 
 import 'package:frontend/widgets/note/note_list_card_widget.dart';
@@ -22,7 +21,7 @@ class NoteListScreen extends StatelessWidget {
         context,
         CupertinoPageRoute(
           //추후 SearchTextScreen()로 변경
-          builder: (context) =>NoteColorScreen(),
+          builder: (context) =>NoteSearchScreen(),
         ),
       );
     }

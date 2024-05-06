@@ -156,7 +156,7 @@ class NoteDetailWineReview {
       sweetness: 5.0,
       intensity: 4.0,
       acidity: 3.5,
-      alcohol: 14.0,
+      alcohol: 4.0,
       tannin: 3.0,
       opinion: 'Excellent wine with rich flavors.',
       rating: 4.5,
