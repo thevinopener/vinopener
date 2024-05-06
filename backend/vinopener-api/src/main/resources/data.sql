@@ -1,6 +1,10 @@
 INSERT INTO `user`
   (user_id, email, nickname, image_url)
-VALUES (1, 'ssafy.c207@gmail.com', 'ssafy.c207', null);
+VALUES (1, 'ssafy.c207@gmail.com', 'ssafy.c207', null),
+       (2, 'ssafy1@gmail.com', 'Jeon', 'https://picsum.photos/100/150'),
+       (3, 'ssafy2@gmail.com', 'Yang', 'https://picsum.photos/100/150'),
+       (4, 'ssafy3@gmail.com', 'Choi', 'https://picsum.photos/100/150'),
+       (5, 'ssafy4@gmail.com', 'Han', 'https://picsum.photos/100/150');
 
 INSERT INTO `flavour_type`
   (flavour_type_id, name)
@@ -5749,11 +5753,87 @@ VALUES (1, 83),    -- 바닐라
 
 INSERT INTO `feed`
   (feed_id, user_id, content, image_url, is_public)
-VALUES (1, 1, '첫 번째 피드에요', 'https://picsum.photos/200/300', true),
-       (2, 1, '두 번째 피드에요 ', 'https://picsum.photos/200/300', true),
-       (3, 1, '세 번째 피드에요', 'https://picsum.photos/200/300', true),
-       (4, 1, '네 번째 피드에요', 'https://picsum.photos/200/300', true),
-       (5, 1, '다섯 번째 피드에요', 'https://picsum.photos/200/300', true);
+VALUES (1, 1, '유저1_첫 번째 피드에요', 'https://picsum.photos/200/300', true),
+       (2, 1, '유저1_두 번째 피드에요 ', 'https://picsum.photos/200/300', true),
+       (3, 1, '유저1_세 번째 피드에요', 'https://picsum.photos/200/300', true),
+       (4, 1, '유저1_네 번째 피드에요', 'https://picsum.photos/200/300', true),
+       (5, 1, '유저1_다섯 번째 피드에요', 'https://picsum.photos/200/300', true),
+       (6, 2, '유저2_첫 번째 피드에요', 'https://picsum.photos/200/300', false),
+       (7, 2, '유저2_두 번째 피드에요', 'https://picsum.photos/200/300', true),
+       (8, 2, '유저2_세 번째 피드에요', 'https://picsum.photos/200/300', false),
+       (9, 2, '유저2_네 번째 피드에요', 'https://picsum.photos/200/300', true),
+       (10, 2, '유저2_다섯 번째 피드에요', 'https://picsum.photos/200/300', true),
+       (11, 3, '유저3_첫 번째 피드에요', 'https://picsum.photos/200/300', true),
+       (12, 3, '유저3_두 번째 피드에요', 'https://picsum.photos/200/300', true),
+       (13, 3, '유저3_셋 번째 피드에요', 'https://picsum.photos/200/300', true),
+       (14, 3, '유저3_네 번째 피드에요', 'https://picsum.photos/200/300', true),
+       (15, 3, '유저3_다섯 번째 피드에요', 'https://picsum.photos/200/300', false);
+
+INSERT INTO `feed_wine`
+  (feed_wine_id, feed_id, wine_id)
+VALUES (1, 1, 1),
+       (2, 2, 4),
+       (3, 2, 55),
+       (4, 2, 31),
+       (5, 2, 77),
+       (6, 3, 24),
+       (7, 3, 52),
+       (8, 4, 99),
+       (9, 4, 88),
+       (10, 5, 11),
+       (11, 5, 22),
+       (12, 5, 33),
+       (13, 5, 44),
+       (14, 5, 55),
+       (15, 5, 66),
+       (16, 5, 77),
+       (17, 5, 88),
+       (18, 5, 99),
+       (19, 5, 100),
+       (20, 6, 2),
+       (21, 6, 2),
+       (22, 7, 2),
+       (23, 8, 2),
+       (24, 9, 2),
+       (25, 10, 2),
+       (26, 11, 38),
+       (27, 12, 17),
+       (28, 13, 25),
+       (29, 14, 83),
+       (30, 15, 69);
+
+INSERT INTO `feed_like`
+  (feed_like_id, feed_id, user_id)
+VALUES (1, 6, 1),
+       (2, 7, 1),
+       (3, 8, 1),
+       (4, 9, 1),
+       (5, 10, 1),
+       (6, 3, 2),
+       (7, 12, 2),
+       (8, 15, 2),
+       (9, 1, 3),
+       (10, 2, 3),
+       (11, 3, 3),
+       (12, 4, 3),
+       (13, 5, 3),
+       (14, 6, 3),
+       (15, 7, 3),
+       (16, 8, 3),
+       (17, 4, 4),
+       (18, 9, 4),
+       (19, 2, 4),
+       (20, 14, 4),
+       (21, 7, 4),
+       (22, 11, 4),
+       (23, 5, 4),
+       (24, 3, 5),
+       (25, 8, 5),
+       (26, 1, 5),
+       (27, 12, 5),
+       (28, 6, 5),
+       (29, 10, 5),
+       (30, 15, 5);
 
 INSERT INTO `cellar_wine`
   (cellar_wine_id, user_id, wine_id)
@@ -5767,3 +5847,17 @@ VALUES (1, 1, 1),
        (8, 1, 8),
        (9, 1, 9),
        (10, 1, 10);
+
+INSERT INTO `bookmark`
+  (bookmark_id, user_id, wine_id)
+VALUES (1, 1, 1),
+       (2, 1, 3),
+       (3, 1, 5),
+       (4, 1, 2),
+       (5, 1, 7),
+       (6, 1, 8),
+       (7, 1, 4),
+       (8, 1, 55),
+       (9, 1, 62),
+       (10, 1, 43),
+       (11, 1, 71);
