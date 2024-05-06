@@ -22,6 +22,7 @@ class _TasteParamState extends State<TasteParam> {
   Widget build(BuildContext context) {
     return Container(
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             widget.label,

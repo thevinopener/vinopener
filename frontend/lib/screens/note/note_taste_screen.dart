@@ -10,8 +10,8 @@ import 'package:frontend/widgets/note/note_taste_widget.dart';
 
 import '../../models/wine_model.dart';
 
-import '../../widgets/note/note_wine_card.dart';
-import 'note_taste_screen.dart';
+import '../../widgets/note/note_wine_card_widget.dart';
+
 
 class NoteTasteScreen extends StatelessWidget {
   const NoteTasteScreen({super.key});

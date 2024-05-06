@@ -7,7 +7,7 @@ import 'package:frontend/screens/note/note_smell_screen.dart';
 
 import '../../models/wine_model.dart';
 import '../../widgets/note/note_select_color_widget.dart';
-import '../../widgets/note/note_wine_card.dart';
+import '../../widgets/note/note_wine_card_widget.dart';
 
 class NoteColorScreen extends StatelessWidget {
   const NoteColorScreen({super.key});

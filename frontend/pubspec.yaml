@@ -31,9 +31,6 @@ dependencies:
   flag: ^7.0.0
   flutter_radar_chart: ^0.2.1
 
-  #for common
-  custom_rating_bar: ^2.0.5
-
   #Note_Color_Screen
   accordion: ^2.6.0
 
