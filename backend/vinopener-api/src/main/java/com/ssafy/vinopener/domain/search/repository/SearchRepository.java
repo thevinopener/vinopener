@@ -8,6 +8,8 @@ public interface SearchRepository extends JpaRepository<SearchEntity, Long> {
 
     List<SearchEntity> findAllByUserId(Long userId);
 
-    void deleteByIdAndUserId(Long id, Long userId);
+    void deleteByIdAndUserId(Long id, Long userId);  // 개별 삭제
+
+    void deleteAllByUserId(Long userId);  // 전체 삭제
 
 }
