@@ -12,9 +12,10 @@ class FeedService {
 
   static Future<List<Feed>> getFeedList() async {
     List<Feed> feedList = [];
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 2; i++) {
       feedList.add(Feed.dummy());
     }
+    print('getFeedList');
     return feedList;
   }
 
@@ -23,6 +24,7 @@ class FeedService {
     for (int i = 0; i < 10; i++) {
       myFeedList.add(Feed.dummy());
     }
+    print('getMyFeedList');
     return myFeedList;
   }
 
@@ -36,5 +38,13 @@ class FeedService {
 
   static void setFeedPublic(Feed feed) async {
     print('setFeedPublic');
+  }
+
+  static void likeFeed() async {
+    print('likeFeed');
+  }
+
+  static void cancelLikeOnFeed() async {
+    print('cancelLikeOnFeed');
   }
 }

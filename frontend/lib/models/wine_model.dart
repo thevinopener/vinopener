@@ -22,24 +22,34 @@ class Wine {
 
   Wine.dummy()
       : id = 1,
-        winery = 'Shafer',
-        name = 'Shafer Hillside Select Cabernet Sauvignon 2019',
-        imageUrl = 'https://picsum.photos/200/200',
-        country = 'USA',
-        price = 299.99,
-        rating = 3.5,
-        vintage = 2019,
-        type = 'Red',
+        name = 'Thurlow Cellars Copperhead Cabernet Sauvignon 2021',
+        imageUrl =
+            'https://images.vivino.com/thumbs/lz599kJvSh65mHyG28RWzQ_pb_x600.png',
+        grape = 'Cabernet Sauvignon',
+        winery = 'Thurlow Cellars',
+        country = 'United States',
+        rating = 4.3,
+        vintage = 2021,
+        type = 'RED',
         acidity = 3.5,
-        intensity = 4.0,
-        sweetness = 2.5,
+        intensity = 4.5,
+        sweetness = 1.5,
         tannin = 3.5,
-        abv = 14.9,
-        view = 157,
-        flavours = ['딸기', '블루베리', '오크', '육두구'],
-        isBookmarked = true,
-        isAddedToCellar = false,
-        countOfNotes = 5;
+        abv = 15.3,
+        flavours = [
+          "딸기",
+          "블루베리",
+          "오디",
+          "올리브",
+          "자두",
+          "무화과",
+          "용과",
+          "청배",
+          "복숭아",
+          "리치",
+          "풍선껌",
+          "라벤더"
+        ];
 
   Wine({
     this.id,

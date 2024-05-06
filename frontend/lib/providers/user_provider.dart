@@ -3,13 +3,13 @@ import 'package:frontend/models/user.dart';
 
 class UserProvider with ChangeNotifier {
 
-  User _user;
+  UserModel _user;
 
   UserProvider(this._user);
 
-  User get user => _user;
+  UserModel get user => _user;
 
-  void setUser(User user) {
+  void setUser(UserModel user) {
     _user = user;
     notifyListeners();
   }

@@ -57,7 +57,7 @@ class _SurveyScreenState extends State<SurveyScreen> {
 
   void _submitSurvey() {
     final survey = Survey(
-      type: _selectedKinds,
+      types: _selectedKinds,
       minAbv: _alcoholStart.toInt(),
       maxAbv: _alcoholEnd.toInt(),
       sweetness: _sweetness,

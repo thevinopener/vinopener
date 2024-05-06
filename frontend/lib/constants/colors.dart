@@ -16,6 +16,21 @@ class WineButtonColors {
   static const Color rose = Color(0xFFFC585D);
   static const Color white = Color(0xFF00A388);
   static const Color sparkling = Color(0xFF009AB4);
+
+  static Color getColor(String type) {
+    switch (type) {
+      case 'RED':
+        return red;
+      case 'ROSE':
+        return rose;
+      case 'WHITE':
+        return white;
+      case 'SPARKLING':
+        return sparkling;
+      default:
+        return Colors.grey;
+    }
+  }
 }
 
 class WineColors {
