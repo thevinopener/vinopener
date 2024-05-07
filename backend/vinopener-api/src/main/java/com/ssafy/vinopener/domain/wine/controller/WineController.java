@@ -2,11 +2,14 @@ package com.ssafy.vinopener.domain.wine.controller;
 
 import com.ssafy.vinopener.domain.wine.data.dto.response.WineGetListResponse;
 import com.ssafy.vinopener.domain.wine.data.dto.response.WineGetResponse;
+import com.ssafy.vinopener.domain.wine.data.dto.response.WineTypeGetListResponse;
+import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
 import com.ssafy.vinopener.domain.wine.service.WineService;
 import com.ssafy.vinopener.global.annotations.UserPrincipalId;
 import com.ssafy.vinopener.global.config.SwaggerConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -64,9 +67,17 @@ public class WineController {
     public ResponseEntity<List<WineGetListResponse>> getListWine(
             @UserPrincipalId final Long userId
     ) {
+        // TODO : 페이지네이션
         return ResponseEntity.ok(wineService.getList(userId));
     }
 
+    /**
+     * 와인 상세 조회(북마크, 셀러, 테이스팅 노트 여부 포함)
+     *
+     * @param wineId 와인 ID
+     * @param userId 유저 ID
+     * @return 와인 정보
+     */
     @GetMapping(REQUEST_PATH_VARIABLE)
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<WineGetResponse> getWine(
@@ -74,6 +85,21 @@ public class WineController {
             @UserPrincipalId final Long userId
     ) {
         return ResponseEntity.ok(wineService.get(wineId, userId));
+    }
+
+    /**
+     * 와인 타입별 조회
+     *
+     * @param type 와인 타입 요청
+     * @return 타입별 와인 목록
+     */
+    @GetMapping("/types/{type}")
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    public ResponseEntity<List<WineTypeGetListResponse>> getTypeList(
+            @PathVariable @Valid final WineType type
+    ) {
+        // TODO : 페이지네이션
+        return ResponseEntity.ok(wineService.getTypeList(type));
     }
 
 }
