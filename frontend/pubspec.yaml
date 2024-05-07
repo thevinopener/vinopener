@@ -44,6 +44,9 @@ dependencies:
   # google social login
   google_sign_in: ^6.2.1
 
+  #for rating bar
+  custom_rating_bar: ^2.0.5
+  flutter_rating_bar: ^4.0.1
 
 flutter:
   uses-material-design: true
