@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
-// screens
-import 'package:frontend/screens/search/search_camera_screen.dart';
 
 // constants
 
