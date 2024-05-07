@@ -3,6 +3,7 @@ package com.ssafy.vinopener.domain.wine.controller;
 import com.ssafy.vinopener.domain.wine.data.dto.response.WineGetListResponse;
 import com.ssafy.vinopener.domain.wine.data.dto.response.WineGetResponse;
 import com.ssafy.vinopener.domain.wine.data.dto.response.WineTypeGetListResponse;
+import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
 import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
 import com.ssafy.vinopener.domain.wine.service.WineService;
 import com.ssafy.vinopener.global.annotations.UserPrincipalId;
@@ -10,12 +11,14 @@ import com.ssafy.vinopener.global.config.SwaggerConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -100,6 +103,24 @@ public class WineController {
     ) {
         // TODO : 페이지네이션
         return ResponseEntity.ok(wineService.getTypeList(type));
+    }
+
+    /**
+     * 와인 검색
+     *
+     * @param query 검색어
+     * @return 검색어에 해당하는 와인 목록
+     */
+    @GetMapping("/search")
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    public ResponseEntity<List<WineEntity>> searchWine(
+            @RequestParam(value = "query", required = false) String query
+    ) {
+        if (query != null && !query.trim().isEmpty()) {
+            return ResponseEntity.ok(wineService.searchWine(query));
+        } else {
+            return ResponseEntity.ok(Collections.emptyList());
+        }
     }
 
 }
