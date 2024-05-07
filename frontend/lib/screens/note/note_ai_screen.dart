@@ -17,7 +17,7 @@ class DismissibleBottomSheetView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.4),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.6),
             Expanded(
               child: ClipRRect(
                   borderRadius: const BorderRadius.only(
@@ -27,13 +27,13 @@ class DismissibleBottomSheetView extends StatelessWidget {
                     children: [
                       Container(
                         alignment: Alignment.topRight,
-                        color: Colors.white,
+                        color: AppColors.black,
                         padding: const EdgeInsets.all(5),
                         child: TextButton(
                           child: Icon(
                             Icons.close,
                             size: 30,
-                            color: AppColors.black,
+                            color: AppColors.white,
                           ),
                           onPressed: () {
                             Navigator.of(context).pop();

@@ -30,7 +30,7 @@ class _NoteScreenState extends State<NoteScreen> {
       builder: (context) => DismissibleBottomSheetView(
         childView: Container(
           width: double.infinity,
-          color: Colors.white,
+          color: AppColors.black,
           child: const Center(
 
           ),
