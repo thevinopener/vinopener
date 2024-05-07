@@ -6,14 +6,21 @@ import 'package:frontend/constants/colors.dart';
 
 class SearchResultScreen extends StatefulWidget {
 
-  String searchValue;
-  SearchResultScreen(this.searchValue);
+  final String searchValue;
+
+  // SearchResultScreen(this.searchValue);
+
+  const SearchResultScreen({
+    super.key,
+    required this.searchValue
+  });
 
   @override
   _SearchResultPageState createState() => _SearchResultPageState();
 }
 
 class _SearchResultPageState extends State<SearchResultScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

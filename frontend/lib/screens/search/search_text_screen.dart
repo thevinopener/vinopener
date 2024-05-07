@@ -102,7 +102,7 @@ class _SearchTextScreenState extends State<SearchTextScreen> {
                       children: [
                         TextButton(
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultScreen(recentSearchList[index]),
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultScreen(searchValue: recentSearchList[index]),
                               ),
                             );
                           },

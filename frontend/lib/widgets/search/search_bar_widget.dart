@@ -58,10 +58,10 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
     print("입력된 값: $value");
     if (widget.contextType == SearchContext.searchTextScreen) {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => SearchResultScreen(value)));
+          MaterialPageRoute(builder: (context) => SearchResultScreen(searchValue: value)));
     } else {
       Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => SearchResultScreen(value)));
+          MaterialPageRoute(builder: (context) => SearchResultScreen(searchValue: value)));
     }
   }
 
@@ -90,10 +90,11 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
           Flexible(
             flex: 8,
             child: TextField(
-              controller: _controller,
               // 컨트롤러 연결 -> X버튼 누르면 없어지는 것과 연결됨
-              autofocus: widget.autoFocus,
+              controller: _controller,
               // 텍스트 상자에 자동 포커스 되면서 키보드 켜짐
+              autofocus: widget.autoFocus,
+              // TODO: 입력값 없으면 검색 안되게 막기
               style: TextStyle(
                 color: Colors.black,
               ),
