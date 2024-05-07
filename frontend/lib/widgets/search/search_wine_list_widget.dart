@@ -28,6 +28,7 @@ List<List<String>> wineList = [
 
 Widget SearchWineListWidget(BuildContext context) {
   return Container(
+    // TODO: 만약 검색 결과 없으면 '${searchValue}와 일치하는 결과가 없습니다.' 안내문구 띄우기 (if/else)로 구분
     // margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
     // width: double.infinity,
     // color: Colors.amber,
@@ -41,7 +42,6 @@ Widget SearchWineListWidget(BuildContext context) {
               padding: EdgeInsets.fromLTRB(10, 3, 10, 3),
               child: ElevatedButton(
                 onPressed: () {
-                  // TODO: 여기에 클릭했을 때 로직 작성
                   // 클릭 시 해당 와인 이름을 SearchResultScreen에 전달
                   Navigator.push(
                       context,
