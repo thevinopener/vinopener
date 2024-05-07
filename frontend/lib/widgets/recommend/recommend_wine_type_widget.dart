@@ -32,7 +32,7 @@ Color getColorFromWineButtonColor(String color) {
 Widget RecommendWineTypeWidget(BuildContext context, String text) {
   return ElevatedButton(
     onPressed: () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultScreen(text)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultScreen(searchValue: text)));
     },
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
