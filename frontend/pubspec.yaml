@@ -51,7 +51,7 @@ dependencies:
   #for AI chat
   floating_chat_button: ^1.0.1
   speech_to_text: ^6.6.1
-  flutter_tts: ^4.0.2
+  flutter_tts: ^3.8.5
 
 flutter:
   uses-material-design: true
