@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frontend/constants/colors.dart';
 
-class DismissibleBottomSheetView extends StatelessWidget {
-  final Widget childView;
+import '../../widgets/note/note_stt_widget.dart';  // STT Widget을 포함합니다.
 
-  const DismissibleBottomSheetView({required this.childView});
+class DismissibleBottomSheetView extends StatelessWidget {
+  DismissibleBottomSheetView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +41,11 @@ class DismissibleBottomSheetView extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                        child: childView,
-                      )
+                        child:Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: AppColors.black,
+                        child: SttWidget(),  // STT Widget 삽입
+                        ),),
                     ],
                   )),
             ),

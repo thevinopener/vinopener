@@ -27,15 +27,7 @@ class _NoteScreenState extends State<NoteScreen> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       context: bContext,
-      builder: (context) => DismissibleBottomSheetView(
-        childView: Container(
-          width: double.infinity,
-          color: AppColors.black,
-          child: const Center(
-
-          ),
-        ),
-      ),
+      builder: (context) => DismissibleBottomSheetView(),
     );
   }
 
