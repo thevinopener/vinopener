@@ -41,14 +41,14 @@ public class RecommendationController {
     }
 
     @GetMapping("/preference")
-    public ResponseEntity<?> preferenceRecommendation(
+    public ResponseEntity<List<RecommendationGetListResponse>> preferenceRecommendation(
             @UserPrincipalId final Long userId
     ) {
         log.info("Preference userId: {}", userId);
         List<RecommendationGetListResponse> recommendationList
                 = recommendationService.getPreferenceRecommendation(userId);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(recommendationList);
     }
 
     @GetMapping("/tasting-note")
