@@ -3,6 +3,7 @@ package com.ssafy.vinopener.domain.wine.controller;
 import com.ssafy.vinopener.domain.wine.data.dto.response.WineGetListResponse;
 import com.ssafy.vinopener.domain.wine.data.dto.response.WineGetResponse;
 import com.ssafy.vinopener.domain.wine.service.WineService;
+import com.ssafy.vinopener.global.annotations.UserPrincipalId;
 import com.ssafy.vinopener.global.config.SwaggerConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -15,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/wines")
+@RequestMapping(WineController.REQUEST_PATH)
 @RequiredArgsConstructor
 public class WineController {
+
+    public static final String REQUEST_PATH = "/wines";
+    public static final String REQUEST_PATH_VARIABLE = "/{wineId}";
 
     private final WineService wineService;
 
@@ -28,13 +32,13 @@ public class WineController {
      *
      * @return 와인 목록
      */
-    @GetMapping
-    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
-    public ResponseEntity<List<WineGetListResponse>> getListWine(
-            // TODO: pagination 추가
-    ) {
-        return ResponseEntity.ok(wineService.getList());
-    }
+//    @GetMapping
+//    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+//    public ResponseEntity<List<WineGetListResponse>> getListWine(
+//            // TODO: pagination 추가
+//    ) {
+//        return ResponseEntity.ok(wineService.getList());
+//    }
 
     /**
      * 와인 상세 조회
@@ -42,12 +46,34 @@ public class WineController {
      * @param wineId 와인 ID
      * @return 와인
      */
-    @GetMapping("/{wineId}")
+//    @GetMapping("/{wineId}")
+//    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+//    public ResponseEntity<WineGetResponse> getWine(
+//            @PathVariable final Long wineId
+//    ) {
+//        return ResponseEntity.ok(wineService.get(wineId));
+//    }
+
+    /**
+     * 와인 목록 조회(북마크, 셀러, 테이스팅 노트 여부 포함)
+     *
+     * @param userId 유저 ID
+     */
+    @GetMapping
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    public ResponseEntity<List<WineGetListResponse>> getListWine(
+            @UserPrincipalId final Long userId
+    ) {
+        return ResponseEntity.ok(wineService.getList(userId));
+    }
+
+    @GetMapping(REQUEST_PATH_VARIABLE)
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<WineGetResponse> getWine(
-            @PathVariable final Long wineId
+            @PathVariable final Long wineId,
+            @UserPrincipalId final Long userId
     ) {
-        return ResponseEntity.ok(wineService.get(wineId));
+        return ResponseEntity.ok(wineService.get(wineId, userId));
     }
 
 }
