@@ -5,23 +5,29 @@ import 'package:speech_to_text/speech_to_text.dart';
 
 
 class SttWidget extends StatefulWidget {
-  const SttWidget({Key? key}) : super(key: key);
+  final int currentPage;
+  final Function(int) onPageChangeRequest;
+
+  const SttWidget({Key? key, required this.currentPage, required this.onPageChangeRequest}) : super(key: key);
 
   @override
   _SttWidgetState createState() => _SttWidgetState();
 }
+
 
 class _SttWidgetState extends State<SttWidget> {
   final SpeechToText _speech = SpeechToText();
   final FlutterTts _flutterTts = FlutterTts();  // TTS 인스턴스 생성
   bool _isListening = false;
   String _text = 'Press the button and start speaking';
+  int _currentPage = 0;
 
   @override
   void initState() {
     super.initState();
     _initSpeech();
     _initTts();
+    _currentPage = widget.currentPage;
   }
 
   void _initSpeech() async {
@@ -70,7 +76,19 @@ class _SttWidgetState extends State<SttWidget> {
         setState(() {
           _text = result.recognizedWords;
         });
-        _speak(result.recognizedWords);  // STT 결과를 TTS로 출력
+        if (result.recognizedWords.contains("다음")) {
+          if (_currentPage < 3) {  // 마지막 페이지 전까지
+            int nextPage = _currentPage + 1;
+            widget.onPageChangeRequest(nextPage);
+            setState(() {
+              _currentPage = nextPage;  // 현재 페이지 업데이트
+            });
+          } else {  // 마지막 페이지인 경우
+            _speak("마지막 항목입니다");
+          }
+        } else {
+          _speak(result.recognizedWords);  // 다른 음성은 TTS로 처리
+        }
       },
       localeId: 'ko-KR',
     );
@@ -83,6 +101,7 @@ class _SttWidgetState extends State<SttWidget> {
       else print("TTS Failed with code: $result"); // Check the failure
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +121,7 @@ class _SttWidgetState extends State<SttWidget> {
             onPressed: _startListening,
             child: Icon(_isListening ? Icons.mic : Icons.mic_none),
           ),
+          Text(_currentPage.toString(), style: TextStyle(color: AppColors.white),),
         ],
       ),
     );

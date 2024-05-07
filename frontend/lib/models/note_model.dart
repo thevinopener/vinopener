@@ -10,7 +10,7 @@ class NoteWine {
         winery = 'Shafer',
         name = 'Shafer Hillside Select Cabernet Sauvignon 2019',
         imageUrl = 'https://wine21.speedgabia.com/WINE_MST/TITLE/0176000/W0176838.png',
-        country = 'korea';
+        country = 'United States';
 
   NoteWine(
       {required this.id,

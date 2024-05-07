@@ -21,14 +21,28 @@ class _NoteScreenState extends State<NoteScreen> {
   final PageController _controller = PageController();
   late List<double> _heights; // 늦은 초기화를 사용하여 선언
 
-  Future<void> _showBottomSheet(BuildContext bContext) async {
-    return showModalBottomSheet(
-      enableDrag: false,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      context: bContext,
-      builder: (context) => DismissibleBottomSheetView(),
+  Future<void> _showBottomSheet(BuildContext context) async {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => DismissibleBottomSheetView(
+        currentPage: _currentPage,
+        onPageChangeRequest: (page) {
+          _controller.jumpToPage(page);
+          setState(() {
+            _currentPage = page;
+          });
+        },
+      ),
     );
+  }
+
+  void nextPage() {
+    if (_currentPage < 3) {
+      _controller.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+      setState(() {
+        _currentPage++;
+      });
+    }
   }
 
   @override
@@ -82,10 +96,14 @@ class _NoteScreenState extends State<NoteScreen> {
         chatIconBackgroundColor: AppColors.secondary,
         chatIconBorderColor: AppColors.secondary,
         chatIconBorderWidth: 4,
-        chatIconWidget: Icon(
-          Icons.spatial_audio_off,
-          size: 55,
-          color: AppColors.white,
+        chatIconWidget: IconButton(
+          hoverColor: AppColors.primary,
+          onPressed: null,
+          icon: Icon(
+            Icons.nightlife_sharp,
+            color: AppColors.white,
+            size: 45,
+          ),
         ),
         onTap: (BuildContext context) {
           _showBottomSheet(context);

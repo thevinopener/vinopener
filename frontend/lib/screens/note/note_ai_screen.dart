@@ -6,7 +6,10 @@ import 'package:frontend/constants/colors.dart';
 import '../../widgets/note/note_stt_widget.dart';  // STT Widget을 포함합니다.
 
 class DismissibleBottomSheetView extends StatelessWidget {
-  DismissibleBottomSheetView({super.key});
+  final int currentPage;
+  final Function(int) onPageChangeRequest;
+
+  DismissibleBottomSheetView({Key? key, required this.currentPage, required this.onPageChangeRequest}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,7 @@ class DismissibleBottomSheetView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.6),
+            // SizedBox(height: MediaQuery.of(context).size.height * 0.6),
             Expanded(
               child: ClipRRect(
                   borderRadius: const BorderRadius.only(
@@ -44,7 +47,7 @@ class DismissibleBottomSheetView extends StatelessWidget {
                         child:Container(
                           width: MediaQuery.of(context).size.width,
                           color: AppColors.black,
-                        child: SttWidget(),  // STT Widget 삽입
+                          child: SttWidget(currentPage: currentPage, onPageChangeRequest: onPageChangeRequest),  // STT Widget 삽입
                         ),),
                     ],
                   )),
