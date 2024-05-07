@@ -56,7 +56,7 @@ class WineFlavour extends StatelessWidget {
           children: [
             Container(
               alignment: Alignment.center,
-              height: dimension * 0.55,
+              height: dimension * 0.5,
               decoration: BoxDecoration(
                 color: AppColors.white,
                 borderRadius: BorderRadius.only(
@@ -71,7 +71,7 @@ class WineFlavour extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.topCenter,
-              height: dimension * 0.22,
+              height: dimension * 0.23,
               decoration: ShapeDecoration(
                 color: AppColors.white,
                 shape: RoundedRectangleBorder(

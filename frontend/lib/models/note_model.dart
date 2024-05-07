@@ -205,7 +205,7 @@ class NoteDetailWine {
       name: 'Shafer Hillside Select Cabernet Sauvignon 2019',
       imageUrl: 'https://wine21.speedgabia.com/WINE_MST/TITLE/0176000/W0176838.png',
       winery: 'Shafer',
-      country: 'USA',
+      country: 'United States',
       type: 'RED',
     );
   }

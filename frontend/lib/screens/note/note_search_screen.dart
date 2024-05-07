@@ -9,6 +9,7 @@ import 'package:frontend/widgets/search/search_bar_widget.dart';
 import 'package:frontend/constants/fonts.dart';
 
 
+import '../../widgets/note/note_search_bar_widget.dart';
 import 'note_search_result_screen.dart';
 
 class NoteSearchScreen extends StatefulWidget {
@@ -51,7 +52,7 @@ class _NoteSearchScreenState extends State<NoteSearchScreen> {
         children: [
           // #1 검색바 시작
           Flexible(
-            child: SearchBarWidget(autoFocus: true, contextType: SearchContext.searchTextScreen,), // 검색바 위젯
+            child: NoteSearchBarWidget(), // 검색바 위젯
           ),
           // #1 검색바 끝
 

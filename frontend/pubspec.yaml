@@ -48,6 +48,9 @@ dependencies:
   custom_rating_bar: ^2.0.5
   flutter_rating_bar: ^4.0.1
 
+  #for AI chat
+  floating_chat_button: ^1.0.1
+
 flutter:
   uses-material-design: true
   assets:

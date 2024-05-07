@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 // constant
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
-import 'package:frontend/screens/note/note_color_screen.dart';
 
 // pages & widgets & models
-import 'package:frontend/screens/note/note_color_screen.dart';
 import 'package:frontend/widgets/recommend/recommend_wine_card_widget.dart';
 import 'package:frontend/widgets/common/atoms/wine_flavour_widget.dart';
 import 'package:frontend/models/note_model.dart';
 
 // library
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
+
+import '../note/note_screen.dart';
 
 class SearchDetailScreen extends StatefulWidget {
   @override
@@ -642,7 +642,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => NoteColorScreen(),
+                        builder: (context) => NoteScreen(),
                       ),
                     );
                   },
