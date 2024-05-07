@@ -5,9 +5,11 @@ import com.ssafy.vinopener.domain.cellar.repository.CellarRepository;
 import com.ssafy.vinopener.domain.tastingnote.repository.TastingNoteRepository;
 import com.ssafy.vinopener.domain.wine.data.dto.response.WineGetListResponse;
 import com.ssafy.vinopener.domain.wine.data.dto.response.WineGetResponse;
+import com.ssafy.vinopener.domain.wine.data.dto.response.WineTypeGetListResponse;
 import com.ssafy.vinopener.domain.wine.data.entity.FlavourTasteEntity;
 import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
 import com.ssafy.vinopener.domain.wine.data.entity.WineFlavourEntity;
+import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
 import com.ssafy.vinopener.domain.wine.data.mapper.WineMapper;
 import com.ssafy.vinopener.domain.wine.exception.WineErrorCode;
 import com.ssafy.vinopener.domain.wine.repository.FlavourTasteRepository;
@@ -80,12 +82,19 @@ public class WineService {
                 .toList();
     }
 
+    /**
+     * 와인 상세 조회(북마크, 셀러, 테이스팅 노트 여부 포함)
+     *
+     * @param wineId 와인 ID
+     * @param userId 유저 ID
+     */
     @Transactional(readOnly = true)
     public WineGetResponse get(
             final Long wineId,
             final Long userId
     ) {
         WineEntity wine = wineRepository.findById(wineId)
+                .map(WineEntity::increaseView)
                 .orElseThrow(() -> new VinopenerException(WineErrorCode.WINE_NOT_FOUND));
 
         List<WineFlavourEntity> wineFlavours = wineFlavourRepository.findByWineId(wineId);
@@ -102,11 +111,13 @@ public class WineService {
         return wineMapper.toGetResponse(wine, flavourTastes, isBookmark, isCellar, totalNotes);
     }
 
-    private void wineExists(
-            final Long wineId
+    @Transactional(readOnly = true)
+    public List<WineTypeGetListResponse> getTypeList(
+            final WineType type
     ) {
-        wineRepository.findById(wineId)
-                .orElseThrow(() -> new VinopenerException(WineErrorCode.WINE_NOT_FOUND));
+        return wineRepository.findByType(type).stream()
+                .map(wineMapper::toGetTypeResponse)
+                .toList();
     }
 
 }
