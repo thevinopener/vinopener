@@ -1,18 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/providers/bottombar_provider.dart';
 import 'package:frontend/providers/user_provider.dart';
+import 'package:frontend/screens/login_screen.dart';
 import 'package:frontend/screens/mypage/mypage_cover_screen.dart';
 import 'package:frontend/screens/mypage/mypage_survey_screen.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:frontend/widgets/common/molecules/custom_list_tile_widget.dart';
 import 'package:provider/provider.dart';
 
-class MyPageSettingScreen extends StatelessWidget {
+class MyPageSettingScreen extends StatefulWidget {
   const MyPageSettingScreen({super.key});
 
   @override
+  State<MyPageSettingScreen> createState() => _MyPageSettingScreenState();
+}
+
+class _MyPageSettingScreenState extends State<MyPageSettingScreen> {
+  @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
+
+    final bottomBarProvider = Provider.of<BottomBarProvider>(context);
 
     return Scaffold(
       body: ListView(
@@ -24,7 +33,7 @@ class MyPageSettingScreen extends StatelessWidget {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: AssetImage('${user.imageUrl}'),
+                    backgroundImage: NetworkImage('${user.imageUrl}'),
                     radius: 20,
                   ),
                   SizedBox(width: 20),
@@ -66,7 +75,14 @@ class MyPageSettingScreen extends StatelessWidget {
           SizedBox(height: 20),
           Center(
             child: TextButton(
-              onPressed: UserService.logout,
+              onPressed: () {
+                UserService.logout;
+                bottomBarProvider.setIndex(0);
+                Navigator.pushReplacement(
+                  context,
+                  CupertinoPageRoute(builder: (context) => LoginScreen()),
+                );
+              },
               child: Text(
                 '로그아웃',
                 style: TextStyle(

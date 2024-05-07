@@ -45,7 +45,10 @@ class _TasteChartState extends State<TasteChart> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Container(
+      width: width*0.8,
+      height: width*0.8,
       child: RadarChart(
         ticks: ticks,
         features: features,

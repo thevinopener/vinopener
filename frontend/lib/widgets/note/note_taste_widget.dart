@@ -1,7 +1,8 @@
-import 'package:custom_rating_bar/custom_rating_bar.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_radar_chart/flutter_radar_chart.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:frontend/constants/colors.dart';
 
 import '../../constants/fonts.dart';
@@ -121,16 +122,19 @@ class _NoteTasteState extends State<NoteTaste> {
         children: [
           Text(label, style: TextStyle(fontSize: AppFontSizes.mediumSmall)),
           RatingBar(
-            isHalfAllowed: true,
-            filledIcon: Icons.circle,
-            emptyIcon: Icons.circle_outlined,
-            emptyColor: Colors.grey,
-            filledColor: AppColors.primary,
-            halfFilledColor: AppColors.primary,
-            halfFilledIcon: Icons.contrast,
+            itemSize: 35,
             initialRating: initialValue,
-            maxRating: 5,
-            onRatingChanged: onRatingChange,
+            minRating: 0,
+            direction: Axis.horizontal,
+            allowHalfRating: true,
+            itemCount: 5,
+            itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+            ratingWidget: RatingWidget(
+              full: Icon(Icons.circle, color: AppColors.primary,),
+              half: Icon(Icons.contrast, color: AppColors.primary,),
+              empty: Icon(Icons.circle_outlined, color: Colors.grey,),
+            ),
+            onRatingUpdate: onRatingChange,
           ),
         ],
       ),

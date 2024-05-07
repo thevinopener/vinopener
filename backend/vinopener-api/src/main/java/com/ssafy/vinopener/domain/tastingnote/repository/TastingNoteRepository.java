@@ -7,4 +7,7 @@ public interface TastingNoteRepository extends JpaRepository<TastingNoteEntity, 
 
     void deleteByIdAndUserId(Long id, Long userId);
 
+    // 테이스팅 노트 작성 개수
+    int countByWineIdAndUserId(Long wineId, Long userId);
+
 }

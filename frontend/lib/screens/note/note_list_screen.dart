@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/note/note_color_screen.dart';
-import 'package:frontend/screens/search/search_text_screen.dart';
+import 'package:frontend/screens/note/note_search_screen.dart';
 
 import 'package:frontend/widgets/note/note_list_card_widget.dart';
 
 
 import '../../constants/fonts.dart';
 import '../../models/note_model.dart';
+import 'note_result_screen.dart';
 
 class NoteListScreen extends StatelessWidget {
 
@@ -21,7 +21,17 @@ class NoteListScreen extends StatelessWidget {
         context,
         CupertinoPageRoute(
           //추후 SearchTextScreen()로 변경
-          builder: (context) =>NoteColorScreen(),
+          builder: (context) =>NoteSearchScreen(),
+        ),
+      );
+    }
+
+    void viewDetail(int id) {
+      Navigator.push(
+        context,
+        CupertinoPageRoute(
+          //추후 SearchTextScreen()로 변경
+          builder: (context) =>NoteResultScreen(id: id),
         ),
       );
     }
@@ -48,7 +58,7 @@ class NoteListScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),  // 좌우 패딩을 추가하여 카드 중앙 정렬
-            child: NoteCard(note: notes[index]),
+            child: GestureDetector(child: NoteCard(note: notes[index]), onTap: ()=> viewDetail(notes[index].id),),
           );
         },
       ),

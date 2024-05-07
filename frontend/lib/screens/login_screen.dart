@@ -1,19 +1,94 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'survey_screen.dart'; // 설문조사 화면을 import
+import 'package:frontend/models/token.dart';
+import 'package:frontend/models/user.dart';
+import 'package:frontend/providers/user_provider.dart';
+import 'package:frontend/screens/home_screen.dart';
+import 'package:frontend/screens/survey_screen.dart';
+import 'package:frontend/services/user_service.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+
+    UserModel loginUser = UserModel.dummy();
+    final userProvider = Provider.of<UserProvider>(context);
+
+    Future<String?> onGoogleLoginPress(BuildContext context) async {
+      GoogleSignIn googleSignIn = GoogleSignIn(
+        scopes: [
+          'email',
+          'profile',
+          'https://www.googleapis.com/auth/userinfo.profile'
+        ],
+      );
+
+      try {
+        GoogleSignInAccount? account = await googleSignIn.signIn();
+        print(account);
+        loginUser.email = account?.email;
+        loginUser.nickname = account?.displayName;
+        loginUser.imageUrl = account?.photoUrl ?? 'https://picsum.photos/200/300';
+        final GoogleSignInAuthentication? googleAuth =
+        await account?.authentication;
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken,
+          idToken: googleAuth?.idToken,
+        );
+        return credential.accessToken;
+      } catch (error) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('로그인 실패!')));
+      }
+    }
+
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
-      body: Center(
-        child: ElevatedButton(
-          child: Text("로그인 하기"),
-          onPressed: () {
-            // 로그인 화면에서 설문조사 화면으로 이동
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => SurveyScreen()));
-          },
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'VINOPENER',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 20),
+          GestureDetector(
+            onTap: () async {
+              String? accessToken = await onGoogleLoginPress(context);
+              if (accessToken != null) {
+                Token token = await UserService.login(accessToken);
+                loginUser.accessToken = token.accessToken;
+                loginUser.refreshToken = token.refreshToken;
+                userProvider.setUser(loginUser);
+              }
+              bool isFirstLogin = true;
+              Navigator.pushReplacement(
+                context,
+                CupertinoPageRoute(builder: (context) => isFirstLogin? SurveyScreen() : HomeScreen()),
+              );
+            },
+            child: Image.asset(
+              'assets/images/google_login_button.png',
+            ),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                CupertinoPageRoute(builder: (context) => HomeScreen()),
+              );
+            },
+            child: Text('개발하기'),
+          )
+        ],
       ),
     );
   }

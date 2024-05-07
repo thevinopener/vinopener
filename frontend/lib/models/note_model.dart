@@ -102,3 +102,157 @@ class Note {
   }
 }
 
+class NoteDetailWineReview {
+  final int id;
+  final NoteDetailWine wine;
+  final ColorDetail color;
+  final double sweetness;
+  final double intensity;
+  final double acidity;
+  final double alcohol;
+  final double tannin;
+  final String opinion;
+  final double rating;
+  final List<NoteDetailFlavour> flavours;
+  final DateTime updatedTime;
+
+  NoteDetailWineReview({
+    required this.id,
+    required this.wine,
+    required this.color,
+    required this.sweetness,
+    required this.intensity,
+    required this.acidity,
+    required this.alcohol,
+    required this.tannin,
+    required this.opinion,
+    required this.rating,
+    required this.flavours,
+    required this.updatedTime,
+  });
+
+  factory NoteDetailWineReview.fromJson(Map<String, dynamic> json) {
+    return NoteDetailWineReview(
+      id: json['id'],
+      wine: NoteDetailWine.fromJson(json['wine']),
+      color: ColorDetail.fromJson(json['color']),
+      sweetness: json['sweetness'].toDouble(),
+      intensity: json['intensity'].toDouble(),
+      acidity: json['acidity'].toDouble(),
+      alcohol: json['alcohol'].toDouble(),
+      tannin: json['tannin'].toDouble(),
+      opinion: json['opinion'],
+      rating: json['rating'].toDouble(),
+      flavours: List<NoteDetailFlavour>.from(json['flavours'].map((x) => NoteDetailFlavour.fromJson(x))),
+      updatedTime: DateTime.parse(json['updatedTime']),
+    );
+  }
+
+  static NoteDetailWineReview dummy() {
+    return NoteDetailWineReview(
+      id: 1,
+      wine: NoteDetailWine.dummy(),
+      color: ColorDetail.dummy(),
+      sweetness: 5.0,
+      intensity: 4.0,
+      acidity: 3.5,
+      alcohol: 4.0,
+      tannin: 3.0,
+      opinion: 'Excellent wine with rich flavors.',
+      rating: 4.5,
+      flavours: [
+        NoteDetailFlavour(id: 1, taste: "딸기", type: '붉은 과일'),
+        NoteDetailFlavour(id: 2, taste: "라즈베리", type: '불은 과일'),
+        NoteDetailFlavour(id: 3, taste: "붉은자두", type: '붉은 과일'),
+    NoteDetailFlavour(id: 4, taste: "석류", type: '붉은 과일'),
+    ],
+      updatedTime: DateTime.now(),
+    );
+  }
+}
+
+class NoteDetailWine {
+  final int id;
+  final String name;
+  final String imageUrl;
+  final String winery;
+  final String country;
+  final String type;
+
+  NoteDetailWine({
+    required this.id,
+    required this.name,
+    required this.imageUrl,
+    required this.winery,
+    required this.country,
+    required this.type,
+  });
+
+  factory NoteDetailWine.fromJson(Map<String, dynamic> json) {
+    return NoteDetailWine(
+      id: json['id'],
+      name: json['name'],
+      imageUrl: json['imageUrl'],
+      winery: json['winery'],
+      country: json['country'],
+      type: json['type'],
+    );
+  }
+
+  static NoteDetailWine dummy() {
+    return NoteDetailWine(
+      id: 1,
+      name: 'Shafer Hillside Select Cabernet Sauvignon 2019',
+      imageUrl: 'https://wine21.speedgabia.com/WINE_MST/TITLE/0176000/W0176838.png',
+      winery: 'Shafer',
+      country: 'USA',
+      type: 'RED',
+    );
+  }
+}
+
+
+class ColorDetail {
+  final int id;
+  final String name;
+
+  ColorDetail({
+    required this.id,
+    required this.name,
+  });
+
+  factory ColorDetail.fromJson(Map<String, dynamic> json) {
+    return ColorDetail(
+      id: json['id'],
+      name: json['name'],
+    );
+  }
+  static ColorDetail dummy() {
+    return ColorDetail(
+      id: 10,
+      name: '보라색'
+    );
+  }
+
+}
+
+class NoteDetailFlavour {
+  final int id;
+  final String type;
+  final String taste;
+
+
+  NoteDetailFlavour({
+    required this.id,
+    required this.type,
+    required this.taste,
+  });
+
+  factory NoteDetailFlavour.fromJson(Map<String, dynamic> json) {
+    return NoteDetailFlavour(
+      id: json['id'],
+      type: json['type'],
+      taste: json['taste'],
+    );
+  }
+}

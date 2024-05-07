@@ -4,8 +4,8 @@ import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 
 class WineColorBlock extends StatelessWidget {
-  final Color wineColor;
-  final String colorName;
+  final Color? wineColor;
+  final String? colorName;
 
   const WineColorBlock({super.key, required this.wineColor, required this.colorName});
 
@@ -58,7 +58,7 @@ class WineColorBlock extends StatelessWidget {
               ),
             ),
             child: Text(
-              colorName,
+              colorName!,
               style: TextStyle(fontSize: AppFontSizes.mediumSmall),
             ),
           ),

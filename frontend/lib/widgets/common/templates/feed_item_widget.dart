@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/feed.dart';
+import 'package:frontend/services/feed_service.dart';
+import 'package:frontend/utils/date_time_util.dart';
+
+import '../molecules/wine_item_widget.dart';
 
 class FeedItem extends StatefulWidget {
   final Feed feed;
@@ -11,15 +15,17 @@ class FeedItem extends StatefulWidget {
 }
 
 class _FeedItemState extends State<FeedItem> {
-  bool isLiked = false;
+  late bool isLiked = false;
   late int likeCount;
 
   void _toggleLike() {
     setState(() {
       if (isLiked) {
         likeCount -= 1;
+        FeedService.cancelLikeOnFeed();
       } else {
         likeCount += 1;
+        FeedService.likeFeed();
       }
       isLiked = !isLiked;
     });
@@ -45,17 +51,23 @@ class _FeedItemState extends State<FeedItem> {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: AssetImage('${widget.feed.user.imageUrl}'),
+                    backgroundImage:
+                        NetworkImage('${widget.feed.user.imageUrl}'),
                   ),
                   SizedBox(width: 20),
-                  Text('전원빈'),
+                  Text('${widget.feed.user.nickname}'),
                 ],
               ),
-              Text('${widget.feed.createdTime}'),
+              Text(formatDateTime(widget.feed.createdTime)),
             ],
           ),
           SizedBox(height: 20),
-          Image.asset('${widget.feed.imageUrl}'),
+          Image.network(
+            '${widget.feed.imageUrl}',
+            width: 400,
+            height: 400,
+            fit: BoxFit.cover,
+          ),
           SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -65,7 +77,8 @@ class _FeedItemState extends State<FeedItem> {
                   IconButton(
                     padding: EdgeInsets.all(0),
                     onPressed: _toggleLike,
-                    icon: Icon(isLiked ? Icons.favorite : Icons.favorite_outline),
+                    icon:
+                        Icon(isLiked ? Icons.favorite : Icons.favorite_outline),
                   ),
                   Text('${likeCount}'),
                 ],
@@ -74,8 +87,14 @@ class _FeedItemState extends State<FeedItem> {
               Icon(Icons.ios_share),
             ],
           ),
-          Text('${widget.feed.content}'),
           SizedBox(height: 20),
+          Column(
+            children: widget.feed.wineList
+                    ?.map((wine) => GestureDetector(child: WineItem(wine: wine)))
+                    .toList() ??
+                [],
+          ),
+          Text('${widget.feed.content}'),
         ],
       ),
     );
