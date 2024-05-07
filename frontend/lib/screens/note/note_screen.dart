@@ -9,6 +9,7 @@ import 'package:frontend/screens/note/note_taste_screen.dart';
 import 'package:frontend/widgets/note/note_wine_card_widget.dart';
 
 import '../../constants/fonts.dart';
+import 'note_ai_screen.dart';
 
 class NoteScreen extends StatefulWidget {
   @override
@@ -19,6 +20,24 @@ class _NoteScreenState extends State<NoteScreen> {
   int _currentPage = 0;
   final PageController _controller = PageController();
   late List<double> _heights; // 늦은 초기화를 사용하여 선언
+
+  Future<void> _showBottomSheet(BuildContext bContext) async {
+    return showModalBottomSheet(
+      enableDrag: false,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      context: bContext,
+      builder: (context) => DismissibleBottomSheetView(
+        childView: Container(
+          width: double.infinity,
+          color: Colors.white,
+          child: const Center(
+
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,22 +90,13 @@ class _NoteScreenState extends State<NoteScreen> {
         chatIconBackgroundColor: AppColors.secondary,
         chatIconBorderColor: AppColors.secondary,
         chatIconBorderWidth: 4,
-        chatIconWidget: Icon(Icons.spatial_audio_off, size: 55, color: AppColors.white,),
-
-        onTap: (BuildContext context) {  // 여기에 BuildContext 매개변수를 추가합니다.
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text('Need help?'),
-              content: Text('How can we assist you today?'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text('Close'),
-                )
-              ],
-            ),
-          );
+        chatIconWidget: Icon(
+          Icons.spatial_audio_off,
+          size: 55,
+          color: AppColors.white,
+        ),
+        onTap: (BuildContext context) {
+          _showBottomSheet(context);
         },
       ),
     );
