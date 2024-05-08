@@ -59,7 +59,7 @@ public class FeedService {
             final Long userId
     ) throws NoSuchAlgorithmException, IOException {
         MultipartFile imageFile = feedCreateRequest.imageFile();
-        String keyPrefix = "vinopener/feeds/" + userId + "/";
+        String keyPrefix = "feeds/" + userId + "/";
         URI imageUrl = s3Service.putObject(keyPrefix, imageFile);
 
         FeedEntity feed = FeedEntity.builder()
