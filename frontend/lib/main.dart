@@ -7,6 +7,7 @@ import 'package:frontend/screens/intro_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/screens/home_screen.dart';
 import 'providers/bottombar_provider.dart';
+import 'providers/note/wine_provider.dart';
 
 void main() {
   runApp(

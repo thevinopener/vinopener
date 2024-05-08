@@ -35,7 +35,7 @@ class WineButtonColors {
 
 class WineColors {
   static const Map<String, Color> wineColorMap = {
-    "밑집색": Color(0xFFFCFAE0),
+    "밀짚색": Color(0xFFFCFAE0),
     "노란색": Color(0xFFFAF8BF),
     "황금색": Color(0xFFFAEB8C),
     "호박색": Color(0xFFF6D178),
@@ -52,7 +52,7 @@ class WineColors {
 
 class WineColorsId {
   static const Map<String,int> wineColorIdMap = {
-    "밑집색": 1,
+    "밑짚색": 1,
     "노란색": 2,
     "황금색": 3,
     "호박색": 4,
