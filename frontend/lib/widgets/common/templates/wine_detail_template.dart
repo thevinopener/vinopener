@@ -11,10 +11,11 @@ import 'package:frontend/widgets/common/atoms/nation_flag_widget.dart';
 // pages & widgets & models
 import 'package:frontend/widgets/recommend/recommend_wine_card_widget.dart';
 import 'package:frontend/widgets/common/atoms/wine_flavour_widget.dart';
-import 'package:frontend/models/note_model.dart';
 
 // library
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
+
+import '../../../models/note_model.dart';
 
 class WineDetailScreen extends StatefulWidget {
   final Wine wine;

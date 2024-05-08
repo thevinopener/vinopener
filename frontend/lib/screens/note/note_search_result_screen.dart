@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/widgets/search/search_bar_widget.dart';
 
+import '../../widgets/note/note_search_bar_widget.dart';
 import '../../widgets/note/note_search_list_widget.dart';
 
 
@@ -22,22 +22,10 @@ class _NoteSearchResultScreenState extends State<NoteSearchResultScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SearchBarWidget(
+          NoteSearchBarWidget(
             autoFocus: false,
             searchValue: widget.searchValue,
-            contextType: SearchContext.searchResultScreen,),
-          // Padding(
-          //   padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-          //   child: Text(
-          //     '\"${widget.searchValue}\" 검색 결과',
-          //     style: TextStyle(
-          //       fontWeight: FontWeight.w500,
-          //       fontSize: 16, // 조정 가능한 폰트 크기
-          //     ),
-          //     softWrap: true,
-          //     overflow: TextOverflow.ellipsis,
-          //   ),
-          // ),
+           ),
           Padding(
             padding: EdgeInsets.fromLTRB(15, 5, 10, 5),
             child: Text(
