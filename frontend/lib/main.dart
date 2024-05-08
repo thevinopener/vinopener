@@ -9,8 +9,9 @@ import 'package:frontend/providers/user_provider.dart';
 import 'package:frontend/screens/intro_screen.dart';
 import 'package:provider/provider.dart';
 import 'providers/bottombar_provider.dart';
-import 'providers/note/wine_provider.dart';
-import 'providers/search/search_provider.dart';
+import 'providers/search/search_wine_list_provider.dart';
+import 'providers/search/search_wine_detail_provider.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +27,8 @@ void main() async {
         ChangeNotifierProvider(create: (_) => UserProvider(UserModel.dummy())),
         ChangeNotifierProvider(create: (_) => FeedTabState([])),
         ChangeNotifierProvider(create: (_) => NewFeedWineListProvider()),
-        ChangeNotifierProvider(create: (_) => SearchProvider())
+        ChangeNotifierProvider(create: (_) => SearchWineListProvider()),
+        ChangeNotifierProvider(create: (_) => SearchWineDetailProvider()),
       ],
       child: MyApp(),
     ),

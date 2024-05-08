@@ -36,7 +36,7 @@ Widget SearchWineListWidget(BuildContext context, List<Wine> wineList) {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SearchDetailScreen()));
+                                builder: (context) => SearchDetailScreen(wineId: wine.id,)));
                       },
                       child: Container(
                         // color: Colors.white,
