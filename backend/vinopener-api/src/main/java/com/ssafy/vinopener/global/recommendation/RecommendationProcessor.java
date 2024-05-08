@@ -28,7 +28,6 @@ import com.ssafy.vinopener.domain.wine.repository.WineRepository;
 import com.ssafy.vinopener.global.exception.VinopenerException;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +57,7 @@ public class RecommendationProcessor {
     private final UserRepository userRepository;
     private final FlavourTasteRepository flavourTasteRepository;
 
-    public void createRecommendation(ContentRecommendationType type) {
+    public List<WineEntity> createRecommendation(ContentRecommendationType type) {
         String columnName = "";
         switch (type) {
             case VIEW -> columnName = "view";
@@ -66,6 +65,8 @@ public class RecommendationProcessor {
             case CELLAR -> columnName = "cellar";
 
         }
+        List<WineEntity> resultList = new ArrayList<>();
+        List<ContentRecommendationEntity> savingEntities = new ArrayList<>();
 
         // VIEW, RATE
         if (!columnName.equals("cellar")) {
@@ -77,15 +78,17 @@ public class RecommendationProcessor {
                         .contentRecommendationType(type)
                         .build();
 
-                contentRecommendationRepository.save(recommendationEntity);
+                savingEntities.add(recommendationEntity);
+                resultList.add(wineList.get(i));
             }
+            contentRecommendationRepository.saveAll(savingEntities);
         }
         // CELLAR
         else {
-            List<Tuple> resultList = cellarRepositoryQueryImpl.findAllByCellarCount();
+            List<Tuple> queryResultList = cellarRepositoryQueryImpl.findAllByCellarCount();
 
             for (int i = 0; i < 10; i++) {
-                Long wineId = resultList.get(i).get(0, Long.class);
+                Long wineId = queryResultList.get(i).get(0, Long.class);
                 WineEntity wine = entityManager.getReference(WineEntity.class, wineId);
 
                 ContentRecommendationEntity recommendationEntity = ContentRecommendationEntity.builder()
@@ -93,11 +96,13 @@ public class RecommendationProcessor {
                         .contentRecommendationType(ContentRecommendationType.CELLAR)
                         .build();
 
-                contentRecommendationRepository.save(recommendationEntity);
+                savingEntities.add(recommendationEntity);
+                resultList.add(wine);
             }
+            contentRecommendationRepository.saveAll(savingEntities);
 
         }
-
+        return resultList;
     }
 
     public List<WineEntity> createPreferenceRecommendation(Long userId) {
@@ -124,28 +129,31 @@ public class RecommendationProcessor {
     }
 
     public List<WineEntity> createTastingNoteRecommendation(Long userId) {
-        //유저가 작성한 모든 TastingNote를 가져오고
         List<TastingNoteEntity> tastingNoteEntityList = tastingNoteRepository.findAllByUserId(userId);
         int totalFlavourCount = flavourTasteRepository.findAll().size();
 
-        //아직 작성한 테이스팅 노트가 없는 경우, Exception 발생 후 종료
         if (tastingNoteEntityList.isEmpty()) {
             throw new VinopenerException(TastingNoteErrorCode.TASTING_NOTE_NOT_FOUND);
         }
 
-        //그 TastingNote 각각의 parameter들을 vector화 해서 저장한다.
+        //그 TastingNote 각각의 항목들을 vector화 해서 저장한다.
         //1. 알코올 도수
         //2. 당도
         //3. 산도
         //4. 타닌
         //5. 바디감
         //6. 맛. ==> vector.
-        //이때, 맛 또한 vector화 해서 가지고 있어야한다.
+        // int[] parameters = [abv, sweetness, acidity, tannin, intensity]
+        // int[] vector = [(0|1), (0|1), (0|1), ... , (0|1)] => 특정 맛이 존재한다면 1, 없다면 0
+        // vector.length == 109
+
+        // 먼저 테이스팅노트로부터 알당산타바(알코올, 당도, ... , 바디감), 그리고 맛을 종합한다
         double sumAbv = 0;
         double sumSweetness = 0;
         double sumAcidity = 0;
         double sumTannin = 0;
         double sumIntensity = 0;
+        int[] profileVector = new int[totalFlavourCount];
         Map<Long, Object> tastingVectors = new HashMap<>();
         for (TastingNoteEntity tastingNoteEntity : tastingNoteEntityList) {
 
@@ -155,13 +163,9 @@ public class RecommendationProcessor {
             sumTannin += tastingNoteEntity.getTannin().doubleValue();
             sumIntensity += tastingNoteEntity.getIntensity().doubleValue();
 
-            int[] flavourVector = new int[totalFlavourCount];
             for (TastingNoteFlavourEntity tastingNoteFlavourEntity : tastingNoteEntity.getFlavours()) {
-                flavourVector[(int) (tastingNoteFlavourEntity.getFlavourTaste().getId() - 1)] = 1;
+                profileVector[(int) (tastingNoteFlavourEntity.getFlavourTaste().getId() - 1)] += 1;
             }
-            tastingVectors.put(tastingNoteEntity.getId(), flavourVector);
-            log.info("TastingNote id: {}", tastingNoteEntity.getId());
-            log.info("tastingVectors: {}", flavourVector);
         }
 
         //vector화 된 parameter들을 종합해 하나의 "프로필"을 만든다.
@@ -172,18 +176,6 @@ public class RecommendationProcessor {
         profileParameters.put("acidity", sumAcidity / tastingNoteEntityList.size());
         profileParameters.put("tannin", sumTannin / tastingNoteEntityList.size());
         profileParameters.put("intensity", sumIntensity / tastingNoteEntityList.size());
-
-        int[] profileVector = new int[totalFlavourCount];
-
-        for (Map.Entry<Long, Object> entry : tastingVectors.entrySet()) {
-            int[] wineVector = (int[]) entry.getValue();
-            for (int i = 0; i < wineVector.length; i++) {
-                profileVector[i] += wineVector[i];
-            }
-        }
-
-        log.info("totalFlavourCount: " + totalFlavourCount);
-        log.info("profileVector: {}", Arrays.toString(profileVector));
 
         //"프로필"과 가장 유사한 와인을 추천한다
         List<WineEntity> wineEntityList = wineRepository.findAll();
