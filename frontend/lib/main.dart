@@ -7,6 +7,7 @@ import 'package:frontend/screens/intro_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/screens/home_screen.dart';
 import 'providers/bottombar_provider.dart';
+import 'providers/search/search_provider.dart';
 
 void main() {
   runApp(
@@ -15,6 +16,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => BottomBarProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider(UserModel.dummy())),
         ChangeNotifierProvider(create: (_) => FeedTabState([])),
+        ChangeNotifierProvider(create: (_) => SearchProvider())
       ],
       child: MyApp(),
     ),
