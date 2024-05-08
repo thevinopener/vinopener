@@ -10,6 +10,8 @@ import 'package:frontend/screens/note/note_color_screen.dart';
 // constants
 import 'package:frontend/constants/fonts.dart';
 
+import '../../screens/note/note_screen.dart';
+
 
 // 예제 데이터 리스트
 List<List<String>> wineList = [
@@ -46,7 +48,7 @@ Widget NoteSearchWineListWidget(BuildContext context) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => NoteColorScreen()));
+                          builder: (context) => NoteScreen()));
                 },
                 child: Container(
                   // color: Colors.white,
