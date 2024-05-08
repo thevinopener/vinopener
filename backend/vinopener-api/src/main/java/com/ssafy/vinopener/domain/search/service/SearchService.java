@@ -1,6 +1,5 @@
 package com.ssafy.vinopener.domain.search.service;
 
-import com.ssafy.vinopener.domain.search.data.dto.request.SearchCreateRequest;
 import com.ssafy.vinopener.domain.search.data.dto.response.SearchGetListResponse;
 import com.ssafy.vinopener.domain.search.data.entity.SearchEntity;
 import com.ssafy.vinopener.domain.search.data.mapper.SearchMapper;
@@ -24,19 +23,24 @@ public class SearchService {
     /**
      * 검색 기록 생성
      *
-     * @param searchCreateRequest 검색 기록 요청
-     * @param userId              유저 ID
-     * @return
+     * @param query  검색어
+     * @param userId 유저 ID
      */
     @Transactional
     public long create(
-            final SearchCreateRequest searchCreateRequest,
+            final String query,
             final Long userId
     ) {
+        // 이미 검색어와 동일한 검색기록이 있는지 확인 후 존재한다면 삭제
+        searchRepository.findByContent(query.trim())
+                .ifPresent(existingSearch -> {
+                    searchRepository.deleteByIdAndUserId(existingSearch.getId(), userId);
+                });
+
         SearchEntity search = SearchEntity.builder()
                 .user(userRepository.findById(userId)
                         .orElseThrow(() -> new VinopenerException(UserErrorCode.USER_NOT_FOUND)))
-                .content(searchCreateRequest.content())
+                .content(query.trim())
                 .build();
 
         return searchRepository.save(search).getId();

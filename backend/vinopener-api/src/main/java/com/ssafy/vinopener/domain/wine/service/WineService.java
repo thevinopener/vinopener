@@ -124,7 +124,7 @@ public class WineService {
     public List<WineEntity> searchWine(
             String seoName
     ) {
-        return wineRepository.findBySeoNameContaining(seoName);
+        return wineRepository.findBySeoNameContainsIgnoreCase(seoName);
     }
 
 }
