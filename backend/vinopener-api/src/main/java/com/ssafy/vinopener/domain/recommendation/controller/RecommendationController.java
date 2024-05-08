@@ -52,8 +52,12 @@ public class RecommendationController {
     }
 
     @GetMapping("/tasting-note")
-    public ResponseEntity<?> tastingNoteRecommendation() {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> tastingNoteRecommendation(
+            @UserPrincipalId final Long userId
+    ) {
+        List<RecommendationGetListResponse> recommendationList
+                = recommendationService.getTastingNoteRecommendation(userId);
+        return ResponseEntity.ok(recommendationList);
     }
 
 }

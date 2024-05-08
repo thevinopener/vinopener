@@ -151,13 +151,14 @@ public class RecommendationService {
 
         //일단, 테이블에 내용이 있는지 확인한다.
         List<BehaviorRecommendationEntity> existingEntityList =
-                behaviorRecommendationRepository.findAllByUserId(userId);
+                behaviorRecommendationRepository.findAllByBehaviorRecommendationTypeAndUserId(
+                        BehaviorRecommendationType.PREFERENCE, userId
+                );
         List<WineEntity> resultList;
 
         //내용이 없으면, 새로 추천해서 테이블에 추가한다.
         if (existingEntityList.isEmpty()) {
-            resultList = recommendationProcessor.createRecommendation(
-                    BehaviorRecommendationType.PREFERENCE, userId);
+            resultList = recommendationProcessor.createPreferenceRecommendation(userId);
         }
         //내용이 있으면, 갱신 시간 이내인지 확인한다.
         else {
@@ -174,8 +175,7 @@ public class RecommendationService {
             //새로 갱신해야 한다. == 재추천.
             else {
                 behaviorRecommendationRepository.deleteAllByUserId(userId);
-                resultList = recommendationProcessor.createRecommendation(
-                        BehaviorRecommendationType.PREFERENCE, userId);
+                resultList = recommendationProcessor.createPreferenceRecommendation(userId);
             }
         }
 
@@ -185,8 +185,41 @@ public class RecommendationService {
                 .toList();
     }
 
-    public List<RecommendationGetListResponse> getTastingNoteRecommendation() {
-        return null;
+    public List<RecommendationGetListResponse> getTastingNoteRecommendation(Long userId) {
+        //일단, 테이블에 내용이 있는지 확인한다.
+        List<BehaviorRecommendationEntity> existingEntityList =
+                behaviorRecommendationRepository.findAllByBehaviorRecommendationTypeAndUserId(
+                        BehaviorRecommendationType.TASTING_NOTE, userId
+                );
+        List<WineEntity> resultList;
+
+        //내용이 없으면, 새로 추천해서 테이블에 추가한다.
+        if (existingEntityList.isEmpty()) {
+            resultList = recommendationProcessor.createTastingNoteRecommendation(userId);
+        }
+        //내용이 있으면, 갱신 시간 이내인지 확인한다.
+        else {
+            Duration duration = Duration.between(
+                    existingEntityList.getFirst().getCreatedTime(),
+                    LocalDateTime.now()
+            );
+            //createTime 으로부터 아직 갱신 시간이 되지 않았다. >> Table을 그대로 return
+            if (duration.toHours() < RENEWAL_HOUR) {
+                return existingEntityList.stream()
+                        .map(recommendationMapper::toGetListResponse)
+                        .toList();
+            }
+            //새로 갱신해야 한다. == 재추천.
+            else {
+                behaviorRecommendationRepository.deleteAllByUserId(userId);
+                resultList = recommendationProcessor.createTastingNoteRecommendation(userId);
+            }
+        }
+
+        // 추천 결과를 return
+        return resultList.stream()
+                .map(recommendationMapper::toGetListResponse)
+                .toList();
     }
 
 }
