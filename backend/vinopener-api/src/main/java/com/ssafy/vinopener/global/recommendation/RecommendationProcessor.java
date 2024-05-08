@@ -87,7 +87,12 @@ public class RecommendationProcessor {
         else {
             List<Tuple> queryResultList = cellarRepositoryQueryImpl.findAllByCellarCount();
 
-            for (int i = 0; i < 10; i++) {
+            int cellarCount = queryResultList.size();
+            if (cellarCount > 10) {
+                cellarCount = 10;
+            }
+
+            for (int i = 0; i < cellarCount; i++) {
                 Long wineId = queryResultList.get(i).get(0, Long.class);
                 WineEntity wine = entityManager.getReference(WineEntity.class, wineId);
 
@@ -123,7 +128,7 @@ public class RecommendationProcessor {
                 .limit(10)
                 .toList();
 
-        saveRecommendationResult(resultList, userId, BehaviorRecommendationType.TASTING_NOTE);
+        saveRecommendationResult(resultList, userId, BehaviorRecommendationType.PREFERENCE);
 
         return resultList;
     }
