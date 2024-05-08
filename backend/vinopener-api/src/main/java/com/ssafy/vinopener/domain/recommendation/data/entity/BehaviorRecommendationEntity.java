@@ -1,6 +1,7 @@
 package com.ssafy.vinopener.domain.recommendation.data.entity;
 
 import com.ssafy.vinopener.domain.recommendation.data.entity.enums.BehaviorRecommendationType;
+import com.ssafy.vinopener.domain.user.data.entity.UserEntity;
 import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
 import com.ssafy.vinopener.global.common.BaseTimeEntity;
 import jakarta.persistence.Column;
@@ -18,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity(name = "behavior_recommendation")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,8 +35,9 @@ public class BehaviorRecommendationEntity extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", updatable = false)
-    private WineEntity user;
+    private UserEntity user;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "wine_id", updatable = false)
     private WineEntity wine;
