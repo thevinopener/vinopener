@@ -1,4 +1,5 @@
 import 'package:frontend/models/feed.dart';
+import 'package:frontend/utils/api_client.dart';
 
 class FeedService {
 
@@ -10,21 +11,34 @@ class FeedService {
     return Feed.dummy();
   }
 
+  static Future<List<Feed>> getDummyList() async {
+    return [];
+  }
+
   static Future<List<Feed>> getFeedList() async {
-    List<Feed> feedList = [];
-    for (int i = 0; i < 2; i++) {
-      feedList.add(Feed.dummy());
+    var response = await ApiClient().dio.get('/feeds');
+    if (response.statusCode == 200) {
+      List<dynamic> responseData = response.data;
+      List<Feed> feedList = responseData.map((feedData) => Feed.fromJson(feedData)).toList();
+      return feedList;
     }
-    print('getFeedList');
-    return feedList;
+    throw Error();
   }
 
   static Future<List<Feed>> getMyFeedList() async {
+    print('getMyFeedList');
+    // var response = await ApiClient().dio.get('/feeds/my');
+    // if (response.statusCode == 200) {
+    //   List<dynamic> responseData = response.data;
+    //   List<Feed> myFeedList = responseData.map((feedData) => Feed.fromJson(feedData)).toList();
+    //   return myFeedList;
+    // }
+    // throw Error();
+    print('getMyFeedList');
     List<Feed> myFeedList = [];
     for (int i = 0; i < 10; i++) {
       myFeedList.add(Feed.dummy());
     }
-    print('getMyFeedList');
     return myFeedList;
   }
 
@@ -46,5 +60,9 @@ class FeedService {
 
   static void cancelLikeOnFeed() async {
     print('cancelLikeOnFeed');
+  }
+
+  static void switchLikeOnFeed(int feedId) async {
+    await ApiClient().dio.get('/feeds/like/${feedId}');
   }
 }

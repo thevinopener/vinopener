@@ -1,19 +1,36 @@
+// flutter
 import 'package:flutter/material.dart';
+import 'package:frontend/constants/colors.dart';
+import 'package:frontend/widgets/note/note_search_list_widget.dart';
+
+// package
+import 'package:provider/provider.dart';
+
+// widgets
 import 'package:frontend/widgets/search/search_bar_widget.dart';
 import 'package:frontend/widgets/search/search_wine_list_widget.dart';
-import 'package:frontend/constants/fonts.dart';
-import 'package:frontend/constants/colors.dart';
+
+// provider
+import 'package:frontend/providers/search/search_provider.dart';
 
 class SearchResultScreen extends StatefulWidget {
+  final String searchValue;
 
-  String searchValue;
-  SearchResultScreen(this.searchValue);
+  const SearchResultScreen({super.key, required this.searchValue});
 
   @override
-  _SearchResultPageState createState() => _SearchResultPageState();
+  _SearchResultScreenState createState() => _SearchResultScreenState();
 }
 
-class _SearchResultPageState extends State<SearchResultScreen> {
+class _SearchResultScreenState extends State<SearchResultScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // 검색어를 통해 API 호출
+    final searchProvider = Provider.of<SearchProvider>(context, listen: false);
+    searchProvider.searchWines(widget.searchValue);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,35 +42,90 @@ class _SearchResultPageState extends State<SearchResultScreen> {
           SearchBarWidget(
             autoFocus: false,
             searchValue: widget.searchValue,
-            contextType: SearchContext.searchResultScreen,),
-          // Padding(
-          //   padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-          //   child: Text(
-          //     '\"${widget.searchValue}\" 검색 결과',
-          //     style: TextStyle(
-          //       fontWeight: FontWeight.w500,
-          //       fontSize: 16, // 조정 가능한 폰트 크기
-          //     ),
-          //     softWrap: true,
-          //     overflow: TextOverflow.ellipsis,
-          //   ),
-          // ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(15, 5, 10, 5),
-            child: Text(
-              '총 11 건 검색완료',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-              softWrap: true, // 감싸주는 애
-              overflow: TextOverflow.ellipsis,  // 글자수 넘치면 ... 으로 바꿔주는애
-            ),
+            contextType: SearchContext.searchResultScreen,
           ),
-          SizedBox(height: 5),
-          Expanded(
-            child: SearchWineListWidget(context),
+          Consumer<SearchProvider>(
+            builder: (context, searchProvider, child) {
+              if (searchProvider.isLoading) {
+                // 로딩 중일 때 로딩 화면을 표시
+                return Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: Center(
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              height: double.infinity,
+                              child: const CircularProgressIndicator(
+                                color: AppColors.primary, // 예시로 색상 변경
+                                strokeWidth: 8,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 335,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: const Text(
+                                'Loading...',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              } else {
+                // 로딩이 끝난 후 검색 결과 표시
+                return Expanded(
+                  child: searchProvider.wines.isEmpty
+                      ? Center(
+                          child: Text('검색 결과가 없습니다.'),
+                        )
+                      : Container(
+                          height: double.maxFinite,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(15, 5, 10, 5),
+                                child: Text(
+                                  '총 ${searchProvider.wines.length}건의 검색결과',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                  ),
+                                  softWrap: true, // 감싸주는 애
+                                  overflow: TextOverflow
+                                      .ellipsis, // 글자수 넘치면 ... 으로 바꿔주는애
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Expanded(
+                                child: searchProvider.wines.isEmpty
+                                    ? Center(child: Text('검색 결과가 없습니다.'))
+                                    : SearchWineListWidget(
+                                        context, searchProvider.wines),
+                              ),
+                            ],
+                          ),
+                        ),
+                );
+              }
+            },
           ),
         ],
       ),

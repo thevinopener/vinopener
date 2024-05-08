@@ -1,6 +1,5 @@
 package com.ssafy.vinopener.domain.search.controller;
 
-import com.ssafy.vinopener.domain.search.data.dto.request.SearchCreateRequest;
 import com.ssafy.vinopener.domain.search.data.dto.response.SearchGetListResponse;
 import com.ssafy.vinopener.domain.search.service.SearchService;
 import com.ssafy.vinopener.global.annotations.UserPrincipalId;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,10 +34,10 @@ public class SearchController {
     private final SearchService searchService;
 
     /**
-     * 검색 기록 생성
+     * 검색 기록 생성 실제로 요청을 보내서 사용하지 않습니다.
      *
-     * @param searchCreateRequest 검색기록 생성 요청
-     * @param userId              유저 ID
+     * @param query  검색어
+     * @param userId 유저 ID
      */
     @PostMapping
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER),
@@ -47,11 +45,12 @@ public class SearchController {
                     name = HttpHeaders.LOCATION, description = REQUEST_PATH + REQUEST_PATH_VARIABLE
             )))
     public ResponseEntity<Void> createSearch(
-            @RequestBody @Valid final SearchCreateRequest searchCreateRequest,
+            @RequestBody @Valid final String query,
             @UserPrincipalId final Long userId
     ) {
+
         return ResponseEntity
-                .created(URI.create(REQUEST_PATH + "/" + searchService.create(searchCreateRequest, userId)))
+                .created(URI.create(REQUEST_PATH + "/" + searchService.create(query, userId)))
                 .build();
     }
 
@@ -79,7 +78,7 @@ public class SearchController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> delete(
             @PathVariable final Long searchId,
-            @RequestParam final Long userId
+            @UserPrincipalId final Long userId
     ) {
         searchService.delete(searchId, userId);
         return ResponseEntity.noContent().build();
@@ -90,11 +89,11 @@ public class SearchController {
      *
      * @param userId 유저 ID
      */
-    @DeleteMapping("/all" + "/{userId}")
+    @DeleteMapping("/all")
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteAll(
-            @RequestParam final Long userId
+            @UserPrincipalId final Long userId
     ) {
         searchService.deleteAll(userId);
         return ResponseEntity.noContent().build();

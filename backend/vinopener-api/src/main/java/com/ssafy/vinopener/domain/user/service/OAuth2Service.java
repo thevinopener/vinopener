@@ -57,7 +57,7 @@ public class OAuth2Service {
 
     public String refreshAccessToken(String bearerToken, String oldRefreshToken) {
         String accessToken = bearerToken.substring(7);
-        Long userId = jwtProvider.parseId(accessToken);
+        Long userId = jwtProvider.parseIdForRefresh(accessToken);
         TokenEntity token = tokenRepository.findById(userId).orElse(null);
         if (token != null && oldRefreshToken.equals(token.getRefreshToken())) {
             UserEntity user = userRepository.findById(userId).orElse(null);

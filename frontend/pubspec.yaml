@@ -20,6 +20,10 @@ dependencies:
 
   # Search_Camera_Screen
   camera: ^0.10.5+9
+  scanner_overlay: ^0.0.2
+  permission_handler: ^10.2.0
+  image: ^3.0.1
+  focused_area_ocr_flutter: ^0.0.3
 
   # for gallery image
   image_picker: ^1.1.0

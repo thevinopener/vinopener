@@ -7,13 +7,17 @@ class NewFeedWineListProvider with ChangeNotifier {
 
   List<Wine> get wineList => _wineList;
 
-  void addWine(Wine wine) {
-    _wineList.add(wine);
+  List<Wine> getWineList() {
+    return _wineList;
+  }
+
+  void setWineList(List<Wine> wineList) {
+    _wineList = wineList;
     notifyListeners();
   }
 
-  void removeWine(Wine wine) {
-    _wineList.remove(wine);
+  void clearWineList() {
+    _wineList = [];
     notifyListeners();
   }
 }

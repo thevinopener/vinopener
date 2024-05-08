@@ -7,9 +7,9 @@ import '../../models/note_model.dart';
 
 
 class NoteDetailCard extends StatelessWidget {
-  final NoteWine noteWine;
+  final NoteDetailWine noteDetailWine;
 
-  const NoteDetailCard({super.key, required this.noteWine, });
+  const NoteDetailCard({super.key, required this.noteDetailWine});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class NoteDetailCard extends StatelessWidget {
                       topLeft: Radius.circular(12),
                       bottomLeft: Radius.circular(12)),
                   image: DecorationImage(
-                    image: NetworkImage(noteWine.imageUrl),
+                    image: NetworkImage(noteDetailWine.imageUrl),
                     fit: BoxFit.fitHeight, // 이미지가 컨테이너를 꽉 채우도록 설정
                   ),
                 ),
@@ -74,7 +74,7 @@ class NoteDetailCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      noteWine.winery,
+                      noteDetailWine.winery,
                       style: TextStyle(
                           fontSize: AppFontSizes.mediumSmall,
                           fontWeight: FontWeight.bold),
@@ -83,7 +83,7 @@ class NoteDetailCard extends StatelessWidget {
                       height: 10,
                     ),
                     Text(
-                      noteWine.name,
+                      noteDetailWine.name,
                       style: TextStyle(fontSize: AppFontSizes.small),
                     ),
                     SizedBox(
@@ -91,9 +91,9 @@ class NoteDetailCard extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        NationFlag(country: noteWine.country, height: 12, width: 12),
+                        NationFlag(country: 'United States', height: 12, width: 12),
                         Text(
-                          noteWine.country,
+                          noteDetailWine.country,
                           style: TextStyle(fontSize: AppFontSizes.small),
                         ),
                       ],
