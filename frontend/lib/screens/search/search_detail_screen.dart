@@ -48,10 +48,10 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
   @override
   void initState() {
     super.initState();
-    final wineId = widget.wineId;
-    final searchWineDetailProvider =
-        Provider.of<SearchWineDetailProvider>(context, listen: false);
-    searchWineDetailProvider.findDetailByWineId(wineId);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final searchWineDetailProvider = Provider.of<SearchWineDetailProvider>(context, listen: false);
+      searchWineDetailProvider.findDetailByWineId(widget.wineId);
+    });
   }
 
   @override
@@ -75,8 +75,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
         builder: (context, wineDetailProvider, child) {
           // 로딩 중인 경우 로딩 화면 표시
           if (wineDetailProvider.isLoading) {
-            return Expanded(
-              child: Container(
+            return Container(
                 width: double.infinity,
                 color: Colors.white,
                 child: Center(
@@ -112,7 +111,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                     ],
                   ),
                 ),
-              ),
+              // ),
             );
           }
 
