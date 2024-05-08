@@ -78,10 +78,6 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          icon: Icon(Icons.navigate_before),
-        ),
         title: Text(
           '피드 작성',
           style: TextStyle(

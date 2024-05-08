@@ -76,11 +76,12 @@ class _MyPageSettingScreenState extends State<MyPageSettingScreen> {
           Center(
             child: TextButton(
               onPressed: () {
-                UserService.logout;
+                UserService.logout();
                 bottomBarProvider.setIndex(0);
-                Navigator.pushReplacement(
+                Navigator.pushAndRemoveUntil(
                   context,
-                  CupertinoPageRoute(builder: (context) => LoginScreen()),
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  (Route<dynamic> route) => false,
                 );
               },
               child: Text(
