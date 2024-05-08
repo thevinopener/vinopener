@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 // Flavour 모델
 class Flavour {

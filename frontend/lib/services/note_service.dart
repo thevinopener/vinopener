@@ -2,7 +2,6 @@ import 'package:frontend/models/ai_chat_model.dart';
 import 'package:frontend/utils/api_client.dart';
 
 import '../models/note_model.dart';
-import '../models/survey_model.dart';
 
 class AiChatService {
   static Future<dynamic> postSurvey(AiChat aiChat) async {
