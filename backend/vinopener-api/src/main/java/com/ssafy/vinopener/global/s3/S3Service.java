@@ -29,6 +29,9 @@ public class S3Service {
                         .key(key)
                         .build(),
                 RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
+
+//        System.out.println("Public Base URL: " + s3Props.publicBaseUrl());
+//        System.out.println("Full Image URL: " + s3Props.publicBaseUrl() + "/" + key);
         return URI.create(s3Props.publicBaseUrl() + "/" + key);
     }
 
