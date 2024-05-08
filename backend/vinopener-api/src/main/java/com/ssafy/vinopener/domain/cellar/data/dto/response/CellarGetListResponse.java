@@ -9,6 +9,7 @@ import lombok.Builder;
 public record CellarGetListResponse(
         Long id,
         LocalDate finishedDate,
+        int totalNotes,
         WineGetListResponse wine
 ) {
 
