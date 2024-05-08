@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 // constant
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
-import 'package:frontend/screens/note/note_color_screen.dart';
 import 'package:frontend/widgets/common/atoms/nation_flag_widget.dart';
 
 // pages & widgets & models
@@ -18,6 +17,8 @@ import 'package:frontend/models/note_model.dart';
 
 // library
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
+
+import '../note/note_screen.dart';
 
 const Map<String, Color> wineTypeColors = {
   'red': WineButtonColors.red,
@@ -774,7 +775,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => NoteColorScreen(),
+                            builder: (context) => NoteScreen(),
                           ),
                         );
                       },
