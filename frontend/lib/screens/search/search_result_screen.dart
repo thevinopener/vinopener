@@ -11,7 +11,7 @@ import 'package:frontend/widgets/search/search_bar_widget.dart';
 import 'package:frontend/widgets/search/search_wine_list_widget.dart';
 
 // provider
-import 'package:frontend/providers/search/search_provider.dart';
+import 'package:frontend/providers/search/search_wine_list_provider.dart';
 
 class SearchResultScreen extends StatefulWidget {
   final String searchValue;
@@ -27,8 +27,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   void initState() {
     super.initState();
     // 검색어를 통해 API 호출
-    final searchProvider = Provider.of<SearchProvider>(context, listen: false);
-    searchProvider.searchWines(widget.searchValue);
+    final searchWineListProvider = Provider.of<SearchWineListProvider>(context, listen: false);
+    searchWineListProvider.findByWineName(widget.searchValue);
   }
 
   @override
@@ -44,7 +44,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             searchValue: widget.searchValue,
             contextType: SearchContext.searchResultScreen,
           ),
-          Consumer<SearchProvider>(
+          Consumer<SearchWineListProvider>(
             builder: (context, searchProvider, child) {
               if (searchProvider.isLoading) {
                 // 로딩 중일 때 로딩 화면을 표시
@@ -90,7 +90,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               } else {
                 // 로딩이 끝난 후 검색 결과 표시
                 return Expanded(
-                  child: searchProvider.wines.isEmpty
+                  child: searchProvider.wineList.isEmpty
                       ? Center(
                           child: Text('검색 결과가 없습니다.'),
                         )
@@ -102,7 +102,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                               Padding(
                                 padding: EdgeInsets.fromLTRB(15, 5, 10, 5),
                                 child: Text(
-                                  '총 ${searchProvider.wines.length}건의 검색결과',
+                                  '총 ${searchProvider.wineList.length}건의 검색결과',
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500,
@@ -115,10 +115,10 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                               ),
                               SizedBox(height: 5),
                               Expanded(
-                                child: searchProvider.wines.isEmpty
+                                child: searchProvider.wineList.isEmpty
                                     ? Center(child: Text('검색 결과가 없습니다.'))
                                     : SearchWineListWidget(
-                                        context, searchProvider.wines),
+                                        context, searchProvider.wineList),
                               ),
                             ],
                           ),
