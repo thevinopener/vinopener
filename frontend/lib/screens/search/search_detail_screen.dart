@@ -38,7 +38,13 @@ class SearchDetailScreen extends StatefulWidget {
 }
 
 class _SearchDetailScreenState extends State<SearchDetailScreen> {
-
+  
+  // 풍미 초기화
+  final ValueNotifier<double> _acidNotifier = ValueNotifier(0);
+  final ValueNotifier<double> _bodyNotifier = ValueNotifier(0);
+  final ValueNotifier<double> _sweetNotifier = ValueNotifier(0);
+  final ValueNotifier<double> _tanninNotifier = ValueNotifier(0);
+  
   @override
   void initState() {
     super.initState();
@@ -47,30 +53,6 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
         Provider.of<SearchWineDetailProvider>(context, listen: false);
     searchWineDetailProvider.findDetailByWineId(wineId);
   }
-
-  final ValueNotifier<double> _acidNotifier = ValueNotifier(0);
-  final ValueNotifier<double> _bodyNotifier = ValueNotifier(0);
-  final ValueNotifier<double> _sweetNotifier = ValueNotifier(0);
-  final ValueNotifier<double> _tanninNotifier = ValueNotifier(0);
-  final double _acid = 3.5;
-  final double _body = 2.7;
-  final double _sweet = 1.6;
-  final double _tannin = 4.5;
-
-  final List<String> aromaList = [
-    "딸기",
-    "블루베리",
-    "오디",
-    "올리브",
-    "자두",
-    "무화과",
-    "용과",
-    "청배",
-    "복숭아",
-    "리치",
-    "풍선껌",
-    "라벤더"
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +75,44 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
         builder: (context, wineDetailProvider, child) {
           // 로딩 중인 경우 로딩 화면 표시
           if (wineDetailProvider.isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Expanded(
+              child: Container(
+                width: double.infinity,
+                color: Colors.white,
+                child: Center(
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          height: double.infinity,
+                          child: const CircularProgressIndicator(
+                            color: AppColors.primary, // 예시로 색상 변경
+                            strokeWidth: 8,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 335,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Loading...',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             );
           }
 
