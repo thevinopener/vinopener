@@ -11,6 +11,9 @@ public interface WineRepository extends JpaRepository<WineEntity, Long> {
 
     List<WineEntity> findBySeoName(String seoName);
 
-    List<WineEntity> findBySeoNameContaining(String seoName);
+//    List<WineEntity> findBySeoNameContaining(String seoName);
+
+    // 대소문자 구분하지 않고 검색
+    List<WineEntity> findBySeoNameContainsIgnoreCase(String seoName);
 
 }

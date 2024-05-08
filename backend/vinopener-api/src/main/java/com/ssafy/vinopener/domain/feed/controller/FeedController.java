@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,7 +28,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -60,7 +58,7 @@ public class FeedController {
                             schema = @Schema(implementation = FeedCreateRequest.class)
                     ),
                     required = true,
-                    description = "The multipart request containing feed data and an image file"
+                    description = "피드 데이터와 이미지 파일이 포함된 멀티파트 요청"
             )
             @ModelAttribute @Valid FeedCreateRequest feedCreateRequest,
             @UserPrincipalId final Long userId
@@ -94,7 +92,7 @@ public class FeedController {
     public ResponseEntity<FeedGetResponse> getFeed(
             @PathVariable final Long feedId
     ) {
-        return ResponseEntity.ok(feedService.getFeed(feedId));
+        return ResponseEntity.ok(feedService.get(feedId));
     }
 
     /**
@@ -103,29 +101,30 @@ public class FeedController {
      * @param userId 유저 ID
      * @return 내 피드 목록
      */
-    @GetMapping("/my/{userId}")
+    @GetMapping("/my")
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<List<FeedGetListResponse>> getMyFeedList(
-            @PathVariable("userId") final Long userId
+//            @PathVariable("userId") final Long userId
+            @UserPrincipalId final Long userId
     ) {
         return ResponseEntity.ok(feedService.getMyFeedList(userId));
     }
 
-    /**
-     * 내 피드 상세 조회
-     *
-     * @param feedId 피드 ID
-     * @param userId 유저 ID
-     * @return 상세조회할 피드
-     */
-    @GetMapping("/my/{userId}" + REQUEST_PATH_VARIABLE)
-    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
-    public ResponseEntity<Optional<FeedGetResponse>> getMyFeed(
-            @PathVariable final Long feedId,
-            @PathVariable("userId") final Long userId
-    ) {
-        return ResponseEntity.ok(feedService.getMyFeed(feedId, userId));
-    }
+//    /**
+//     * 내 피드 상세 조회
+//     *
+//     * @param feedId 피드 ID
+//     * @param userId 유저 ID
+//     * @return 상세조회할 피드
+//     */
+//    @GetMapping("/my/{userId}" + REQUEST_PATH_VARIABLE)
+//    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+//    public ResponseEntity<Optional<FeedGetResponse>> getMyFeed(
+//            @PathVariable final Long feedId,
+//            @PathVariable("userId") final Long userId
+//    ) {
+//        return ResponseEntity.ok(feedService.getMyFeed(feedId, userId));
+//    }
 
     /**
      * 내 피드 삭제
@@ -138,7 +137,7 @@ public class FeedController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteMyFeed(
             @PathVariable final Long feedId,
-            @RequestParam final Long userId
+            @UserPrincipalId final Long userId
     ) {
         feedService.deleteMyFeed(feedId, userId);
         return ResponseEntity.noContent().build();

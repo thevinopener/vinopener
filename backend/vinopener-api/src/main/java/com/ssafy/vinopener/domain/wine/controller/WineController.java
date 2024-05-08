@@ -1,9 +1,9 @@
 package com.ssafy.vinopener.domain.wine.controller;
 
+import com.ssafy.vinopener.domain.search.service.SearchService;
 import com.ssafy.vinopener.domain.wine.data.dto.response.WineGetListResponse;
 import com.ssafy.vinopener.domain.wine.data.dto.response.WineGetResponse;
 import com.ssafy.vinopener.domain.wine.data.dto.response.WineTypeGetListResponse;
-import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
 import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
 import com.ssafy.vinopener.domain.wine.service.WineService;
 import com.ssafy.vinopener.global.annotations.UserPrincipalId;
@@ -30,6 +30,7 @@ public class WineController {
     public static final String REQUEST_PATH_VARIABLE = "/{wineId}";
 
     private final WineService wineService;
+    private final SearchService searchService;
 
     /**
      * 와인 목록 조회
@@ -113,11 +114,13 @@ public class WineController {
      */
     @GetMapping("/search")
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
-    public ResponseEntity<List<WineEntity>> searchWine(
-            @RequestParam(value = "query", required = false) String query
+    public ResponseEntity<List<WineGetListResponse>> searchWine(
+            @RequestParam(value = "query", required = false) String query,
+            @UserPrincipalId final Long userId
     ) {
         if (query != null && !query.trim().isEmpty()) {
-            return ResponseEntity.ok(wineService.searchWine(query));
+            searchService.create(query, userId);
+            return ResponseEntity.ok(wineService.searchWine(query, userId));
         } else {
             return ResponseEntity.ok(Collections.emptyList());
         }

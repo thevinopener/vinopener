@@ -9,6 +9,7 @@ import lombok.Builder;
 public record CellarGetListResponse(
         Long id,
         LocalDate finishedDate,
+        int totalNotes,
         WineGetListResponse wine
 ) {
 
@@ -16,6 +17,7 @@ public record CellarGetListResponse(
     public record WineGetListResponse(
             Long id,
             String name,
+            String seoName,
             String imageUrl,
             String grape,
             String winery,
