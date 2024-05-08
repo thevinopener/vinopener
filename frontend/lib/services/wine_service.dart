@@ -3,13 +3,13 @@ import 'package:frontend/utils/api_client.dart';
 
 class WineService {
   static Future<List<Wine>> getWineList() async {
+    print('getWineList');
     final response = await ApiClient().dio.get('/wines');
     if (response.statusCode == 200) {
       List<dynamic> responseData = response.data;
       List<Wine> wineList = responseData.map((wineData) => Wine.fromJson(wineData)).toList();
       return wineList;
     }
-    print('getWineList');
     throw Error();
   }
 
@@ -34,13 +34,13 @@ class WineService {
   // Cellar
 
   static Future<List<Wine>> getCellarList() async {
+    print('getCellarList');
     final response = await ApiClient().dio.get('/wines');
     if (response.statusCode == 200) {
       List<dynamic> responseData = response.data;
       List<Wine> cellarList = responseData.map((wineData) => Wine.fromJson(wineData)).toList();
       return cellarList;
     }
-    print('getCellarList');
     throw Error();
   }
 

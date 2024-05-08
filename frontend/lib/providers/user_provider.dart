@@ -9,6 +9,10 @@ class UserProvider with ChangeNotifier {
 
   UserModel get user => _user;
 
+  int getUserId() {
+    return _user.id!;
+  }
+
   void setUser(UserModel user) {
     _user = user;
     notifyListeners();
