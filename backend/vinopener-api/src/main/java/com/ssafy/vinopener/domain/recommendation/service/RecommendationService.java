@@ -1,21 +1,21 @@
 package com.ssafy.vinopener.domain.recommendation.service;
 
-import com.ssafy.vinopener.domain.cellar.repository.CellarRepositoryQueryImpl;
 import com.ssafy.vinopener.domain.recommendation.data.dto.response.RecommendationGetListResponse;
+import com.ssafy.vinopener.domain.recommendation.data.entity.BehaviorRecommendationEntity;
 import com.ssafy.vinopener.domain.recommendation.data.entity.ContentRecommendationEntity;
+import com.ssafy.vinopener.domain.recommendation.data.entity.enums.BehaviorRecommendationType;
 import com.ssafy.vinopener.domain.recommendation.data.entity.enums.ContentRecommendationType;
 import com.ssafy.vinopener.domain.recommendation.data.mapper.RecommendationMapper;
 import com.ssafy.vinopener.domain.recommendation.repository.BehaviorRecommendationRepository;
 import com.ssafy.vinopener.domain.recommendation.repository.ContentRecommendationRepository;
-import com.ssafy.vinopener.global.jwt.JwtProvider;
+import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
 import com.ssafy.vinopener.global.recommendation.RecommendationProcessor;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -26,140 +26,123 @@ public class RecommendationService {
     private final BehaviorRecommendationRepository behaviorRecommendationRepository;
     private final RecommendationProcessor recommendationProcessor;
     private final RecommendationMapper recommendationMapper;
-    private final JwtProvider jwtProvider;
-    private final CellarRepositoryQueryImpl cellarRepositoryQueryImpl;
     private final int RENEWAL_HOUR = 3;
 
-    public List<RecommendationGetListResponse> getViewRecommendation() {
+    /**
+     * 조회수 / 셀러 / 평점 기반 추천
+     *
+     * @param type VIEW, CELLAR, RATE // 조회수, 셀러, 평점 기반
+     * @return 추천된 와인 List (10개)
+     */
+    public List<RecommendationGetListResponse> getContentRecommendation(ContentRecommendationType type) {
         List<ContentRecommendationEntity> contentRecommendationEntityList
-                = contentRecommendationRepository.findAllByContentRecommendationType(
-                ContentRecommendationType.VIEW
-        );
+                = contentRecommendationRepository.findAllByContentRecommendationType(type);
+        List<WineEntity> resultList;
 
-        log.info("contentRecommendationEntityList: {}", contentRecommendationEntityList);
-
-        if (!contentRecommendationEntityList.isEmpty()) {
-
-            Duration duration = Duration.between(
-                    contentRecommendationEntityList.getFirst().getCreatedTime(),
-                    LocalDateTime.now()
-            );
-            //createTime 으로부터 아직 갱신 시간이 되지 않았다.
-            if (duration.toHours() < RENEWAL_HOUR) {
-                return contentRecommendationRepository.findAllByContentRecommendationType(
-                                ContentRecommendationType.VIEW)
-                        .stream().map(recommendationMapper::toGetListResponse)
-                        .toList();
-
-            }
-            // 갱신 시간이 지나 새로 갱신해야할 경우
-            else {
-                log.info("RecommendationService : deleteAllByContentRecommendationType");
-                contentRecommendationRepository.deleteAllByContentRecommendationType(ContentRecommendationType.VIEW);
-                recommendationProcessor.createRecommendation(ContentRecommendationType.VIEW);
-                return contentRecommendationRepository.findAllByContentRecommendationType(
-                                ContentRecommendationType.VIEW)
-                        .stream().map(recommendationMapper::toGetListResponse)
-                        .toList();
-            }
+        //기존 테이블 내용이 없으면, 새로 추천해서 결과를 테이블에 추가한다.
+        if (contentRecommendationEntityList.isEmpty()) {
+            resultList = recommendationProcessor.createRecommendation(type);
         }
-        // 최초 실행시엔 테이블이 비어있을 수 있음.
+        //내용이 있으면, 갱신 시간 이내인지 확인한다.
         else {
-            recommendationProcessor.createRecommendation(ContentRecommendationType.VIEW);
-            return contentRecommendationRepository.findAllByContentRecommendationType(ContentRecommendationType.VIEW)
-                    .stream().map(recommendationMapper::toGetListResponse)
-                    .toList();
-        }
-
-    }
-
-    public List<RecommendationGetListResponse> getCellarRecommendation() {
-        List<ContentRecommendationEntity> contentRecommendationEntityList
-                = contentRecommendationRepository.findAllByContentRecommendationType(
-                ContentRecommendationType.CELLAR
-        );
-
-        if (!contentRecommendationEntityList.isEmpty()) {
             Duration duration = Duration.between(
                     contentRecommendationEntityList.getFirst().getCreatedTime(),
                     LocalDateTime.now()
             );
-            //createTime 으로부터 아직 갱신 시간이 되지 않았다.
+
             if (duration.toHours() < RENEWAL_HOUR) {
-                return contentRecommendationRepository.findAllByContentRecommendationType(
-                                ContentRecommendationType.CELLAR)
-                        .stream().map(recommendationMapper::toGetListResponse)
+                return contentRecommendationEntityList.stream()
+                        .map(recommendationMapper::toGetListResponse)
                         .toList();
-
+            } else {
+                contentRecommendationRepository.deleteAllByContentRecommendationType(type);
+                resultList = recommendationProcessor.createRecommendation(type);
             }
-            // 갱신 시간이 지나 새로 갱신해야할 경우
-            else {
-                contentRecommendationRepository.deleteAllByContentRecommendationType(ContentRecommendationType.CELLAR);
-                recommendationProcessor.createRecommendation(ContentRecommendationType.CELLAR);
-                return contentRecommendationRepository.findAllByContentRecommendationType(
-                                ContentRecommendationType.CELLAR)
-                        .stream().map(recommendationMapper::toGetListResponse)
-                        .toList();
-            }
-
-        } else {
-            recommendationProcessor.createRecommendation(ContentRecommendationType.CELLAR);
-            return contentRecommendationRepository.findAllByContentRecommendationType(ContentRecommendationType.CELLAR)
-                    .stream().map(recommendationMapper::toGetListResponse)
-                    .toList();
-
         }
-
+        return resultList.stream()
+                .map(recommendationMapper::toGetListResponse)
+                .toList();
     }
 
-    public List<RecommendationGetListResponse> getRateRecommendation() {
+    /**
+     * 사용자 선호도 설문 기반 추천
+     *
+     * @param userId 유저 ID
+     * @return 추천된 와인 List (10개)
+     */
+    public List<RecommendationGetListResponse> getPreferenceRecommendation(Long userId) {
+        List<BehaviorRecommendationEntity> existingEntityList =
+                behaviorRecommendationRepository.findAllByBehaviorRecommendationTypeAndUserId(
+                        BehaviorRecommendationType.PREFERENCE, userId
+                );
+        List<WineEntity> resultList;
 
-        List<ContentRecommendationEntity> contentRecommendationEntityList
-                = contentRecommendationRepository.findAllByContentRecommendationType(
-                ContentRecommendationType.RATE
-        );
-
-        log.info("contentRecommendationEntityList: {}", contentRecommendationEntityList);
-
-        if (!contentRecommendationEntityList.isEmpty()) {
-
-            Duration duration = Duration.between(
-                    contentRecommendationEntityList.getFirst().getCreatedTime(),
-                    LocalDateTime.now()
-            );
-            //createTime 으로부터 아직 갱신 시간이 되지 않았다.
-            if (duration.toHours() < RENEWAL_HOUR) {
-                return contentRecommendationRepository.findAllByContentRecommendationType(
-                                ContentRecommendationType.RATE)
-                        .stream().map(recommendationMapper::toGetListResponse)
-                        .toList();
-
-            }
-            // 갱신 시간이 지나 새로 갱신해야할 경우
-            else {
-                contentRecommendationRepository.deleteAllByContentRecommendationType(ContentRecommendationType.RATE);
-                recommendationProcessor.createRecommendation(ContentRecommendationType.RATE);
-                return contentRecommendationRepository.findAllByContentRecommendationType(
-                                ContentRecommendationType.RATE)
-                        .stream().map(recommendationMapper::toGetListResponse)
-                        .toList();
-            }
+        //기존 테이블 내용이 없으면, 새로 추천해서 결과를 테이블에 추가한다.
+        if (existingEntityList.isEmpty()) {
+            resultList = recommendationProcessor.createPreferenceRecommendation(userId);
         }
-        // 최초 실행시엔 테이블이 비어있을 수 있음.
+        //내용이 있으면, 갱신 시간 이내인지 확인한다.
         else {
-            recommendationProcessor.createRecommendation(ContentRecommendationType.RATE);
-            return contentRecommendationRepository.findAllByContentRecommendationType(ContentRecommendationType.RATE)
-                    .stream().map(recommendationMapper::toGetListResponse)
-                    .toList();
+            Duration duration = Duration.between(
+                    existingEntityList.getFirst().getCreatedTime(),
+                    LocalDateTime.now()
+            );
+            if (duration.toHours() < RENEWAL_HOUR) {
+                return existingEntityList.stream()
+                        .map(recommendationMapper::toGetListResponse)
+                        .toList();
+            } else {
+                behaviorRecommendationRepository.deleteAllByUserId(userId);
+                resultList = recommendationProcessor.createPreferenceRecommendation(userId);
+            }
         }
+
+        // 추천 결과를 return
+        return resultList.stream()
+                .map(recommendationMapper::toGetListResponse)
+                .toList();
     }
 
-    public List<RecommendationGetListResponse> getPreferenceRecommendation() {
-        return null;
-    }
+    /**
+     * 사용자가 작성한 테이스팅 노트 기반 추천
+     *
+     * @param userId 유저 ID
+     * @return 추천된 와인 List (10개)
+     */
+    public List<RecommendationGetListResponse> getTastingNoteRecommendation(Long userId) {
+        List<BehaviorRecommendationEntity> existingEntityList =
+                behaviorRecommendationRepository.findAllByBehaviorRecommendationTypeAndUserId(
+                        BehaviorRecommendationType.TASTING_NOTE, userId
+                );
+        List<WineEntity> resultList;
 
-    public List<RecommendationGetListResponse> getTastingNoteRecommendation() {
-        return null;
+        //내용이 없으면, 새로 추천해서 테이블에 추가한다.
+        if (existingEntityList.isEmpty()) {
+            resultList = recommendationProcessor.createTastingNoteRecommendation(userId);
+        }
+        //내용이 있으면, 갱신 시간 이내인지 확인한다.
+        else {
+            Duration duration = Duration.between(
+                    existingEntityList.getFirst().getCreatedTime(),
+                    LocalDateTime.now()
+            );
+            //createTime 으로부터 아직 갱신 시간이 되지 않았다. >> Table을 그대로 return
+            if (duration.toHours() < RENEWAL_HOUR) {
+                return existingEntityList.stream()
+                        .map(recommendationMapper::toGetListResponse)
+                        .toList();
+            }
+            //새로 갱신해야 한다. == 재추천.
+            else {
+                behaviorRecommendationRepository.deleteAllByUserId(userId);
+                resultList = recommendationProcessor.createTastingNoteRecommendation(userId);
+            }
+        }
+
+        // 추천 결과를 return
+        return resultList.stream()
+                .map(recommendationMapper::toGetListResponse)
+                .toList();
     }
 
 }

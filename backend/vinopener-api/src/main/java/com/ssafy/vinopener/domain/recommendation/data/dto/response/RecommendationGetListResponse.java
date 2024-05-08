@@ -4,7 +4,6 @@ import lombok.Builder;
 
 @Builder
 public record RecommendationGetListResponse(
-        Long id,
         Long wineId,
         String name,
         String winery,
