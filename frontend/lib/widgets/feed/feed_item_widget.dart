@@ -37,7 +37,7 @@ class _FeedItemState extends State<FeedItem> {
   @override
   void initState() {
     super.initState();
-    likeCount = widget.feed.likeCount;
+    likeCount = widget.feed.likeCount!;
   }
 
   @override
@@ -55,13 +55,13 @@ class _FeedItemState extends State<FeedItem> {
                 children: [
                   CircleAvatar(
                     backgroundImage:
-                        NetworkImage('${widget.feed.user.imageUrl}'),
+                        NetworkImage('${widget.feed.user?.imageUrl}'),
                   ),
                   SizedBox(width: 10),
-                  Text('${widget.feed.user.nickname}'),
+                  Text('${widget.feed.user?.nickname}'),
                 ],
               ),
-              Text(formatDateTime(widget.feed.createdTime)),
+              // Text(formatDateTime(widget.feed.createdTime)),
             ],
           ),
           SizedBox(height: 20),

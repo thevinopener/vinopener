@@ -9,6 +9,7 @@ import 'package:frontend/screens/survey_screen.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:frontend/utils/api_client.dart';
 
 class LoginScreen extends StatelessWidget {
 
@@ -39,6 +40,7 @@ class LoginScreen extends StatelessWidget {
           accessToken: googleAuth?.accessToken,
           idToken: googleAuth?.idToken,
         );
+        await FirebaseAuth.instance.signInWithCredential(credential);
         return credential.accessToken;
       } catch (error) {
         ScaffoldMessenger.of(context)
@@ -67,6 +69,9 @@ class LoginScreen extends StatelessWidget {
                 Token token = await UserService.login(accessToken);
                 loginUser.accessToken = token.accessToken;
                 loginUser.refreshToken = token.refreshToken;
+                ApiClient.setAccessToken(token.accessToken!);
+                ApiClient.setRefreshToken(token.refreshToken!);
+                loginUser.id = await UserService.getMyId();
                 userProvider.setUser(loginUser);
               }
               bool isFirstLogin = true;
