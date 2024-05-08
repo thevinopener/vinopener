@@ -111,6 +111,11 @@ public class WineService {
         return wineMapper.toGetResponse(wine, flavourTastes, isBookmark, isCellar, totalNotes);
     }
 
+    /**
+     * 와인 타입별 조회
+     *
+     * @param type 타입
+     */
     @Transactional(readOnly = true)
     public List<WineTypeGetListResponse> getTypeList(
             final WineType type
@@ -120,11 +125,27 @@ public class WineService {
                 .toList();
     }
 
+    /**
+     * 와인 검색
+     *
+     * @param query 검색어
+     */
     @Transactional
-    public List<WineEntity> searchWine(
-            String seoName
+    public List<WineGetListResponse> searchWine(
+            String query,
+            final Long userId
     ) {
-        return wineRepository.findBySeoNameContainsIgnoreCase(seoName);
+        List<WineEntity> wines = wineRepository.findBySeoNameContainsIgnoreCase(query);
+
+        return wines.stream()
+                .map(wine -> {
+                    boolean isBookmark = bookmarkRepository.existsByWineIdAndUserId(wine.getId(), userId);
+                    boolean isCellar = cellarRepository.existsByWineIdAndUserId(wine.getId(), userId);
+                    int totalNotes = tastingNoteRepository.countByWineIdAndUserId(wine.getId(), userId);
+                    return wineMapper.toGetListResponse(wine, isBookmark, isCellar, totalNotes);
+                })
+                .toList();
+//        return wineRepository.findBySeoNameContainsIgnoreCase(query);
     }
 
 }

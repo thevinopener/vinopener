@@ -1,7 +1,13 @@
 package com.ssafy.vinopener.domain.feed.data.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
+import com.ssafy.vinopener.global.config.TimeFormatConfig;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
 
@@ -15,8 +21,10 @@ public record FeedGetListResponse(
 
         FeedGetListUserResponse creator,
 
-        List<FeedGetListWineResponse> wines
-//        LocalDateTime createdTime
+        List<FeedGetListWineResponse> wines,
+        @Schema(type = "string", example = TimeFormatConfig.LOCAL_DATE_TIME_EXAMPLE)
+        @JsonFormat(pattern = TimeFormatConfig.LOCAL_DATE_TIME_PATTERN)
+        @NotNull @FutureOrPresent LocalDateTime createdTime
 
 ) {
 
