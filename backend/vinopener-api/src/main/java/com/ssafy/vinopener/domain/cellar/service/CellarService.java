@@ -8,6 +8,7 @@ import com.ssafy.vinopener.domain.cellar.data.entity.CellarEntity;
 import com.ssafy.vinopener.domain.cellar.data.mapper.CellarMapper;
 import com.ssafy.vinopener.domain.cellar.exception.CellarErrorCode;
 import com.ssafy.vinopener.domain.cellar.repository.CellarRepository;
+import com.ssafy.vinopener.domain.tastingnote.repository.TastingNoteRepository;
 import com.ssafy.vinopener.domain.user.repository.UserRepository;
 import com.ssafy.vinopener.domain.wine.repository.WineRepository;
 import com.ssafy.vinopener.global.exception.VinopenerException;
@@ -25,6 +26,7 @@ public class CellarService {
     private final CellarMapper cellarMapper;
     private final WineRepository wineRepository;
     private final UserRepository userRepository;
+    private final TastingNoteRepository tastingNoteRepository;
 
     /**
      * 셀러에 아이템 추가
@@ -66,8 +68,13 @@ public class CellarService {
     @Transactional(readOnly = true)
     public List<CellarGetListResponse> getList(
             final Long userId) {
-        return cellarRepository.findAllByUserId(userId).stream()
-                .map(cellarMapper::toGetListResponse)
+        List<CellarEntity> cellars = cellarRepository.findAllByUserId(userId);
+
+        return cellars.stream()
+                .map(cellar -> {
+                    int totalNotes = tastingNoteRepository.countByWineIdAndUserId(cellar.getWine().getId(), userId);
+                    return cellarMapper.toGetListResponse(cellar, totalNotes);
+                })
                 .toList();
     }
 
