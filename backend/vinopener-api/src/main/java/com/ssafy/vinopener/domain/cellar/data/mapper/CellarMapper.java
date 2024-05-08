@@ -20,7 +20,8 @@ public interface CellarMapper {
 
     CellarGetResponse toGetResponse(CellarEntity entity);
 
-    CellarGetListResponse toGetListResponse(CellarEntity entity);
+    @Mapping(target = "totalNotes", source = "totalNotes")
+    CellarGetListResponse toGetListResponse(CellarEntity entity, int totalNotes);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", source = "userId")

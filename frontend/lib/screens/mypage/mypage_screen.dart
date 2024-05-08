@@ -3,14 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
+import 'package:frontend/models/bookmark/bookmark.dart';
+import 'package:frontend/models/cellar/cellar.dart';
 import 'package:frontend/models/feed.dart';
 import 'package:frontend/models/wine_model.dart';
 import 'package:frontend/providers/user_provider.dart';
 import 'package:frontend/screens/feed/feed_detail_screen.dart';
 import 'package:frontend/screens/mypage/mypage_setting_screen.dart';
+import 'package:frontend/services/bookmark_service.dart';
+import 'package:frontend/services/cellar_service.dart';
 import 'package:frontend/services/feed_service.dart';
 import 'package:frontend/services/wine_service.dart';
 import 'package:frontend/widgets/common/molecules/wine_item_widget.dart';
+import 'package:frontend/widgets/common/templates/wine_detail_template.dart';
+import 'package:frontend/widgets/feed/feed_wine_item.dart';
+import 'package:frontend/widgets/mypage/bookmark_wine_item.dart';
+import 'package:frontend/widgets/mypage/cellar_wine_item.dart';
 import 'package:provider/provider.dart';
 
 class MyPageScreen extends StatefulWidget {
@@ -25,17 +33,39 @@ class _MyPageScreenState extends State<MyPageScreen>
   late TabController _tabController;
 
   late Future<List<Feed>> myFeedList;
-  late Future<List<Wine>> bookmarkList;
-  late Future<List<Wine>> cellarList;
+  late Future<List<Bookmark>> listBookmark;
+  late Future<List<Cellar>> listCellar;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this); // 3개의 탭
 
-    myFeedList = FeedService.getMyFeedList();
-    bookmarkList = WineService.getWineList();
-    cellarList = WineService.getCellarList();
+    _tabController = TabController(length: 3, vsync: this); // 3개의 탭
+    _tabController.addListener(_handleTabSelection);
+
+    myFeedList = FeedService.getDummyList();
+    listBookmark = BookmarkService.getListBookmark();
+    listCellar = CellarService.getListCellar();
+  }
+
+  void _handleTabSelection() {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    if (_tabController.indexIsChanging) {
+      setState(() {
+        switch (_tabController.index) {
+          case 0: // Feed 탭
+            myFeedList = FeedService.getMyFeedList();
+            break;
+          case 1: // Bookmark 탭
+            listBookmark = BookmarkService.getListBookmark();
+            break;
+          case 2: // Cellar 탭
+            listCellar = CellarService.getListCellar();
+            break;
+        }
+      });
+    }
   }
 
   @override
@@ -46,7 +76,11 @@ class _MyPageScreenState extends State<MyPageScreen>
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
     final user = Provider.of<UserProvider>(context).user;
+
+    myFeedList = FeedService.getMyFeedList();
+
     double avatarRadius = 50;
 
     return Scaffold(
@@ -173,7 +207,7 @@ class _MyPageScreenState extends State<MyPageScreen>
                   },
                 ),
                 FutureBuilder(
-                  future: bookmarkList,
+                  future: listBookmark,
                   builder: (
                     BuildContext context,
                     AsyncSnapshot<dynamic> snapshot,
@@ -185,8 +219,24 @@ class _MyPageScreenState extends State<MyPageScreen>
                           context,
                           index,
                         ) {
-                          return WineItem(
-                            wine: snapshot.data![index],
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => WineDetailScreen(
+                                      wine: snapshot.data[index].wine),
+                                ),
+                              ).then((_) {
+                                setState(() {
+                                  listBookmark =
+                                      BookmarkService.getListBookmark();
+                                });
+                              });
+                            },
+                            child: BookmarkWineItem(
+                              bookmark: snapshot.data![index],
+                            ),
                           );
                         },
                       );
@@ -196,13 +246,44 @@ class _MyPageScreenState extends State<MyPageScreen>
                     );
                   },
                 ),
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      WineItem(wine: Wine.dummy()),
-                      WineItem(wine: Wine.dummy()),
-                    ],
-                  ),
+                FutureBuilder(
+                  future: listCellar,
+                  builder: (
+                    BuildContext context,
+                    AsyncSnapshot<dynamic> snapshot,
+                  ) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (
+                          context,
+                          index,
+                        ) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => WineDetailScreen(
+                                      wine: snapshot.data[index].wine),
+                                ),
+                              ).then((_) {
+                                setState(() {
+                                  listCellar = CellarService.getListCellar();
+                                });
+                              });
+                            },
+                            child: CellarWineItem(
+                              cellar: snapshot.data![index],
+                            ),
+                          );
+                        },
+                      );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
                 ),
               ],
             ),

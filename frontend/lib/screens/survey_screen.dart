@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
-import 'package:frontend/services/survey_service.dart';
+import 'package:frontend/screens/login_screen.dart';
+import 'package:frontend/services/user_service.dart';
 import 'package:frontend/widgets/survey/survey_select_widget.dart';
 import 'package:frontend/widgets/survey/survey_range_slider_widget.dart';
 import 'package:frontend/widgets/survey/survey_slider_widget.dart';
@@ -22,7 +24,6 @@ class _SurveyScreenState extends State<SurveyScreen> {
   int _sweetness = 50;
   int _acidity = 50;
   int _bitterness = 50;
-
 
   void _updateKind(Set<String> kinds) {
     setState(() {
@@ -56,6 +57,12 @@ class _SurveyScreenState extends State<SurveyScreen> {
   }
 
   void _submitSurvey() {
+    if (_selectedKinds.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('종류를 선택해주세요!')));
+      return;
+    }
+
     final survey = Survey(
       types: _selectedKinds,
       minAbv: _alcoholStart.toInt(),
@@ -64,8 +71,8 @@ class _SurveyScreenState extends State<SurveyScreen> {
       acidity: _acidity,
       tannin: _bitterness,
     );
-    SurveyService.postSurvey(survey);
-    // Process the survey data here, e.g., send to server or store locally
+    UserService.postSurvey(survey);
+
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => HomeScreen()),
       (Route<dynamic> route) => false,
@@ -133,7 +140,9 @@ class _SurveyScreenState extends State<SurveyScreen> {
             Container(
               height: MediaQuery.of(context).size.height * 0.05,
               width: MediaQuery.of(context).size.width * 0.5,
-              margin: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.02, horizontal: MediaQuery.of(context).size.width * 0.2),
+              margin: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height * 0.02,
+                  horizontal: MediaQuery.of(context).size.width * 0.2),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   foregroundColor: AppColors.white,
