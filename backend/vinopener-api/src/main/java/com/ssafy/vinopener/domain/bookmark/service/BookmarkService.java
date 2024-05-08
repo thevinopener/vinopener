@@ -32,7 +32,7 @@ public class BookmarkService {
     @Transactional
     public Long create(final BookmarkCreateRequest bookmarkCreateRequest,
             Long userId) {
-        var user = userRepository.findById(userId)
+        userRepository.findById(userId)
                 .orElseThrow(() -> new VinopenerException(BookmarkErrorCode.USER_NOT_FOUND));
 
         var wine = wineRepository.findById(bookmarkCreateRequest.wineId())

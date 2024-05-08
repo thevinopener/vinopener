@@ -59,7 +59,7 @@ public class FeedService {
             final Long userId
     ) throws NoSuchAlgorithmException, IOException {
         MultipartFile imageFile = feedCreateRequest.imageFile();
-        String keyPrefix = "feeds/" + userId + "/";
+        String keyPrefix = "vinopener/feeds/" + userId + "/";
         URI imageUrl = s3Service.putObject(keyPrefix, imageFile);
 
         FeedEntity feed = FeedEntity.builder()
@@ -100,11 +100,10 @@ public class FeedService {
                     return feedMapper.toGetListResponse(feed, feedWines, totalLikes);
                 })
                 .toList();
-
     }
 
     @Transactional(readOnly = true)
-    public FeedGetResponse getFeed(
+    public FeedGetResponse get(
             Long feedId
     ) {
         feedExists(feedId);
@@ -130,18 +129,18 @@ public class FeedService {
                 .toList();
     }
 
-    @Transactional(readOnly = true)
-    public Optional<FeedGetResponse> getMyFeed(
-            final Long feedId,
-            final Long userId
-    ) {
-        feedExists(feedId);
-        FeedEntity feed = feedRepository.findByIdAndUserId(feedId, userId)
-                .orElseThrow(() -> new VinopenerException(FeedErrorCode.FEED_NOT_FOUND));
-        int totalLikes = feedLikeRepository.countByFeedId(feed.getId());
-        List<FeedWineEntity> wines = feedWineRepository.findByFeedId(feedId);
-        return Optional.of(feedMapper.toGetResponse(feed, wines, totalLikes));
-    }
+//    @Transactional(readOnly = true)
+//    public Optional<FeedGetResponse> getMyFeed(
+//            final Long feedId,
+//            final Long userId
+//    ) {
+//        feedExists(feedId);
+//        FeedEntity feed = feedRepository.findByIdAndUserId(feedId, userId)
+//                .orElseThrow(() -> new VinopenerException(FeedErrorCode.FEED_NOT_FOUND));
+//        int totalLikes = feedLikeRepository.countByFeedId(feed.getId());
+//        List<FeedWineEntity> wines = feedWineRepository.findByFeedId(feedId);
+//        return Optional.of(feedMapper.toGetResponse(feed, wines, totalLikes));
+//    }
 
     @Transactional
     public void deleteMyFeed(

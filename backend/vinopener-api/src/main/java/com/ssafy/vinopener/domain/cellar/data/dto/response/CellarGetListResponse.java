@@ -16,6 +16,7 @@ public record CellarGetListResponse(
     public record WineGetListResponse(
             Long id,
             String name,
+            String seoName,
             String imageUrl,
             String grape,
             String winery,
