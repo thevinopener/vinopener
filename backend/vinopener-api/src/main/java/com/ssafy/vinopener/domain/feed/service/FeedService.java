@@ -90,29 +90,34 @@ public class FeedService {
     }
 
     @Transactional(readOnly = true)
-    public List<FeedGetListResponse> getList() {
+    public List<FeedGetListResponse> getList(
+            final Long userId
+    ) {
         List<FeedEntity> feeds = feedRepository.findAll();
 
         return feeds.stream()
                 .map(feed -> {
                     int totalLikes = feedLikeRepository.countByFeedId(feed.getId());
+                    boolean myLike = feedLikeRepository.existsByFeedIdAndUserId(feed.getId(), userId);
                     List<FeedWineEntity> feedWines = feedWineRepository.findAllByFeedId(feed.getId());
-                    return feedMapper.toGetListResponse(feed, feedWines, totalLikes);
+                    return feedMapper.toGetListResponse(feed, feedWines, totalLikes, myLike);
                 })
                 .toList();
     }
 
     @Transactional(readOnly = true)
     public FeedGetResponse get(
-            Long feedId
+            final Long feedId,
+            final Long userId
     ) {
         feedExists(feedId);
         FeedEntity feed = feedRepository.findById(feedId)
                 .orElseThrow(() -> new VinopenerException(FeedErrorCode.FEED_NOT_FOUND));
         int totalLikes = feedLikeRepository.countByFeedId(feed.getId());
+        boolean myLike = feedLikeRepository.existsByFeedIdAndUserId(feed.getId(), userId);
         List<FeedWineEntity> wines = feedWineRepository.findByFeedId(feedId);
 
-        return feedMapper.toGetResponse(feed, wines, totalLikes);
+        return feedMapper.toGetResponse(feed, wines, totalLikes, myLike);
     }
 
     @Transactional(readOnly = true)
@@ -123,8 +128,9 @@ public class FeedService {
         return feeds.stream()
                 .map(feed -> {
                     int totalLikes = feedLikeRepository.countByFeedId(feed.getId());
+                    boolean myLike = feedLikeRepository.existsByFeedIdAndUserId(feed.getId(), userId);
                     List<FeedWineEntity> feedWines = feedWineRepository.findByFeedId(feed.getId());
-                    return feedMapper.toGetListResponse(feed, feedWines, totalLikes);
+                    return feedMapper.toGetListResponse(feed, feedWines, totalLikes, myLike);
                 })
                 .toList();
     }

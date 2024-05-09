@@ -18,6 +18,7 @@ public record FeedGetListResponse(
         String imageUrl,
         boolean isPublic,
         int totalLikes,
+        boolean myLike,
 
         FeedGetListUserResponse creator,
 
