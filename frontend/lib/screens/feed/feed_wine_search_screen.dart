@@ -61,10 +61,6 @@ class _FeedWineSearchScreenState extends State<FeedWineSearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          icon: Icon(Icons.navigate_before),
-        ),
         title: Text(
           '피드 와인 검색',
           style: TextStyle(
