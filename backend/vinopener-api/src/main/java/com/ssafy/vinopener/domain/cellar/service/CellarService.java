@@ -10,6 +10,7 @@ import com.ssafy.vinopener.domain.cellar.exception.CellarErrorCode;
 import com.ssafy.vinopener.domain.cellar.repository.CellarRepository;
 import com.ssafy.vinopener.domain.tastingnote.repository.TastingNoteRepository;
 import com.ssafy.vinopener.domain.user.repository.UserRepository;
+import com.ssafy.vinopener.domain.wine.exception.WineErrorCode;
 import com.ssafy.vinopener.domain.wine.repository.WineRepository;
 import com.ssafy.vinopener.global.exception.VinopenerException;
 import java.time.LocalDate;
@@ -128,6 +129,15 @@ public class CellarService {
         cellarRepository.deleteByIdAndUserId(cellarId, userId);
     }
 
+    @Transactional
+    public void deleteByWineId(
+            final Long wineId,
+            final Long userId
+    ) {
+        checkWineExists(wineId, userId);
+        cellarRepository.deleteByWineIdAndUserId(wineId, userId);
+    }
+
     /**
      * 셀러 아이템 존재 여부 확인
      *
@@ -141,13 +151,13 @@ public class CellarService {
         }
     }
 
-    public void deleteByWineId(Long userId, Long wineId) {
-        if (cellarRepository.existsByWineIdAndUserId(wineId, userId)) {
-            cellarRepository.deleteByWineId(userId, wineId);
-            return;
+    private void checkWineExists(
+            final Long wineId,
+            final Long userId
+    ) {
+        if (!cellarRepository.existsByWineIdAndUserId(wineId, userId)) {
+            throw new VinopenerException(WineErrorCode.WINE_NOT_FOUND);
         }
-
-        throw new VinopenerException(CellarErrorCode.WINE_NOT_FOUND);
     }
 
 }
