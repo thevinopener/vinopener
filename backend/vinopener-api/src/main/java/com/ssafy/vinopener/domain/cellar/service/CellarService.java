@@ -141,4 +141,13 @@ public class CellarService {
         }
     }
 
+    public void deleteByWineId(Long userId, Long wineId) {
+        if (cellarRepository.existsByWineIdAndUserId(wineId, userId)) {
+            cellarRepository.deleteByWineId(userId, wineId);
+            return;
+        }
+
+        throw new VinopenerException(CellarErrorCode.WINE_NOT_FOUND);
+    }
+
 }
