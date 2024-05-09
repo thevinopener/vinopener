@@ -10,13 +10,10 @@ import 'package:frontend/models/wine_model.dart';
 import 'package:frontend/providers/user_provider.dart';
 import 'package:frontend/screens/feed/feed_detail_screen.dart';
 import 'package:frontend/screens/mypage/mypage_setting_screen.dart';
+import 'package:frontend/screens/search/search_detail_screen.dart';
 import 'package:frontend/services/bookmark_service.dart';
 import 'package:frontend/services/cellar_service.dart';
 import 'package:frontend/services/feed_service.dart';
-import 'package:frontend/services/wine_service.dart';
-import 'package:frontend/widgets/common/molecules/wine_item_widget.dart';
-import 'package:frontend/widgets/common/templates/wine_detail_template.dart';
-import 'package:frontend/widgets/feed/feed_wine_item.dart';
 import 'package:frontend/widgets/mypage/bookmark_wine_item.dart';
 import 'package:frontend/widgets/mypage/cellar_wine_item.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +40,7 @@ class _MyPageScreenState extends State<MyPageScreen>
     _tabController = TabController(length: 3, vsync: this); // 3개의 탭
     _tabController.addListener(_handleTabSelection);
 
-    myFeedList = FeedService.getDummyList();
+    myFeedList = FeedService.getMyFeedList();
     listBookmark = BookmarkService.getListBookmark();
     listCellar = CellarService.getListCellar();
   }
@@ -224,8 +221,8 @@ class _MyPageScreenState extends State<MyPageScreen>
                               Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                  builder: (context) => WineDetailScreen(
-                                      wine: snapshot.data[index].wine),
+                                  builder: (context) => SearchDetailScreen(
+                                      wineId: snapshot.data[index].wine.id),
                                 ),
                               ).then((_) {
                                 setState(() {
@@ -264,8 +261,8 @@ class _MyPageScreenState extends State<MyPageScreen>
                               Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                  builder: (context) => WineDetailScreen(
-                                      wine: snapshot.data[index].wine),
+                                  builder: (context) => SearchDetailScreen(
+                                      wineId: snapshot.data[index].wine.id),
                                 ),
                               ).then((_) {
                                 setState(() {

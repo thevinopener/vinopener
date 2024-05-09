@@ -21,8 +21,6 @@ class LoginScreen extends StatelessWidget {
 
     Future<String?> onGoogleLoginPress(BuildContext context) async {
 
-      print('-4번');
-
       GoogleSignIn googleSignIn = GoogleSignIn(
         scopes: [
           'email',
@@ -31,33 +29,25 @@ class LoginScreen extends StatelessWidget {
         ],
       );
 
-      print('-3번');
-
-
       try {
-        print('-2.5번');
         GoogleSignInAccount? account = await googleSignIn.signIn();
         print(account);
-        print('-2번');
         loginUser.email = account?.email;
         loginUser.nickname = account?.displayName;
         loginUser.imageUrl = account?.photoUrl ?? 'https://picsum.photos/200/300';
-        print('-1번');
         final GoogleSignInAuthentication? googleAuth =
         await account?.authentication;
-        print('0번');
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth?.accessToken,
           idToken: googleAuth?.idToken,
         );
-        print('1번');
         await FirebaseAuth.instance.signInWithCredential(credential);
-        print('2번');
         return credential.accessToken;
       } catch (error) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('로그인 실패!')));
       }
+      throw Error();
     }
 
     return Scaffold(

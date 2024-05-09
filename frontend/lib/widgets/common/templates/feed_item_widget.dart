@@ -22,10 +22,10 @@ class _FeedItemState extends State<FeedItem> {
     setState(() {
       if (isLiked) {
         likeCount -= 1;
-        FeedService.cancelLikeOnFeed();
+        // FeedService.cancelLikeOnFeed();
       } else {
         likeCount += 1;
-        FeedService.likeFeed();
+        // FeedService.likeFeed();
       }
       isLiked = !isLiked;
     });
