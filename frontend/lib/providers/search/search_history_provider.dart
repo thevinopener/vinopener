@@ -7,6 +7,7 @@ class SearchHistoryProvider extends ChangeNotifier {
   bool _isLoading = false;
 
   List<SearchHistory> get historyList => _historyList;
+
   bool get isLoading => _isLoading;
 
   // 검색 기록을 로드하는 메서드
@@ -17,7 +18,8 @@ class SearchHistoryProvider extends ChangeNotifier {
     try {
       _historyList = await SearchService.getHistory();
     } catch (e) {
-      print('\n\nSearchHistory를 가져오는데 실패했습니다. (search_wine_detail_provider.dart): $e\n\n');
+      print(
+          '\n\nSearchHistory를 가져오는데 실패했습니다. (search_wine_detail_provider.dart): $e\n\n');
       _historyList = [];
     } finally {
       _isLoading = false;
@@ -33,7 +35,8 @@ class SearchHistoryProvider extends ChangeNotifier {
       _historyList.removeWhere((history) => history.id == searchId);
       notifyListeners();
     } catch (e) {
-      print('\n\nsearchId ${searchId}번 삭제에 실패했습니다. (search_wine_detail_provider.dart): $e\n\n');
+      print(
+          '\n\nsearchId ${searchId}번 삭제에 실패했습니다. (search_wine_detail_provider.dart): $e\n\n');
     }
   }
 
@@ -44,7 +47,8 @@ class SearchHistoryProvider extends ChangeNotifier {
       _historyList.clear();
       notifyListeners();
     } catch (e) {
-      print('\n\n검색기록 전체삭제에 실패했습니다. (search_wine_detail_provider.dart): $e\n\n');
+      print(
+          '\n\n검색기록 전체삭제에 실패했습니다. (search_wine_detail_provider.dart): $e\n\n');
     }
   }
 }

@@ -1,21 +1,18 @@
 // flutter
 import 'dart:async';
 import 'dart:ui' as ui;
-import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 
+import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
+import 'package:focused_area_ocr_flutter/focused_area_ocr_flutter.dart';
 // constants
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
-
 // screen
 import 'package:frontend/screens/home_screen.dart';
 import 'package:frontend/screens/search/search_result_screen.dart';
-import 'package:frontend/screens/search/search_camera_capture_screen.dart';
-
 // package
 import 'package:scanner_overlay/scanner_overlay.dart';
-import 'package:focused_area_ocr_flutter/focused_area_ocr_flutter.dart';
 
 class SearchCameraScreen extends StatefulWidget {
   final CameraDescription camera;

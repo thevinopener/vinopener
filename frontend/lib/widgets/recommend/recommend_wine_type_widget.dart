@@ -1,5 +1,6 @@
 // flutter
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // constants
 import 'package:frontend/constants/fonts.dart';
@@ -7,6 +8,9 @@ import 'package:frontend/constants/colors.dart';
 
 // Screen
 import 'package:frontend/screens/search/search_result_screen.dart';
+
+// provider
+import 'package:frontend/providers/search/search_wine_list_provider.dart';
 
 // 색상 매핑 함수
 Color getColorFromWineButtonColor(String color) {
@@ -22,6 +26,8 @@ Color getColorFromWineButtonColor(String color) {
   }
 }
 
+
+
 // void _handleSubmitted(String value) {
 //   // 여기서 입력된 값을 사용하여 화면 이동 또는 다른 로직을 수행
 //   print("입력된 값: $value");
@@ -29,10 +35,11 @@ Color getColorFromWineButtonColor(String color) {
 //   Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultScreen(value)));
 // }
 
-Widget RecommendWineTypeWidget(BuildContext context, String text) {
+Widget RecommendWineTypeWidget(BuildContext context, String wineType) {
   return ElevatedButton(
-    onPressed: () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultScreen(searchValue: text)));
+    onPressed: () async {
+      await context.read<SearchWineListProvider>().findByWineType(wineType);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultScreen(searchValue: wineType, isWineType: true)));
     },
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -42,7 +49,7 @@ Widget RecommendWineTypeWidget(BuildContext context, String text) {
           width: 35,
           height: 35,
         ),
-        Text('$text',
+        Text('$wineType',
           style: TextStyle(
             color: AppColors.white,
             fontWeight: FontWeight.w500,
@@ -52,7 +59,7 @@ Widget RecommendWineTypeWidget(BuildContext context, String text) {
       ],
     ),
     style: ElevatedButton.styleFrom(
-      backgroundColor: getColorFromWineButtonColor(text), // 색상 매개변수 사용
+      backgroundColor: getColorFromWineButtonColor(wineType), // 색상 매개변수 사용
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5)),
       padding: EdgeInsets.symmetric(
