@@ -49,12 +49,7 @@ class NoteTasteScreen extends StatelessWidget {
             SizedBox(
               height: 30,
             ),
-            NoteTaste(
-                acidity: 3,
-                alcohol: 2.5,
-                tannin: 1,
-                sweetness: 4,
-                intensity: 3.5),
+            NoteTaste(),
             SizedBox(
               height: 20,
             ),

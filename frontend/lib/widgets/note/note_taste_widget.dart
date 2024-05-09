@@ -1,25 +1,15 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_radar_chart/flutter_radar_chart.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:frontend/constants/colors.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/fonts.dart';
+import '../../providers/note/note_wine_provider.dart';
 
 class NoteTaste extends StatefulWidget {
-  final double sweetness;
-  final double intensity;
-  final double acidity;
-  final double alcohol;
-  final double tannin;
-
   const NoteTaste({
-    required this.acidity,
-    required this.alcohol,
-    required this.tannin,
-    required this.sweetness,
-    required this.intensity,
     Key? key,
   }) : super(key: key);
 
@@ -28,28 +18,9 @@ class NoteTaste extends StatefulWidget {
 }
 
 class _NoteTasteState extends State<NoteTaste> {
-  late double sweetness;
-  late double intensity;
-  late double acidity;
-  late double alcohol;
-  late double tannin;
-
   @override
   void initState() {
     super.initState();
-    sweetness = widget.sweetness;
-    intensity = widget.intensity;
-    acidity = widget.acidity;
-    alcohol = widget.alcohol;
-    tannin = widget.tannin;
-  }
-
-  List<List<double>> getChartData() {
-    return [[intensity, alcohol, tannin, acidity, sweetness]];
-  }
-
-  void updateAndPrintValues() {
-    print('Sweetness: $sweetness, Intensity: $intensity, Acidity: $acidity, Alcohol: $alcohol, Tannin: $tannin');
   }
 
   @override
@@ -61,60 +32,43 @@ class _NoteTasteState extends State<NoteTaste> {
           SizedBox(
             width: width,
             height: width,
-            child: RadarChart(
-              ticks: [1, 2, 3, 4, 5],
-              features: ["바디", "알코올", "타닌", "산도", "당도"],
-              data: getChartData(),
-              graphColors: [
-                AppColors.primary,
-              ],
-              axisColor: AppColors.black,
-              outlineColor: AppColors.black,
-              featuresTextStyle: const TextStyle(
-                color: AppColors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-              reverseAxis: false,
-              sides: 5,
-            ),
+            child: Consumer<NoteProvider>(builder: (context, provider, child) {
+              return RadarChart(
+                ticks: [1, 2, 3, 4, 5],
+                features: ["바디", "알코올", "타닌", "산도", "당도"],
+                data: [
+                  [
+                    provider.intensity,
+                    provider.alcohol,
+                    provider.tannin,
+                    provider.acidity,
+                    provider.sweetness
+                  ]
+                ],
+                graphColors: [AppColors.primary],
+                axisColor: AppColors.black,
+                outlineColor: AppColors.black,
+                featuresTextStyle: const TextStyle(
+                  color: AppColors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+                reverseAxis: false,
+                sides: 5,
+              );
+            }),
           ),
-          _buildRatingBar("당도", sweetness, (rating) {
-            setState(() {
-              sweetness = rating;
-              updateAndPrintValues();
-            });
-          }),
-          _buildRatingBar("산도", acidity, (rating) {
-            setState(() {
-              acidity = rating;
-              updateAndPrintValues();
-            });
-          }),
-          _buildRatingBar("바디", intensity, (rating) {
-            setState(() {
-              intensity = rating;
-              updateAndPrintValues();
-            });
-          }),
-          _buildRatingBar("알코올", alcohol, (rating) {
-            setState(() {
-              alcohol = rating;
-              updateAndPrintValues();
-            });
-          }),
-          _buildRatingBar("타닌", tannin, (rating) {
-            setState(() {
-              tannin = rating;
-              updateAndPrintValues();
-            });
-          }),
+          _buildRatingBar("당도", Provider.of<NoteProvider>(context, listen: false).sweetness, "sweetness"),
+          _buildRatingBar("산도", Provider.of<NoteProvider>(context, listen: false).acidity, "acidity"),
+          _buildRatingBar("바디", Provider.of<NoteProvider>(context, listen: false).intensity, "intensity"),
+          _buildRatingBar("알코올", Provider.of<NoteProvider>(context, listen: false).alcohol, "alcohol"),
+          _buildRatingBar("타닌", Provider.of<NoteProvider>(context, listen: false).tannin, "tannin"),
         ],
       ),
     );
   }
 
-  Widget _buildRatingBar(String label, double initialValue, void Function(double) onRatingChange) {
+  Widget _buildRatingBar(String label, double initialValue, String property) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -130,11 +84,39 @@ class _NoteTasteState extends State<NoteTaste> {
             itemCount: 5,
             itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
             ratingWidget: RatingWidget(
-              full: Icon(Icons.circle, color: AppColors.primary,),
-              half: Icon(Icons.contrast, color: AppColors.primary,),
-              empty: Icon(Icons.circle_outlined, color: Colors.grey,),
+              full: Icon(
+                Icons.circle,
+                color: AppColors.primary,
+              ),
+              half: Icon(
+                Icons.contrast,
+                color: AppColors.primary,
+              ),
+              empty: Icon(
+                Icons.circle_outlined,
+                color: Colors.grey,
+              ),
             ),
-            onRatingUpdate: onRatingChange,
+            onRatingUpdate: (rating) {
+              var provider = Provider.of<NoteProvider>(context, listen: false);
+              switch (property) {
+                case "sweetness":
+                  provider.updateNoteProvider(sweetness: rating);
+                  break;
+                case "acidity":
+                  provider.updateNoteProvider(acidity: rating);
+                  break;
+                case "intensity":
+                  provider.updateNoteProvider(intensity: rating);
+                  break;
+                case "alcohol":
+                  provider.updateNoteProvider(alcohol: rating);
+                  break;
+                case "tannin":
+                  provider.updateNoteProvider(tannin: rating);
+                  break;
+              }
+            },
           ),
         ],
       ),

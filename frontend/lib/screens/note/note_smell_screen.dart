@@ -19,13 +19,6 @@ class NoteSmellScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Wine wine = Wine.dummy();
 
-    List<int> convertFlavoursToIds(List<String>? flavours) {
-      if (flavours == null) return [];
-      return flavours
-          .map((flavour) => WineFlavourId.FlavourId[flavour] ?? -1)
-          .toList();
-    }
-
     return Scaffold(
       body: Container(
         alignment: Alignment.topCenter,
@@ -65,7 +58,6 @@ class NoteSmellScreen extends StatelessWidget {
                 ],
               ),
               child: NoteFlavour(
-                flavourId: convertFlavoursToIds(wine.flavours),
               ),
             ),
             SizedBox(

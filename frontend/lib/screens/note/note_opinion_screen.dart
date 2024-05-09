@@ -3,12 +3,15 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
+import 'package:frontend/services/note_service.dart';
 import 'package:frontend/widgets/note/note_write_opinion_widget.dart';
+import 'package:provider/provider.dart';
 
 
 
 import '../../models/wine_model.dart';
 
+import '../../providers/note/note_wine_provider.dart';
 import '../../widgets/note/note_wine_card_widget.dart';
 
 class NoteOpinionScreen extends StatelessWidget {
@@ -16,9 +19,17 @@ class NoteOpinionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Wine wine = Wine.dummy();
 
-    void postNote() {
+    Future<void> postNote() async {
+      // NoteProvider에서 모든 데이터를 가져와 출력
+      final noteProvider = Provider.of<NoteProvider>(context, listen: false);
+      noteProvider.updateNoteProvider(wineId: 1);
+
+      NoteCreateService.createNote(noteProvider);
+
+      // NoteProvider를 초기화
+      noteProvider.reset();
+
       Navigator.popUntil(context, (route) => route.isFirst);
     }
 
@@ -34,7 +45,7 @@ class NoteOpinionScreen extends StatelessWidget {
               SizedBox(height: 10,),
               Text('자유롭게 의견을 적어보세요!', style: TextStyle(fontSize: AppFontSizes.mediumSmall),),
               SizedBox(height: 30,),
-              NoteOpinion(wineRate: wine.rating ?? 3.0),
+              NoteOpinion(),
               SizedBox(height: 20,),
               TextButton(
                 onPressed: postNote,
