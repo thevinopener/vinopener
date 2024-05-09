@@ -1,5 +1,7 @@
 // lib/services/search_service.dart
 
+import 'dart:isolate';
+
 import 'package:dio/dio.dart';
 import 'package:frontend/models/search/wine_name_result.dart';
 import 'package:frontend/models/search/wine_type_result.dart';
@@ -30,10 +32,8 @@ class SearchService {
 
   // 와인타입 검색 API
   static Future<List<WineTypeResult>> findByWineType(String wineType) async {
-    print('제발요 ㅅㅂ');
     final response = await ApiClient().dio.get('/wines/types/${wineType}');
     if (response.statusCode == 200) {
-      print('들어오라고');
       List<dynamic> responseData = response.data;
       List<WineTypeResult> wineList = responseData
           .map((wineData) => WineTypeResult.fromJson(wineData))
@@ -125,4 +125,78 @@ class SearchService {
       throw Exception('deleteAllSearchHistory API 호출 중 다른 오류 발생: ${e.message}');
     }
   }
+
+  // 즐겨찾기 추가 메서드
+  static Future<void> addBookmark(int wineId) async {
+    // API 호출 시 검색어를 쿼리 파라미터로 전달
+    final response = await ApiClient()
+        .dio
+        .post('/bookmarks',
+      data: {
+        'wineId': wineId, // JSON으로 보낼 데이터
+      },
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json', // 요청 헤더에 JSON 타입 지정
+        },
+      ),
+    );
+    if (response.statusCode == 201) return;
+
+    // 오류 발생 시 예외를 던짐
+    throw Exception(':::: search_service.dart :::: addBookmark API 호출 실패');
+  }
+
+  // 즐겨찾기 삭제 메서드
+  static Future<void> removeBookmark(int wineId) async {
+    final endpoint = '/bookmarks/delete/${wineId}';
+    try {
+      final response = await ApiClient().dio.delete(endpoint);
+      if (response.statusCode != 204) {
+        throw Exception(
+            ':::: search_service.dart :::: removeBookmark API 호출 실패');
+      }
+    } on DioException catch (e) {
+      print('removeBookmark API 호출 중 다른 예외 발생: $e');
+      throw Exception('removeBookmark API 호출 중 다른 오류 발생: ${e.message}');
+    }
+  }
+
+  // 셀러 추가 메서드
+  static Future<void> addCellar(int wineId) async {
+    // API 호출 시 검색어를 쿼리 파라미터로 전달
+    final response = await ApiClient()
+        .dio
+        .post('/cellars',
+      data: {
+        'wineId': wineId,
+        'finishedDate': null,
+      },
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json', // 요청 헤더에 JSON 타입 지정
+        },
+      ),
+    );
+    if (response.statusCode == 201) return;
+
+    // 오류 발생 시 예외를 던짐
+    throw Exception(':::: search_service.dart :::: addCellar API 호출 실패');
+  }
+
+  // 셀러 삭제 메서드
+  static Future<void> removeCellar(int wineId) async {
+    final endpoint = '/cellars/delete/${wineId}';
+    try {
+      final response = await ApiClient().dio.delete(endpoint);
+      if (response.statusCode != 204) {
+        throw Exception(
+            ':::: search_service.dart :::: removeCellar API 호출 실패');
+      }
+    } on DioException catch (e) {
+      print('removeCellar API 호출 중 다른 예외 발생: $e');
+      throw Exception('removeCellar API 호출 중 다른 오류 발생: ${e.message}');
+    }
+  }
+
 }
