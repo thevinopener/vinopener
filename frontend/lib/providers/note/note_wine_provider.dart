@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
+import '../../models/wine_model.dart';
+
 class NoteProvider with ChangeNotifier {
   int wineId;
   int colorId;
@@ -94,9 +96,6 @@ class NoteProvider with ChangeNotifier {
     };
   }
 }
-
-import 'package:flutter/foundation.dart';
-import 'package:frontend/models/wine_model.dart';
 
 class NoteWineProvider with ChangeNotifier {
   Wine wine = Wine.dummy();

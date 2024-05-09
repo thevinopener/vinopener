@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 
 
+import '../../models/wine_model.dart';
 import '../../providers/note/note_wine_provider.dart';
 
 
@@ -22,8 +23,9 @@ class NoteOpinionScreen extends StatelessWidget {
 
     Future<void> postNote() async {
       try {
+        final wineId = Provider.of<NoteWineProvider>(context, listen: false).getWine().id;
         final noteProvider = Provider.of<NoteProvider>(context, listen: false);
-        noteProvider.updateNoteProvider(wineId: 2);
+        noteProvider.updateNoteProvider(wineId: wineId);
 
         await NoteCreateService.createNote(noteProvider);
 
