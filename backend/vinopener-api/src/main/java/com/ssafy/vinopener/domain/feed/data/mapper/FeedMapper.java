@@ -26,7 +26,9 @@ public interface FeedMapper {
     @Mapping(target = "creator.nickname", source = "entity.user.nickname")
     @Mapping(target = "creator.imageUrl", source = "entity.user.imageUrl")
     @Mapping(target = "totalLikes", source = "totalLikes")
-    FeedGetResponse toGetResponse(FeedEntity entity, List<FeedWineEntity> feedWineEntity, int totalLikes);
+    @Mapping(target = "myLike", source = "myLike")
+    FeedGetResponse toGetResponse(FeedEntity entity, List<FeedWineEntity> feedWineEntity, int totalLikes,
+            boolean myLike);
 
     @Mapping(target = "id", source = "entity.id")
     @Mapping(target = "content", source = "entity.content")
@@ -36,7 +38,9 @@ public interface FeedMapper {
     @Mapping(target = "creator.nickname", source = "entity.user.nickname")
     @Mapping(target = "creator.imageUrl", source = "entity.user.imageUrl")
     @Mapping(target = "totalLikes", source = "totalLikes")
-    FeedGetListResponse toGetListResponse(FeedEntity entity, List<FeedWineEntity> feedWineEntity, int totalLikes);
+    @Mapping(target = "myLike", source = "myLike")
+    FeedGetListResponse toGetListResponse(FeedEntity entity, List<FeedWineEntity> feedWineEntity, int totalLikes,
+            boolean myLike);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", source = "userId")
