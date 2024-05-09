@@ -124,7 +124,7 @@ public class CellarController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/delete/{wineId}")
+    @DeleteMapping("/cellars/delete/{wineId}")
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<Void> deleteByWineId(
             @PathVariable final Long wineId,
