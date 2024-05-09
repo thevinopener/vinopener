@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 
 //
 import 'package:provider/provider.dart';
+
 //
 import 'package:frontend/providers/feed/feed_tab_state_provider.dart';
 
@@ -70,6 +71,8 @@ class _FeedScreenState extends State<FeedScreen> {
             itemBuilder: (context, index) {
               if (provider.feedList[index].isPublic!) {
                 return FeedItem(feed: provider.feedList[index]);
+              } else {
+                return SizedBox.shrink();
               }
             },
           );
