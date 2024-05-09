@@ -1,5 +1,5 @@
-// lib/model/wine.dart
-class Wine {
+// lib/model/wine_name_result.dart
+class WineNameResult {
   final int id;
   final String name;
   final String seoName;
@@ -17,7 +17,7 @@ class Wine {
   final double tannin;
   final double abv;
 
-  Wine({
+  WineNameResult({
     required this.id,
     required this.name,
     required this.seoName,
@@ -37,8 +37,8 @@ class Wine {
   });
 
   // JSON 데이터를 객체로 변환
-  factory Wine.fromJson(Map<String, dynamic> json) {
-    return Wine(
+  factory WineNameResult.fromJson(Map<String, dynamic> json) {
+    return WineNameResult(
       id: json['id'],
       name: json['name'],
       seoName: json['seoName'],
