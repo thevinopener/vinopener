@@ -8,6 +8,7 @@ class SearchWineDetailProvider extends ChangeNotifier {
   bool _isLoading = false;
 
   WineDetail? get wineDetail => _wineDetail;
+
   bool get isLoading => _isLoading;
 
   Future<void> findDetailByWineId(int wineId) async {

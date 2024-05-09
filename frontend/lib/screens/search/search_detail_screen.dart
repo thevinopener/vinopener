@@ -1,22 +1,18 @@
 // flutter
-import 'package:flutter/material.dart';
-import 'package:frontend/providers/search/search_wine_detail_provider.dart';
-
-// package
-import 'package:provider/provider.dart';
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
-
+import 'package:flutter/material.dart';
 // constant
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
+import 'package:frontend/models/note_model.dart';
+import 'package:frontend/providers/search/search_wine_detail_provider.dart';
+import 'package:frontend/screens/note/note_screen.dart';
 import 'package:frontend/widgets/common/atoms/nation_flag_widget.dart';
-
+import 'package:frontend/widgets/common/atoms/wine_flavour_widget.dart';
 // pages & widgets & models
 import 'package:frontend/widgets/recommend/recommend_wine_card_widget.dart';
-import 'package:frontend/widgets/common/atoms/wine_flavour_widget.dart';
-import 'package:frontend/models/note_model.dart';
-
-import 'package:frontend/screens/note/note_screen.dart';
+// package
+import 'package:provider/provider.dart';
 
 const Map<String, Color> wineTypeColors = {
   'red': WineButtonColors.red,
@@ -144,8 +140,8 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                           height: 300,
                           margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                           decoration: BoxDecoration(
-                            color:
-                                Colors.white, // 얘랑 위에 이미지 배경색이랑 겹치면 중복설정이라 에러남
+                            // color:
+                            //     Colors.white, // 얘랑 위에 이미지 배경색이랑 겹치면 중복설정이라 에러남
                             borderRadius: BorderRadius.circular(5), // 모서리 둥글게
                           ),
                           child: Image.network(
@@ -339,13 +335,20 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                             progress: wineDetail.acidity * 20,
                             startAngle: 225,
                             sweepAngle: 270,
-                            foregroundColor: AppColors.primary, // 채울 선 색깔
-                            backgroundColor: AppColors.primaryLight, // 안채울 선 색깔
-                            foregroundStrokeWidth: 11, // 채워진 선 굵기
-                            backgroundStrokeWidth: 10, // 안채울 선 굵기
-                            animation: true, // 애니메이션 여부
-                            seekSize: 0, // 동그라미 크기
-                            seekColor: const Color(0xffeeeeee), // 동그라미 색깔
+                            foregroundColor: AppColors.primary,
+                            // 채울 선 색깔
+                            backgroundColor: AppColors.primaryLight,
+                            // 안채울 선 색깔
+                            foregroundStrokeWidth: 11,
+                            // 채워진 선 굵기
+                            backgroundStrokeWidth: 10,
+                            // 안채울 선 굵기
+                            animation: true,
+                            // 애니메이션 여부
+                            seekSize: 0,
+                            // 동그라미 크기
+                            seekColor: const Color(0xffeeeeee),
+                            // 동그라미 색깔
                             child: Center(
                               child: ValueListenableBuilder(
                                 valueListenable: _acidNotifier,

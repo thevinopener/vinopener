@@ -1,16 +1,13 @@
 // flutter
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/search/search_result_screen.dart';
-import 'package:provider/provider.dart';
-
-// screens
-import 'package:frontend/widgets/search/search_bar_widget.dart';
-
 // constants
 import 'package:frontend/constants/fonts.dart';
-
 // provider
 import 'package:frontend/providers/search/search_history_provider.dart';
+import 'package:frontend/screens/search/search_result_screen.dart';
+// screens
+import 'package:frontend/widgets/search/search_bar_widget.dart';
+import 'package:provider/provider.dart';
 
 class SearchTextScreen extends StatefulWidget {
   _SearchTextScreenState createState() => _SearchTextScreenState();
