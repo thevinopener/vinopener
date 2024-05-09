@@ -1,4 +1,4 @@
-// lib/models/wine.dart
+// lib/models/wine_name_result.dart
 import 'package:frontend/models/taste.dart';
 
 class WineDetail {

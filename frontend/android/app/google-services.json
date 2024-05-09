@@ -12,7 +12,20 @@
           "package_name": "com.vinopener.frontend"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "12158695753-rg0g5lr1iuola4b0gu3kep9ri9dqv1e6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vinopener.frontend",
+            "certificate_hash": "f739e21b16e183514d059b0d02225eda4e6d8e53"
+          }
+        },
+        {
+          "client_id": "12158695753-5q9e04l3regshbdq3rmrkk6nqthlhldc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAk-Hllv-RuoVdHVF-JQjHIj--FstcrOmE"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "12158695753-5q9e04l3regshbdq3rmrkk6nqthlhldc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "12158695753-949m1boqr16g842clibr58mqgembi5sp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vinopener.frontend"
+              }
+            }
+          ]
         }
       }
     }

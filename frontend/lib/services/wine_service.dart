@@ -14,7 +14,7 @@ class WineService {
   }
 
   static Future<List<Wine>> searchWineList(String keyword) async {
-    final response = await ApiClient().dio.get('/wines');
+    final response = await ApiClient().dio.get('/wines/search?query=${keyword}');
     if (response.statusCode == 200) {
       List<dynamic> responseData = response.data;
       List<Wine> wineList = responseData.map((wineData) => Wine.fromJson(wineData)).toList();
@@ -29,26 +29,5 @@ class WineService {
 
   static void deleteWineFromBookmark() {
     print('deleteWineFromBookmark');
-  }
-
-  // Cellar
-
-  static Future<List<Wine>> getCellarList() async {
-    print('getCellarList');
-    final response = await ApiClient().dio.get('/wines');
-    if (response.statusCode == 200) {
-      List<dynamic> responseData = response.data;
-      List<Wine> cellarList = responseData.map((wineData) => Wine.fromJson(wineData)).toList();
-      return cellarList;
-    }
-    throw Error();
-  }
-
-  static void addWineToCellar() {
-    print('addWineToCellar');
-  }
-
-  static void deleteWineFromCellar() {
-    print('deleteWineFromCellar');
   }
 }

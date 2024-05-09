@@ -1,18 +1,15 @@
 // flutter
-import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-
+import 'package:flutter/material.dart';
+import 'package:frontend/providers/search/search_history_provider.dart';
+import 'package:frontend/screens/search/search_camera_screen.dart';
 // screens
 import 'package:frontend/screens/search/search_result_screen.dart';
-import 'package:frontend/screens/search/search_camera_screen.dart';
-
-// constants
-import 'package:frontend/constants/fonts.dart';
+import 'package:provider/provider.dart';
 
 enum SearchContext { searchTextScreen, searchResultScreen }
 
 class SearchBarWidget extends StatefulWidget {
-
   final String searchValue;
   final bool autoFocus;
   final SearchContext contextType;
@@ -28,7 +25,6 @@ class SearchBarWidget extends StatefulWidget {
 }
 
 class _SearchBarWidgetState extends State<SearchBarWidget> {
-
   late TextEditingController _controller;
   late List<CameraDescription> cameras;
   late CameraDescription firstCamera;
@@ -54,23 +50,27 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
     }
   }
 
-  void _handleSubmitted(String value) {
+  void _handleSubmitted(String value) async {
     print("입력된 값: $value");
     if (widget.contextType == SearchContext.searchTextScreen) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => SearchResultScreen(searchValue: value)));
+      await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SearchResultScreen(searchValue: value)));
     } else {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => SearchResultScreen(searchValue: value)));
+      await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SearchResultScreen(searchValue: value)));
     }
+    Provider.of<SearchHistoryProvider>(context, listen: false).loadHistory();
   }
 
   @override
   Widget build(BuildContext) {
     return Container(
       margin: EdgeInsets.all(10),
-      padding:
-      EdgeInsets.symmetric(horizontal: 10, vertical: 3), // 좌우 패딩
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3), // 좌우 패딩
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: Colors.orange, width: 2),
@@ -100,8 +100,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
               ),
               decoration: InputDecoration(
                 hintText: '와인 검색',
-                hintStyle:
-                TextStyle(color: Colors.grey), // hint 텍스트의 색상 설정
+                hintStyle: TextStyle(color: Colors.grey), // hint 텍스트의 색상 설정
                 prefixIcon: Icon(Icons.search), // 검색 아이콘
                 border: InputBorder.none, // 밑줄 제거
               ),
@@ -114,12 +113,13 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
               alignment: Alignment.center,
               onPressed: _isCameraInitialized
                   ? () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => SearchCameraScreen(camera: firstCamera),
-                  ),
-                );
-              }
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              SearchCameraScreen(camera: firstCamera),
+                        ),
+                      );
+                    }
                   : null, // 카메라 초기화가 완료되지 않았을 때는 버튼 비활성화
             ),
           ),

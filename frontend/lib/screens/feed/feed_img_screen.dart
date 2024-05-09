@@ -2,10 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
+import 'package:frontend/providers/feed/new_feed_wine_list_provider.dart';
 import 'package:frontend/screens/feed/feed_content_screen.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class FeedImageScreen extends StatefulWidget {
   const FeedImageScreen({super.key});
@@ -20,7 +23,7 @@ class _FeedImageScreenState extends State<FeedImageScreen> {
 
   Future pickImageFromGallery() async {
     final pickedImage =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
+    await _imagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       _imageFile = File(pickedImage!.path);
@@ -55,20 +58,29 @@ class _FeedImageScreenState extends State<FeedImageScreen> {
   @override
   Widget build(BuildContext context) {
     void navigateNext() {
-      Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => FeedContentScreen(
-            imageFile: _imageFile,
+      if (_imageFile == null) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('이미지를 첨부해주세요!')));
+      } else {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => FeedContentScreen(
+              imageFile: _imageFile,
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
 
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            Provider.of<NewFeedWineListProvider>(context, listen: false)
+                .clearWineList();
+            Navigator.of(context).pop();
+          },
           icon: Icon(Icons.close),
         ),
         title: Text(
@@ -99,16 +111,16 @@ class _FeedImageScreenState extends State<FeedImageScreen> {
           SizedBox(height: 20),
           _imageFile == null
               ? Image.asset(
-                  'assets/images/wine.jpg',
-                  width: 400,
-                  height: 400,
-                )
+            'assets/images/wine.jpg',
+            width: 400,
+            height: 400,
+          )
               : Image.file(
-                  _imageFile!,
-                  width: 400,
-                  height: 400,
-                  fit: BoxFit.cover,
-                ),
+            _imageFile!,
+            width: 400,
+            height: 400,
+            fit: BoxFit.cover,
+          ),
           SizedBox(height: 20),
           Center(
             child: TextButton(

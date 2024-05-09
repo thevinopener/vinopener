@@ -1,22 +1,20 @@
 // flutter
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
-import 'package:frontend/widgets/note/note_search_list_widget.dart';
-
-// package
-import 'package:provider/provider.dart';
-
+// provider
+import 'package:frontend/providers/search/search_wine_list_provider.dart';
 // widgets
 import 'package:frontend/widgets/search/search_bar_widget.dart';
 import 'package:frontend/widgets/search/search_wine_list_widget.dart';
-
-// provider
-import 'package:frontend/providers/search/search_wine_list_provider.dart';
+// package
+import 'package:provider/provider.dart';
 
 class SearchResultScreen extends StatefulWidget {
   final String searchValue;
+  final bool isWineType;
 
-  const SearchResultScreen({super.key, required this.searchValue});
+  const SearchResultScreen(
+      {super.key, required this.searchValue, this.isWineType = false});
 
   @override
   _SearchResultScreenState createState() => _SearchResultScreenState();
@@ -27,8 +25,16 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   void initState() {
     super.initState();
     // 검색어를 통해 API 호출
-    final searchWineListProvider = Provider.of<SearchWineListProvider>(context, listen: false);
-    searchWineListProvider.findByWineName(widget.searchValue);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final searchWineListProvider =
+          Provider.of<SearchWineListProvider>(context, listen: false);
+      // isWineType 플래그에 따라 적절한 검색 함수 호출
+      if (widget.isWineType) {
+        searchWineListProvider.findByWineType(widget.searchValue);
+      } else {
+        searchWineListProvider.findByWineName(widget.searchValue);
+      }
+    });
   }
 
   @override
@@ -88,42 +94,81 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                   ),
                 );
               } else {
-                // 로딩이 끝난 후 검색 결과 표시
-                return Expanded(
-                  child: searchProvider.wineList.isEmpty
-                      ? Center(
-                          child: Text('검색 결과가 없습니다.'),
-                        )
-                      : Container(
-                          height: double.maxFinite,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(15, 5, 10, 5),
-                                child: Text(
-                                  '총 ${searchProvider.wineList.length}건의 검색결과',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16,
+                if (searchProvider.wineTypeList.isEmpty) {
+                  // 로딩이 끝난 후 검색 결과 표시
+                  return Expanded(
+                    child: searchProvider.wineNameList.isEmpty
+                        ? Center(
+                            child: Text('검색 결과가 없습니다.'),
+                          )
+                        : Container(
+                            height: double.maxFinite,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 5, 10, 5),
+                                  child: Text(
+                                    '총 ${searchProvider.wineNameList.length}건의 검색결과',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16,
+                                    ),
+                                    softWrap: true, // 감싸주는 애
+                                    overflow: TextOverflow
+                                        .ellipsis, // 글자수 넘치면 ... 으로 바꿔주는애
                                   ),
-                                  softWrap: true, // 감싸주는 애
-                                  overflow: TextOverflow
-                                      .ellipsis, // 글자수 넘치면 ... 으로 바꿔주는애
                                 ),
-                              ),
-                              SizedBox(height: 5),
-                              Expanded(
-                                child: searchProvider.wineList.isEmpty
-                                    ? Center(child: Text('검색 결과가 없습니다.'))
-                                    : SearchWineListWidget(
-                                        context, searchProvider.wineList),
-                              ),
-                            ],
+                                SizedBox(height: 5),
+                                Expanded(
+                                  child: searchProvider.wineNameList.isEmpty
+                                      ? Center(child: Text('검색 결과가 없습니다.'))
+                                      : SearchWineListWidget(
+                                          context, searchProvider.wineNameList),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                );
+                  );
+                } else {
+                  // 로딩이 끝난 후 검색 결과 표시
+                  return Expanded(
+                    child: searchProvider.wineTypeList.isEmpty
+                        ? Center(
+                            child: Text('검색 결과가 없습니다.'),
+                          )
+                        : Container(
+                            height: double.maxFinite,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(15, 5, 10, 5),
+                                  child: Text(
+                                    '총 ${searchProvider.wineTypeList.length}건의 검색결과',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16,
+                                    ),
+                                    softWrap: true, // 감싸주는 애
+                                    overflow: TextOverflow
+                                        .ellipsis, // 글자수 넘치면 ... 으로 바꿔주는애
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                Expanded(
+                                  child: searchProvider.wineTypeList.isEmpty
+                                      ? Center(child: Text('검색 결과가 없습니다.'))
+                                      : SearchWineListWidget(
+                                          context, searchProvider.wineTypeList),
+                                ),
+                              ],
+                            ),
+                          ),
+                  );
+                }
               }
             },
           ),

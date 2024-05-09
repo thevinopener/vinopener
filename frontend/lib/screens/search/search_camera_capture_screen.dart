@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class SearchCameraCaptureScreen extends StatefulWidget {
-
   final String recognizedText;
 
   const SearchCameraCaptureScreen({
