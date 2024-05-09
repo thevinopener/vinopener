@@ -4,8 +4,6 @@ import com.ssafy.vinopener.domain.cellar.data.entity.CellarEntity;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 
 public interface CellarRepository extends JpaRepository<CellarEntity, Long> {
 
@@ -19,8 +17,10 @@ public interface CellarRepository extends JpaRepository<CellarEntity, Long> {
 
     boolean existsByWineIdAndUserId(Long windId, Long userId);
 
-    @Modifying
-    @Query("DELETE FROM cellar_wine c WHERE c.wine.id = :wineId AND c.user.id = :userId")
-    void deleteByWineId(Long userId, Long wineId);
+//    @Modifying
+//    @Query("DELETE FROM cellar_wine c WHERE c.wine.id = :wineId AND c.user.id = :userId")
+//    void deleteByWineId(Long userId, Long wineId);
+
+    void deleteByWineIdAndUserId(Long wineId, Long userId);
 
 }
