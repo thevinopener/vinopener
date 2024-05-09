@@ -51,15 +51,12 @@ class NoteDetailService {
 class NoteCreateService {
   static Future<void> createNote(NoteProvider noteProvider) async {
     try {
-      // NoteProvider 인스턴스의 데이터를 JSON으로 변환
-      var jsonData = noteProvider.toJson();
-      final response =
-          await ApiClient().dio.post('/tasting-notes', data: jsonData);
-      if (response.statusCode == 200) {
-        // 성공적으로 데이터가 서버에 저장됨
+      var jsonData = noteProvider.toJson(); // 가정: toJson() 메서드 구현
+      final response = await ApiClient().dio.post('/tasting-notes', data: jsonData);
+      // 상태 코드가 200대인 경우 성공으로 처리
+      if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         print("Note successfully created.");
       } else {
-        // 서버 응답이 성공적이지 않을 경우
         throw Exception("Failed to create note: ${response.statusCode}");
       }
     } catch (e) {

@@ -21,16 +21,18 @@ class NoteOpinionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     Future<void> postNote() async {
-      // NoteProvider에서 모든 데이터를 가져와 출력
-      final noteProvider = Provider.of<NoteProvider>(context, listen: false);
-      noteProvider.updateNoteProvider(wineId: 1);
+      try {
+        final noteProvider = Provider.of<NoteProvider>(context, listen: false);
+        noteProvider.updateNoteProvider(wineId: 2);
 
-      NoteCreateService.createNote(noteProvider);
+        await NoteCreateService.createNote(noteProvider);
 
-      // NoteProvider를 초기화
-      noteProvider.reset();
-
-      Navigator.popUntil(context, (route) => route.isFirst);
+        noteProvider.reset();
+        Navigator.popUntil(context, (route) => route.isFirst);
+      } catch (e) {
+        print("Error posting note: $e");
+        // 오류 발생 시 처리 로직 추가
+      }
     }
 
 
