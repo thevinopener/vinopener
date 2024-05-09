@@ -1,20 +1,22 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
-import 'package:frontend/models/feed.dart';
-import 'package:frontend/models/user.dart';
+import 'package:frontend/models/feed/feed_post_requests.dart';
 import 'package:frontend/models/wine_model.dart';
+import 'package:frontend/providers/feed/new_feed_wine_list_provider.dart';
 import 'package:frontend/screens/feed/feed_wine_search_screen.dart';
 import 'package:frontend/services/feed_service.dart';
 import 'package:frontend/widgets/common/molecules/custom_list_tile_widget.dart';
+import 'package:frontend/widgets/feed/feed_wine_item.dart';
 import 'package:frontend/widgets/wine/wine_item_widget.dart';
+import 'package:provider/provider.dart';
 
 class FeedContentScreen extends StatefulWidget {
-  final File? imageFile;
+  File? imageFile;
 
   FeedContentScreen({super.key, this.imageFile});
 
@@ -23,7 +25,7 @@ class FeedContentScreen extends StatefulWidget {
 }
 
 class _FeedContentScreenState extends State<FeedContentScreen> {
-  List<Wine> wineList = [Wine.dummy(), Wine.dummy()];
+  List<Wine> wineList = [];
 
   FocusNode _focusNode = FocusNode();
 
@@ -50,6 +52,8 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
   void initState() {
     super.initState();
     _focusNode.addListener(_onFocusChange);
+    wineList =
+        Provider.of<NewFeedWineListProvider>(context, listen: false).wineList;
   }
 
   @override
@@ -61,18 +65,29 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    void postFeed() {
+    wineList = Provider.of<NewFeedWineListProvider>(context)
+        .wineList; // This will rebuild the widget when the wine list updates.
+
+    void postFeed() async {
       content = contentController.text;
-      FeedService.postFeed(
-        Feed(
-          user: UserModel.dummy(),
-          imageUrl: 'assets/images/wine.jpg',
-          content: content,
-          isPublic: isPublic,
-          likeCount: 0,
-          createdTime: DateTime.now(),
-        ),
+      List<int> wineIdList = [];
+      var newFeedWineList =
+      Provider.of<NewFeedWineListProvider>(context, listen: false)
+          .getWineList();
+      for (int i = 0; i < newFeedWineList.length; i++) {
+        wineIdList.add(newFeedWineList[i].id!);
+      }
+      Provider.of<NewFeedWineListProvider>(context, listen: false)
+          .clearWineList();
+      MultipartFile multipartImageFile =
+      await MultipartFile.fromFile(widget.imageFile!.path);
+      FeedPostRequest feedPostRequest = FeedPostRequest(
+        content!,
+        isPublic,
+        multipartImageFile,
+        wineIdList,
       );
+      FeedService.postFeed(feedPostRequest);
       Navigator.popUntil(context, (route) => route.isFirst);
     }
 
@@ -104,18 +119,12 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            widget.imageFile == null
-                ? Image.asset(
-                    'assets/images/wine.jpg',
-                    width: 400,
-                    height: 400,
-                  )
-                : Image.file(
-                    widget.imageFile!,
-                    width: 400,
-                    height: 400,
-                    fit: BoxFit.cover,
-                  ),
+            Image.file(
+              widget.imageFile!,
+              width: 400,
+              height: 400,
+              fit: BoxFit.cover,
+            ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: Column(
@@ -131,12 +140,22 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      Provider.of<NewFeedWineListProvider>(context,
+                          listen: false)
+                          .clearWineList();
                       Navigator.push(
                         context,
                         CupertinoPageRoute(
                             builder: (context) =>
                                 FeedWineSearchScreen()), // 'SearchWineScreen'을 적절한 대상 화면으로 바꾸세요.
-                      );
+                      ).then((_) {
+                        setState(() {
+                          wineList =
+                              Provider.of<NewFeedWineListProvider>(context)
+                                  .getWineList();
+                        });
+                      });
+                      ;
                     },
                     child: Container(
                       child: Column(
@@ -156,9 +175,17 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                       ),
                     ),
                   ),
-                  Column(
-                    children:
-                        wineList.map((wine) => WineItem(wine: wine)).toList(),
+                  Consumer<NewFeedWineListProvider>(
+                    builder: (context, provider, child) {
+                      return Column(
+                        children: provider.wineList
+                            .map((wine) => FeedWineItem(
+                          wine: wine,
+                          isSelected: false,
+                        ))
+                            .toList(),
+                      );
+                    },
                   ),
                   SizedBox(height: 10),
                   Text(
@@ -183,6 +210,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                       ],
                     ),
                     child: TextField(
+                      maxLines: 3,
                       controller: contentController,
                       decoration: InputDecoration(
                         hintText: '내용을 입력하세요.',
@@ -222,7 +250,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                       inactiveTrackColor: Colors.grey,
                       thumbColor: MaterialStateProperty.all(Colors.white),
                       trackOutlineColor:
-                          MaterialStateProperty.all(Colors.transparent),
+                      MaterialStateProperty.all(Colors.transparent),
                     ),
                   ),
                 ],

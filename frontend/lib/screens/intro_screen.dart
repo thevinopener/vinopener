@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:frontend/constants/colors.dart';
 import 'package:frontend/screens/login_screen.dart';
 
 class IntroScreen extends StatelessWidget {
@@ -16,6 +18,9 @@ class IntroScreen extends StatelessWidget {
       },
     );
 
-    return Image.asset('assets/images/intro.gif', fit: BoxFit.cover);
+    return Scaffold(
+      backgroundColor: AppColors.secondary,
+      body: Center(child: Image.asset('assets/images/splash_logo.png')),
+    );
   }
 }
