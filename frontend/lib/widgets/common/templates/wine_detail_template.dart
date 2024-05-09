@@ -254,7 +254,7 @@ class _WineDetailScreenState extends State<WineDetailScreen> {
                                         width: double.maxFinite,
                                         child: FilledButton(
                                           onPressed: () {
-                                            WineService.deleteWineFromCellar();
+                                            // WineService.deleteWineFromCellar();
                                             _toggleCellar();
                                           },
                                           child: Text(
@@ -282,7 +282,7 @@ class _WineDetailScreenState extends State<WineDetailScreen> {
                                         width: double.maxFinite,
                                         child: ElevatedButton(
                                           onPressed: () {
-                                            WineService.addWineToCellar();
+                                            // WineService.addWineToCellar();
                                             _toggleCellar();
                                           },
                                           child: Text(

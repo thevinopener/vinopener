@@ -49,24 +49,19 @@ class LoginScreen extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'VINOPENER',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-          ),
+          Image.asset('assets/images/logo.png'),
           SizedBox(height: 20),
           GestureDetector(
             onTap: () async {
               String? accessToken = await onGoogleLoginPress(context);
               if (accessToken != null) {
                 Token token = await UserService.login(accessToken);
+                print(token.accessToken);
                 loginUser.accessToken = token.accessToken;
                 loginUser.refreshToken = token.refreshToken;
                 ApiClient.setAccessToken(token.accessToken!);
@@ -83,15 +78,6 @@ class LoginScreen extends StatelessWidget {
             child: Image.asset(
               'assets/images/google_login_button.png',
             ),
-          ),
-          FilledButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                CupertinoPageRoute(builder: (context) => HomeScreen()),
-              );
-            },
-            child: Text('개발하기'),
           )
         ],
       ),

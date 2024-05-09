@@ -68,7 +68,9 @@ class _FeedScreenState extends State<FeedScreen> {
           return ListView.builder(
             itemCount: provider.feedList.length,
             itemBuilder: (context, index) {
-              return FeedItem(feed: provider.feedList[index]);
+              if (provider.feedList[index].isPublic!) {
+                return FeedItem(feed: provider.feedList[index]);
+              }
             },
           );
         },
