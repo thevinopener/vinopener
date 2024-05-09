@@ -52,7 +52,7 @@ class WineColors {
 
 class WineColorsId {
   static const Map<String,int> wineColorIdMap = {
-    "밑짚색": 1,
+    "밀짚색": 1,
     "노란색": 2,
     "황금색": 3,
     "호박색": 4,

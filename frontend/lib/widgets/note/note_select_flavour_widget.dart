@@ -1,22 +1,25 @@
-import 'package:flutter/material.dart';
+
+
 import 'package:accordion/accordion.dart';
-import 'package:frontend/constants/colors.dart';
-import 'package:frontend/constants/fonts.dart';
-import 'package:frontend/models/note_model.dart';
-import 'package:frontend/widgets/common/atoms/wine_flavour_widget.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../constants/colors.dart';
+import '../../constants/fonts.dart';
+import '../../models/note_model.dart';
+import '../../providers/note/note_wine_provider.dart';
+import '../common/atoms/wine_flavour_widget.dart';
 
 class NoteFlavour extends StatefulWidget {
-  final List<int> flavourId;
 
-  const NoteFlavour({Key? key, required this.flavourId}) : super(key: key);
+  const NoteFlavour({Key? key}) : super(key: key);
 
   @override
   State<NoteFlavour> createState() => _NoteFlavourState();
 }
 
 class _NoteFlavourState extends State<NoteFlavour> {
-  late List<int> selectedFlavourIds;
-  Set<int> selectedFlavourIdsSet = {};
   String currentlyOpen = ""; // 현재 열린 섹션의 키를 저장
 
   final List<Flavour> blueFruits = [
@@ -66,7 +69,7 @@ class _NoteFlavourState extends State<NoteFlavour> {
     Flavour(taste: "붉은자두", id: 63),
     Flavour(taste: "석류", id: 64),
     Flavour(taste: "체리", id: 65),
-    Flavour(taste: "크렌베리", id: 66),
+    Flavour(taste: "크랜베리", id: 66),
     Flavour(taste: "토마토", id: 67),
   ];
 
@@ -85,7 +88,7 @@ class _NoteFlavourState extends State<NoteFlavour> {
     Flavour(taste: "아몬드", id: 9),
     Flavour(taste: "오레가노", id: 10),
     Flavour(taste: "유칼립투스", id: 11),
-    Flavour(taste: "쳐빌", id: 12),
+    Flavour(taste: "처빌", id: 12),
     Flavour(taste: "피망", id: 13),
     Flavour(taste: "할라피뇨", id: 14),
     Flavour(taste: "허브", id: 15),
@@ -170,15 +173,12 @@ class _NoteFlavourState extends State<NoteFlavour> {
   @override
   void initState() {
     super.initState();
-    selectedFlavourIds = List.from(widget.flavourId);
-    selectedFlavourIdsSet = Set.from(selectedFlavourIds);
   }
 
   Widget buildFlavourGrid(List<Flavour> flavours, String sectionKey) {
     return GridView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      // 스크롤 비활성화
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
         childAspectRatio: 1,
@@ -186,20 +186,21 @@ class _NoteFlavourState extends State<NoteFlavour> {
       itemCount: flavours.length,
       itemBuilder: (context, index) {
         final flavour = flavours[index];
-        final isSelected = selectedFlavourIdsSet.contains(flavour.id);
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              if (isSelected) {
-                selectedFlavourIdsSet.remove(flavour.id);
-              } else {
-                selectedFlavourIdsSet.add(flavour.id);
-              }
-              print(selectedFlavourIdsSet);
-              currentlyOpen = sectionKey;
-            });
+        return Consumer<NoteProvider>(
+          builder: (context, provider, child) {
+            bool isSelected = provider.flavourTasteIds.contains(flavour.id);
+            return GestureDetector(
+              onTap: () {
+                if (isSelected) {
+                  provider.removeFlavourId(flavour.id);
+                } else {
+                  provider.addFlavourId(flavour.id);
+                }
+                setState(() => currentlyOpen = sectionKey);
+              },
+              child: WineFlavour(flavour: flavour, isSelected: isSelected),
+            );
           },
-          child: WineFlavour(flavour: flavour, isSelected: isSelected),
         );
       },
     );
@@ -316,10 +317,4 @@ class _NoteFlavourState extends State<NoteFlavour> {
   }
 }
 
-class NoGlowScrollBehavior extends ScrollBehavior {
-  @override
-  Widget buildViewportChrome(
-      BuildContext context, Widget child, AxisDirection axisDirection) {
-    return child; // 오버스크롤 글로우 효과 없앰
-  }
-}
+
