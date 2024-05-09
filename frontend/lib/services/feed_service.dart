@@ -1,10 +1,30 @@
+import 'package:dio/dio.dart';
 import 'package:frontend/models/feed.dart';
+import 'package:frontend/models/feed/feed_post_requests.dart';
 import 'package:frontend/utils/api_client.dart';
 
 class FeedService {
 
-  static void postFeed(Feed feed) async {
-    print('postFeed : ${feed.toString()}');
+  static void postFeed(FeedPostRequest feedPostRequest) async {
+
+    FormData formData = FormData.fromMap({
+      'content': feedPostRequest.content,
+      'isPublic': feedPostRequest.isPublic.toString(),
+      'wineIds': feedPostRequest.wineIdList,
+      'imageFile': feedPostRequest.imageFile,
+    });
+
+    var response = await ApiClient().dio.post(
+      '/feeds',
+      data: formData,
+      options: Options(
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      ),
+    );
+    print(response);
+    print('postFeed');
   }
 
   static Future<Feed> getFeed() async {

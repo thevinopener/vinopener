@@ -20,6 +20,9 @@ class Wine {
   bool? isAddedToCellar;
   int? countOfNotes;
 
+  //
+  bool isSelected = false;
+
   Wine.dummy()
       : id = 1,
         name = 'Thurlow Cellars Copperhead Cabernet Sauvignon 2021',
