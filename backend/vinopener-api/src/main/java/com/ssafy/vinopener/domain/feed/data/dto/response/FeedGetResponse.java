@@ -19,6 +19,7 @@ public record FeedGetResponse(
         boolean isPublic,
 
         int totalLikes,
+        boolean myLike,
 
         FeedGetUserResponse creator,
         List<FeedGetWineResponse> wines,
