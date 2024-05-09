@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'providers/bottombar_provider.dart';
 import 'providers/search/search_wine_list_provider.dart';
 import 'providers/search/search_wine_detail_provider.dart';
+import 'providers/search/search_history_provider.dart';
 
 
 void main() async {
@@ -29,6 +30,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => NewFeedWineListProvider()),
         ChangeNotifierProvider(create: (_) => SearchWineListProvider()),
         ChangeNotifierProvider(create: (_) => SearchWineDetailProvider()),
+        ChangeNotifierProvider(create: (_) => SearchHistoryProvider()),
       ],
       child: MyApp(),
     ),

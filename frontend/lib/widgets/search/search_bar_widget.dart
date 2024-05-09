@@ -1,6 +1,7 @@
 // flutter
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:frontend/providers/search/search_history_provider.dart';
 
 // screens
 import 'package:frontend/screens/search/search_result_screen.dart';
@@ -8,6 +9,7 @@ import 'package:frontend/screens/search/search_camera_screen.dart';
 
 // constants
 import 'package:frontend/constants/fonts.dart';
+import 'package:provider/provider.dart';
 
 enum SearchContext { searchTextScreen, searchResultScreen }
 
@@ -54,15 +56,16 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
     }
   }
 
-  void _handleSubmitted(String value) {
+  void _handleSubmitted(String value) async {
     print("입력된 값: $value");
     if (widget.contextType == SearchContext.searchTextScreen) {
-      Navigator.push(context,
+      await Navigator.push(context,
           MaterialPageRoute(builder: (context) => SearchResultScreen(searchValue: value)));
     } else {
-      Navigator.pushReplacement(context,
+      await Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => SearchResultScreen(searchValue: value)));
     }
+    Provider.of<SearchHistoryProvider>(context, listen: false).loadHistory();
   }
 
   @override

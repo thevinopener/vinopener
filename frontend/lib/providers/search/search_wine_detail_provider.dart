@@ -1,6 +1,6 @@
 // lib/providers/search/search_wine_detail_provider.dart
 import 'package:flutter/material.dart';
-import 'package:frontend/models/wine_detail.dart';
+import 'package:frontend/models/search/wine_detail.dart';
 import 'package:frontend/services/search_service.dart';
 
 class SearchWineDetailProvider extends ChangeNotifier {

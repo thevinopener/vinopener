@@ -11,7 +11,7 @@ import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/constants/colors.dart';
 
 // models
-import 'package:frontend/models/wine.dart';
+import 'package:frontend/models/search/wine.dart';
 import 'package:frontend/widgets/common/atoms/nation_flag_widget.dart';
 
 Widget SearchWineListWidget(BuildContext context, List<Wine> wineList) {
