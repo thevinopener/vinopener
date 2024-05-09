@@ -57,6 +57,16 @@ public class BookmarkService {
         bookmarkRepository.deleteByIdAndUserId(bookmarkId, userId);
     }
 
+    @Transactional
+    public void deleteByWineId(final Long userId, final Long wineId) {
+        if (bookmarkRepository.existsByWineIdAndUserId(wineId, userId)) {
+            bookmarkRepository.deleteByWineIdAndUserId(userId, wineId);
+            return;
+        }
+
+        throw new VinopenerException(BookmarkErrorCode.NOT_BOOKMARKED_WINE);
+    }
+
     /**
      * 즐겨찾기 목록 조회
      *
