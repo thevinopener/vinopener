@@ -1,129 +1,145 @@
 // flutter
 import 'package:flutter/material.dart';
-
-
-// screens
-import 'package:frontend/widgets/search/search_bar_widget.dart';
+import 'package:frontend/constants/colors.dart';
+import 'package:frontend/models/wine_model.dart';
+import 'package:frontend/providers/note/note_wine_provider.dart';
+import 'package:frontend/screens/note/note_screen.dart';
+import 'package:frontend/services/wine_service.dart';
+import 'package:frontend/widgets/feed/feed_wine_item.dart';
 
 // constants
 import 'package:frontend/constants/fonts.dart';
-
-
-import '../../widgets/note/note_search_bar_widget.dart';
-import 'note_search_result_screen.dart';
+import 'package:provider/provider.dart';
 
 class NoteSearchScreen extends StatefulWidget {
   _NoteSearchScreenState createState() => _NoteSearchScreenState();
 }
 
-final List<String> recentSearchList = [
-  "양희승이 좋아하는 와인",
-  "전원빈이 좋아하는 와인",
-  "최지웅이 좋아하는 와인",
-  "고영훈이 좋아하는 와인",
-  "한정수가 좋아하는 와인",
-  "박희찬이 좋아하는 와인",
-  "양희승이 좋아하는 와인",
-  "전원빈이 좋아하는 와인",
-  "최지웅이 좋아하는 와인",
-  "고영훈이 좋아하는 와인",
-  "한정수가 좋아하는 와인",
-  "박희찬이 좋아하는 와인",
-  "양희승이 좋아하는 와인",
-  "전원빈이 좋아하는 와인",
-  "최지웅이 좋아하는 와인",
-  "고영훈이 좋아하는 와인",
-  "한정수가 좋아하는 와인",
-  "박희찬이 좋아하는 와인",
-  "양희승이 좋아하는 와인",
-  "전원빈이 좋아하는 와인",
-  "최지웅이 좋아하는 와인",
-  "고영훈이 좋아하는 와인",
-  "한정수가 좋아하는 와인",
-  "박희찬이 좋아하는 와인",
-];
-
 class _NoteSearchScreenState extends State<NoteSearchScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  List<Wine> _wineList = [];
+  bool _isLoading = false;
+  Wine? _selectedWine;
+  int? _selectedWineId;
+
+  _searchWines(String keyword) async {
+    if (keyword.isEmpty) return;
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      List<Wine> wineList = await WineService.searchWineList(keyword);
+      setState(() {
+        _wineList = wineList;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      print('Failed to fetch wines: $e');
+    }
+  }
+
+  void _toggleWine(Wine wine) {
+    setState(() {
+      if (_selectedWineId == wine.id) {
+        _selectedWineId = null;
+        _selectedWine = null;
+      } else {
+        _selectedWineId = wine.id;
+        _selectedWine = wine;
+      }
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false, // 키보드가 나타날 때 리사이즈하지 않도록 설정
-      body: Column(
-        children: [
-          // #1 검색바 시작
-          Flexible(
-            child: NoteSearchBarWidget(), // 검색바 위젯
+      appBar: AppBar(
+        title: Text(
+          '노트 와인 검색',
+          style: TextStyle(
+            fontSize: AppFontSizes.mediumSmall,
+            fontWeight: FontWeight.bold,
           ),
-          // #1 검색바 끝
-
-          // #2 최근검색, 검색기록삭제 시작
-          Flexible(
-            child: Container(
-              margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '최근 검색',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: AppFontSizes.mediumLarge,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () => {
-                      // TODO: 검색기록삭제 로직 작성
-                    },
-                    child: Text(
-                      '전체기록삭제',
-                      style: TextStyle(
-                          color: Colors.red, fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                ],
+        ),
+        centerTitle: true,
+        actions: [
+          TextButton(
+            onPressed: () {
+              if (_selectedWine == null) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text('와인을 선택해주세요!')));
+                return;
+              }
+              Provider.of<NoteWineProvider>(context, listen: false).setWine(_selectedWine!);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NoteScreen(),
+                ),
+              );
+            },
+            child: Text(
+              '완료',
+              style: TextStyle(
+                fontSize: AppFontSizes.mediumSmall,
+                color: AppColors.primary,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
-          // #2 최근검색, 검색기록삭제 끝
-
-          // #3 검색 기록 시작
-          Flexible(
-            flex: 9,
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.start,
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(
-                  recentSearchList.length,
-                      (index) => Padding(
-                    padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => NoteSearchResultScreen(recentSearchList[index]),
-                            ),
-                            );
-                          },
-                          child: Text(
-                            recentSearchList[index],
-                            style: TextStyle(
-                                color: Colors.black, fontWeight: FontWeight.w400, fontSize: AppFontSizes.mediumSmall),
-                          ),
-                        ),
-                        IconButton(onPressed: () {}, icon: Icon(Icons.clear), iconSize: 20,)
-                      ],
-                    ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    FocusScope.of(context).unfocus();
+                    if (_searchController.text == '') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('검색어를 입력해주세요!')));
+                    } else {
+                      _searchWines(_searchController.text);
+                    }
+                  },
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: AppColors.primary,
                   ),
                 ),
               ),
             ),
           ),
-          // #3 검색 기록 끝
+          Expanded(
+            child: _isLoading
+                ? Center(child: CircularProgressIndicator())
+                : ListView.builder(
+                    itemCount: _wineList.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          _toggleWine(_wineList[index]);
+                        },
+                        child: Container(
+                          child: FeedWineItem(
+                            wine: _wineList[index],
+                            isSelected: _wineList[index].id == _selectedWineId,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+          ),
         ],
       ),
     );
