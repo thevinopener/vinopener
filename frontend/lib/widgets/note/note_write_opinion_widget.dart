@@ -1,45 +1,44 @@
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:frontend/constants/fonts.dart';
+import 'package:frontend/providers/note/note_wine_provider.dart';
 
 class NoteOpinion extends StatefulWidget {
-  final double? wineRate; // nullable로 변경
-  const NoteOpinion({Key? key, this.wineRate})
-      : super(key: key); // 기본값을 null로 허용
+  const NoteOpinion({Key? key}) : super(key: key);
 
   @override
   State<NoteOpinion> createState() => _NoteOpinionState();
 }
 
 class _NoteOpinionState extends State<NoteOpinion> {
-  late double wineRate;
-  TextEditingController opinionController =
-      TextEditingController(); // 컨트롤러를 여기서 바로 초기화
+  TextEditingController? opinionController;
 
   @override
   void initState() {
     super.initState();
-    wineRate = widget.wineRate ?? 3.0; // null이면 기본값 3.0 사용
+    opinionController = TextEditingController();
+  }
 
-    // TextField의 변화 감지를 위한 리스너 추가
-    opinionController.addListener(() {
-      // 텍스트와 별점을 함께 출력
-      print(
-          'Opinion: ${opinionController.text}, Current Rating: ${wineRate.toStringAsFixed(1)}');
-    });
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final providerOpinion = Provider.of<NoteProvider>(context).opinion;
+    if (opinionController!.text != providerOpinion) {
+      opinionController!.text = providerOpinion;  // 초기 텍스트 필드 값 설정
+    }
   }
 
   @override
   void dispose() {
-    opinionController.dispose(); // 컨트롤러 정리
+    opinionController!.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.05),
+      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.05),
       child: Column(
         children: [
           TextField(
@@ -48,39 +47,43 @@ class _NoteOpinionState extends State<NoteOpinion> {
               border: OutlineInputBorder(),
               hintText: '자유롭게 의견을 적어보세요!',
             ),
-            maxLines: 12, // 높이를 높이기 위해 여러 줄로 설정
-            style: TextStyle(fontSize: 16), // 텍스트 크기 조정
+            maxLines: 12,
+            style: TextStyle(fontSize: 16),
+            onChanged: (text) {
+              Provider.of<NoteProvider>(context, listen: false).updateNoteProvider(opinion: text);
+            },
           ),
           SizedBox(height: 50),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(wineRate.toStringAsFixed(1),
-                  style: TextStyle(
-                      fontSize: AppFontSizes.large,
-                      fontWeight: FontWeight.bold)),
-              SizedBox(width: 20),
-              RatingBar.builder(
-                initialRating: wineRate,
-                minRating: 0,
-                direction: Axis.horizontal,
-                allowHalfRating: true,
-                itemCount: 5,
-                itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                itemBuilder: (context, _) => Icon(
-                  Icons.star,
-                  color: Colors.amber,
-                ),
-                onRatingUpdate: (rating) {
-                  setState(() {
-                    wineRate = rating; // 상태 업데이트
-                    // 텍스트와 별점을 함께 출력
-                    print(
-                        'Opinion: ${opinionController.text}, Current Rating: ${wineRate.toStringAsFixed(1)}');
-                  });
-                },
-              ),
-            ],
+          Consumer<NoteProvider>(
+            builder: (context, provider, child) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    provider.rating.toStringAsFixed(1),
+                    style: TextStyle(
+                        fontSize: AppFontSizes.large,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(width: 20),
+                  RatingBar.builder(
+                    initialRating: provider.rating,
+                    minRating: 0,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    onRatingUpdate: (rating) {
+                      Provider.of<NoteProvider>(context, listen: false).updateNoteProvider(rating: rating);
+                    },
+                  ),
+                ],
+              );
+            },
           )
         ],
       ),

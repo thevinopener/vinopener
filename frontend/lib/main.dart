@@ -33,6 +33,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => SearchWineDetailProvider()),
         ChangeNotifierProvider(create: (_) => SearchHistoryProvider()),
         ChangeNotifierProvider(create: (_) => NoteWineProvider()),
+        ChangeNotifierProvider(create: (_) => NoteProvider()),
       ],
       child: MyApp(),
     ),
