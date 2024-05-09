@@ -51,6 +51,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -240,53 +241,119 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                // TODO: API 붙일 때, boolean 여부로 버튼 변경 추가 필요
-                                Container(
-                                  width: double.maxFinite,
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      '즐겨찾기 추가',
-                                      style: TextStyle(
-                                          color: AppColors.primary,
-                                          fontSize: AppFontSizes.medium,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppColors.white,
-                                      elevation: 0,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
+                                wineDetail.isBookmark
+                                    ? Container(
+                                        width: double.maxFinite,
+                                        child: FilledButton(
+                                          onPressed: () {
+                                            // WineService
+                                            //     .deleteWineFromBookmark();
+                                            // _toggleBookmark();
+                                          },
+                                          child: Text(
+                                            '즐겨찾기 삭제',
+                                            style: TextStyle(
+                                              fontSize: AppFontSizes.medium,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          style: FilledButton.styleFrom(
+                                            backgroundColor: AppColors.primary,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            side: BorderSide(
+                                              color: AppColors.primary,
+                                              width: 2,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Container(
+                                        width: double.maxFinite,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            // WineService.addWineToBookmark();
+                                            // _toggleBookmark();
+                                          },
+                                          child: Text(
+                                            '즐겨찾기 추가',
+                                            style: TextStyle(
+                                                color: AppColors.primary,
+                                                fontSize: AppFontSizes.medium,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: AppColors.white,
+                                            elevation: 0,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            side: BorderSide(
+                                                color: AppColors.primary,
+                                                width: 2),
+                                          ),
+                                        ),
                                       ),
-                                      side: BorderSide(
-                                          color: AppColors.primary, width: 2),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  width: double.maxFinite,
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                      '셀러 추가',
-                                      style: TextStyle(
-                                          color: AppColors.secondary,
-                                          fontSize: AppFontSizes.medium,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      // backgroundColor: AppColors.secondary,
-                                      elevation: 0,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
+                                wineDetail.isCellar
+                                    ? Container(
+                                        width: double.maxFinite,
+                                        child: FilledButton(
+                                          onPressed: () {
+                                            // WineService.deleteWineFromCellar();
+                                            // _toggleCellar();
+                                          },
+                                          child: Text(
+                                            '셀러 삭제',
+                                            style: TextStyle(
+                                              fontSize: AppFontSizes.medium,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          style: FilledButton.styleFrom(
+                                            backgroundColor:
+                                                AppColors.secondary,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            side: BorderSide(
+                                              color: AppColors.secondary,
+                                              width: 2,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Container(
+                                        width: double.maxFinite,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            // WineService.addWineToCellar();
+                                            // _toggleCellar();
+                                          },
+                                          child: Text(
+                                            '셀러 추가',
+                                            style: TextStyle(
+                                                color: AppColors.secondary,
+                                                fontSize: AppFontSizes.medium,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          style: ElevatedButton.styleFrom(
+                                            // backgroundColor: AppColors.secondary,
+                                            elevation: 0,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            side: BorderSide(
+                                              color: AppColors.secondary,
+                                              width: 2,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                      side: BorderSide(
-                                        color: AppColors.secondary,
-                                        width: 2,
-                                      ),
-                                    ),
-                                  ),
-                                ),
                               ],
                             ),
                           ),
