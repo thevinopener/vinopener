@@ -3,13 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
-import 'package:frontend/constants/icon.dart';
 import 'package:frontend/widgets/note/note_select_flavour_widget.dart';
 
-import '../../models/wine_model.dart';
-
-import '../../widgets/note/note_wine_card_widget.dart';
-import 'note_taste_screen.dart';
 
 class NoteSmellScreen extends StatelessWidget {
   final PageController controller;
@@ -17,7 +12,6 @@ class NoteSmellScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Wine wine = Wine.dummy();
 
     return Scaffold(
       body: Container(

@@ -9,10 +9,10 @@ import 'package:provider/provider.dart';
 
 
 
-import '../../models/wine_model.dart';
+
 
 import '../../providers/note/note_wine_provider.dart';
-import '../../widgets/note/note_wine_card_widget.dart';
+
 
 class NoteOpinionScreen extends StatelessWidget {
   const NoteOpinionScreen({super.key});

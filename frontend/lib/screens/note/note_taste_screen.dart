@@ -3,12 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
-import 'package:frontend/screens/note/note_opinion_screen.dart';
 import 'package:frontend/widgets/note/note_taste_widget.dart';
 
-import '../../models/wine_model.dart';
-
-import '../../widgets/note/note_wine_card_widget.dart';
 
 class NoteTasteScreen extends StatelessWidget {
   final PageController controller;
@@ -16,16 +12,7 @@ class NoteTasteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Wine wine = Wine.dummy();
 
-    void navigateNext() {
-      Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => NoteOpinionScreen(),
-        ),
-      );
-    }
 
     return Scaffold(
       body: Container(
