@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 // constants
 import 'package:frontend/constants/fonts.dart';
-import 'package:frontend/constants/wineLabel.dart';
+import 'package:frontend/constants/wine_label.dart';
 // screens
 import 'package:frontend/screens/search/search_detail_screen.dart';
 import 'package:frontend/widgets/common/atoms/nation_flag_widget.dart';

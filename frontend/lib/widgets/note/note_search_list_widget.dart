@@ -1,7 +1,7 @@
 // flutter
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/constants/wineLabel.dart';
+import 'package:frontend/constants/wine_label.dart';
 import 'package:frontend/screens/note/note_color_screen.dart';
 
 // screens
