@@ -16,10 +16,7 @@ import 'package:frontend/widgets/recommend/recommend_wine_card_widget.dart';
 import 'package:frontend/widgets/common/atoms/wine_flavour_widget.dart';
 import 'package:frontend/models/note_model.dart';
 
-// library
-import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
-
-import '../note/note_screen.dart';
+import 'package:frontend/screens/note/note_screen.dart';
 
 const Map<String, Color> wineTypeColors = {
   'red': WineButtonColors.red,
@@ -506,54 +503,228 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                     ),
                   ],
                 ),
-                  ),
-                  // #5 와인 기타 세부정보 끝
+              ),
+              // #2 풍미 끝
 
-                  // #6 테이스팅노트 작성 버튼 시작
-                  Container(
-                    margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                    width: double.maxFinite,
-                    // height: 100,
-                    decoration: BoxDecoration(
-                      // color: Colors.grey,
+              // #3 아로마 시작
+              Container(
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                width: double.maxFinite,
+                height: 150,
+                decoration: BoxDecoration(
+                    // color: Colors.green,
                     ),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // TODO: 해당 와인 객체정보 가지고 NoteColorScreen 페이지로 라우팅
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => NoteScreen(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      // padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                      child: Text(
+                        '아로마',
+                        style: TextStyle(
+                          fontSize: AppFontSizes.large,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: List.generate(
+                          wineDetail.tastes.length,
+                          (index) => Padding(
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: WineFlavour(
+                              flavour: Flavour(
+                                  id: 0, taste: wineDetail.tastes[index].name),
+                              isSelected: false,
+                            ),
                           ),
-                        );
-                      },
-                      child: Container(
-                        // padding: EdgeInsets.all(10),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // #3 아로마 끝
+
+              // #4 다른와인추천 시작
+              Container(
+                // padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                // margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                width: double.maxFinite,
+                height: 400,
+                decoration: BoxDecoration(
+                    // color: Colors.blue,
+                    ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                      child: Text(
+                        '이런 와인은 어떠세요?',
+                        style: TextStyle(
+                          fontSize: AppFontSizes.large,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    RecommendWineCardWidget(context), // 가로스크롤 와인추천카드 위젯
+                  ],
+                ),
+              ),
+              // #4 다른와인추천 끝
+
+              // #5 와인 기타 세부정보 시작
+              Container(
+                // padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                // margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                width: double.maxFinite,
+                height: 240,
+                decoration: BoxDecoration(
+                    // color: Colors.black12,
+                    // color: Colors.purple,
+                    ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                      child: Text(
+                        '세부정보',
+                        style: TextStyle(
+                          fontSize: AppFontSizes.large,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                      margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Icon(
-                                Icons.edit_note_outlined,
-                                color: AppColors.white,
+                              Image.asset(
+                                'assets/images/alcohol_content.png',
+                                width: 30,
+                                height: 30,
                               ),
+                              SizedBox(width: 30),
                               Text(
-                                '테이스팅노트 작성하기',
+                                '${wineDetail.abv}%',
                                 style: TextStyle(
-                                  fontSize: AppFontSizes.medium,
-                                  color: AppColors.white,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: AppFontSizes.mediumLarge,
+                                  color: Colors.black54,
                                 ),
                               ),
-                            ]),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        elevation: 0,
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                'assets/images/grapes.png',
+                                width: 30,
+                                height: 30,
+                              ),
+                              SizedBox(width: 30),
+                              Text(
+                                wineDetail.grape,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: AppFontSizes.mediumLarge,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                'assets/images/region.png',
+                                width: 30,
+                                height: 30,
+                              ),
+                              SizedBox(width: 30),
+                              Text(
+                                wineDetail.country,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: AppFontSizes.mediumLarge,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  // #6 테이스팅노트 작성 버튼 끝
-                ],
+                  ],
+                ),
               ),
+              // #5 와인 기타 세부정보 끝
+
+              // #6 테이스팅노트 작성 버튼 시작
+              Container(
+                margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                width: double.maxFinite,
+                // height: 100,
+                decoration: BoxDecoration(
+                    // color: Colors.grey,
+                    ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    // TODO: 해당 와인 객체정보 가지고 NoteColorScreen 페이지로 라우팅
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NoteScreen(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    // padding: EdgeInsets.all(10),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.edit_note_outlined,
+                            color: AppColors.white,
+                          ),
+                          Text(
+                            '테이스팅노트 작성하기',
+                            style: TextStyle(
+                              fontSize: AppFontSizes.medium,
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ]),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    elevation: 0,
+                  ),
+                ),
+              ),
+              // #6 테이스팅노트 작성 버튼 끝
+            ],
           ),
         );
       }),
