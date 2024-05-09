@@ -7,6 +7,9 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: validate
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
 
 ---
 

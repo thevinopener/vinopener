@@ -24,13 +24,13 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'org.springframework.kafka:spring-kafka'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-//    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
 
     // https://github.com/querydsl/querydsl
     implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
