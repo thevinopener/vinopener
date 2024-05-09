@@ -1,15 +1,9 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/services/note_service.dart';
 import 'package:frontend/widgets/note/note_write_opinion_widget.dart';
 import 'package:provider/provider.dart';
-
-
-
-
 
 import '../../providers/note/note_wine_provider.dart';
 
@@ -22,8 +16,9 @@ class NoteOpinionScreen extends StatelessWidget {
 
     Future<void> postNote() async {
       try {
+        final wineId = Provider.of<NoteWineProvider>(context, listen: false).getWine().id;
         final noteProvider = Provider.of<NoteProvider>(context, listen: false);
-        noteProvider.updateNoteProvider(wineId: 2);
+        noteProvider.updateNoteProvider(wineId: wineId);
 
         await NoteCreateService.createNote(noteProvider);
 
