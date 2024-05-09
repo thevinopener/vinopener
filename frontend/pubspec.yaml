@@ -49,8 +49,12 @@ dependencies:
   google_sign_in: ^6.2.1
 
   #for rating bar
-  custom_rating_bar: ^2.0.5
   flutter_rating_bar: ^4.0.1
+
+  #for AI chat
+  floating_chat_button: ^1.0.1
+  speech_to_text: ^6.6.1
+  flutter_tts: ^3.8.5
 
 flutter:
   uses-material-design: true

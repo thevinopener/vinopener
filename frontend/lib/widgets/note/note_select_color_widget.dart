@@ -15,7 +15,7 @@ class _NoteColorState extends State<NoteColor> {
   int? wineColorId; // 선택된 와인 색상 ID
 
   List<String> wineColorNames = [
-    "밑집색", "노란색", "황금색", "호박색", "갈색", "구리색", "연어색", "분홍색", "루비색", "보라색", "석류색", "황갈색",
+    "밀짚색", "노란색", "황금색", "호박색", "갈색", "구리색", "연어색", "분홍색", "루비색", "보라색", "석류색", "황갈색",
   ];
 
   void updateAndPrintWineColorId(String colorName, int colorId) {

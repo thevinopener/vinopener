@@ -6,9 +6,9 @@ import 'package:frontend/widgets/common/atoms/nation_flag_widget.dart';
 import '../../models/note_model.dart';
 
 class NoteCard extends StatelessWidget {
-  final Note note;
+  final WineNoteCard wineNoteCard;
 
-  const NoteCard({super.key, required this.note});
+  const NoteCard({super.key, required this.wineNoteCard});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class NoteCard extends StatelessWidget {
               Container(
                 width: dimension * 0.09,
                 decoration: ShapeDecoration(
-                  color: WineColors.wineColorMap[note.color.name] ??
+                  color: WineColors.wineColorMap[wineNoteCard.color.name] ??
                       Colors.transparent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
@@ -58,7 +58,7 @@ class NoteCard extends StatelessWidget {
                       topLeft: Radius.circular(12),
                       bottomLeft: Radius.circular(12)),
                   image: DecorationImage(
-                    image: NetworkImage(note.wine.imageUrl),
+                    image: NetworkImage(wineNoteCard.wine.imageUrl),
                     fit: BoxFit.fitHeight, // 이미지가 컨테이너를 꽉 채우도록 설정
                   ),
                 ),
@@ -85,7 +85,7 @@ class NoteCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      note.wine.winery,
+                      wineNoteCard.wine.winery,
                       style: TextStyle(
                           fontSize: AppFontSizes.mediumSmall,
                           fontWeight: FontWeight.bold),
@@ -94,7 +94,7 @@ class NoteCard extends StatelessWidget {
                       height: 10,
                     ),
                     Text(
-                      note.wine.name,
+                      wineNoteCard.wine.name,
                       style: TextStyle(fontSize: AppFontSizes.small),
                     ),
                     SizedBox(
@@ -103,12 +103,13 @@ class NoteCard extends StatelessWidget {
                     Row(
                       children: [
                         NationFlag(
-                          country: 'United States',
+                          country: wineNoteCard.wine.country,
                           height: 12,
                           width: 12,
                         ),
+                        SizedBox(width: 8,),
                         Text(
-                          note.wine.country,
+                          wineNoteCard.wine.country,
                           style: TextStyle(fontSize: AppFontSizes.small),
                         ),
                       ],
@@ -121,7 +122,7 @@ class NoteCard extends StatelessWidget {
                       // Expanded를 사용하여 텍스트 넘침을 방지
                       child: Wrap(
                         // Row 대신 Wrap 사용
-                        children: note.flavours
+                        children: wineNoteCard.flavours
                             .map((flavour) => Padding(
                                   padding: const EdgeInsets.only(right: 5),
                                   // 각 향 요소 사이에 오른쪽 패딩 추가
@@ -145,10 +146,10 @@ class NoteCard extends StatelessWidget {
                       color: AppColors.primary,
                     ),
                     SizedBox(
-                      width: 10,
+                      width: 8,
                     ),
                     Text(
-                      note.rating.toString(),
+                      wineNoteCard.rating.toString(),
                       style: TextStyle(
                           fontSize: AppFontSizes.mediumSmall,
                           color: AppColors.primary,

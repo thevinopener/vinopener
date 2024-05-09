@@ -7,6 +7,7 @@ import 'package:frontend/widgets/common/atoms/wine_flavour_widget.dart';
 
 class NoteFlavour extends StatefulWidget {
   final List<int> flavourId;
+
   const NoteFlavour({Key? key, required this.flavourId}) : super(key: key);
 
   @override
@@ -16,24 +17,24 @@ class NoteFlavour extends StatefulWidget {
 class _NoteFlavourState extends State<NoteFlavour> {
   late List<int> selectedFlavourIds;
   Set<int> selectedFlavourIdsSet = {};
-  String currentlyOpen = "";  // 현재 열린 섹션의 키를 저장
+  String currentlyOpen = ""; // 현재 열린 섹션의 키를 저장
 
   final List<Flavour> blueFruits = [
     Flavour(taste: "블루베리", id: 98),
   ];
 
   final List<Flavour> tropicalFruits = [
-    Flavour(taste: "구아바", id:73),
+    Flavour(taste: "구아바", id: 73),
     Flavour(taste: "리치", id: 74),
     Flavour(taste: "망고", id: 75),
-    Flavour(taste: "바나나", id:76),
+    Flavour(taste: "바나나", id: 76),
     Flavour(taste: "키위", id: 77),
     Flavour(taste: "파인애플", id: 78),
-    Flavour(taste: "풍선껌", id:73),
+    Flavour(taste: "풍선껌", id: 73),
   ];
 
   final List<Flavour> dryFruits = [
-    Flavour(taste: "건포도", id:58),
+    Flavour(taste: "건포도", id: 58),
     Flavour(taste: "무화과", id: 59),
     Flavour(taste: "용과", id: 60),
   ];
@@ -68,7 +69,6 @@ class _NoteFlavourState extends State<NoteFlavour> {
     Flavour(taste: "크렌베리", id: 66),
     Flavour(taste: "토마토", id: 67),
   ];
-
 
   final List<Flavour> blackFruits = [
     Flavour(taste: "블랙체리", id: 1),
@@ -178,6 +178,7 @@ class _NoteFlavourState extends State<NoteFlavour> {
     return GridView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
+      // 스크롤 비활성화
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
         childAspectRatio: 1,
@@ -206,99 +207,119 @@ class _NoteFlavourState extends State<NoteFlavour> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            offset: Offset(0, 4),
-            spreadRadius: -2,
-          )
-        ],
-      ),
-      child: Accordion(
-        maxOpenSections: 1,
-        headerBackgroundColor: AppColors.white,
-        headerBorderColor: Colors.grey,
-        headerBorderWidth: 1,
-        contentBorderColor: AppColors.white,
-        headerBorderColorOpened: AppColors.white,
-        rightIcon: const Icon(Icons.keyboard_arrow_down, color: Colors.black54, size: 25),
-        headerPadding: const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
-        openAndCloseAnimation: false,
-        children: [
-          AccordionSection(
-            isOpen: currentlyOpen == 'redFruits',
-            header: Text('붉은 과일', style: TextStyle(color: AppColors.black, fontSize: AppFontSizes.medium)),
-            content: buildFlavourGrid(redFruits, 'redFruits'),
-          ),
-          AccordionSection(
-            isOpen: currentlyOpen == 'blueFruits',
-            header: Text('푸른 과일', style: TextStyle(color: AppColors.black, fontSize: AppFontSizes.medium)),
-            content: buildFlavourGrid(blueFruits, 'blueFruits'),
-          ),
-          AccordionSection(
-            isOpen: currentlyOpen == 'blackFruits',
-            header: Text('검은 과일', style: TextStyle(color: AppColors.black, fontSize: AppFontSizes.medium)),
-            content: buildFlavourGrid(blackFruits, 'blackFruits'),
-          ),
-          AccordionSection(
-            isOpen: currentlyOpen == 'dryFruits',
-            header: Text('말린 과일', style: TextStyle(color: AppColors.black, fontSize: AppFontSizes.medium)),
-            content: buildFlavourGrid(dryFruits, 'dryFruits'),
-          ),
-          AccordionSection(
-            isOpen: currentlyOpen == 'greenFruits',
-            header: Text('녹색 과일', style: TextStyle(color: AppColors.black, fontSize: AppFontSizes.medium)),
-            content: buildFlavourGrid(greenFruits, 'greenFruits'),
-          ),
-          AccordionSection(
-            isOpen: currentlyOpen == 'citrusFruits',
-            header: Text('시트러스', style: TextStyle(color: AppColors.black, fontSize: AppFontSizes.medium)),
-            content: buildFlavourGrid(citrusFruits, 'citrusFruits'),
-          ),
-          AccordionSection(
-            isOpen: currentlyOpen == 'stoneFruits',
-            header: Text('핵과류', style: TextStyle(color: AppColors.black, fontSize: AppFontSizes.medium)),
-            content: buildFlavourGrid(stoneFruits, 'stoneFruits'),
-          ),
-          AccordionSection(
-            isOpen: currentlyOpen == 'tropicalFruits',
-            header: Text('열대 과일', style: TextStyle(color: AppColors.black, fontSize: AppFontSizes.medium)),
-            content: buildFlavourGrid(tropicalFruits, 'tropicalFruits'),
-          ),
-          AccordionSection(
-            isOpen: currentlyOpen == 'flowers',
-            header: Text('꽃', style: TextStyle(color: AppColors.black, fontSize: AppFontSizes.medium)),
-            content: buildFlavourGrid(flowers, 'flowers'),
-          ),
-          AccordionSection(
-            isOpen: currentlyOpen == 'greenNotes',
-            header: Text('그린노트', style: TextStyle(color: AppColors.black, fontSize: AppFontSizes.medium)),
-            content: buildFlavourGrid(greenNotes, 'greenNotes'),
-          ),
-          AccordionSection(
-            isOpen: currentlyOpen == 'spices',
-            header: Text('향신료', style: TextStyle(color: AppColors.black, fontSize: AppFontSizes.medium)),
-            content: buildFlavourGrid(spices, 'spices'),
-          ),
-          AccordionSection(
-            isOpen: currentlyOpen == 'miscellaneous',
-            header: Text('기타', style: TextStyle(color: AppColors.black, fontSize: AppFontSizes.medium)),
-            content: buildFlavourGrid(miscellaneous, 'miscellaneous'),
-          ),
-          AccordionSection(
-            isOpen: currentlyOpen == 'oaks',
-            header: Text('오크', style: TextStyle(color: AppColors.black, fontSize: AppFontSizes.medium)),
-            content: buildFlavourGrid(oaks, 'oaks'),
-          ),
-        ],
-      ),
+    return Accordion(
+      disableScrolling: true,
+      maxOpenSections: 1,
+      headerBackgroundColor: AppColors.white,
+      headerBorderColor: Colors.grey,
+      headerBorderWidth: 1,
+      contentBorderColor: AppColors.white,
+      headerBorderColorOpened: AppColors.white,
+      rightIcon: const Icon(Icons.keyboard_arrow_down,
+          color: Colors.black54, size: 25),
+      headerPadding: const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
+      openAndCloseAnimation: false,
+      children: [
+        AccordionSection(
+          isOpen: currentlyOpen == 'redFruits',
+          header: Text('붉은 과일',
+              style: TextStyle(
+                  color: AppColors.black, fontSize: AppFontSizes.medium)),
+          content: buildFlavourGrid(redFruits, 'redFruits'),
+        ),
+        AccordionSection(
+          isOpen: currentlyOpen == 'blueFruits',
+          header: Text('푸른 과일',
+              style: TextStyle(
+                  color: AppColors.black, fontSize: AppFontSizes.medium)),
+          content: buildFlavourGrid(blueFruits, 'blueFruits'),
+        ),
+        AccordionSection(
+          isOpen: currentlyOpen == 'blackFruits',
+          header: Text('검은 과일',
+              style: TextStyle(
+                  color: AppColors.black, fontSize: AppFontSizes.medium)),
+          content: buildFlavourGrid(blackFruits, 'blackFruits'),
+        ),
+        AccordionSection(
+          isOpen: currentlyOpen == 'dryFruits',
+          header: Text('말린 과일',
+              style: TextStyle(
+                  color: AppColors.black, fontSize: AppFontSizes.medium)),
+          content: buildFlavourGrid(dryFruits, 'dryFruits'),
+        ),
+        AccordionSection(
+          isOpen: currentlyOpen == 'greenFruits',
+          header: Text('녹색 과일',
+              style: TextStyle(
+                  color: AppColors.black, fontSize: AppFontSizes.medium)),
+          content: buildFlavourGrid(greenFruits, 'greenFruits'),
+        ),
+        AccordionSection(
+          isOpen: currentlyOpen == 'citrusFruits',
+          header: Text('시트러스',
+              style: TextStyle(
+                  color: AppColors.black, fontSize: AppFontSizes.medium)),
+          content: buildFlavourGrid(citrusFruits, 'citrusFruits'),
+        ),
+        AccordionSection(
+          isOpen: currentlyOpen == 'stoneFruits',
+          header: Text('핵과류',
+              style: TextStyle(
+                  color: AppColors.black, fontSize: AppFontSizes.medium)),
+          content: buildFlavourGrid(stoneFruits, 'stoneFruits'),
+        ),
+        AccordionSection(
+          isOpen: currentlyOpen == 'tropicalFruits',
+          header: Text('열대 과일',
+              style: TextStyle(
+                  color: AppColors.black, fontSize: AppFontSizes.medium)),
+          content: buildFlavourGrid(tropicalFruits, 'tropicalFruits'),
+        ),
+        AccordionSection(
+          isOpen: currentlyOpen == 'flowers',
+          header: Text('꽃',
+              style: TextStyle(
+                  color: AppColors.black, fontSize: AppFontSizes.medium)),
+          content: buildFlavourGrid(flowers, 'flowers'),
+        ),
+        AccordionSection(
+          isOpen: currentlyOpen == 'greenNotes',
+          header: Text('그린노트',
+              style: TextStyle(
+                  color: AppColors.black, fontSize: AppFontSizes.medium)),
+          content: buildFlavourGrid(greenNotes, 'greenNotes'),
+        ),
+        AccordionSection(
+          isOpen: currentlyOpen == 'spices',
+          header: Text('향신료',
+              style: TextStyle(
+                  color: AppColors.black, fontSize: AppFontSizes.medium)),
+          content: buildFlavourGrid(spices, 'spices'),
+        ),
+        AccordionSection(
+          isOpen: currentlyOpen == 'miscellaneous',
+          header: Text('기타',
+              style: TextStyle(
+                  color: AppColors.black, fontSize: AppFontSizes.medium)),
+          content: buildFlavourGrid(miscellaneous, 'miscellaneous'),
+        ),
+        AccordionSection(
+          isOpen: currentlyOpen == 'oaks',
+          header: Text('오크',
+              style: TextStyle(
+                  color: AppColors.black, fontSize: AppFontSizes.medium)),
+          content: buildFlavourGrid(oaks, 'oaks'),
+        ),
+      ],
     );
+  }
+}
+
+class NoGlowScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child; // 오버스크롤 글로우 효과 없앰
   }
 }
