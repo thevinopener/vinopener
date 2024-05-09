@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:floating_chat_button/floating_chat_button.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/models/wine_model.dart';
+import 'package:frontend/providers/note/note_wine_provider.dart';
 import 'package:frontend/screens/note/note_color_screen.dart';
 import 'package:frontend/screens/note/note_opinion_screen.dart';
 import 'package:frontend/screens/note/note_smell_screen.dart';
 import 'package:frontend/screens/note/note_taste_screen.dart';
 import 'package:frontend/widgets/note/note_wine_card_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/fonts.dart';
 import 'note_ai_screen.dart';
@@ -38,7 +40,8 @@ class _NoteScreenState extends State<NoteScreen> {
 
   void nextPage() {
     if (_currentPage < 3) {
-      _controller.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+      _controller.nextPage(
+          duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
       setState(() {
         _currentPage++;
       });
@@ -47,7 +50,8 @@ class _NoteScreenState extends State<NoteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Wine wine = Wine.dummy();
+    Wine wine = Provider.of<NoteWineProvider>(context).getWine();
+    print('note wine: ' + wine.name!);
 
     _heights = [
       MediaQuery.of(context).size.height * 0.82, // 첫 페이지 높이
