@@ -13,6 +13,8 @@ import 'package:frontend/widgets/search/search_wine_list_widget.dart';
 // provider
 import 'package:frontend/providers/search/search_wine_list_provider.dart';
 
+import '../../providers/search/search_history_provider.dart';
+
 class SearchResultScreen extends StatefulWidget {
   final String searchValue;
 

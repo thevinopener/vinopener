@@ -63,6 +63,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '12158695753',
     projectId: 'vinopener-dd490',
     storageBucket: 'vinopener-dd490.appspot.com',
+    androidClientId: '12158695753-rg0g5lr1iuola4b0gu3kep9ri9dqv1e6.apps.googleusercontent.com',
+    iosClientId: '12158695753-949m1boqr16g842clibr58mqgembi5sp.apps.googleusercontent.com',
     iosBundleId: 'com.vinopener.frontend',
   );
+
 }
