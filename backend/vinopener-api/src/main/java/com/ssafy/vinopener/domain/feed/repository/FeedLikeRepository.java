@@ -15,6 +15,9 @@ public interface FeedLikeRepository extends JpaRepository<FeedLikeEntity, Long> 
     @EntityGraph(attributePaths = {"user"})
     Optional<FeedLikeEntity> findByFeedIdAndUserId(Long feedId, Long userId);
 
+    // 유저의 좋아요 여부
+    boolean existsByFeedIdAndUserId(Long feedId, Long userId);
+
     // 좋아요 취소
     void deleteByFeedIdAndUserId(Long feedId, Long userId);
 

@@ -54,10 +54,10 @@ class _NoteScreenState extends State<NoteScreen> {
     print('note wine: ' + wine.name!);
 
     _heights = [
-      MediaQuery.of(context).size.height * 0.82, // 첫 페이지 높이
+      MediaQuery.of(context).size.height * 1.9, // 첫 페이지 높이
       MediaQuery.of(context).size.height * 1.9, // 두 번째 페이지 높이
-      MediaQuery.of(context).size.height * 1.0, // 세 번째 페이지 높이
-      MediaQuery.of(context).size.height * 0.8, // 네 번째 페이지 높이
+      MediaQuery.of(context).size.height * 1.9, // 세 번째 페이지 높이
+      MediaQuery.of(context).size.height * 1.9, // 네 번째 페이지 높이
     ];
 
     return Scaffold(
@@ -75,7 +75,7 @@ class _NoteScreenState extends State<NoteScreen> {
         child: Column(
           children: [
             SizedBox(height: 20),
-            NoteWineCard(wine: wine),
+            NoteWineCard(wine: Provider.of<NoteWineProvider>(context).getWine()),
             Container(
               height: _heights[_currentPage],
               child: PageView(
