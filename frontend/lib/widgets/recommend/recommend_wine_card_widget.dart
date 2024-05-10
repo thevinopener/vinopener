@@ -1,8 +1,45 @@
+// recommend_wine_card_widget.dart
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/search/search_detail_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:frontend/providers/recommend_provider.dart';
+import 'package:frontend/models/recommend/recommend_wine_list.dart';
 
-Widget RecommendWineCardWidget(BuildContext context) {
-  double screenWidth = MediaQuery.of(context).size.width;  // 장치의 화면 너비를 얻습니다.
-  double cardWidth = screenWidth * 0.4;  // 각 카드의 너비를 화면 너비의 40%로 설정합니다.
+import '../common/atoms/nation_flag_widget.dart';
+
+Widget RecommendWineCardWidget(BuildContext context, {required String recommendType}) {
+  final recommendProvider = Provider.of<RecommendProvider>(context);
+  List<RecommendWine> wineList;
+
+  // recommendType에 따라 해당 목록을 선택
+  switch (recommendType) {
+    case 'view':
+      wineList = recommendProvider.viewRecommendWineList;
+      break;
+    case 'preference':
+      wineList = recommendProvider.preferenceRecommendWineList;
+      break;
+    case 'tasting-note':
+      wineList = recommendProvider.tastingNoteRecommendWineList;
+      break;
+    case 'cellar':
+      wineList = recommendProvider.cellarRecommendWineList;
+      break;
+    case 'rate':
+      wineList = recommendProvider.rateRecommendWineList;
+      break;
+    default:
+      wineList = [];
+      break;
+  }
+
+  // API 결과를 가져오기 위해 호출
+  if (!recommendProvider.isLoading && wineList.isEmpty) {
+    recommendProvider.fetchRecommendWineList(recommendType);
+  }
+
+  double screenWidth = MediaQuery.of(context).size.width;
+  double cardWidth = screenWidth * 0.4;
 
   return Container(
     height: 350,
@@ -10,70 +47,78 @@ Widget RecommendWineCardWidget(BuildContext context) {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: List.generate(
-          5,
-              (index) => Padding(
-            padding: EdgeInsets.only(right: 20, left: index == 0 ? 20 : 0),  // 첫 번째 요소에 왼쪽 패딩을 추가
-            child: ElevatedButton(
-              onPressed: () {
-                // 클릭 시 수행할 작업
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Stack(
-                    children: [
-                      Container(
-                        width: cardWidth,  // 동적으로 계산된 너비를 사용
-                        height: 190,
-                        color: Colors.white12,
-                        // color: Colors.orange,
-                        child: Image.asset(
-                          'assets/images/dummy_wine.png',
-                          fit: BoxFit.scaleDown,
+          wineList.length,
+              (index) {
+            final wine = wineList[index];
+
+            return Padding(
+              padding: EdgeInsets.only(right: 20, left: index == 0 ? 20 : 0),
+              child: ElevatedButton(
+                onPressed: () {
+                  // 클릭 시 수행할 작업
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SearchDetailScreen(wineId: wine.wineId)));
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Stack(
+                      children: [
+                        Container(
+                          width: cardWidth,
+                          height: 190,
+                          color: Colors.white12,
+                          child: Image.network(
+                            wine.imageUrl,
+                            fit: BoxFit.scaleDown,
+                          ),
                         ),
-                      ),
-                      Container(
-                        alignment: Alignment.topRight,
-                        child: Image.asset('assets/images/ea.png', width: 20, height: 20),
-                      )
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Vieilles Vigne Chorey-lès-Beaune 2018',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
+                        Container(
+                          alignment: Alignment.topRight,
+                          child: NationFlag(
+                              country: wine.country,
+                              height: 20,
+                              width: 20),
                         ),
-                      ),
-                      SizedBox(height: 5),
-                      Text('Michel Gay & Fils',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.orange,
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'wine.name',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              style: ElevatedButton.styleFrom(
-                fixedSize: Size(cardWidth, 300),  // 동적으로 계산된 너비를 사용
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  side: BorderSide(color: Colors.grey, width: 1),
+                        SizedBox(height: 5),
+                        Text(
+                          wine.winery,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.orange,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
-                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(cardWidth, 300),
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    side: BorderSide(color: Colors.grey, width: 1),
+                  ),
+                  padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     ),

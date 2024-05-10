@@ -615,7 +615,7 @@ class _WineDetailScreenState extends State<WineDetailScreen> {
                         ),
                       ),
                     ),
-                    RecommendWineCardWidget(context), // 가로스크롤 와인추천카드 위젯
+                    // RecommendWineCardWidget(context), // 가로스크롤 와인추천카드 위젯
                   ],
                 ),
               ),

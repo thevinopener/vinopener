@@ -1,7 +1,7 @@
 // lib/providers/search/search_wine_list_provider.dart
 import 'package:flutter/material.dart';
-import 'package:frontend/models/search/wine_name_result.dart';
-import 'package:frontend/models/search/wine_type_result.dart';
+import 'package:frontend/models/search/search_wine_name_result.dart';
+import 'package:frontend/models/search/search_wine_type_result.dart';
 import 'package:frontend/services/search_service.dart';
 
 String getWineType(String wineType) {
