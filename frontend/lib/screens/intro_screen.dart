@@ -19,7 +19,7 @@ class IntroScreen extends StatelessWidget {
     );
 
     return Scaffold(
-      backgroundColor: AppColors.secondary,
+      backgroundColor: AppColors.primary,
       body: Center(child: Image.asset('assets/images/splash_logo.png')),
     );
   }
