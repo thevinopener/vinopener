@@ -84,7 +84,10 @@ class ApiClient {
               eventBus.fire(UserLogOutEvent());
             }
           } else {
-            print('6번');
+            print('------------------------');
+            print(error.message);
+            print(error.response);
+            print('------------------------');
             return handler.next(error);
           }
         },
