@@ -657,7 +657,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                         ),
                       ),
                     ),
-                    RecommendWineCardWidget(context), // 가로스크롤 와인추천카드 위젯
+                    RecommendWineCardWidget(context, recommendType: 'view'), // 가로스크롤 와인추천카드 위젯
                   ],
                 ),
               ),
