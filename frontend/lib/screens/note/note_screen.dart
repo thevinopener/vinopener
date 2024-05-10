@@ -111,11 +111,7 @@ class _NoteScreenState extends State<NoteScreen> {
         children: [
           SizedBox(height: 20),
           NoteWineCard(wine: Provider.of<NoteWineProvider>(context).getWine()),
-          AnimatedContainer(
-            duration: Duration(milliseconds: 500),
-            curve: Curves.easeInOut,
-            // height: _heights[_currentPage],
-            height: MediaQuery.of(context).size.height * 0.68,
+          Expanded(
             child: PageView(
               controller: _controller,
               onPageChanged: (page) {
@@ -124,34 +120,14 @@ class _NoteScreenState extends State<NoteScreen> {
                 });
               },
               children: [
-                SingleChildScrollView(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.8,
-                    child: NoteColorScreen(
-                      controller: _controller,
-                    ),
-                  ),
+                NoteColorScreen(
+                  controller: _controller,
                 ),
-                SingleChildScrollView(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 2.0,
-                    child: NoteSmellScreen(
-                      controller: _controller,
-                    ),
-                  ),
+                NoteSmellScreen(
+                  controller: _controller,
                 ),
-                SingleChildScrollView(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 1.0,
-                    child: NoteTasteScreen(controller: _controller),
-                  ),
-                ),
-                SingleChildScrollView(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.8,
-                    child: NoteOpinionScreen(),
-                  ),
-                ),
+                NoteTasteScreen(controller: _controller),
+                NoteOpinionScreen(),
               ],
             ),
           ),
