@@ -12,6 +12,7 @@ class WineItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card.outlined(
+      color: Colors.white,
       child: Row(
         children: [
           Stack(

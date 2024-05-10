@@ -2,7 +2,7 @@ import 'package:frontend/models/wine_model.dart';
 
 class Cellar {
   final int id;
-  final String finishedDate;
+  final String? finishedDate;
   final int toalNotes;
   final Wine wine;
 

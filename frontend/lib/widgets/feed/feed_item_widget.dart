@@ -62,80 +62,85 @@ class _FeedItemState extends State<FeedItem> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return RepaintBoundary(
       key: _repaintKey,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundImage:
-                      NetworkImage('${widget.feed.user?.imageUrl}'),
-                    ),
-                    SizedBox(width: 10),
-                    Text('${widget.feed.user?.nickname}'),
-                  ],
-                ),
-                Text(formatDateTime(widget.feed.createdTime!)),
-              ],
-            ),
-            SizedBox(height: 5),
-            Image.network(
-              '${widget.feed.imageUrl}',
-              width: 400,
-              height: 400,
-              fit: BoxFit.cover,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      padding: EdgeInsets.all(0),
-                      onPressed: _toggleLike,
-                      icon: Icon(widget.feed.isLiked!
-                          ? Icons.favorite
-                          : Icons.favorite_outline),
-                    ),
-                    Text('${widget.feed.likeCount}'),
-                  ],
-                ),
-                Spacer(),
-                IconButton(
-                  icon: Icon(Icons.ios_share),
-                  onPressed: _shareAsImage,
-                ),
-              ],
-            ),
-            Column(
-              children: widget.feed.wineList
-                  ?.map((wine) =>
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) =>
-                                  SearchDetailScreen(wineId: wine.id!)),
-                        ).then((_) =>
-                            Provider.of<FeedTabState>(context,
-                                listen: false)
-                                .setFeedList());
-                      },
-                      child: WineItem(wine: wine)))
-                  .toList() ??
-                  [],
-            ),
-            Text('${widget.feed.content}'),
-          ],
+      child: Container(
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage:
+                        NetworkImage('${widget.feed.user?.imageUrl}'),
+                      ),
+                      SizedBox(width: 10),
+                      Text('${widget.feed.user?.nickname}'),
+                    ],
+                  ),
+                  Text(formatDateTime(widget.feed.createdTime!)),
+                ],
+              ),
+              SizedBox(height: 5),
+              Image.network(
+                '${widget.feed.imageUrl}',
+                width: 400,
+                height: 400,
+                fit: BoxFit.cover,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        padding: EdgeInsets.all(0),
+                        onPressed: _toggleLike,
+                        icon: Icon(widget.feed.isLiked!
+                            ? Icons.favorite
+                            : Icons.favorite_outline),
+                      ),
+                      Text('${widget.feed.likeCount}'),
+                    ],
+                  ),
+                  Spacer(),
+                  IconButton(
+                    icon: Icon(Icons.ios_share),
+                    onPressed: _shareAsImage,
+                  ),
+                ],
+              ),
+              Column(
+                children: widget.feed.wineList
+                    ?.map((wine) =>
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) =>
+                                    SearchDetailScreen(wineId: wine.id!)),
+                          ).then((_) =>
+                              Provider.of<FeedTabState>(context,
+                                  listen: false)
+                                  .setFeedList());
+                        },
+                        child: WineItem(wine: wine)))
+                    .toList() ??
+                    [],
+              ),
+              Text('${widget.feed.content}'),
+            ],
+          ),
         ),
       ),
     );
