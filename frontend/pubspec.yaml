@@ -67,6 +67,9 @@ dependencies:
   # for text theme
   google_fonts: ^6.2.1
 
+  # for skeleton
+  shimmer: ^3.0.0
+
 flutter:
   uses-material-design: true
   assets:
