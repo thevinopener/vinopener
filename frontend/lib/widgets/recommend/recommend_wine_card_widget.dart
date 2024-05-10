@@ -1,14 +1,13 @@
-// recommend_wine_card_widget.dart
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/search/search_detail_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/providers/recommend_provider.dart';
 import 'package:frontend/models/recommend/recommend_wine_list.dart';
+import 'package:frontend/screens/search/search_detail_screen.dart';
 
 import '../common/atoms/nation_flag_widget.dart';
 
 Widget RecommendWineCardWidget(BuildContext context, {required String recommendType}) {
-  final recommendProvider = Provider.of<RecommendProvider>(context);
+  final recommendProvider = Provider.of<RecommendProvider>(context, listen: false);
   List<RecommendWine> wineList;
 
   // recommendType에 따라 해당 목록을 선택
@@ -33,11 +32,6 @@ Widget RecommendWineCardWidget(BuildContext context, {required String recommendT
       break;
   }
 
-  // API 결과를 가져오기 위해 호출
-  if (!recommendProvider.isLoading && wineList.isEmpty) {
-    recommendProvider.fetchRecommendWineList(recommendType);
-  }
-
   double screenWidth = MediaQuery.of(context).size.width;
   double cardWidth = screenWidth * 0.4;
 
@@ -55,7 +49,6 @@ Widget RecommendWineCardWidget(BuildContext context, {required String recommendT
               padding: EdgeInsets.only(right: 20, left: index == 0 ? 20 : 0),
               child: ElevatedButton(
                 onPressed: () {
-                  // 클릭 시 수행할 작업
                   Navigator.push(context, MaterialPageRoute(builder: (context) => SearchDetailScreen(wineId: wine.wineId)));
                 },
                 child: Column(
