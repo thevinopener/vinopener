@@ -1,0 +1,1 @@
+{"doc":"","fields":[],"enumConstants":[],"methods":[{"name":"getListWineChat","paramTypes":["java.lang.Long"],"doc":" 와인채팅 목록 조회\n\n @param wineId 와인 ID\n @return 와인채팅 목록\n"}],"constructors":[]}

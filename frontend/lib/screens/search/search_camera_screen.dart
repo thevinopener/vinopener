@@ -133,9 +133,9 @@ class _SearchCameraScreenState extends State<SearchCameraScreen> {
                           recognizedText,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
-                            color: AppColors.primary,
+                            color: AppColors.secondary,
                             fontSize: 25,
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),

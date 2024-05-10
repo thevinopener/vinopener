@@ -71,7 +71,8 @@ class _MyAppState extends State<MyApp> {
         navigatorKey: navigatorKey,
         title: 'VinOpener',
         theme: ThemeData(
-          textTheme: GoogleFonts.gowunDodumTextTheme(),
+          fontFamily: GoogleFonts.gowunDodum().fontFamily,
+          // textTheme: GoogleFonts.gowunDodumTextTheme(),
           appBarTheme: AppBarTheme(
             color: AppColors.backgroundColor,
           ),
