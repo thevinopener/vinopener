@@ -11,6 +11,7 @@ import 'package:frontend/widgets/note/note_wine_card_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/fonts.dart';
+import '../../constants/icon.dart';
 import 'note_ai_screen.dart';
 
 class NoteScreen extends StatefulWidget {
@@ -22,6 +23,40 @@ class _NoteScreenState extends State<NoteScreen> {
   int _currentPage = 0;
   final PageController _controller = PageController();
   late List<double> _heights; // 늦은 초기화를 사용하여 선언
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeNoteProvider();
+    });
+  }
+
+  void _initializeNoteProvider() {
+    try {
+      final noteProvider = Provider.of<NoteProvider>(context, listen: false);
+      final noteWineProvider = Provider.of<NoteWineProvider>(context, listen: false);
+      final Wine? wine = noteWineProvider.getWine();
+  print(wine);
+      if (wine == null) {
+        print('Wine data is not loaded.');
+        return;
+      }
+
+
+      noteProvider.updateNoteProvider(
+          wineId: wine.id ?? 0,
+          tannin: wine.tannin ?? 0.0,
+          sweetness: wine.sweetness ?? 0.0,
+          intensity: wine.intensity ?? 0.0,
+          acidity: wine.acidity ?? 0.0,
+          rating: wine.rating ?? 0.0,
+      );
+    } catch (e) {
+      print('Failed to initialize note provider: $e');
+    }
+  }
+
 
   Future<void> _showBottomSheet(BuildContext context) async {
     showModalBottomSheet(

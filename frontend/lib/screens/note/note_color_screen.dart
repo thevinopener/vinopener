@@ -1,14 +1,9 @@
-import 'package:floating_chat_button/floating_chat_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
-import 'package:frontend/screens/note/note_smell_screen.dart';
-
-import '../../models/wine_model.dart';
 import '../../widgets/note/note_select_color_widget.dart';
-import '../../widgets/note/note_wine_card_widget.dart';
 
 class NoteColorScreen extends StatelessWidget {
   final PageController controller;
