@@ -56,21 +56,28 @@ class _FeedScreenState extends State<FeedScreen> {
       ),
       body: Consumer<FeedTabState>(
         builder: (context, provider, child) {
-          return provider.isLoading
-              ? FeedItemSkeleton()
-              : ListView.builder(
-            itemCount: provider.feedList.length,
-            itemBuilder: (context, index) {
-              if (provider.feedList[index].isPublic!) {
-                return FeedItem(feed: provider.feedList[index]);
-              } else {
-                return SizedBox.shrink();
-              }
-            },
+          return RefreshIndicator(
+            onRefresh: _refreshFeedList,
+            child: provider.isLoading
+                ? FeedItemSkeleton()
+                : ListView.builder(
+                    itemCount: provider.feedList.length,
+                    itemBuilder: (context, index) {
+                      if (provider.feedList[index].isPublic!) {
+                        return FeedItem(feed: provider.feedList[index]);
+                      } else {
+                        return SizedBox.shrink();
+                      }
+                    },
+                  ),
           );
         },
       ),
     );
+  }
+
+  Future<void> _refreshFeedList() async {
+    Provider.of<FeedTabState>(context, listen: false).setFeedList();
   }
 }
 
@@ -79,7 +86,7 @@ Widget FeedItemSkeleton() {
     baseColor: Colors.grey[300]!,
     highlightColor: Colors.grey[100]!,
     child: ListView.builder(
-      itemCount: 1,  // 예를 들어 6개의 스켈레톤 아이템을 생성
+      itemCount: 1, // 예를 들어 6개의 스켈레톤 아이템을 생성
       itemBuilder: (context, index) => Container(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
