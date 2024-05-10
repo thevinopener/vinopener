@@ -11,6 +11,11 @@ spring:
     consumer:
       auto-offset-reset: earliest
 
+
+kafka:
+  topics:
+    update-view: updateView
+
 ---
 
 spring:
