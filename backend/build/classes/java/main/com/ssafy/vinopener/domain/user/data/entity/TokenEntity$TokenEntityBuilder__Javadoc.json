@@ -1,0 +1,1 @@
+{"doc":"","fields":[],"enumConstants":[],"methods":[{"name":"userId","paramTypes":["java.lang.Long"],"doc":"@return {@code this}."},{"name":"refreshToken","paramTypes":["java.lang.String"],"doc":"@return {@code this}."},{"name":"ttl","paramTypes":["java.lang.Long"],"doc":"@return {@code this}."}],"constructors":[]}
