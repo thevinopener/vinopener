@@ -23,7 +23,7 @@ class NoteProvider with ChangeNotifier {
     this.acidity = 0.0,
     this.alcohol = 0.0,
     this.tannin = 0.0,
-    this.opinion = '',
+    this.opinion = "",
     this.rating = 0.0,
   }) : this.flavourTasteIds = flavourTasteIds != null ? List<int>.from(flavourTasteIds) : <int>[];
 
@@ -76,7 +76,7 @@ class NoteProvider with ChangeNotifier {
     acidity = 0.0;
     alcohol = 0.0;
     tannin = 0.0;
-    opinion = '';
+    opinion = "";
     rating = 0.0;
     notifyListeners();
   }

@@ -20,25 +20,20 @@ class WineFlavour extends StatelessWidget {
     return Container(
       width: dimension,
       height: dimension,
-      margin: EdgeInsets.all(dimension / 20),
+      padding: EdgeInsets.all(dimension / 20),
       // 선택된 상태에 따라 두꺼운 테두리를 조건부로 적용
       decoration: isSelected
           ? BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.primary, width: 3.0), // 두꺼운 테두리 적용
+        border: Border.all(color: AppColors.primary, width: 2.0), // 두꺼운 테두리 적용
       )
-          : null,
+          : BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.transparent, width: 2.0), // 두꺼운 테두리 적용
+      ),
       child: Container(
-        margin: EdgeInsets.all(dimension / 20),
-        decoration: ShapeDecoration(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        child:
-        Container(
-          width: dimension,
-        height: dimension,
+        width: dimension*0.9,
+        height: dimension*0.9,
         decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -46,17 +41,18 @@ class WineFlavour extends StatelessWidget {
           shadows: [
             BoxShadow(
               color: Color(0x3F000000),
-              blurRadius: 8,
-              offset: Offset(0, 1),
-              spreadRadius: -3,
+              blurRadius: 4,
+              offset: Offset(0, 0),
+              spreadRadius: -4,
             )
           ],
         ),
-        child:Column(
+        child:
+        Column(
           children: [
             Container(
               alignment: Alignment.center,
-              height: dimension * 0.5,
+              height: dimension * 0.55,
               decoration: BoxDecoration(
                 color: AppColors.white,
                 borderRadius: BorderRadius.only(
@@ -88,7 +84,6 @@ class WineFlavour extends StatelessWidget {
             ),
           ],
         ),),
-      ),
     );
   }
 }

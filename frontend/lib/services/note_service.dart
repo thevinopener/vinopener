@@ -5,12 +5,20 @@ import 'package:frontend/utils/api_client.dart';
 import '../models/note_model.dart';
 
 class AiChatService {
-  static Future<dynamic> postSurvey(AiChat aiChat) async {
-    final response = await ApiClient().dio.post('/ai-chat', data: aiChat);
-    if (response.statusCode == 200) {
-      return response.statusCode;
+  static Future<AiAnswer> postSurvey(AiChat aiChat) async {
+    try {
+      print('Sending data: ${aiChat.toJson()}');  // 요청 데이터 로깅
+      final response = await ApiClient().dio.post('/ai-chats', data: aiChat.toJson());
+      print('Received response: ${response.data}');  // 응답 데이터 로깅
+      if (response.statusCode == 200) {
+        return AiAnswer.fromJson(response.data);
+      } else {
+        throw Exception("Failed to post survey with status code: ${response.statusCode}");
+      }
+    } catch (e) {
+      print('Error during API call: $e');
+      throw Exception("An error occurred while posting survey: $e");
     }
-    throw Error();
   }
 }
 
