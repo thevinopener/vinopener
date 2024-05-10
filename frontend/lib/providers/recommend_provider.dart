@@ -1,4 +1,3 @@
-// recommend_provider.dart
 import 'package:flutter/foundation.dart';
 import 'package:frontend/services/recommend_service.dart';
 import 'package:frontend/models/recommend/recommend_wine_list.dart';
@@ -22,46 +21,23 @@ class RecommendProvider with ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  Future<void> fetchRecommendWineList(String recommendType) async {
+  Future<void> fetchAllRecommendations() async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      switch (recommendType) {
-        case 'view':
-          _viewRecommendWineList = await RecommendService.getViewRecommend();
-          break;
-        case 'preference':
-          _preferenceRecommendWineList = await RecommendService.getPreferenceRecommend();
-          break;
-        case 'tasting-note':
-          _tastingNoteRecommendWineList = await RecommendService.getTastingNoteRecommend();
-          break;
-        case 'cellar':
-          _cellarRecommendWineList = await RecommendService.getCellarRecommend();
-          break;
-        case 'rate':
-          _rateRecommendWineList = await RecommendService.getRateRecommend();
-          break;
-      }
+      _viewRecommendWineList = await RecommendService.getViewRecommend();
+      _preferenceRecommendWineList = await RecommendService.getPreferenceRecommend();
+      _tastingNoteRecommendWineList = await RecommendService.getTastingNoteRecommend();
+      _cellarRecommendWineList = await RecommendService.getCellarRecommend();
+      _rateRecommendWineList = await RecommendService.getRateRecommend();
     } catch (e) {
-      switch (recommendType) {
-        case 'view':
-          _viewRecommendWineList = [];
-          break;
-        case 'preference':
-          _preferenceRecommendWineList = [];
-          break;
-        case 'tasting-note':
-          _tastingNoteRecommendWineList = [];
-          break;
-        case 'cellar':
-          _cellarRecommendWineList = [];
-          break;
-        case 'rate':
-          _rateRecommendWineList = [];
-          break;
-      }
+      // 실패 시 모든 목록을 빈 상태로 설정
+      _viewRecommendWineList = [];
+      _preferenceRecommendWineList = [];
+      _tastingNoteRecommendWineList = [];
+      _cellarRecommendWineList = [];
+      _rateRecommendWineList = [];
     } finally {
       _isLoading = false;
       notifyListeners();
