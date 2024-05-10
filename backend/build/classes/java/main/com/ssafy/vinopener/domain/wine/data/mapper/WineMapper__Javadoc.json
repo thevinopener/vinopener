@@ -1,0 +1,1 @@
+{"doc":"","fields":[],"enumConstants":[],"methods":[{"name":"toEntity","paramTypes":["com.ssafy.vinopener.domain.wine.data.dto.request.WineCreateRequest"],"doc":" 예제입니다. 실제로 사용하지 않습니다.\n"}],"constructors":[]}

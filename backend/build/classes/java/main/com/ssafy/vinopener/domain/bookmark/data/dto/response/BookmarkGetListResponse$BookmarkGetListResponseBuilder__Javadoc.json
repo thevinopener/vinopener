@@ -1,0 +1,1 @@
+{"doc":"","fields":[],"enumConstants":[],"methods":[{"name":"id","paramTypes":["java.lang.Long"],"doc":"@return {@code this}."},{"name":"wine","paramTypes":["com.ssafy.vinopener.domain.bookmark.data.dto.response.BookmarkGetListResponse.WineGetListResponse"],"doc":"@return {@code this}."}],"constructors":[]}

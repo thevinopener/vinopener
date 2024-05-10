@@ -1,0 +1,112 @@
+{
+  "groups": [
+    {
+      "name": "jwt",
+      "type": "com.ssafy.vinopener.global.config.props.JwtProps",
+      "sourceType": "com.ssafy.vinopener.global.config.props.JwtProps"
+    },
+    {
+      "name": "redis",
+      "type": "com.ssafy.vinopener.global.config.props.RedisProps",
+      "sourceType": "com.ssafy.vinopener.global.config.props.RedisProps"
+    },
+    {
+      "name": "s3",
+      "type": "com.ssafy.vinopener.global.config.props.S3Props",
+      "sourceType": "com.ssafy.vinopener.global.config.props.S3Props"
+    },
+    {
+      "name": "spring.security.oauth2.client.registration.google",
+      "type": "com.ssafy.vinopener.global.config.props.GoogleClientProps",
+      "sourceType": "com.ssafy.vinopener.global.config.props.GoogleClientProps"
+    }
+  ],
+  "properties": [
+    {
+      "name": "jwt.access-expiration-seconds",
+      "type": "java.time.Duration",
+      "sourceType": "com.ssafy.vinopener.global.config.props.JwtProps"
+    },
+    {
+      "name": "jwt.access-secret-key-base64",
+      "type": "java.lang.String",
+      "sourceType": "com.ssafy.vinopener.global.config.props.JwtProps"
+    },
+    {
+      "name": "jwt.refresh-expiration-seconds",
+      "type": "java.time.Duration",
+      "sourceType": "com.ssafy.vinopener.global.config.props.JwtProps"
+    },
+    {
+      "name": "jwt.refresh-secret-key-base64",
+      "type": "java.lang.String",
+      "sourceType": "com.ssafy.vinopener.global.config.props.JwtProps"
+    },
+    {
+      "name": "redis.ttl",
+      "type": "java.lang.Long",
+      "sourceType": "com.ssafy.vinopener.global.config.props.RedisProps"
+    },
+    {
+      "name": "s3.access-key-id",
+      "type": "java.lang.String",
+      "sourceType": "com.ssafy.vinopener.global.config.props.S3Props"
+    },
+    {
+      "name": "s3.bucket",
+      "type": "java.lang.String",
+      "sourceType": "com.ssafy.vinopener.global.config.props.S3Props"
+    },
+    {
+      "name": "s3.endpoint",
+      "type": "java.lang.String",
+      "sourceType": "com.ssafy.vinopener.global.config.props.S3Props"
+    },
+    {
+      "name": "s3.public-base-url",
+      "type": "java.lang.String",
+      "sourceType": "com.ssafy.vinopener.global.config.props.S3Props"
+    },
+    {
+      "name": "s3.region",
+      "type": "java.lang.String",
+      "sourceType": "com.ssafy.vinopener.global.config.props.S3Props"
+    },
+    {
+      "name": "s3.secret-access-key",
+      "type": "java.lang.String",
+      "sourceType": "com.ssafy.vinopener.global.config.props.S3Props"
+    },
+    {
+      "name": "spring.security.oauth2.client.registration.google.access-token-url",
+      "type": "java.lang.String",
+      "sourceType": "com.ssafy.vinopener.global.config.props.GoogleClientProps"
+    },
+    {
+      "name": "spring.security.oauth2.client.registration.google.authorization-code",
+      "type": "java.lang.String",
+      "sourceType": "com.ssafy.vinopener.global.config.props.GoogleClientProps"
+    },
+    {
+      "name": "spring.security.oauth2.client.registration.google.client-id",
+      "type": "java.lang.String",
+      "sourceType": "com.ssafy.vinopener.global.config.props.GoogleClientProps"
+    },
+    {
+      "name": "spring.security.oauth2.client.registration.google.client-secret",
+      "type": "java.lang.String",
+      "sourceType": "com.ssafy.vinopener.global.config.props.GoogleClientProps"
+    },
+    {
+      "name": "spring.security.oauth2.client.registration.google.profile-url",
+      "type": "java.lang.String",
+      "sourceType": "com.ssafy.vinopener.global.config.props.GoogleClientProps"
+    },
+    {
+      "name": "spring.security.oauth2.client.registration.google.redirect-uri",
+      "type": "java.lang.String",
+      "sourceType": "com.ssafy.vinopener.global.config.props.GoogleClientProps"
+    }
+  ],
+  "hints": []
+}
