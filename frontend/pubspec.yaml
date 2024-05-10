@@ -64,6 +64,9 @@ dependencies:
   share_plus: ^9.0.0
   screenshot: ^2.3.0
 
+  # for text theme
+  google_fonts: ^6.2.1
+
 flutter:
   uses-material-design: true
   assets:
