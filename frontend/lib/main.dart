@@ -17,7 +17,7 @@ import 'providers/bottombar_provider.dart';
 import 'providers/search/search_wine_list_provider.dart';
 import 'providers/search/search_wine_detail_provider.dart';
 import 'providers/search/search_history_provider.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -71,6 +71,7 @@ class _MyAppState extends State<MyApp> {
         navigatorKey: navigatorKey,
         title: 'VinOpener',
         theme: ThemeData(
+          textTheme: GoogleFonts.gowunDodumTextTheme(),
           appBarTheme: AppBarTheme(
             color: AppColors.backgroundColor,
           ),

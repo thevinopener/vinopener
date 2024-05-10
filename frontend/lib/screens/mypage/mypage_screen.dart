@@ -17,6 +17,15 @@ import 'package:frontend/widgets/mypage/bookmark_wine_item.dart';
 import 'package:frontend/widgets/mypage/cellar_wine_item.dart';
 import 'package:provider/provider.dart';
 
+class CustomCupertinoPageRoute extends CupertinoPageRoute {
+  CustomCupertinoPageRoute(
+      {required WidgetBuilder builder, required RouteSettings settings})
+      : super(builder: builder, settings: settings);
+
+  @override
+  Duration get transitionDuration => Duration(milliseconds: 750); // 전환 시간을 1초로 설정
+}
+
 class MyPageScreen extends StatefulWidget {
   const MyPageScreen({super.key});
 
@@ -171,9 +180,10 @@ class _MyPageScreenState extends State<MyPageScreen>
                             onTap: () {
                               Navigator.push(
                                 context,
-                                CupertinoPageRoute(
+                                CustomCupertinoPageRoute(
                                   builder: (context) =>
                                       FeedDetailScreen(snapshot.data[index]),
+                                  settings: RouteSettings(),
                                 ),
                               ).then((_) {
                                 setState(() {
