@@ -41,7 +41,7 @@ class LoginScreen extends StatelessWidget {
           accessToken: googleAuth?.accessToken,
           idToken: googleAuth?.idToken,
         );
-        await FirebaseAuth.instance.signInWithCredential(credential);
+        // await FirebaseAuth.instance.signInWithCredential(credential);
         return credential.accessToken;
       } catch (error) {
         ScaffoldMessenger.of(context)

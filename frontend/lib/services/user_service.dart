@@ -19,7 +19,7 @@ class UserService {
 
   static void logout() async {
     await ApiClient().dio.delete('/users/logout');
-    await FirebaseAuth.instance.signOut();
+    // await FirebaseAuth.instance.signOut();
     await GoogleSignIn().signOut();
   }
 
