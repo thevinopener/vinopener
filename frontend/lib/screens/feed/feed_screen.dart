@@ -1,21 +1,11 @@
-//
-import 'package:frontend/constants/fonts.dart';
-
-//
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
-//
 import 'package:provider/provider.dart';
-
-//
 import 'package:frontend/providers/feed/feed_tab_state_provider.dart';
-
-//
 import 'package:frontend/widgets/feed/feed_item_widget.dart';
-
-//
 import 'package:frontend/screens/feed/feed_img_screen.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:frontend/constants/fonts.dart';
 
 class FeedScreen extends StatefulWidget {
   FeedScreen({super.key});
@@ -66,7 +56,9 @@ class _FeedScreenState extends State<FeedScreen> {
       ),
       body: Consumer<FeedTabState>(
         builder: (context, provider, child) {
-          return ListView.builder(
+          return provider.isLoading
+              ? FeedItemSkeleton()
+              : ListView.builder(
             itemCount: provider.feedList.length,
             itemBuilder: (context, index) {
               if (provider.feedList[index].isPublic!) {
@@ -80,4 +72,42 @@ class _FeedScreenState extends State<FeedScreen> {
       ),
     );
   }
+}
+
+Widget FeedItemSkeleton() {
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: ListView.builder(
+      itemCount: 1,  // 예를 들어 6개의 스켈레톤 아이템을 생성
+      itemBuilder: (context, index) => Container(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(),
+                      SizedBox(width: 10),
+                      Container(width: 40, height: 8, color: Colors.white),
+                    ],
+                  ),
+                  Container(width: 40, height: 8, color: Colors.white),
+                ],
+              ),
+              SizedBox(height: 5),
+              Container(width: 400, height: 400, color: Colors.white),
+              SizedBox(height: 30),
+              Container(width: 400, height: 120, color: Colors.white),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }
