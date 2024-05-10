@@ -6,7 +6,6 @@ import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/models/bookmark/bookmark.dart';
 import 'package:frontend/models/cellar/cellar.dart';
 import 'package:frontend/models/feed.dart';
-import 'package:frontend/models/wine_model.dart';
 import 'package:frontend/providers/user_provider.dart';
 import 'package:frontend/screens/feed/feed_detail_screen.dart';
 import 'package:frontend/screens/mypage/mypage_setting_screen.dart';
@@ -46,8 +45,6 @@ class _MyPageScreenState extends State<MyPageScreen>
   }
 
   void _handleTabSelection() {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-
     if (_tabController.indexIsChanging) {
       setState(() {
         switch (_tabController.index) {
@@ -73,7 +70,6 @@ class _MyPageScreenState extends State<MyPageScreen>
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
     final user = Provider.of<UserProvider>(context).user;
 
     myFeedList = FeedService.getMyFeedList();
@@ -185,11 +181,14 @@ class _MyPageScreenState extends State<MyPageScreen>
                                 });
                               });
                             },
-                            child: Image.network(
-                              snapshot.data[index].imageUrl,
-                              width: 135,
-                              height: 135,
-                              fit: BoxFit.cover,
+                            child: Hero(
+                              tag: 'feedImage${snapshot.data[index].id}',
+                              child: Image.network(
+                                snapshot.data[index].imageUrl,
+                                width: 135,
+                                height: 135,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           );
                         },
