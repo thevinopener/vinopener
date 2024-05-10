@@ -76,9 +76,10 @@ public class FeedController {
     @GetMapping
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<List<FeedGetListResponse>> getList(
-            // TODO: pagination 추가
+            @UserPrincipalId final Long userId
     ) {
-        return ResponseEntity.ok(feedService.getList());
+        // TODO: pagination 추가
+        return ResponseEntity.ok(feedService.getList(userId));
     }
 
     /**
@@ -90,9 +91,10 @@ public class FeedController {
     @GetMapping(REQUEST_PATH_VARIABLE)
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<FeedGetResponse> getFeed(
-            @PathVariable final Long feedId
+            @PathVariable final Long feedId,
+            @UserPrincipalId final Long userId
     ) {
-        return ResponseEntity.ok(feedService.get(feedId));
+        return ResponseEntity.ok(feedService.get(feedId, userId));
     }
 
     /**
@@ -104,7 +106,6 @@ public class FeedController {
     @GetMapping("/my")
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<List<FeedGetListResponse>> getMyFeedList(
-//            @PathVariable("userId") final Long userId
             @UserPrincipalId final Long userId
     ) {
         return ResponseEntity.ok(feedService.getMyFeedList(userId));

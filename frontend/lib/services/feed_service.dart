@@ -27,14 +27,6 @@ class FeedService {
     print('postFeed');
   }
 
-  static Future<Feed> getFeed() async {
-    return Feed.dummy();
-  }
-
-  static Future<List<Feed>> getDummyList() async {
-    return [];
-  }
-
   static Future<List<Feed>> getFeedList() async {
     var response = await ApiClient().dio.get('/feeds');
     if (response.statusCode == 200) {
@@ -47,42 +39,24 @@ class FeedService {
 
   static Future<List<Feed>> getMyFeedList() async {
     print('getMyFeedList');
-    // var response = await ApiClient().dio.get('/feeds/my');
-    // if (response.statusCode == 200) {
-    //   List<dynamic> responseData = response.data;
-    //   List<Feed> myFeedList = responseData.map((feedData) => Feed.fromJson(feedData)).toList();
-    //   return myFeedList;
-    // }
-    // throw Error();
-    print('getMyFeedList');
-    List<Feed> myFeedList = [];
-    for (int i = 0; i < 10; i++) {
-      myFeedList.add(Feed.dummy());
+    var response = await ApiClient().dio.get('/feeds/my');
+    if (response.statusCode == 200) {
+      List<dynamic> responseData = response.data;
+      List<Feed> myFeedList = responseData.map((feedData) => Feed.fromJson(feedData)).toList();
+      return myFeedList;
     }
-    return myFeedList;
+    throw Error();
   }
 
   static void deleteFeed(Feed feed) async {
     print('deleteFeed');
   }
 
-  static void setFeedPrivate(Feed feed) async {
-    print('setFeedPrivate');
+  static void switchPublic(int feedId) async {
+    await ApiClient().dio.post('/feeds/public/${feedId}');
   }
 
-  static void setFeedPublic(Feed feed) async {
-    print('setFeedPublic');
-  }
-
-  static void likeFeed() async {
-    print('likeFeed');
-  }
-
-  static void cancelLikeOnFeed() async {
-    print('cancelLikeOnFeed');
-  }
-
-  static void switchLikeOnFeed(int feedId) async {
-    await ApiClient().dio.get('/feeds/like/${feedId}');
+  static void switchLike(int feedId) async {
+    await ApiClient().dio.post('/feeds/like/${feedId}');
   }
 }

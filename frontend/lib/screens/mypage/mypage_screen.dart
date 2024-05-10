@@ -6,17 +6,13 @@ import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/models/bookmark/bookmark.dart';
 import 'package:frontend/models/cellar/cellar.dart';
 import 'package:frontend/models/feed.dart';
-import 'package:frontend/models/wine_model.dart';
 import 'package:frontend/providers/user_provider.dart';
 import 'package:frontend/screens/feed/feed_detail_screen.dart';
 import 'package:frontend/screens/mypage/mypage_setting_screen.dart';
+import 'package:frontend/screens/search/search_detail_screen.dart';
 import 'package:frontend/services/bookmark_service.dart';
 import 'package:frontend/services/cellar_service.dart';
 import 'package:frontend/services/feed_service.dart';
-import 'package:frontend/services/wine_service.dart';
-import 'package:frontend/widgets/common/molecules/wine_item_widget.dart';
-import 'package:frontend/widgets/common/templates/wine_detail_template.dart';
-import 'package:frontend/widgets/feed/feed_wine_item.dart';
 import 'package:frontend/widgets/mypage/bookmark_wine_item.dart';
 import 'package:frontend/widgets/mypage/cellar_wine_item.dart';
 import 'package:provider/provider.dart';
@@ -43,14 +39,12 @@ class _MyPageScreenState extends State<MyPageScreen>
     _tabController = TabController(length: 3, vsync: this); // 3개의 탭
     _tabController.addListener(_handleTabSelection);
 
-    myFeedList = FeedService.getDummyList();
+    myFeedList = FeedService.getMyFeedList();
     listBookmark = BookmarkService.getListBookmark();
     listCellar = CellarService.getListCellar();
   }
 
   void _handleTabSelection() {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-
     if (_tabController.indexIsChanging) {
       setState(() {
         switch (_tabController.index) {
@@ -76,7 +70,6 @@ class _MyPageScreenState extends State<MyPageScreen>
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
     final user = Provider.of<UserProvider>(context).user;
 
     myFeedList = FeedService.getMyFeedList();
@@ -188,11 +181,14 @@ class _MyPageScreenState extends State<MyPageScreen>
                                 });
                               });
                             },
-                            child: Image.network(
-                              snapshot.data[index].imageUrl,
-                              width: 135,
-                              height: 135,
-                              fit: BoxFit.cover,
+                            child: Hero(
+                              tag: 'feedImage${snapshot.data[index].id}',
+                              child: Image.network(
+                                snapshot.data[index].imageUrl,
+                                width: 135,
+                                height: 135,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           );
                         },
@@ -224,8 +220,8 @@ class _MyPageScreenState extends State<MyPageScreen>
                               Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                  builder: (context) => WineDetailScreen(
-                                      wine: snapshot.data[index].wine),
+                                  builder: (context) => SearchDetailScreen(
+                                      wineId: snapshot.data[index].wine.id),
                                 ),
                               ).then((_) {
                                 setState(() {
@@ -264,8 +260,8 @@ class _MyPageScreenState extends State<MyPageScreen>
                               Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                  builder: (context) => WineDetailScreen(
-                                      wine: snapshot.data[index].wine),
+                                  builder: (context) => SearchDetailScreen(
+                                      wineId: snapshot.data[index].wine.id),
                                 ),
                               ).then((_) {
                                 setState(() {

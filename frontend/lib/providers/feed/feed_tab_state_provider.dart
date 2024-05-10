@@ -12,6 +12,7 @@ class FeedTabState with ChangeNotifier {
 
   void setFeedList() async {
     _feedList = await FeedService.getFeedList();
+    _feedList = _feedList.reversed.toList();
     notifyListeners();
   }
 }

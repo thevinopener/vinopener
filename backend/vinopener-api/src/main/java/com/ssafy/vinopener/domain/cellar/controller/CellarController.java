@@ -124,4 +124,20 @@ public class CellarController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * 셀러 아이템 삭제 : wineID
+     *
+     * @param wineId 와인 ID
+     * @param userId 유저 ID
+     */
+    @DeleteMapping("/delete" + "/{wineId}")
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    public ResponseEntity<Void> deleteByWineId(
+            @PathVariable final Long wineId,
+            @UserPrincipalId final Long userId
+    ) {
+        cellarService.deleteByWineId(wineId, userId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

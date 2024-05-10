@@ -5,12 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:frontend/constants/colors.dart';
 import 'package:frontend/models/feed.dart';
 import 'package:frontend/providers/feed/feed_tab_state_provider.dart';
-import 'package:frontend/screens/search/search_detail_screen.dart';
 import 'package:frontend/services/feed_service.dart';
 import 'package:frontend/utils/date_time_util.dart';
+import 'package:frontend/widgets/common/molecules/custom_list_tile_widget.dart';
 import 'package:frontend/widgets/common/molecules/wine_item_widget.dart';
+import 'package:frontend/widgets/common/templates/wine_detail_template.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -60,6 +62,8 @@ class _FeedItemState extends State<FeedItem> {
     });
   }
 
+  // test
+
   @override
   Widget build(BuildContext context) {
     return RepaintBoundary(
@@ -77,7 +81,7 @@ class _FeedItemState extends State<FeedItem> {
                   children: [
                     CircleAvatar(
                       backgroundImage:
-                      NetworkImage('${widget.feed.user?.imageUrl}'),
+                          NetworkImage('${widget.feed.user?.imageUrl}'),
                     ),
                     SizedBox(width: 10),
                     Text('${widget.feed.user?.nickname}'),
@@ -87,11 +91,14 @@ class _FeedItemState extends State<FeedItem> {
               ],
             ),
             SizedBox(height: 5),
-            Image.network(
-              '${widget.feed.imageUrl}',
-              width: 400,
-              height: 400,
-              fit: BoxFit.cover,
+            Hero(
+              tag: 'feedImage${widget.feed.id}',
+              child: Image.network(
+                '${widget.feed.imageUrl}',
+                width: 400,
+                height: 400,
+                fit: BoxFit.cover,
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -101,9 +108,8 @@ class _FeedItemState extends State<FeedItem> {
                     IconButton(
                       padding: EdgeInsets.all(0),
                       onPressed: _toggleLike,
-                      icon: Icon(widget.feed.isLiked!
-                          ? Icons.favorite
-                          : Icons.favorite_outline),
+                      icon:
+                          Icon(widget.feed.isLiked! ? Icons.favorite : Icons.favorite_outline),
                     ),
                     Text('${widget.feed.likeCount}'),
                   ],
@@ -117,24 +123,42 @@ class _FeedItemState extends State<FeedItem> {
             ),
             Column(
               children: widget.feed.wineList
-                  ?.map((wine) =>
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) =>
-                                  SearchDetailScreen(wineId: wine.id!)),
-                        ).then((_) =>
-                            Provider.of<FeedTabState>(context,
-                                listen: false)
-                                .setFeedList());
-                      },
-                      child: WineItem(wine: wine)))
-                  .toList() ??
+                      ?.map((wine) => GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) =>
+                                      WineDetailScreen(wine: wine)),
+                            ).then((_) =>
+                                Provider.of<FeedTabState>(context, listen: false)
+                                    .setFeedList());
+                          },
+                          child: WineItem(wine: wine)))
+                      .toList() ??
                   [],
             ),
             Text('${widget.feed.content}'),
+            SizedBox(height: 5),
+            CustomListTile(
+              leadingIcon: Icons.visibility_off_outlined,
+              title: '공개 여부',
+              trailing: Switch(
+                value: widget.feed.isPublic!,
+                onChanged: (bool value) {
+                  setState(() {
+                    FeedService.switchPublic(widget.feed.id);
+                    widget.feed.isPublic = !widget.feed.isPublic!;
+                  });
+                },
+                activeColor: AppColors.primary,
+                activeTrackColor: AppColors.primary,
+                inactiveTrackColor: Colors.grey,
+                thumbColor: MaterialStateProperty.all(Colors.white),
+                trackOutlineColor:
+                MaterialStateProperty.all(Colors.transparent),
+              ),
+            ),
           ],
         ),
       ),

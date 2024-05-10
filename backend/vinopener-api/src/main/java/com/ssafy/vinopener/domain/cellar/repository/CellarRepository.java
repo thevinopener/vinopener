@@ -17,4 +17,10 @@ public interface CellarRepository extends JpaRepository<CellarEntity, Long> {
 
     boolean existsByWineIdAndUserId(Long windId, Long userId);
 
+//    @Modifying
+//    @Query("DELETE FROM cellar_wine c WHERE c.wine.id = :wineId AND c.user.id = :userId")
+//    void deleteByWineId(Long userId, Long wineId);
+
+    void deleteByWineIdAndUserId(Long wineId, Long userId);
+
 }
