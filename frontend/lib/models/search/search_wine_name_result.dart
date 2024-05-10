@@ -1,4 +1,4 @@
-// lib/model/wine_name_result.dart
+// lib/model/search_wine_name_result.dart
 class WineNameResult {
   final int id;
   final String name;

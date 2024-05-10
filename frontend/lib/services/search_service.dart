@@ -3,9 +3,9 @@
 import 'dart:isolate';
 
 import 'package:dio/dio.dart';
-import 'package:frontend/models/search/wine_name_result.dart';
-import 'package:frontend/models/search/wine_type_result.dart';
-import 'package:frontend/models/search/wine_detail.dart';
+import 'package:frontend/models/search/search_wine_name_result.dart';
+import 'package:frontend/models/search/search_wine_type_result.dart';
+import 'package:frontend/models/search/search_wine_detail.dart';
 import 'package:frontend/models/search/search_history.dart';
 import 'package:frontend/utils/api_client.dart';
 
