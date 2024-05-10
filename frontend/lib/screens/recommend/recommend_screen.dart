@@ -36,7 +36,11 @@ class _RecommendScreenState extends State<RecommendScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Recommend'),
+        title: Image.asset(
+          'assets/images/logo.png',
+          width: 135,
+          height: 22.5,
+        ),
         actions: <Widget>[
           TextButton.icon(
             onPressed: () {
@@ -135,10 +139,10 @@ class _RecommendScreenState extends State<RecommendScreen> {
 
   // 와인 추천 섹션을 위한 공통 메서드
   Widget _buildWineRecommendationSection(
-      BuildContext context, {
-        required String title,
-        required String recommendType,
-      }) {
+    BuildContext context, {
+    required String title,
+    required String recommendType,
+  }) {
     return SizedBox(
       width: double.infinity,
       child: Padding(

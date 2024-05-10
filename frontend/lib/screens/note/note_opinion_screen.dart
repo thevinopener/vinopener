@@ -7,11 +7,6 @@ import 'package:frontend/services/note_service.dart';
 import 'package:frontend/widgets/note/note_write_opinion_widget.dart';
 import 'package:provider/provider.dart';
 
-
-
-
-
-import '../../models/wine_model.dart';
 import '../../providers/note/note_wine_provider.dart';
 
 

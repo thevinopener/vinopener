@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/constants/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:camera/camera.dart';
 import 'package:frontend/providers/bottombar_provider.dart';
@@ -75,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 bottomBarProvider.setIndex(index);
                 _pageController.jumpToPage(index + 1); // 페이지 컨트롤러의 인덱스 조정
               },
-              selectedItemColor: Colors.orange,
+              selectedItemColor: AppColors.primary,
               items: [
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
                 BottomNavigationBarItem(

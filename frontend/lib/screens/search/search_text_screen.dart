@@ -1,10 +1,14 @@
 // flutter
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 // constants
 import 'package:frontend/constants/fonts.dart';
+
 // provider
 import 'package:frontend/providers/search/search_history_provider.dart';
 import 'package:frontend/screens/search/search_result_screen.dart';
+
 // screens
 import 'package:frontend/widgets/search/search_bar_widget.dart';
 import 'package:provider/provider.dart';
@@ -100,23 +104,31 @@ class _SearchTextScreenState extends State<SearchTextScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => SearchResultScreen(
-                                          searchValue:
-                                              recentSearchList[index].content),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  recentSearchList[index].content,
-                                  style: TextStyle(
+                              Expanded(
+                                child: TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SearchResultScreen(
+                                            searchValue:
+                                                recentSearchList[index].content),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    recentSearchList[index].content,
+                                    style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w400,
-                                      fontSize: AppFontSizes.mediumSmall),
+                                      fontSize: AppFontSizes.mediumSmall,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  style: TextButton.styleFrom(
+                                    alignment: Alignment.centerLeft, // Align the button's content to the left
+                                    padding: EdgeInsets.symmetric(horizontal: 20), // Remove any default padding that might center the text
+                                  ),
                                 ),
                               ),
                               IconButton(

@@ -88,6 +88,15 @@ class _FeedWineSearchScreenState extends State<FeedWineSearchScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              onSubmitted: (value) {
+                FocusScope.of(context).unfocus();
+                if (value == '') {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('검색어를 입력해주세요!')));
+                } else {
+                  _searchWines(value);
+                }
+              },
               controller: _searchController,
               decoration: InputDecoration(
                 suffixIcon: IconButton(

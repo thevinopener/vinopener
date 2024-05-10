@@ -18,7 +18,7 @@ class FeedWineItem extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
-          color: isSelected ? AppColors.primary : Colors.grey,
+          color: isSelected ? AppColors.secondary : Colors.grey,
           width: 2// Dynamic border color // Set the border width
         ),
         borderRadius: BorderRadius.circular(5),

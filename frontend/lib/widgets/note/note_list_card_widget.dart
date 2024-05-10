@@ -55,8 +55,9 @@ class NoteCard extends StatelessWidget {
                 width: dimension * 0.31,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      bottomLeft: Radius.circular(12)),
+                    topLeft: Radius.circular(12),
+                    bottomLeft: Radius.circular(12),
+                  ),
                   image: DecorationImage(
                     image: NetworkImage(wineNoteCard.wine.imageUrl),
                     fit: BoxFit.fitHeight, // 이미지가 컨테이너를 꽉 채우도록 설정
@@ -107,7 +108,9 @@ class NoteCard extends StatelessWidget {
                           height: 12,
                           width: 12,
                         ),
-                        SizedBox(width: 8,),
+                        SizedBox(
+                          width: 8,
+                        ),
                         Text(
                           wineNoteCard.wine.country,
                           style: TextStyle(fontSize: AppFontSizes.small),
@@ -129,8 +132,9 @@ class NoteCard extends StatelessWidget {
                                   child: Text(
                                     flavour.taste,
                                     style: TextStyle(
-                                        fontSize: AppFontSizes.verySmall,
-                                        color: AppColors.black),
+                                      fontSize: AppFontSizes.verySmall,
+                                      color: AppColors.black,
+                                    ),
                                   ),
                                 ))
                             .toList(),
@@ -143,7 +147,7 @@ class NoteCard extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.star,
-                      color: AppColors.primary,
+                      color: AppColors.secondary,
                     ),
                     SizedBox(
                       width: 8,
@@ -151,9 +155,10 @@ class NoteCard extends StatelessWidget {
                     Text(
                       wineNoteCard.rating.toString(),
                       style: TextStyle(
-                          fontSize: AppFontSizes.mediumSmall,
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.bold),
+                        fontSize: AppFontSizes.mediumSmall,
+                        color: AppColors.secondary,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 )

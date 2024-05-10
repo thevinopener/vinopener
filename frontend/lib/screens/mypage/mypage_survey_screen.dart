@@ -54,11 +54,6 @@ class _MyPageSurveyScreenState extends State<MyPageSurveyScreen> {
   }
 
   void _updateSurvey() {
-    if (_selectedKinds.isEmpty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('종류를 선택해주세요!')));
-      return;
-    }
 
     final survey = Survey(
       types: _selectedKinds,
