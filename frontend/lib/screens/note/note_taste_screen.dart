@@ -5,17 +5,15 @@ import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/widgets/note/note_taste_widget.dart';
 
-
 class NoteTasteScreen extends StatelessWidget {
   final PageController controller;
+
   const NoteTasteScreen({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
-
-
-    return Scaffold(
-      body: Container(
+    return SingleChildScrollView(
+      child: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -42,7 +40,9 @@ class NoteTasteScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                controller.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                controller.nextPage(
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeInOut);
               },
               child: Text("다음", style: TextStyle(color: Colors.white)),
               style: TextButton.styleFrom(

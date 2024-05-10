@@ -5,16 +5,15 @@ import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/widgets/note/note_select_flavour_widget.dart';
 
-
 class NoteSmellScreen extends StatelessWidget {
   final PageController controller;
+
   const NoteSmellScreen({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-      body: Container(
+    return SingleChildScrollView(
+      child: Container(
         alignment: Alignment.topCenter,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,15 +50,16 @@ class NoteSmellScreen extends StatelessWidget {
                   )
                 ],
               ),
-              child: NoteFlavour(
-              ),
+              child: NoteFlavour(),
             ),
             SizedBox(
               height: 20,
             ),
             TextButton(
               onPressed: () {
-                controller.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                controller.nextPage(
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeInOut);
               },
               child: Text("다음", style: TextStyle(color: Colors.white)),
               style: TextButton.styleFrom(
