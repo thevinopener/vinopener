@@ -1,5 +1,6 @@
 // flutter
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // constant
 import 'package:frontend/constants/colors.dart';
@@ -14,6 +15,7 @@ import 'package:frontend/widgets/common/atoms/wine_flavour_widget.dart';
 import 'package:frontend/widgets/recommend/recommend_wine_card_widget.dart';
 // package
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 const Map<String, Color> wineTypeColors = {
   'red': WineButtonColors.red,
@@ -65,44 +67,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
           builder: (context, wineDetailProvider, child) {
         // 로딩 중인 경우 로딩 화면 표시
         if (wineDetailProvider.isLoading) {
-          return Container(
-            width: double.infinity,
-            color: Colors.white,
-            child: Center(
-              child: Stack(
-                children: [
-                  Positioned(
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: double.infinity,
-                      height: double.infinity,
-                      child: const CircularProgressIndicator(
-                        color: AppColors.primary, // 예시로 색상 변경
-                        strokeWidth: 8,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 335,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: const Text(
-                        'Loading...',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // ),
-          );
+          return SearchDetailSkeleton(context);
         }
 
         // 와인 상세 정보가 없는 경우 예외 처리
@@ -657,7 +622,8 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                         ),
                       ),
                     ),
-                    RecommendWineCardWidget(context, recommendType: 'view'), // 가로스크롤 와인추천카드 위젯
+                    RecommendWineCardWidget(context,
+                        recommendType: 'view'), // 가로스크롤 와인추천카드 위젯
                   ],
                 ),
               ),
@@ -812,4 +778,100 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
       }),
     );
   }
+}
+
+Widget SearchDetailSkeleton(BuildContext context) {
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: Column(
+      children: [
+        // 스켈레톤 와인 이미지
+        Container(
+          width: double.infinity,
+          height: 300,
+          margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+          ),
+        ),
+        // 스켈레톤 주요 정보
+        Container(
+          width: 200,
+          height: 30,
+          margin: const EdgeInsets.all(10),
+          color: Colors.grey[200],
+        ),
+        Container(
+          width: 150,
+          height: 20,
+          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          color: Colors.grey[200],
+        ),
+        Container(
+          width: 100,
+          height: 20,
+          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          color: Colors.grey[200],
+        ),
+        Container(
+          width: 80,
+          height: 20,
+          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          color: Colors.grey[200],
+        ),
+        Container(
+          width: 300,
+          height: 45,
+          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          color: Colors.grey[200],
+        ),
+        Container(
+          width: 300,
+          height: 45,
+          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          color: Colors.grey[200],
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 80,
+              height: 40,
+              margin: const EdgeInsets.all(10),
+              color: Colors.grey[200],
+            ),
+            Container(),
+          ],
+        ),
+        // 스켈레톤 별점 및 맛 지표
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: List.generate(4, (index) {
+            return Container(
+              width: 80,
+              height: 80,
+              margin: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(40),
+              ),
+            );
+          }),
+        ),
+        // 기타 스켈레톤 정보
+        // Container(
+        //   width: double.infinity,
+        //   height: 240,
+        //   margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+        //   decoration: BoxDecoration(
+        //     color: Colors.black12,
+        //     borderRadius: BorderRadius.circular(15),
+        //   ),
+        // ),
+      ],
+    ),
+  );
 }

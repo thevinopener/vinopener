@@ -1,5 +1,7 @@
 // flutter
 import 'package:flutter/material.dart';
+// shimmer
+import 'package:shimmer/shimmer.dart';
 // constants
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/constants/wine_label.dart';
@@ -7,36 +9,123 @@ import 'package:frontend/constants/wine_label.dart';
 import 'package:frontend/screens/search/search_detail_screen.dart';
 import 'package:frontend/widgets/common/atoms/nation_flag_widget.dart';
 
+// 스켈레톤 UI
+Widget SearchWineListSkeleton(BuildContext context) {
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: Column(
+      children: List.generate(4, (index) {
+        return Padding(
+          padding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+          child: ElevatedButton(
+            onPressed: null,
+            child: Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 사진 부분 시작
+                  Flexible(
+                    flex: 3,
+                    child: Container(
+                      width: double.maxFinite,
+                      height: 200,
+                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.black, width: 1),
+                      ),
+                      child: Container(color: Colors.grey[200]!),
+                    ),
+                  ),
+                  // 사진 부분 끝
+
+                  // 정보 부분 시작
+                  Flexible(
+                    flex: 6,
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      width: double.maxFinite,
+                      height: double.maxFinite,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Flexible(
+                            child: Container(
+                              width: double.maxFinite,
+                              height: 20,
+                              color: Colors.grey[200]!,
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Flexible(
+                            child: Container(
+                              width: double.maxFinite,
+                              height: 20,
+                              color: Colors.grey[200]!,
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          Flexible(
+                            child: Container(
+                              width: double.maxFinite,
+                              height: 20,
+                              color: Colors.grey[200]!,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // 정보 부분 끝
+                ],
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              fixedSize: Size(double.infinity, 150),
+              backgroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+                side: BorderSide(color: Colors.grey, width: 1),
+              ),
+              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+            ),
+          ),
+        );
+      }),
+    ),
+  );
+}
+
+// 실제 검색 결과 위젯
 Widget SearchWineListWidget(BuildContext context, List<dynamic> wineList) {
   return Container(
-    // TODO: 만약 검색 결과 없으면 '${searchValue}와 일치하는 결과가 없습니다.' 안내문구 띄우기 (if/else)로 구분
-    // margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-    // width: double.infinity,
-    // color: Colors.amber,
     child: SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       scrollDirection: Axis.vertical,
       child: Column(
         children: List.generate(
-          wineList.length, // 리스트 개수에 따라 동적으로 생성
-          (index) {
+          wineList.length,
+              (index) {
             final wine = wineList[index];
             return Padding(
               padding: EdgeInsets.fromLTRB(10, 3, 10, 3),
               child: ElevatedButton(
                 onPressed: () {
-                  // 클릭 시 해당 와인 이름을 SearchResultScreen에 전달
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => SearchDetailScreen(
-                                wineId: wine.id,
-                              )));
+                            wineId: wine.id,
+                          )));
                 },
                 child: Container(
-                  // color: Colors.white,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start, // 좌측 정렬
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // 사진 부분 시작
@@ -46,20 +135,12 @@ Widget SearchWineListWidget(BuildContext context, List<dynamic> wineList) {
                           children: [
                             Container(
                               width: double.maxFinite,
-                              // 이미지 컨테이너의 크기 조정 부분
                               height: 200,
                               padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                              // color: Colors.white, // 이미지 배경색
-                              // color: Color(0xFFF0F0F0), // 이미지 배경색
                               decoration: BoxDecoration(
-                                color: Colors
-                                    .white, // 얘랑 위에 이미지 배경색이랑 겹치면 중복설정이라 에러남
-                                borderRadius:
-                                    BorderRadius.circular(5), // 모서리 둥글게
-                                border: Border.all(
-                                  color: Colors.black, // 테두리 색상
-                                  width: 1, // 테두리 두께
-                                ),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(color: Colors.black, width: 1),
                               ),
                               child: Image.network(wine.imageUrl,
                                   fit: BoxFit.scaleDown),
@@ -78,7 +159,6 @@ Widget SearchWineListWidget(BuildContext context, List<dynamic> wineList) {
                         flex: 6,
                         child: Container(
                           margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                          // padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           width: double.maxFinite,
                           height: double.maxFinite,
                           child: Column(
@@ -88,7 +168,7 @@ Widget SearchWineListWidget(BuildContext context, List<dynamic> wineList) {
                               Flexible(
                                 child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Expanded(
@@ -141,16 +221,13 @@ Widget SearchWineListWidget(BuildContext context, List<dynamic> wineList) {
                 ),
                 style: ElevatedButton.styleFrom(
                   fixedSize: Size(double.infinity, 150),
-                  // 버튼 크기를 조정
                   backgroundColor: Colors.white,
                   elevation: 0,
-                  // Fucking 그림자 제거 -> 이거 없으면 회색같이 나옴 ElevatedButton의 특징임 젠장.
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
-                    side: BorderSide(color: Colors.grey, width: 1), // 회색 테두리 추가
+                    side: BorderSide(color: Colors.grey, width: 1),
                   ),
-                  padding: EdgeInsets.fromLTRB(
-                      10, 10, 10, 10), // ElevatedButton 내부 패딩 (좌상우하 순 설정)
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                 ),
               ),
             );
@@ -158,6 +235,5 @@ Widget SearchWineListWidget(BuildContext context, List<dynamic> wineList) {
         ),
       ),
     ),
-    // #3 검색 기록 끝
   );
 }
