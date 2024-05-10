@@ -8,6 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/models/feed.dart';
 import 'package:frontend/providers/feed/feed_tab_state_provider.dart';
+import 'package:frontend/screens/search/search_detail_screen.dart';
 import 'package:frontend/services/feed_service.dart';
 import 'package:frontend/utils/date_time_util.dart';
 import 'package:frontend/widgets/common/molecules/custom_list_tile_widget.dart';
@@ -68,98 +69,101 @@ class _FeedItemState extends State<FeedItem> {
   Widget build(BuildContext context) {
     return RepaintBoundary(
       key: _repaintKey,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundImage:
-                          NetworkImage('${widget.feed.user?.imageUrl}'),
-                    ),
-                    SizedBox(width: 10),
-                    Text('${widget.feed.user?.nickname}'),
-                  ],
-                ),
-                Text(formatDateTime(widget.feed.createdTime!)),
-              ],
-            ),
-            SizedBox(height: 5),
-            Hero(
-              tag: 'feedImage${widget.feed.id}',
-              child: Image.network(
-                '${widget.feed.imageUrl}',
-                width: 400,
-                height: 400,
-                fit: BoxFit.cover,
+      child: Container(
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage:
+                            NetworkImage('${widget.feed.user?.imageUrl}'),
+                      ),
+                      SizedBox(width: 10),
+                      Text('${widget.feed.user?.nickname}'),
+                    ],
+                  ),
+                  Text(formatDateTime(widget.feed.createdTime!)),
+                ],
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      padding: EdgeInsets.all(0),
-                      onPressed: _toggleLike,
-                      icon:
-                          Icon(widget.feed.isLiked! ? Icons.favorite : Icons.favorite_outline),
-                    ),
-                    Text('${widget.feed.likeCount}'),
-                  ],
+              SizedBox(height: 5),
+              Hero(
+                tag: 'feedImage${widget.feed.id}',
+                child: Image.network(
+                  '${widget.feed.imageUrl}',
+                  width: 400,
+                  height: 400,
+                  fit: BoxFit.cover,
                 ),
-                Spacer(),
-                IconButton(
-                  icon: Icon(Icons.ios_share),
-                  onPressed: _shareAsImage,
-                ),
-              ],
-            ),
-            Column(
-              children: widget.feed.wineList
-                      ?.map((wine) => GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) =>
-                                      WineDetailScreen(wine: wine)),
-                            ).then((_) =>
-                                Provider.of<FeedTabState>(context, listen: false)
-                                    .setFeedList());
-                          },
-                          child: WineItem(wine: wine)))
-                      .toList() ??
-                  [],
-            ),
-            Text('${widget.feed.content}'),
-            SizedBox(height: 5),
-            CustomListTile(
-              leadingIcon: Icons.visibility_off_outlined,
-              title: '공개 여부',
-              trailing: Switch(
-                value: widget.feed.isPublic!,
-                onChanged: (bool value) {
-                  setState(() {
-                    FeedService.switchPublic(widget.feed.id);
-                    widget.feed.isPublic = !widget.feed.isPublic!;
-                  });
-                },
-                activeColor: AppColors.primary,
-                activeTrackColor: AppColors.primary,
-                inactiveTrackColor: Colors.grey,
-                thumbColor: MaterialStateProperty.all(Colors.white),
-                trackOutlineColor:
-                MaterialStateProperty.all(Colors.transparent),
               ),
-            ),
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        padding: EdgeInsets.all(0),
+                        onPressed: _toggleLike,
+                        icon:
+                            Icon(widget.feed.isLiked! ? Icons.favorite : Icons.favorite_outline),
+                      ),
+                      Text('${widget.feed.likeCount}'),
+                    ],
+                  ),
+                  Spacer(),
+                  IconButton(
+                    icon: Icon(Icons.ios_share),
+                    onPressed: _shareAsImage,
+                  ),
+                ],
+              ),
+              Column(
+                children: widget.feed.wineList
+                        ?.map((wine) => GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) =>
+                                        SearchDetailScreen(wineId: wine.id!)),
+                              ).then((_) =>
+                                  Provider.of<FeedTabState>(context, listen: false)
+                                      .setFeedList());
+                            },
+                            child: WineItem(wine: wine)))
+                        .toList() ??
+                    [],
+              ),
+              Text('${widget.feed.content}'),
+              SizedBox(height: 5),
+              CustomListTile(
+                leadingIcon: Icons.visibility_off_outlined,
+                title: '공개 여부',
+                trailing: Switch(
+                  value: widget.feed.isPublic!,
+                  onChanged: (bool value) {
+                    setState(() {
+                      FeedService.switchPublic(widget.feed.id);
+                      widget.feed.isPublic = !widget.feed.isPublic!;
+                    });
+                  },
+                  activeColor: AppColors.primary,
+                  activeTrackColor: AppColors.primary,
+                  inactiveTrackColor: Colors.grey,
+                  thumbColor: MaterialStateProperty.all(Colors.white),
+                  trackOutlineColor:
+                  MaterialStateProperty.all(Colors.transparent),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

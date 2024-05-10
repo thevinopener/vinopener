@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:floating_chat_button/floating_chat_button.dart';
+import 'package:flutter/widgets.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/models/wine_model.dart';
 import 'package:frontend/providers/note/note_wine_provider.dart';
@@ -35,14 +37,14 @@ class _NoteScreenState extends State<NoteScreen> {
   void _initializeNoteProvider() {
     try {
       final noteProvider = Provider.of<NoteProvider>(context, listen: false);
-      final noteWineProvider = Provider.of<NoteWineProvider>(context, listen: false);
+      final noteWineProvider =
+          Provider.of<NoteWineProvider>(context, listen: false);
       final Wine? wine = noteWineProvider.getWine();
       print(wine);
       if (wine == null) {
         print('Wine data is not loaded.');
         return;
       }
-
 
       noteProvider.updateNoteProvider(
         wineId: wine.id ?? 0,
@@ -56,7 +58,6 @@ class _NoteScreenState extends State<NoteScreen> {
       print('Failed to initialize note provider: $e');
     }
   }
-
 
   Future<void> _showBottomSheet(BuildContext context) async {
     showModalBottomSheet(
@@ -89,10 +90,10 @@ class _NoteScreenState extends State<NoteScreen> {
     print('note wine: ' + wine.name!);
 
     _heights = [
-      MediaQuery.of(context).size.height * 1.9, // 첫 페이지 높이
-      MediaQuery.of(context).size.height * 1.9, // 두 번째 페이지 높이
-      MediaQuery.of(context).size.height * 1.9, // 세 번째 페이지 높이
-      MediaQuery.of(context).size.height * 1.9, // 네 번째 페이지 높이
+      MediaQuery.of(context).size.height * 0.8, // 첫 페이지 높이
+      MediaQuery.of(context).size.height * 1.2, // 두 번째 페이지 높이
+      MediaQuery.of(context).size.height * 1.0, // 세 번째 페이지 높이
+      MediaQuery.of(context).size.height * 0.8, // 네 번째 페이지 높이
     ];
 
     return Scaffold(
@@ -106,30 +107,55 @@ class _NoteScreenState extends State<NoteScreen> {
         ),
         shape: Border(bottom: BorderSide(color: Colors.grey)),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 20),
-            NoteWineCard(wine: Provider.of<NoteWineProvider>(context).getWine()),
-            Container(
-              height: _heights[_currentPage],
-              child: PageView(
-                controller: _controller,
-                onPageChanged: (page) {
-                  setState(() {
-                    _currentPage = page;
-                  });
-                },
-                children: [
-                  NoteColorScreen(controller: _controller),
-                  NoteSmellScreen(controller: _controller),
-                  NoteTasteScreen(controller: _controller),
-                  NoteOpinionScreen(),
-                ],
-              ),
+      body: Column(
+        children: [
+          SizedBox(height: 20),
+          NoteWineCard(wine: Provider.of<NoteWineProvider>(context).getWine()),
+          AnimatedContainer(
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+            // height: _heights[_currentPage],
+            height: MediaQuery.of(context).size.height * 0.68,
+            child: PageView(
+              controller: _controller,
+              onPageChanged: (page) {
+                setState(() {
+                  _currentPage = page;
+                });
+              },
+              children: [
+                SingleChildScrollView(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    child: NoteColorScreen(
+                      controller: _controller,
+                    ),
+                  ),
+                ),
+                SingleChildScrollView(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 2.0,
+                    child: NoteSmellScreen(
+                      controller: _controller,
+                    ),
+                  ),
+                ),
+                SingleChildScrollView(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 1.0,
+                    child: NoteTasteScreen(controller: _controller),
+                  ),
+                ),
+                SingleChildScrollView(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    child: NoteOpinionScreen(),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingChatButton(
         chatIconBackgroundColor: AppColors.secondary,

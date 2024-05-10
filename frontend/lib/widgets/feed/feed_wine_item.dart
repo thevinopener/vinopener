@@ -14,11 +14,12 @@ class FeedWineItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       margin: EdgeInsets.all(5),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
-          color: isSelected ? AppColors.primary : Colors.grey,
+          color: isSelected ? AppColors.secondary : Colors.grey,
           width: 2// Dynamic border color // Set the border width
         ),
         borderRadius: BorderRadius.circular(5),
