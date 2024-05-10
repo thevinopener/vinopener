@@ -149,7 +149,7 @@ class _SttWidgetState extends State<SttWidget> {
         rating: noteProvider.rating,
       );
       AiChat aiChat = AiChat(state: noteState, message: text);
-      AiChatService.postSurvey(aiChat).then((aiAnswer) {
+      AiChatService.postSurvey(aiChat).then((AiAnswer aiAnswer) {
         noteId = aiAnswer.id;
         noteProvider.updateNoteProvider(
           colorId: aiAnswer.newState.color?.id ?? noteProvider.colorId,

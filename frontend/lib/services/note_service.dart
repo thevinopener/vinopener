@@ -8,7 +8,7 @@ class AiChatService {
   static Future<AiAnswer> postSurvey(AiChat aiChat) async {
     try {
       print('Sending data: ${aiChat.toJson()}');  // 요청 데이터 로깅
-      final response = await ApiClient().dio.post('/ai-chat', data: aiChat.toJson());
+      final response = await ApiClient().dio.post('/ai-chats', data: aiChat.toJson());
       print('Received response: ${response.data}');  // 응답 데이터 로깅
       if (response.statusCode == 200) {
         return AiAnswer.fromJson(response.data);
