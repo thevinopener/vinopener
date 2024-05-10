@@ -14,7 +14,6 @@ class FeedWineItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
       margin: EdgeInsets.all(5),
       decoration: BoxDecoration(
         color: Colors.white,
