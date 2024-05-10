@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/recommend/recommend_carousel_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/providers/recommend_provider.dart';
 import 'package:frontend/widgets/recommend/recommend_wine_card_widget.dart';
@@ -160,11 +161,22 @@ class _RecommendScreenState extends State<RecommendScreen> {
                         title: '👀 회원님을 위해 엄선한 오늘의 와인',
                         recommendType: 'cellar',
                       ),
-                      _buildWineRecommendationSection(
-                        context,
-                        title: '👏 평단의 찬사를 받은 와인',
-                        recommendType: 'rate',
+                      // _buildWineRecommendationSection(
+                      //   context,
+                      //   title: '👏 평단의 찬사를 받은 와인',
+                      //   recommendType: 'rate',
+                      // ),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                        child: Text(
+                          '👏 평단의 찬사를 받은 와인',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: AppFontSizes.large
+                          ),),
                       ),
+                      RecommendCarouselWidget(context, recommendType: 'rate'),
+                      SizedBox(height: 20,)
                     ],
                   ),
                 ]),

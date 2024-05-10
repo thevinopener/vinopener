@@ -8,6 +8,7 @@ import 'package:frontend/widgets/search/search_bar_widget.dart';
 import 'package:frontend/widgets/search/search_wine_list_widget.dart';
 // package
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class SearchResultScreen extends StatefulWidget {
   final String searchValue;
@@ -54,45 +55,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             builder: (context, searchProvider, child) {
               if (searchProvider.isLoading) {
                 // 로딩 중일 때 로딩 화면을 표시
-                return Expanded(
-                  child: Container(
-                    width: double.infinity,
-                    color: Colors.white,
-                    child: Center(
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: double.infinity,
-                              height: double.infinity,
-                              child: const CircularProgressIndicator(
-                                color: AppColors.primary, // 예시로 색상 변경
-                                strokeWidth: 8,
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 335,
-                            left: 0,
-                            right: 0,
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: const Text(
-                                'Loading...',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
+                return SearchWineListSkeleton(context);
               } else {
                 if (searchProvider.wineTypeList.isEmpty) {
                   // 로딩이 끝난 후 검색 결과 표시
@@ -176,4 +139,101 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
       ),
     );
   }
+}
+
+// 스켈레톤 UI
+Widget SearchWineListSkeleton(BuildContext context) {
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: Column(
+      children: [
+        SizedBox(height: 40),
+        Column(
+          children: List.generate(4, (index) {
+            return Padding(
+              padding: EdgeInsets.fromLTRB(10, 3, 10, 3),
+              child: ElevatedButton(
+                onPressed: null,
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // 사진 부분 시작
+                      Flexible(
+                        flex: 3,
+                        child: Container(
+                          width: double.maxFinite,
+                          height: 200,
+                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: Colors.black, width: 1),
+                          ),
+                          child: Container(color: Colors.grey[200]!),
+                        ),
+                      ),
+                      // 사진 부분 끝
+
+                      // 정보 부분 시작
+                      Flexible(
+                        flex: 6,
+                        child: Container(
+                          margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          width: double.maxFinite,
+                          height: double.maxFinite,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                child: Container(
+                                  width: double.maxFinite,
+                                  height: 20,
+                                  color: Colors.grey[200]!,
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Flexible(
+                                child: Container(
+                                  width: double.maxFinite,
+                                  height: 20,
+                                  color: Colors.grey[200]!,
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Flexible(
+                                child: Container(
+                                  width: double.maxFinite,
+                                  height: 20,
+                                  color: Colors.grey[200]!,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // 정보 부분 끝
+                    ],
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  fixedSize: Size(double.infinity, 150),
+                  backgroundColor: Colors.white,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    side: BorderSide(color: Colors.grey, width: 1),
+                  ),
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                ),
+              ),
+            );
+          }),
+        ),
+      ],
+    ),
+  );
 }
