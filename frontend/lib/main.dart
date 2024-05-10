@@ -6,6 +6,7 @@ import 'package:frontend/models/user.dart';
 import 'package:frontend/providers/feed/feed_tab_state_provider.dart';
 import 'package:frontend/providers/feed/new_feed_wine_list_provider.dart';
 import 'package:frontend/providers/note/note_wine_provider.dart';
+import 'package:frontend/providers/recommend_provider.dart';
 import 'package:frontend/providers/user_provider.dart';
 import 'package:frontend/screens/intro_screen.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +30,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => UserProvider(UserModel.dummy())),
         ChangeNotifierProvider(create: (_) => FeedTabState([])),
         ChangeNotifierProvider(create: (_) => NewFeedWineListProvider()),
+        ChangeNotifierProvider(create: (_) => RecommendProvider()),
         ChangeNotifierProvider(create: (_) => SearchWineListProvider()),
         ChangeNotifierProvider(create: (_) => SearchWineDetailProvider()),
         ChangeNotifierProvider(create: (_) => SearchHistoryProvider()),

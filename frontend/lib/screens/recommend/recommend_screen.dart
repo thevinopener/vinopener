@@ -1,26 +1,45 @@
-// flutter
+// recommend_screen.dart
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-
-// Providers
 import 'package:frontend/providers/recommend_provider.dart';
-
-// constants
-import 'package:frontend/constants/fonts.dart';
-
-// Widgets
-import 'package:frontend/widgets/recommend/recommend_wine_type_widget.dart';
 import 'package:frontend/widgets/recommend/recommend_wine_card_widget.dart';
+import 'package:frontend/constants/fonts.dart';
+import 'package:frontend/screens/search/search_text_screen.dart';
 
 class RecommendScreen extends StatefulWidget {
   @override
   _RecommendScreenState createState() => _RecommendScreenState();
 }
 
-class _RecommendScreenState extends State {
-  int _current = 0; // 현재 페이지 인덱스를 추적
-  final CarouselController _carouselController =
-      CarouselController(); // Carousel 컨트롤러
+class _RecommendScreenState extends State<RecommendScreen> {
+  int _current = 0;
+  final CarouselController _carouselController = CarouselController();
+  bool _initialized = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // 필요한 데이터를 초기화 단계에서 로드
+    if (!_initialized) {
+      final recommendProvider = Provider.of<RecommendProvider>(context, listen: false);
+      _fetchAllRecommendations(recommendProvider);
+      _initialized = true;
+    }
+  }
+
+  // 모든 추천 항목을 가져오는 비동기 함수
+  void _fetchAllRecommendations(RecommendProvider provider) async {
+    await provider.fetchRecommendWineList('view');
+    await provider.fetchRecommendWineList('tasting-note');
+    await provider.fetchRecommendWineList('preference');
+    await provider.fetchRecommendWineList('cellar');
+    await provider.fetchRecommendWineList('rate');
+    if (mounted) {
+      setState(() {}); // 위젯이 마운트된 상태에서만 setState 호출
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +48,17 @@ class _RecommendScreenState extends State {
         title: const Text('Recommend'),
         actions: <Widget>[
           TextButton.icon(
-            onPressed: () =>
-                RecommendProvider().moveToSearchTextScreen(context),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchTextScreen(),
+                ),
+              );
+            },
             icon: const Icon(Icons.search),
             label: const Text(''),
-          )
+          ),
         ],
       ),
       body: CustomScrollView(
@@ -48,7 +73,6 @@ class _RecommendScreenState extends State {
                       color: Colors.red,
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.width,
-                      // 카로셀 높이
                       alignment: Alignment.center,
                       child: Text('카로셀 자리 $index',
                           style: TextStyle(color: Colors.white, fontSize: 24)),
@@ -72,200 +96,68 @@ class _RecommendScreenState extends State {
               ],
             ),
           ),
-          // 카로셀 끝
-
-          // 와인 종류별 버튼 시작 #2
-          // SliverPadding(
-          // padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-          // sliver:
           SliverList(
             delegate: SliverChildListDelegate([
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: Column(
-                      children: [
-                        Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Text('종류',
-                                  style: TextStyle(
-                                    fontSize: AppFontSizes.large,
-                                    fontWeight: FontWeight.w500,
-                                  )),
-                              Text('어떤 종류의 와인을 좋아하시나요?',
-                                  style: TextStyle(
-                                      fontSize: AppFontSizes.mediumSmall)),
-                              SizedBox(height: 20),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.center, // 버튼을 시작점에 정렬
-                            children: [
-                              RecommendWineTypeWidget(context, '레드'),
-                              Spacer(flex: 1),
-                              RecommendWineTypeWidget(context, '로제'),
-                              Spacer(flex: 1),
-                              RecommendWineTypeWidget(context, '화이트'),
-                              Spacer(flex: 1),
-                              RecommendWineTypeWidget(context, '스파클링'),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+              // 와인 추천 섹션들
+              _buildWineRecommendationSection(
+                context,
+                title: '🔥 오늘의 인기 TOP 10 와인',
+                recommendType: 'view',
               ),
-              // 와인 종류별 버튼 끝 #2
-
-              SizedBox(height: 30), // 섹션 간의 간격 추가
-
-              // 와인 추천1 시작 #3-1
-              SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                        child: Text(
-                          '이런 와인은 어떠세요?',
-                          style: TextStyle(
-                            fontSize: AppFontSizes.large,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      // SizedBox(height: 5), // 버튼과의 간격 추가
-                      RecommendWineCardWidget(context), // 가로스크롤 와인추천카드 위젯
-                    ],
-                  ),
-                ),
+              _buildWineRecommendationSection(
+                context,
+                title: '🙊 꼭 마셔보세요! 회원님을 위한 와인',
+                recommendType: 'tasting-note',
               ),
-              // 와인 추천1 끝 #3-1
-
-              // 와인 추천2 시작 #3-2
-              SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                        child: Text(
-                          '이런 와인은 어떠세요?',
-                          style: TextStyle(
-                            fontSize: AppFontSizes.large,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      // SizedBox(height: 5), // 버튼과의 간격 추가
-                      RecommendWineCardWidget(context), // 가로스크롤 와인추천카드 위젯
-                    ],
-                  ),
-                ),
+              _buildWineRecommendationSection(
+                context,
+                title: '💘 예상 평점이 높은 와인',
+                recommendType: 'preference',
               ),
-              // 와인 추천2 끝 #3-2
-
-              // 와인 추천3 시작 #3-3
-              SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                        child: Text(
-                          '이런 와인은 어떠세요?',
-                          style: TextStyle(
-                            fontSize: AppFontSizes.large,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      // SizedBox(height: 5), // 버튼과의 간격 추가
-                      RecommendWineCardWidget(context), // 가로스크롤 와인추천카드 위젯
-                    ],
-                  ),
-                ),
+              _buildWineRecommendationSection(
+                context,
+                title: '👀 회원님을 위해 엄선한 오늘의 와인',
+                recommendType: 'cellar',
               ),
-              // 와인 추천3 끝 #3-3
-
-              // 와인 추천4 시작 #3-4
-              SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                        child: Text(
-                          '이런 와인은 어떠세요?',
-                          style: TextStyle(
-                            fontSize: AppFontSizes.large,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      // SizedBox(height: 5), // 버튼과의 간격 추가
-                      RecommendWineCardWidget(context), // 가로스크롤 와인추천카드 위젯
-                    ],
-                  ),
-                ),
+              _buildWineRecommendationSection(
+                context,
+                title: '👏 평단의 찬사를 받은 와인',
+                recommendType: 'rate',
               ),
-              // 와인 추천4 끝 #3-4
-
-              // 와인 추천5 시작 #3-5
-              SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                        child: Text(
-                          '이런 와인은 어떠세요?',
-                          style: TextStyle(
-                            fontSize: AppFontSizes.large,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      RecommendWineCardWidget(context), // 가로스크롤 와인추천카드 위젯
-                    ],
-                  ),
-                ),
-              ),
-              // 와인 추천5 끝 #3-5
             ]),
           ),
         ],
+      ),
+    );
+  }
+
+  // 와인 추천 섹션을 위한 공통 메서드
+  Widget _buildWineRecommendationSection(
+      BuildContext context, {
+        required String title,
+        required String recommendType,
+      }) {
+    return SizedBox(
+      width: double.infinity,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: AppFontSizes.large,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            RecommendWineCardWidget(context, recommendType: recommendType),
+          ],
+        ),
       ),
     );
   }
