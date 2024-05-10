@@ -7,6 +7,8 @@ import 'package:frontend/constants/fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:frontend/screens/search/search_text_screen.dart';
 
+import 'package:frontend/widgets/recommend/recommend_wine_type_widget.dart';
+
 class RecommendScreen extends StatefulWidget {
   @override
   _RecommendScreenState createState() => _RecommendScreenState();
@@ -102,7 +104,54 @@ class _RecommendScreenState extends State<RecommendScreen> {
               ),
               SliverList(
                 delegate: SliverChildListDelegate([
-                  // 와인 추천 섹션들
+                Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: Column(
+                  children: [
+                    Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text('종류',
+                              style: TextStyle(
+                                fontSize: AppFontSizes.large,
+                                fontWeight: FontWeight.w500,
+                              )),
+                          Text('어떤 종류의 와인을 좋아하시나요?',
+                              style: TextStyle(
+                                  fontSize: AppFontSizes.mediumSmall)),
+                          SizedBox(height: 20),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.center, // 버튼을 시작점에 정렬
+                        children: [
+                          RecommendWineTypeWidget(context, '레드'),
+                          Spacer(flex: 1),
+                          RecommendWineTypeWidget(context, '로제'),
+                          Spacer(flex: 1),
+                          RecommendWineTypeWidget(context, '화이트'),
+                          Spacer(flex: 1),
+                          RecommendWineTypeWidget(context, '스파클링'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+                ),
+              SizedBox(height: 30),
+              // 와인 추천 섹션들
                   _buildWineRecommendationSection(
                     context,
                     title: '🔥 오늘의 인기 TOP 10 와인',
