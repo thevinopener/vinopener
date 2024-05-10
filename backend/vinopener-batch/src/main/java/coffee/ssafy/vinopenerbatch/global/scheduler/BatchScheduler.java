@@ -22,7 +22,6 @@ import java.util.Date;
 public class BatchScheduler {
 
     private final JobLauncher jobLauncher;
-//    private final JobConfigurer jobConfig;
     private final JobRepository jobRepository;
     private final UpdateViewJobConfig updateViewJobConfig;
 
@@ -34,15 +33,6 @@ public class BatchScheduler {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("run.id", createTimestamp())
                 .toJobParameters();
-
-//        try {
-//            jobLauncher.run(jobConfig.testJob(jobRepository), jobParameters);
-//        } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
-//                 | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
-//
-//            log.error(e.getMessage());
-//
-//        }
 
         try {
             jobLauncher.run(updateViewJobConfig.updateViewJob(jobRepository), jobParameters);
@@ -58,6 +48,5 @@ public class BatchScheduler {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
         return dateFormat.format(new Date());
     }
-
 
 }

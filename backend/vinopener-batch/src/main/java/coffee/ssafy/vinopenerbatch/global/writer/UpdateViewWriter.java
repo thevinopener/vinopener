@@ -1,7 +1,10 @@
 package coffee.ssafy.vinopenerbatch.global.writer;
 
+import coffee.ssafy.vinopenerbatch.domain.recommendation.entity.enums.ContentRecommendationType;
+import coffee.ssafy.vinopenerbatch.domain.recommendation.repository.ContentRecommendationRepository;
 import coffee.ssafy.vinopenerbatch.domain.wine.entity.WineEntity;
 import coffee.ssafy.vinopenerbatch.domain.wine.repository.WineRepository;
+import coffee.ssafy.vinopenerbatch.global.recommendation.RecommendationProcessor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +23,8 @@ public class UpdateViewWriter implements ItemWriter<String> {
 
     private final WineRepository wineRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
-
+    private final RecommendationProcessor recommendationProcessor;
+    private final ContentRecommendationRepository contentRecommendationRepository;
 
     @Transactional
     @Override
@@ -48,6 +52,8 @@ public class UpdateViewWriter implements ItemWriter<String> {
 
         //DB에 조회수 업데이트 확인됨.
         //이제 재추천 후 테이블 갱신.
+        contentRecommendationRepository.deleteAllByContentRecommendationType(ContentRecommendationType.VIEW);
+        recommendationProcessor.createRecommendation(ContentRecommendationType.VIEW);
 
 
 
