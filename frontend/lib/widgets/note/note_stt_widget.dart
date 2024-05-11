@@ -35,8 +35,8 @@ class _SttWidgetState extends State<SttWidget> {
   void initState() {
     super.initState();
     _currentPage = widget.currentPage;
-    _initSpeech();
     _initTts();
+    _initSpeech();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _promptUser();
     });
@@ -57,7 +57,9 @@ class _SttWidgetState extends State<SttWidget> {
     // STT 초기화
     bool available = await _speech.initialize(
       onStatus: (status) => print('STT Status: $status'),
-      onError: (errorNotification) => print('STT Error: $errorNotification'),
+      onError: (errorNotification){
+        print('STT Error: $errorNotification');
+      },
     );
     if (!mounted) return;
     setState(() {
@@ -67,7 +69,7 @@ class _SttWidgetState extends State<SttWidget> {
 
   void _initTts() {
     _flutterTts.setLanguage('ko-KR');
-    _flutterTts.setPitch(1.0);
+    _flutterTts.setPitch(0.0);
 
     _flutterTts.setStartHandler(() {
       print("TTS Start");
@@ -94,7 +96,7 @@ class _SttWidgetState extends State<SttWidget> {
           onResult: _handleResult,
           localeId: 'ko-KR', // 한국어 음성 인식 설정
           listenFor: Duration(seconds: 30), // 최대 30초 동안 듣기
-          pauseFor: Duration(seconds: 5), // 사용자가 5초 동안 말하지 않으면 자동으로 중지
+          pauseFor: Duration(seconds: 10), // 사용자가 5초 동안 말하지 않으면 자동으로 중지
         );
       } else {
         setState(() => _isListening = false);
@@ -139,25 +141,25 @@ class _SttWidgetState extends State<SttWidget> {
       noteProvider.updateNoteProvider(
         colorId: aiAnswer.newState.color.id ?? noteProvider.colorId,
         flavourTasteIds: aiAnswer.newState.flavours.isNotEmpty ? aiAnswer.newState.flavours.map((f) => f.id).toList() : noteProvider.flavourTasteIds,
-        sweetness: aiAnswer.newState.sweetness ?? noteProvider.sweetness,
-        intensity: aiAnswer.newState.intensity ?? noteProvider.intensity,
-        acidity: aiAnswer.newState.acidity ?? noteProvider.acidity,
-        alcohol: aiAnswer.newState.alcohol ?? noteProvider.alcohol,
-        tannin: aiAnswer.newState.tannin ?? noteProvider.tannin,
+        sweetness: (aiAnswer.newState.sweetness != null && aiAnswer.newState.sweetness != 0) ? aiAnswer.newState.sweetness : noteProvider.sweetness,
+        intensity: (aiAnswer.newState.intensity != null && aiAnswer.newState.intensity != 0) ? aiAnswer.newState.intensity : noteProvider.intensity,
+        acidity: (aiAnswer.newState.acidity != null && aiAnswer.newState.acidity != 0) ? aiAnswer.newState.acidity : noteProvider.acidity,
+        alcohol: (aiAnswer.newState.alcohol != null && aiAnswer.newState.alcohol != 0) ? aiAnswer.newState.alcohol : noteProvider.alcohol,
+        tannin: (aiAnswer.newState.tannin != null && aiAnswer.newState.tannin != 0) ? aiAnswer.newState.tannin : noteProvider.tannin,
         opinion: aiAnswer.newState.opinion ?? noteProvider.opinion,
         rating: aiAnswer.newState.rating ?? noteProvider.rating,
       );
       _navigateToSection(aiAnswer.section);
-      _speak(aiAnswer.message);
+      _questionText=aiAnswer.message;
+      _promptUser();
     }).catchError((error) {
       print("Error posting survey: " + error.toString());
       if (error.toString().contains("COLOR_NOT_FOUND")) {
         _questionText = "입력하신 색상을 찾을 수 없습니다. 다시 입력해 주세요.";
-        _speak("입력하신 색상을 찾을 수 없습니다. 다시 입력해 주세요.");
         _promptUser(); // 사용자로부터 다시 입력 받습니다.
       } else {
         _questionText = "오류가 발생했습니다. 다시 시도해 주세요.";
-        _speak("오류가 발생했습니다. 다시 시도해 주세요.");
+        _promptUser();
       }
     });
   }
