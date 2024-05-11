@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:frontend/models/feed.dart';
 import 'package:frontend/providers/feed/feed_tab_state_provider.dart';
 import 'package:frontend/screens/search/search_detail_screen.dart';
@@ -29,11 +30,11 @@ class _FeedItemState extends State<FeedItem> {
 
   void _shareAsImage() async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      RenderRepaintBoundary boundary =
-      _repaintKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      RenderRepaintBoundary boundary = _repaintKey.currentContext!
+          .findRenderObject() as RenderRepaintBoundary;
       ui.Image image = await boundary.toImage(pixelRatio: 2.0);
-      ByteData? byteData = await image.toByteData(
-          format: ui.ImageByteFormat.png);
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
       Uint8List pngBytes = byteData!.buffer.asUint8List();
 
       // 이미지 파일 저장
@@ -62,8 +63,6 @@ class _FeedItemState extends State<FeedItem> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return RepaintBoundary(
       key: _repaintKey,
       child: Container(
@@ -81,7 +80,7 @@ class _FeedItemState extends State<FeedItem> {
                     children: [
                       CircleAvatar(
                         backgroundImage:
-                        NetworkImage('${widget.feed.user?.imageUrl}'),
+                            NetworkImage('${widget.feed.user?.imageUrl}'),
                       ),
                       SizedBox(width: 10),
                       Text('${widget.feed.user?.nickname}'),
@@ -121,24 +120,40 @@ class _FeedItemState extends State<FeedItem> {
               ),
               Column(
                 children: widget.feed.wineList
-                    ?.map((wine) =>
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (context) =>
-                                    SearchDetailScreen(wineId: wine.id!)),
-                          ).then((_) =>
-                              Provider.of<FeedTabState>(context,
-                                  listen: false)
+                        ?.map((wine) => GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) =>
+                                        SearchDetailScreen(wineId: wine.id!)),
+                              ).then((_) => Provider.of<FeedTabState>(context,
+                                      listen: false)
                                   .setFeedList());
-                        },
-                        child: WineItem(wine: wine)))
-                    .toList() ??
+                            },
+                            child: WineItem(wine: wine)))
+                        .toList() ??
                     [],
               ),
-              Text('${widget.feed.content}'),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${widget.feed.user?.nickname}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(width: 5),
+                  Expanded(
+                    child: Text(
+                      '${widget.feed.content}',
+                      softWrap: true,
+                      overflow: TextOverflow.visible,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
