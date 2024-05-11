@@ -48,11 +48,11 @@ class _NoteScreenState extends State<NoteScreen> {
 
       noteProvider.updateNoteProvider(
         wineId: wine.id ?? 0,
-        tannin: wine.tannin ?? 0.0,
-        sweetness: wine.sweetness ?? 0.0,
-        intensity: wine.intensity ?? 0.0,
-        acidity: wine.acidity ?? 0.0,
-        rating: wine.rating ?? 0.0,
+        // tannin: wine.tannin ?? 0.0,
+        // sweetness: wine.sweetness ?? 0.0,
+        // intensity: wine.intensity ?? 0.0,
+        // acidity: wine.acidity ?? 0.0,
+        // rating: wine.rating ?? 0.0,
       );
     } catch (e) {
       print('Failed to initialize note provider: $e');
