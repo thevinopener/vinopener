@@ -170,7 +170,7 @@ class _SttWidgetState extends State<SttWidget> {
       'STRUCTURE': 2,
       'OPINION': 3,
       'RATING': 3, // OPINION과 RATING은 같은 페이지에 표시한다고 가정
-      'EXIT': 4 // EXIT는 앱을 종료하거나 초기 화면으로 돌아가는 조건으로 설정
+      'COMPLETE': 4 // EXIT는 앱을 종료하거나 초기 화면으로 돌아가는 조건으로 설정
     };
 
     int? nextPage = sectionToPage[section];
