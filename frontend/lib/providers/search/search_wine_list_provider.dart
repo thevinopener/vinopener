@@ -4,6 +4,8 @@ import 'package:frontend/models/search/search_wine_name_result.dart';
 import 'package:frontend/models/search/search_wine_type_result.dart';
 import 'package:frontend/services/search_service.dart';
 
+import '../../models/search/search_wine_nation_result.dart';
+
 String getWineType(String wineType) {
   switch (wineType) {
     case "레드":
@@ -19,15 +21,39 @@ String getWineType(String wineType) {
   }
 }
 
-class SearchWineListProvider extends ChangeNotifier {
-  List<WineNameResult> _wineNameResultList = [];
-  List<WineTypeResult> _wineTypeResultList = [];
-  bool _isLoading = false;
+String getWineNation(String nation) {
+  switch (nation) {
+    case 'United States':
+      return 'United States';
+    case 'Italy':
+      return 'Italy';
+    case 'France':
+      return 'France';
+    case 'Argentina':
+      return 'Argentina';
+    case 'Chile':
+      return 'Chile';
+    case 'Spain':
+      return 'Spain';
+    case 'Australia':
+      return 'Australia';
+    default:
+      return 'United States';
+  }
+}
 
+class SearchWineListProvider extends ChangeNotifier {
+
+  List<WineNameResult> _wineNameResultList = [];
   List<WineNameResult> get wineNameList => _wineNameResultList;
 
-  List<WineTypeResult> get wineTypeList => _wineTypeResultList;
+  List<WineTypeSearch> _wineTypeResultList = [];
+  List<WineTypeSearch> get wineTypeList => _wineTypeResultList;
 
+  List<WineNationSearch> _wineNationSearchResultList = [];
+  List<WineNationSearch> get wineNationList => _wineNationSearchResultList;
+
+  bool _isLoading = false;
   bool get isLoading => _isLoading;
 
   Future<void> findByWineName(String query) async {
@@ -52,7 +78,6 @@ class SearchWineListProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      print(wineType);
       _wineTypeResultList = await SearchService.findByWineType(getWineType(wineType));
     } catch (e) {
       _wineTypeResultList = [];
@@ -61,4 +86,19 @@ class SearchWineListProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> findWinesByCountry(String country) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      _wineNationSearchResultList = await SearchService.findByWineNation(country);
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
 }

@@ -9,6 +9,8 @@ import 'package:frontend/models/search/search_wine_detail.dart';
 import 'package:frontend/models/search/search_history.dart';
 import 'package:frontend/utils/api_client.dart';
 
+import '../models/search/search_wine_nation_result.dart';
+
 class SearchService {
   // 와인명으로 조회 API
   static Future<List<WineNameResult>> findByWineName(String searchValue) async {
@@ -31,18 +33,31 @@ class SearchService {
   }
 
   // 와인타입 검색 API
-  static Future<List<WineTypeResult>> findByWineType(String wineType) async {
+  static Future<List<WineTypeSearch>> findByWineType(String wineType) async {
     final response = await ApiClient().dio.get('/wines/types/${wineType}');
     if (response.statusCode == 200) {
       List<dynamic> responseData = response.data;
-      List<WineTypeResult> wineList = responseData
-          .map((wineData) => WineTypeResult.fromJson(wineData))
+      List<WineTypeSearch> wineList = responseData
+          .map((wineData) => WineTypeSearch.fromJson(wineData))
           .toList();
       print('wineList: ' + wineList.toString());
       return wineList;
     }
 
     throw Exception(':::: search_service.dart :::: findByWineType API 호출 실패');
+  }
+
+  // 국가별 와인 검색
+  static Future<List<WineNationSearch>> findByWineNation(String country) async {
+    try {
+      final response = await ApiClient().dio.get('/wines/country/$country');
+      List<WineNationSearch> wines = (response.data as List)
+          .map((wineData) => WineNationSearch.fromJson(wineData))
+          .toList();
+      return wines;
+    } on DioError catch (e) {
+      throw Exception('Failed to load wines: ${e.message}');
+    }
   }
 
   // 와인 상세 조회 API
