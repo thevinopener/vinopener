@@ -83,6 +83,20 @@ public class BookmarkService {
     /**
      * 즐겨찾기 존재 여부 확인
      *
+     * @param wineId 와인 ID
+     * @param userId 유저 ID
+     */
+    @Transactional(readOnly = true)
+    public boolean getBookmarkStatus(
+            final Long wineId,
+            final Long userId
+    ) {
+        return bookmarkRepository.existsByWineIdAndUserId(wineId, userId);
+    }
+
+    /**
+     * 즐겨찾기 존재 여부 확인
+     *
      * @param bookmarkId 북마크 ID
      * @param userId     유저 ID
      */

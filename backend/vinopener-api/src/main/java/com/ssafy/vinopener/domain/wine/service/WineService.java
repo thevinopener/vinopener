@@ -126,16 +126,47 @@ public class WineService {
     }
 
     /**
+     * 와인 국가별 조회
+     *
+     * @param country 검색할 국가명
+     * @param userId  유저 ID
+     */
+    @Transactional(readOnly = true)
+    public List<WineGetListResponse> getCountryList(
+            final String country,
+            final Long userId
+    ) {
+        List<WineEntity> wines = wineRepository.findByCountry(country);
+
+        if (wines.isEmpty()) {
+            throw new VinopenerException(WineErrorCode.WINE_NOT_FOUND);
+        }
+
+        return wines.stream()
+                .map(wine -> {
+                    boolean isBookmark = bookmarkRepository.existsByWineIdAndUserId(wine.getId(), userId);
+                    boolean isCellar = cellarRepository.existsByWineIdAndUserId(wine.getId(), userId);
+                    int totalNotes = tastingNoteRepository.countByWineIdAndUserId(wine.getId(), userId);
+                    return wineMapper.toGetListResponse(wine, isBookmark, isCellar, totalNotes);
+                })
+                .toList();
+    }
+
+    /**
      * 와인 검색
      *
      * @param query 검색어
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<WineGetListResponse> searchWine(
-            String query,
+            final String query,
             final Long userId
     ) {
         List<WineEntity> wines = wineRepository.findBySeoNameContainsIgnoreCase(query);
+
+        if (wines.isEmpty()) {
+            throw new VinopenerException(WineErrorCode.WINE_NOT_FOUND);
+        }
 
         return wines.stream()
                 .map(wine -> {

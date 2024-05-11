@@ -16,4 +16,7 @@ public interface WineRepository extends JpaRepository<WineEntity, Long> {
     // 대소문자 구분하지 않고 검색
     List<WineEntity> findBySeoNameContainsIgnoreCase(String seoName);
 
+    // 국가 검색
+    List<WineEntity> findByCountry(String country);
+
 }

@@ -87,6 +87,12 @@ public class BookmarkController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * 즐겨찾기 삭제 : wineId
+     *
+     * @param wineId 와인 ID
+     * @param userId 유저 ID
+     */
     @DeleteMapping("delete/{wineId}")
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<Void> deleteByWineId(
@@ -94,6 +100,21 @@ public class BookmarkController {
             @UserPrincipalId final Long userId) {
         bookmarkService.deleteByWineId(userId, wineId);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 즐겨찾기 존재 여부
+     *
+     * @param wineId 와인 ID
+     * @param userId 유저 ID
+     */
+    @GetMapping("/{wineId}")
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    public boolean getBookmarkStatus(
+            @PathVariable final Long wineId,
+            @UserPrincipalId final Long userId
+    ) {
+        return bookmarkService.getBookmarkStatus(wineId, userId);
     }
 
 }

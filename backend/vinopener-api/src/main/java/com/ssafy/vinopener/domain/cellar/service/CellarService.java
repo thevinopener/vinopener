@@ -3,7 +3,6 @@ package com.ssafy.vinopener.domain.cellar.service;
 import com.ssafy.vinopener.domain.cellar.data.dto.request.CellarCreateRequest;
 import com.ssafy.vinopener.domain.cellar.data.dto.request.CellarUpdateRequest;
 import com.ssafy.vinopener.domain.cellar.data.dto.response.CellarGetListResponse;
-import com.ssafy.vinopener.domain.cellar.data.dto.response.CellarGetResponse;
 import com.ssafy.vinopener.domain.cellar.data.entity.CellarEntity;
 import com.ssafy.vinopener.domain.cellar.data.mapper.CellarMapper;
 import com.ssafy.vinopener.domain.cellar.exception.CellarErrorCode;
@@ -86,15 +85,21 @@ public class CellarService {
      * @param userId   유저 ID
      * @return 셀러 아이템(와인) 정보
      */
+//    @Transactional(readOnly = true)
+//    public CellarGetResponse get(
+//            final Long cellarId,
+//            final Long userId
+//    ) {
+//        return cellarRepository.findByIdAndUserId(cellarId, userId)
+//                .map(cellarMapper::toGetResponse)
+//                .orElseThrow(() -> new VinopenerException(CellarErrorCode.CELLAR_NOT_FOUND));
+//    }
     @Transactional(readOnly = true)
-    public CellarGetResponse get(
-            final Long cellarId,
+    public boolean getCellarStatus(
+            final Long wineId,
             final Long userId
     ) {
-        return cellarRepository.findByIdAndUserId(cellarId, userId)
-                .map(cellarMapper::toGetResponse)
-                .orElseThrow(() -> new VinopenerException(CellarErrorCode.CELLAR_NOT_FOUND));
-
+        return cellarRepository.existsByWineIdAndUserId(wineId, userId);
     }
 
     /**
