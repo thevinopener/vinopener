@@ -48,10 +48,9 @@ public class AiChatController {
             @RequestBody @Valid final AiChatCreateRequest aiChatCreateRequest,
             @UserPrincipalId final Long userId
     ) {
-        aiChatService.create(aiChatCreateRequest, userId);
         return ResponseEntity
                 .created(URI.create(REQUEST_PATH))
-                .build();
+                .body(aiChatService.create(aiChatCreateRequest, userId));
     }
 
     /**

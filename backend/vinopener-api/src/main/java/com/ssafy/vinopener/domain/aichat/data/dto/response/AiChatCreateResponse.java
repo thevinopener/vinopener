@@ -11,16 +11,27 @@ import lombok.Builder;
 @Builder
 public record AiChatCreateResponse(
         Long id,
-        AiChatCreateResponseCommand command,
+        AiChatCreateResponseSection section,
+        AiChatCreateResponseState newState,
         String message,
         @Schema(type = "string", example = TimeFormatConfig.LOCAL_DATE_TIME_EXAMPLE)
         @JsonFormat(pattern = TimeFormatConfig.LOCAL_DATE_TIME_PATTERN)
         LocalDateTime createdTime
 ) {
 
+    public enum AiChatCreateResponseSection {
+        WINE,
+        COLOR,
+        FLAVOUR,
+        STRUCTURE,
+        OPINION,
+        RATING,
+        COMPLETE,
+        EXIT
+    }
+
     @Builder
-    public record AiChatCreateResponseCommand(
-            CommandSection section,
+    public record AiChatCreateResponseState(
             CommandColor color,
             List<CommandFlavour> flavours,
             BigDecimal sweetness,
@@ -31,17 +42,6 @@ public record AiChatCreateResponse(
             String opinion,
             BigDecimal rating
     ) {
-
-        public enum CommandSection {
-            WINE,
-            COLOR,
-            FLAVOUR,
-            STRUCTURE,
-            OPINION,
-            RATING,
-            COMPLETE,
-            EXIT
-        }
 
         @Builder
         public record CommandColor(
