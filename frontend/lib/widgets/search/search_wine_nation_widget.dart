@@ -23,15 +23,36 @@ Widget SearchWineNationWidget(BuildContext context) {
     'Australia'
   ];
   final nationImg = [
-    '미국',
-    '이탈리아',
-    '프랑스', '아르헨티나', '칠레', '스페인', '호주'
+    'assets/images/us.jpg',
+    'assets/images/it.jpg',
+    'assets/images/fr.jpg',
+    'assets/images/ar.jpg',
+    'assets/images/ch.jpg',
+    'assets/images/sp.jpg',
+    'assets/images/au.jpg'
   ];
 
+  String translateCountryName(String country) {
+    final Map<String, String> translations = {
+      'United States': '미국',
+      'Italy': '이탈리아',
+      'France': '프랑스',
+      'Argentina': '아르헨티나',
+      'Chile': '칠레',
+      'Spain': '스페인',
+      'Australia': '호주'
+    };
+
+    return translations[country] ?? '알 수 없는 국가';
+  }
+
   double screenWidth = MediaQuery.of(context).size.width;
-  double cardWidth = screenWidth * 0.8; // 정사각형 형태로 가로 길이 설정
+  double cardWidth = screenWidth * 0.5; // 정사각형 형태로 가로 길이 설정
 
   return Container(
+    decoration: BoxDecoration(
+      // color: Colors.orange,
+    ),
     width: double.maxFinite,
     child: Column(
       children: [
@@ -44,11 +65,11 @@ Widget SearchWineNationWidget(BuildContext context) {
 
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                // 이미지를 버튼 배경으로 사용합니다.
-                // image: DecorationImage(
-                //   image: AssetImage("assets/path/to/your/image.png"), // 이미지 경로 지정
-                //   fit: BoxFit.cover, // 이미지를 정사각형 크기에 맞게 조절
-                // ),
+                // 이미지를 버튼 배경으로 사용
+                image: DecorationImage(
+                  image: AssetImage(nationImg[index]), // 이미지 경로 지정
+                  fit: BoxFit.cover, // 이미지를 정사각형 크기에 맞게 조절
+                ),
                 borderRadius: BorderRadius.circular(15), // 버튼의 테두리를 둥글게
               ),
               child: ElevatedButton(
@@ -58,17 +79,14 @@ Widget SearchWineNationWidget(BuildContext context) {
                       MaterialPageRoute(
                           builder: (context) => SearchResultScreen(
                               searchValue: wineNationList[index],
-                              isNation: true
-                          )
-                      )
-                  );
+                              isNation: true)));
                 },
                 child: Text(
-                  wineNationList[index],
+                  translateCountryName(wineNationList[index]),
                   style: TextStyle(
                     color: AppColors.white,
                     fontWeight: FontWeight.w700,
-                    fontSize: AppFontSizes.large,
+                    fontSize: AppFontSizes.veryLarge,
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
@@ -76,8 +94,7 @@ Widget SearchWineNationWidget(BuildContext context) {
                   backgroundColor: Colors.transparent, // 배경색 투명
                   padding: EdgeInsets.zero,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)
-                  ),
+                      borderRadius: BorderRadius.circular(15)),
                   side: BorderSide(color: Colors.transparent),
                   elevation: 0,
                   shadowColor: Colors.transparent,
@@ -90,7 +107,7 @@ Widget SearchWineNationWidget(BuildContext context) {
             height: cardWidth + 20, // Carousel의 높이 설정
             autoPlay: true,
             enlargeCenterPage: true,
-            viewportFraction: 0.3, // 뷰포트 분수 조절
+            viewportFraction: 0.6, // 뷰포트 분수 조절
             initialPage: 0,
           ),
         ),
