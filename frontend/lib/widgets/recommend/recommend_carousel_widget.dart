@@ -14,12 +14,33 @@ import 'package:provider/provider.dart';
 import '../../models/recommend/recommend_wine_list.dart';
 import '../../providers/recommend_provider.dart';
 
+// 공백 -> Enter
 String replaceSpacesWithNewline(String input) {
   return input.replaceAll(' ', '\n');
 }
 
+// TODO: 여기 recommendType 넘기면 색깔 구분해주는 switch 함수 만들기
+Color RecommendTypeToColor(String recommendType) {
+  switch (recommendType) {
+    case 'view':
+      return Color(0xFFCE4F8B);
+    case 'preference':
+      return Color(0xFFFC585D);
+    case 'tasting-note':
+      return Color(0xFF00A388);
+    case 'cellar':
+      return Color(0xFF009AB4);
+    case 'rate':
+      return Color(0xFF5A189A);
+    default:
+      return Color(0xFFFF8500);
+  }
+}
+
+
 Widget RecommendCarouselWidget(BuildContext context,
     {required String recommendType}) {
+
   int _current = 0;
   final CarouselController _carouselController = CarouselController();
 
@@ -77,7 +98,7 @@ Widget RecommendCarouselWidget(BuildContext context,
                           width: 60,
                           height: 150,
                           decoration: BoxDecoration(
-                            color: WineButtonColors.rose.withOpacity(0.3),
+                            color: RecommendTypeToColor(recommendType).withOpacity(0.3),
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(50),
                               topRight: Radius.circular(50),
@@ -95,6 +116,22 @@ Widget RecommendCarouselWidget(BuildContext context,
                         child: Image.network(wineList[index].imageUrl),
                       ),
                     ),
+                    // 와인명과 와이너리명
+                    // Positioned(
+                    //   top: 10,
+                    //   left: 10,
+                    //   child: Text(
+                    //     // wineList[index].name,
+                    //     replaceSpacesWithNewline(
+                    //         wineList[index].name,
+                    //     ),
+                    //     textAlign: TextAlign.left, // 텍스트를 오른쪽으로 정렬
+                    //     style: TextStyle(
+                    //         color: Colors.black,
+                    //         fontSize: AppFontSizes.mediumSmall,
+                    //         fontWeight: FontWeight.w600),
+                    //   ),
+                    // ),
                     Positioned(
                       bottom: 10,
                       right: 10,
@@ -129,18 +166,19 @@ Widget RecommendCarouselWidget(BuildContext context,
         carouselController: _carouselController,
         options: CarouselOptions(
           height: 250,
-          autoPlay: true,
+          autoPlay: false,
           aspectRatio: 6,
           // onPageChanged: (index, reason) {
           //   setState(() {
           //     _current = index;
           //   });
           // },
-          enlargeCenterPage: true,
+          enlargeCenterPage: false,
           viewportFraction: 0.4,
           initialPage: 0,
         ),
       ),
+      SizedBox(height: 60,)
     ],
   );
 }
