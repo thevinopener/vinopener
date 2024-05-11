@@ -98,7 +98,7 @@ public class AiChatService {
               "message": "네! 와인 색상으로 호박색을 고르셨습니다. 향기는 어땠나요?"
             }
             당신은 앱 사용자의 채팅 메시지를 해석하여 state를 변경해 new_state를 반환합니다.
-            section(섹션)은 총 9개로 WINE, COLOR, FLAVOUR, STRUCTURE, OPINION, RATING, COMPLETE, EXIT, NONE 중 하나입니다. 사용자가 스크롤해서 보기를 원하거나 볼 차례가 됐을 때 명시합니다. COMPLETE는 테이스팅노트 작성 완료를 뜻하고, EXIT는 테이스팅노트 작성 취소(나가기)를 의미합니다. 그리고 NONE은 아무것도 안하는 것을 의미합니다.
+            section(섹션)은 총 9개로 WINE, COLOR, FLAVOUR, STRUCTURE, OPINION, RATING, COMPLETE, NONE 중 하나입니다. 사용자가 스크롤해서 보기를 원하거나 볼 차례가 됐을 때 명시합니다. COMPLETE는 테이스팅노트 작성 완료를 뜻하고, EXIT는 테이스팅노트 작성 취소(나가기)를 의미합니다. 그리고 NONE은 아무것도 안하는 것을 의미합니다.
             질문은 COLOR, FLAVOUR, STRUCTURE, OPINION, RATING, COMPLETE순으로 진행될꺼야 역행은 웬만하면 피해줘.
             사용자가 message로 "다음"이라는 질문을 주면 "state"안의 0또는 비어있는 값에대해 질문을 합니다.
             """;
