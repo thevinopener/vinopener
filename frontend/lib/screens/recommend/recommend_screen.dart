@@ -11,6 +11,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:frontend/screens/search/search_text_screen.dart';
 
 import 'package:frontend/widgets/search/search_wine_type_widget.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../widgets/search/search_wine_nation_widget.dart';
 
@@ -51,11 +52,11 @@ class _RecommendScreenState extends State<RecommendScreen> {
             fit: BoxFit.fitWidth,
           ),
         ),
-        title: Text('VINOPENER',
-        style: TextStyle(
-          fontSize: AppFontSizes.large,
-          fontWeight: FontWeight.w600
-        ),), // 중앙에 제목 텍스트는 비워둠
+        title: Text(
+          'VINOPENER',
+          style: TextStyle(
+              fontSize: AppFontSizes.large, fontWeight: FontWeight.w600),
+        ), // 중앙에 제목 텍스트는 비워둠
         centerTitle: true, // 제목을 중앙에 위치
         actions: <Widget>[
           // 검색 아이콘 버튼
@@ -86,7 +87,70 @@ class _RecommendScreenState extends State<RecommendScreen> {
         child: Consumer<RecommendProvider>(
           builder: (context, recommendProvider, _) {
             if (recommendProvider.isLoading) {
-              return Center(child: CircularProgressIndicator());
+              return Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Column(
+                  children: [
+                    // 스켈레톤 와인 이미지
+                    Container(
+                      width: double.infinity,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 40,
+                            margin: const EdgeInsets.all(20),
+                            color: Colors.grey[200],
+                          ),
+                          Container(
+                            width: 250,
+                            height: 30,
+                            margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                            color: Colors.grey[200],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: List.generate(4, (index) {
+                              return Container(
+                                width: 80,
+                                height: 80,
+                                margin:
+                                    const EdgeInsets.fromLTRB(10, 10, 5, 10),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              );
+                            }),
+                          ),
+                          Container(
+                            width: 300,
+                            height: 40,
+                            margin: const EdgeInsets.all(20),
+                            color: Colors.grey[200],
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 150,
+                            color: Colors.grey[200],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
             }
 
             return CustomScrollView(
