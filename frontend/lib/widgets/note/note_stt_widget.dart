@@ -139,7 +139,7 @@ class _SttWidgetState extends State<SttWidget> {
     AiChatService.postSurvey(aiChat).then((AiAnswer aiAnswer) {
       noteId = aiAnswer.id;
       noteProvider.updateNoteProvider(
-        colorId: aiAnswer.newState.color.id ?? noteProvider.colorId,
+        colorId: aiAnswer.newState.color.id,
         flavourTasteIds: aiAnswer.newState.flavours.isNotEmpty ? aiAnswer.newState.flavours.map((f) => f.id).toList() : noteProvider.flavourTasteIds,
         sweetness: (aiAnswer.newState.sweetness != null && aiAnswer.newState.sweetness != 0) ? aiAnswer.newState.sweetness : noteProvider.sweetness,
         intensity: (aiAnswer.newState.intensity != null && aiAnswer.newState.intensity != 0) ? aiAnswer.newState.intensity : noteProvider.intensity,
