@@ -3,7 +3,6 @@ package com.ssafy.vinopener.domain.cellar.controller;
 import com.ssafy.vinopener.domain.cellar.data.dto.request.CellarCreateRequest;
 import com.ssafy.vinopener.domain.cellar.data.dto.request.CellarUpdateRequest;
 import com.ssafy.vinopener.domain.cellar.data.dto.response.CellarGetListResponse;
-import com.ssafy.vinopener.domain.cellar.data.dto.response.CellarGetResponse;
 import com.ssafy.vinopener.domain.cellar.service.CellarService;
 import com.ssafy.vinopener.global.annotations.UserPrincipalId;
 import com.ssafy.vinopener.global.config.SwaggerConfig;
@@ -79,13 +78,28 @@ public class CellarController {
      * @param userId   유저 ID
      * @return 셀러 아이템 상세 정보
      */
-    @GetMapping(REQUEST_PATH_VARIABLE)
+//    @GetMapping(REQUEST_PATH_VARIABLE)
+//    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+//    public ResponseEntity<CellarGetResponse> getCellar(
+//            @PathVariable final Long cellarId,
+//            @UserPrincipalId final Long userId
+//    ) {
+//        return ResponseEntity.ok(cellarService.get(cellarId, userId));
+//    }
+
+    /**
+     * 셀러 아이템 존재 여부
+     *
+     * @param wineId 와인 ID
+     * @param userId 유저 ID
+     */
+    @GetMapping({"/{wineId}"})
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
-    public ResponseEntity<CellarGetResponse> getCellar(
-            @PathVariable final Long cellarId,
+    public boolean getCellarStatus(
+            @PathVariable final Long wineId,
             @UserPrincipalId final Long userId
     ) {
-        return ResponseEntity.ok(cellarService.get(cellarId, userId));
+        return cellarService.getCellarStatus(wineId, userId);
     }
 
     /**
