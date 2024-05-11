@@ -165,7 +165,7 @@ class _RecommendScreenState extends State<RecommendScreen> {
                           recommendType: 'tasting-note'),
 
                       Container(
-                        color: Colors.deepPurple,
+                        // color: Colors.deepPurple,
                         width: double.maxFinite,
                         padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
                         margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
