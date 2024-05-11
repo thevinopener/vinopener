@@ -2,6 +2,7 @@ package com.ssafy.vinopener.domain.aichat.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.vinopener.domain.aichat.data.dto.AiChatCreateAiMessageInfo;
+import com.ssafy.vinopener.domain.aichat.data.dto.AiChatCreateUserMessageInfo;
 import com.ssafy.vinopener.domain.aichat.data.dto.AiChatCreateUserMessageInfo.AiChatCreateUserMessageInfoState;
 import com.ssafy.vinopener.domain.aichat.data.dto.request.AiChatCreateRequest;
 import com.ssafy.vinopener.domain.aichat.data.dto.response.AiChatCreateResponse;
@@ -18,9 +19,9 @@ import com.ssafy.vinopener.domain.wine.repository.FlavourTasteRepository;
 import com.ssafy.vinopener.domain.wine.repository.WineRepository;
 import com.ssafy.vinopener.global.exception.VinopenerException;
 import io.github.sashirestela.openai.SimpleOpenAI;
+import io.github.sashirestela.openai.domain.chat.ChatMessage.SystemMessage;
+import io.github.sashirestela.openai.domain.chat.ChatMessage.UserMessage;
 import io.github.sashirestela.openai.domain.chat.ChatRequest;
-import io.github.sashirestela.openai.domain.chat.message.ChatMsgSystem;
-import io.github.sashirestela.openai.domain.chat.message.ChatMsgUser;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -54,18 +55,18 @@ public class AiChatService {
             }
             tasting_note_created: 테이스팅노트가 이미 생성된 상태인지, 아니면 이제 새로 작성하는 것인지 구분하는 변수입니다. 고정입니다.
             wine: 와인 이름입니다. 고정입니다.
-            state: 테이스팅노트의 현재 상태입니다.
+            current_state: 테이스팅노트의 현재 상태입니다.
             color: 와인 색상입니다. 사용자가 아직 선택하지 않았으면 null입니다.
-            flavours는 정성적인(flavour) 와인 평가 요소입니다.
+            flavours: 정성적인(flavour) 와인 평가 요소입니다.
             sweetness(당도), intensity(바디), acidity(산도), alcohol(알콜), tannin(탄닌)은 정량적인(structure) 와인 평가 요소입니다. 범위는 [0.0, 5.0], 최소 단위는 0.5입니다. 사용자가 선택하지 않았으면 null입니다.
-            opinion은 사용자가 와인에 대한 의견을 간단하게 작성한 문자열입니다. 사용자가 작성하지 않았으면 빈 문자열입니다.
-            rating은 와인에 매긴 점수입니다. 범위는 [0.0, 5.0], 최소 단위는 0.5입니다. 사용자가 선택하지 않았으면 null입니다.
-            message는 사용자가 당신에게 보낸 채팅입니다.
+            opinion: 사용자가 와인에 대한 의견을 간단하게 작성한 문자열입니다. 사용자가 작성하지 않았으면 ""입니다.
+            rating: 와인에 매긴 점수입니다. 범위는 [0.0, 5.0], 최소 단위는 0.5입니다. 사용자가 선택하지 않았으면 null입니다.
+            message: 사용자가 당신에게 보낸 채팅입니다.
                        \s
-            색상(colorName)은 총 12개입니다. 아래 명시한 색상만 사용합니다:
+            색상(color)은 총 12개입니다. 아래 명시한 색상만 사용합니다:
             밀짚색, 노란색, 황금색, 호박색, 갈색, 구리색, 연어색, 분홍색, 루비색, 보라색, 석류색, 황갈색
                        \s
-            향기(flavours)는 총 109개입니다. 13가지 중 하나로 분류될 수 있으며, 아래 명시한 향기만 사용합니다.
+            향기(flavour)는 총 109개입니다. 13가지 중 하나로 분류될 수 있으며, 아래 명시한 향기만 사용합니다.
             1. 검은과일: 블랙체리, 오디, 올리브, 자두
             2. 그린노트: 구스베리, 민트, 바질, 세이지, 아몬드, 오레가노, 유칼립투스, 처빌, 피망, 할라피뇨, 허브, 홍차
             3. 기타: 구운빵, 꿀, 돌, 마른낙엽, 맥주, 밀랍, 반창고, 버섯, 버터, 분필, 생강, 석연슬레이트, 숲바닥, 야생고기, 연필심, 염분, 절인고기, 점토, 젖은상자, 젖은자갈, 젖은토양, 치즈, 크림, 타르, 화분흙, 훈제육
@@ -80,7 +81,8 @@ public class AiChatService {
             12. 핵과류: 모과, 복숭아, 사과, 살구
             13. 향신료: 감초, 계피, 붉은고추, 육두구, 정향, 팔각, 후추
                        \s
-            당신은 아래 예시와 같이 json 형식으로 답변합니다.{
+            당신은 아래 예시와 같이 json 형식으로 답변합니다.
+            {
               "section": "FLAVOUR",
               "new_state": {
                 "color": "호박색",
@@ -121,40 +123,41 @@ public class AiChatService {
             final Long userId
     ) {
         final var requestState = aiChatCreateRequest.state();
-        final var infoState = AiChatCreateUserMessageInfoState.builder()
-                .created(requestState.tastingNoteId() != null)
+        final var userMessageInfo = AiChatCreateUserMessageInfo.builder()
+                .tastingNoteCreated(requestState.tastingNoteId() != null)
                 .wine(wineRepository.findById(requestState.wineId())
                         .map(WineEntity::getName)
                         .orElseThrow(() -> new VinopenerException(WineErrorCode.WINE_NOT_FOUND)))
-                .color(colorRepository.findById(requestState.colorId())
-                        .map(ColorEntity::getName)
-                        .orElseThrow(() -> new VinopenerException(TastingNoteErrorCode.COLOR_NOT_FOUND)))
-                .flavours(flavourTasteRepository.findAllByIdIn(requestState.flavourTasteIds()).stream()
-                        .map(FlavourTasteEntity::getName)
-                        .toList())
+                .currentState(AiChatCreateUserMessageInfoState.builder()
+                        .color(colorRepository.findById(requestState.colorId())
+                                .map(ColorEntity::getName)
+                                .orElseThrow(() -> new VinopenerException(TastingNoteErrorCode.COLOR_NOT_FOUND)))
+                        .flavours(flavourTasteRepository.findAllByIdIn(requestState.flavourTasteIds()).stream()
+                                .map(FlavourTasteEntity::getName)
+                                .toList())
+                        .build())
+                .message(aiChatCreateRequest.message())
                 .build();
-        final var userMessageInfo = aiChatMapper.toInfo(aiChatCreateRequest, infoState);
         final var userMessageJson = jsonMapper.writeValueAsString(userMessageInfo);
 
         final var chatRequest = ChatRequest.builder()
                 .model("gpt-3.5-turbo")
-                .messages(List.of(
-                        new ChatMsgSystem(PROMPT),
-                        new ChatMsgUser(userMessageJson)))
+                .message(SystemMessage.of(PROMPT))
+                .message(UserMessage.of(userMessageJson))
                 .temperature(0.0)
                 .maxTokens(300)
                 .build();
         final var aiMessageJson = openAI.chatCompletions().create(chatRequest).join().firstContent();
         final var aiMessageInfo = jsonMapper.readValue(aiMessageJson, AiChatCreateAiMessageInfo.class);
 
-        final var color = colorRepository.findByName(aiMessageInfo.command().color())
+        final var color = colorRepository.findByName(aiMessageInfo.newState().color())
                 .orElseThrow(() -> new VinopenerException(TastingNoteErrorCode.COLOR_NOT_FOUND));
-        final var flavours = flavourTasteRepository.findAllByNameIn(aiMessageInfo.command().flavours());
+        final var flavours = flavourTasteRepository.findAllByNameIn(aiMessageInfo.newState().flavours());
 
         aiChatRepository.save(aiChatMapper.toEntity(aiChatCreateRequest, userId));
         final var aiChat = aiChatRepository.save(aiChatMapper.toEntity(aiMessageInfo, userId));
-        final var responseCommand = aiChatMapper.toCreateResponseCommand(aiMessageInfo.command(), color, flavours);
-        return aiChatMapper.toCreateResponse(aiChat, responseCommand);
+        final var responseState = aiChatMapper.toCreateResponseState(aiMessageInfo.newState(), color, flavours);
+        return aiChatMapper.toCreateResponse(aiChat, aiMessageInfo.section(), responseState);
     }
 
     /**

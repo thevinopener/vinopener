@@ -12,15 +12,15 @@ import lombok.Builder;
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record AiChatCreateUserMessageInfo(
-        AiChatCreateUserMessageInfoState state,
+        Boolean tastingNoteCreated,
+        String wine,
+        AiChatCreateUserMessageInfoState currentState,
         String message
 ) {
 
     @Builder
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public record AiChatCreateUserMessageInfoState(
-            Boolean created,
-            String wine,
             String color,
             List<String> flavours,
             BigDecimal sweetness,

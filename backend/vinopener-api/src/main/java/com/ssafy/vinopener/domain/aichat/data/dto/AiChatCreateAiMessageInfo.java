@@ -12,13 +12,24 @@ import lombok.Builder;
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record AiChatCreateAiMessageInfo(
-        AiChatCreateResponseAiMessageInfoCommand command,
+        AiChatCreateAiMessageInfoSection section,
+        AiChatCreateResponseAiMessageInfoState newState,
         String message
 ) {
 
+    public enum AiChatCreateAiMessageInfoSection {
+        WINE,
+        COLOR,
+        FLAVOUR,
+        STRUCTURE,
+        OPINION,
+        RATING,
+        COMPLETE,
+        EXIT
+    }
+
     @Builder
-    public record AiChatCreateResponseAiMessageInfoCommand(
-            CommandSection section,
+    public record AiChatCreateResponseAiMessageInfoState(
             String color,
             List<String> flavours,
             BigDecimal sweetness,
@@ -29,17 +40,6 @@ public record AiChatCreateAiMessageInfo(
             String opinion,
             BigDecimal rating
     ) {
-
-        public enum CommandSection {
-            WINE,
-            COLOR,
-            FLAVOUR,
-            STRUCTURE,
-            OPINION,
-            RATING,
-            COMPLETE,
-            EXIT
-        }
 
     }
 
