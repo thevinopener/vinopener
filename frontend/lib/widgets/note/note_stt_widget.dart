@@ -95,8 +95,8 @@ class _SttWidgetState extends State<SttWidget> {
         _speech.listen(
           onResult: _handleResult,
           localeId: 'ko-KR', // 한국어 음성 인식 설정
-          listenFor: Duration(seconds: 30), // 최대 30초 동안 듣기
-          pauseFor: Duration(seconds: 10), // 사용자가 5초 동안 말하지 않으면 자동으로 중지
+          listenFor: Duration(seconds: 40), // 최대 30초 동안 듣기
+          pauseFor: Duration(seconds: 30), // 사용자가 5초 동안 말하지 않으면 자동으로 중지
         );
       } else {
         setState(() => _isListening = false);
@@ -169,17 +169,25 @@ class _SttWidgetState extends State<SttWidget> {
     Map<String, int> sectionToPage = {
       'COLOR': 0,
       'FLAVOUR': 1,
-      'STRUCTURE': 2,
+      'SWEETNESS':2,
+      'INTENSITY':2,
+      'ACIDITY':2,
+      'ALCOHOL':2,
+      'TANNIN':2,
       'OPINION': 3,
       'RATING': 3, // OPINION과 RATING은 같은 페이지에 표시한다고 가정
-      'COMPLETE': 4 // EXIT는 앱을 종료하거나 초기 화면으로 돌아가는 조건으로 설정
+      'COMPLETE': 4,
+      'EXIT':5// EXIT는 앱을 종료하거나 초기 화면으로 돌아가는 조건으로 설정
     };
 
     int? nextPage = sectionToPage[section];
     if (nextPage != null && nextPage == 4) {
       // 모든 페이지를 닫고 최초 화면으로 돌아가는 로직
       postNote();
-    } else if (nextPage != null) {
+    } else if(nextPage != null && nextPage == 5){
+      Provider.of<NoteProvider>(context, listen: false).reset();
+      Navigator.of(context).pop();
+    }else if(nextPage != null) {
       if (_currentPage != nextPage) {
         widget.onPageChangeRequest(nextPage);
         setState(() {
