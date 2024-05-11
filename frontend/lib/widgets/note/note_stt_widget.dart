@@ -137,7 +137,7 @@ class _SttWidgetState extends State<SttWidget> {
     AiChatService.postSurvey(aiChat).then((AiAnswer aiAnswer) {
       noteId = aiAnswer.id;
       noteProvider.updateNoteProvider(
-        colorId: aiAnswer.newState.color?.id ?? noteProvider.colorId,
+        colorId: aiAnswer.newState.color.id ?? noteProvider.colorId,
         flavourTasteIds: aiAnswer.newState.flavours.isNotEmpty ? aiAnswer.newState.flavours.map((f) => f.id).toList() : noteProvider.flavourTasteIds,
         sweetness: aiAnswer.newState.sweetness ?? noteProvider.sweetness,
         intensity: aiAnswer.newState.intensity ?? noteProvider.intensity,
@@ -169,11 +169,15 @@ class _SttWidgetState extends State<SttWidget> {
       'FLAVOUR': 1,
       'STRUCTURE': 2,
       'OPINION': 3,
-      'RATING': 3  // OPINION과 RATING은 같은 페이지에 표시한다고 가정
+      'RATING': 3, // OPINION과 RATING은 같은 페이지에 표시한다고 가정
+      'EXIT': 4 // EXIT는 앱을 종료하거나 초기 화면으로 돌아가는 조건으로 설정
     };
 
     int? nextPage = sectionToPage[section];
-    if (nextPage != null) {
+    if (nextPage != null && nextPage == 4) {
+      // 모든 페이지를 닫고 최초 화면으로 돌아가는 로직
+      postNote();
+    } else if (nextPage != null) {
       if (_currentPage != nextPage) {
         widget.onPageChangeRequest(nextPage);
         setState(() {
@@ -184,9 +188,26 @@ class _SttWidgetState extends State<SttWidget> {
       }
     } else {
       _speak("섹션을 찾을 수 없습니다.");
+      _promptUser();
     }
   }
 
+  Future<void> postNote() async {
+    try {
+      final wineId =
+          Provider.of<NoteWineProvider>(context, listen: false).getWine().id;
+      final noteProvider = Provider.of<NoteProvider>(context, listen: false);
+      noteProvider.updateNoteProvider(wineId: wineId);
+
+      await NoteCreateService.createNote(noteProvider);
+
+      noteProvider.reset();
+      Navigator.popUntil(context, (route) => route.isFirst);
+    } catch (e) {
+      print("Error posting note: $e");
+      // 오류 발생 시 처리 로직 추가
+    }
+  }
 
 
 
