@@ -22,6 +22,8 @@ class RecommendScreen extends StatefulWidget {
 class _RecommendScreenState extends State<RecommendScreen> {
   int _current = 0;
   final CarouselController _carouselController = CarouselController();
+  final bannerImg  = ['assets/images/banner1.png', 'assets/images/banner2.png'];
+
   @override
   void initState() {
     super.initState();
@@ -72,32 +74,31 @@ class _RecommendScreenState extends State<RecommendScreen> {
                 child: Column(
                   children: [
                     CarouselSlider.builder(
-                      itemCount: 3,
-                      itemBuilder: (context, index, realIndex) {
-                        return Container(
-                          color: Colors.red,
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.width,
-                          alignment: Alignment.center,
-                          child: Text('여따가 와인병 눕혀놀거임 $index',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 24)),
-                        );
-                      },
-                      carouselController: _carouselController,
-                      options: CarouselOptions(
-                        height: 250,
-                        autoPlay: true,
-                        aspectRatio: 3,
-                        onPageChanged: (index, reason) {
-                          setState(() {
-                            _current = index;
-                          });
-                        },
-                        enlargeCenterPage: false,
-                        viewportFraction: 1,
-                        initialPage: 0,
+                itemCount: bannerImg.length, // 이미지 수만큼 아이템 카운트 설정
+                  itemBuilder: (context, index, realIndex) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width, // 컨테이너 너비를 화면 너비에 맞춤
+                      height: 250, // 고정 높이 설정
+                      child: Image.asset(
+                        bannerImg[index], // 현재 인덱스에 해당하는 이미지 로드
+                        fit: BoxFit.scaleDown, // 이미지를 컨테이너에 맞추어 표시
                       ),
+                    );
+                  },
+                  carouselController: _carouselController,
+                  options: CarouselOptions(
+                    height: 250, // 캐러셀 높이 설정
+                    autoPlay: true, // 자동 재생 활성화
+                    autoPlayInterval: Duration(seconds: 5), // 자동 재생 간격
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _current = index; // 현재 페이지 인덱스 업데이트
+                      });
+                    },
+                    enlargeCenterPage: false, // 중앙 페이지 확대
+                    viewportFraction: 1.0, // 뷰포트 비율
+                    initialPage: 0, // 초기 페이지 인덱스
+                    ),
                     ),
                   ],
                 ),
