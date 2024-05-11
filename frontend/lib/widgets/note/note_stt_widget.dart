@@ -118,62 +118,82 @@ class _SttWidgetState extends State<SttWidget> {
   }
 
   void _analyzeSpeech(String text) {
-    // 분석 로직
-    if (text.toLowerCase().contains("다음")) {
-      if (_currentPage < titles.length - 1) {
-        int nextPage = _currentPage + 1;
+    final noteProvider = Provider.of<NoteProvider>(context, listen: false);
+    NoteState noteState = NoteState(
+      tastingNoteId: noteId,
+      wineId: noteProvider.wineId,
+      colorId: noteProvider.colorId,
+      flavourTasteIds: noteProvider.flavourTasteIds,
+      sweetness: noteProvider.sweetness,
+      intensity: noteProvider.intensity,
+      acidity: noteProvider.acidity,
+      alcohol: noteProvider.alcohol,
+      tannin: noteProvider.tannin,
+      opinion: noteProvider.opinion,
+      rating: noteProvider.rating,
+    );
+    AiChat aiChat = AiChat(state: noteState, message: text);
+
+    AiChatService.postSurvey(aiChat).then((AiAnswer aiAnswer) {
+      noteId = aiAnswer.id;
+      noteProvider.updateNoteProvider(
+        colorId: aiAnswer.newState.color?.id ?? noteProvider.colorId,
+        flavourTasteIds: aiAnswer.newState.flavours.isNotEmpty ? aiAnswer.newState.flavours.map((f) => f.id).toList() : noteProvider.flavourTasteIds,
+        sweetness: aiAnswer.newState.sweetness ?? noteProvider.sweetness,
+        intensity: aiAnswer.newState.intensity ?? noteProvider.intensity,
+        acidity: aiAnswer.newState.acidity ?? noteProvider.acidity,
+        alcohol: aiAnswer.newState.alcohol ?? noteProvider.alcohol,
+        tannin: aiAnswer.newState.tannin ?? noteProvider.tannin,
+        opinion: aiAnswer.newState.opinion ?? noteProvider.opinion,
+        rating: aiAnswer.newState.rating ?? noteProvider.rating,
+      );
+      _navigateToSection(aiAnswer.section);
+      _speak(aiAnswer.message);
+    }).catchError((error) {
+      print("Error posting survey: " + error.toString());
+      if (error.toString().contains("COLOR_NOT_FOUND")) {
+        _questionText = "입력하신 색상을 찾을 수 없습니다. 다시 입력해 주세요.";
+        _speak("입력하신 색상을 찾을 수 없습니다. 다시 입력해 주세요.");
+        _promptUser(); // 사용자로부터 다시 입력 받습니다.
+      } else {
+        _questionText = "오류가 발생했습니다. 다시 시도해 주세요.";
+        _speak("오류가 발생했습니다. 다시 시도해 주세요.");
+      }
+    });
+  }
+
+
+  void _navigateToSection(String section) {
+    Map<String, int> sectionToPage = {
+      'COLOR': 0,
+      'FLAVOUR': 1,
+      'STRUCTURE': 2,
+      'OPINION': 3,
+      'RATING': 3  // OPINION과 RATING은 같은 페이지에 표시한다고 가정
+    };
+
+    int? nextPage = sectionToPage[section];
+    if (nextPage != null) {
+      if (_currentPage != nextPage) {
         widget.onPageChangeRequest(nextPage);
-        _updateQuestionText();
         setState(() {
           _currentPage = nextPage;
         });
+        _updateQuestionText();
         _promptUser();
-      } else {
-        _speak("마지막 항목입니다");
       }
     } else {
-      final noteProvider = Provider.of<NoteProvider>(context, listen: false);
-      NoteState noteState = NoteState(
-        tastingNoteId: noteId,
-        // 예를 들어 NoteProvider에 noteId가 있다고 가정
-        wineId: noteProvider.wineId,
-        // NoteWineProvider에서 와인 ID 가져오기
-        colorId: noteProvider.colorId,
-        flavourTasteIds: noteProvider.flavourTasteIds,
-        sweetness: noteProvider.sweetness,
-        intensity: noteProvider.intensity,
-        acidity: noteProvider.acidity,
-        alcohol: noteProvider.alcohol,
-        tannin: noteProvider.tannin,
-        opinion: noteProvider.opinion,
-        rating: noteProvider.rating,
-      );
-      AiChat aiChat = AiChat(state: noteState, message: text);
-      AiChatService.postSurvey(aiChat).then((AiAnswer aiAnswer) {
-        noteId = aiAnswer.id;
-        noteProvider.updateNoteProvider(
-          colorId: aiAnswer.newState.color?.id ?? noteProvider.colorId,
-          flavourTasteIds: aiAnswer.newState.flavours.isNotEmpty
-              ? aiAnswer.newState.flavours.map((f) => f.id).toList()
-              : noteProvider.flavourTasteIds,
-          sweetness: aiAnswer.newState.sweetness ?? noteProvider.sweetness,
-          intensity: aiAnswer.newState.intensity ?? noteProvider.intensity,
-          acidity: aiAnswer.newState.acidity ?? noteProvider.acidity,
-          alcohol: aiAnswer.newState.alcohol ?? noteProvider.alcohol,
-          tannin: aiAnswer.newState.tannin ?? noteProvider.tannin,
-          opinion: aiAnswer.newState.opinion ?? noteProvider.opinion,
-          rating: aiAnswer.newState.rating ?? noteProvider.rating,
-        );
-        _speak(aiAnswer.message);
-      }).catchError((error) {
-        print("Error posting survey: $error");
-      });
+      _speak("섹션을 찾을 수 없습니다.");
     }
   }
+
+
+
 
   void _speak(String text) async {
     // 말하기 로직
     if (text.isNotEmpty) {
+      _questionText= text;
       var result = await _flutterTts.speak(text);
       if (result == 1) {
         print("TTS Success");
