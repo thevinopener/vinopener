@@ -13,7 +13,6 @@ import 'package:frontend/widgets/note/note_wine_card_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/fonts.dart';
-import '../../constants/icon.dart';
 import 'note_ai_screen.dart';
 
 class NoteScreen extends StatefulWidget {
@@ -143,7 +142,7 @@ class _NoteScreenState extends State<NoteScreen> {
           icon: Icon(
             Icons.nightlife_sharp,
             color: AppColors.white,
-            size: 45,
+            size: 30,
           ),
         ),
         onTap: (BuildContext context) {
