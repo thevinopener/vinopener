@@ -7,9 +7,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class UserService {
 
-  // static final baseUrl = 'https://api.thevinopener.com';
+  static final baseUrl = 'https://api.thevinopener.com';
   // static final baseUrl = 'http://localhost:8080';
-  static final baseUrl = 'http://10.0.2.2:8080';
+  // static final baseUrl = 'http://10.0.2.2:8080';
 
   static Future<Token> login(String accessToken) async {
     Dio dio = Dio();
