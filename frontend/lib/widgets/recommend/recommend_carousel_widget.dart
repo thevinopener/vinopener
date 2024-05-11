@@ -7,6 +7,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frontend/constants/colors.dart';
+import 'package:frontend/screens/search/search_detail_screen.dart';
 import 'package:frontend/widgets/recommend/recommend_wine_card_widget.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:provider/provider.dart';
@@ -84,7 +85,14 @@ Widget RecommendCarouselWidget(BuildContext context,
             height: MediaQuery.of(context).size.width,
             alignment: Alignment.center,
             child: FilledButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SearchDetailScreen(
+                          wineId: wineList[index].wineId,
+                        )));
+                },
               child: Container(
                 width: double.maxFinite,
                 height: double.maxFinite,
@@ -116,6 +124,7 @@ Widget RecommendCarouselWidget(BuildContext context,
                         child: Image.network(wineList[index].imageUrl),
                       ),
                     ),
+                    // TODO: 와인명 이거 어카냐 진짜.. 너무긴데..
                     // 와인명과 와이너리명
                     // Positioned(
                     //   top: 10,
