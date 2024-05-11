@@ -106,8 +106,17 @@ public class WineController {
         return ResponseEntity.ok(wineService.getTypeList(type));
     }
 
+    @GetMapping("/country/{country}")
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    public ResponseEntity<List<WineGetListResponse>> searchCountryWine(
+            @PathVariable @Valid String country,
+            @UserPrincipalId final Long userId
+    ) {
+        return ResponseEntity.ok(wineService.getCountryList(country, userId));
+    }
+
     /**
-     * 와인 검색
+     * 일반 와인 검색
      *
      * @param query 검색어
      * @return 검색어에 해당하는 와인 목록
