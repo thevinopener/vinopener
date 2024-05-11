@@ -1,6 +1,12 @@
 package com.ssafy.vinopener.domain.aichat.service;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.ssafy.vinopener.domain.aichat.data.dto.AiChatCreateAiMessageInfo;
 import com.ssafy.vinopener.domain.aichat.data.dto.AiChatCreateUserMessageInfo;
 import com.ssafy.vinopener.domain.aichat.data.dto.AiChatCreateUserMessageInfo.AiChatCreateUserMessageInfoState;
@@ -22,18 +28,36 @@ import io.github.sashirestela.openai.SimpleOpenAI;
 import io.github.sashirestela.openai.domain.chat.ChatMessage.SystemMessage;
 import io.github.sashirestela.openai.domain.chat.ChatMessage.UserMessage;
 import io.github.sashirestela.openai.domain.chat.ChatRequest;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+class BigDecimalDeserializer extends JsonDeserializer<BigDecimal> {
+
+    @Override
+    public BigDecimal deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+            throws IOException, JacksonException {
+        String value = jsonParser.getText();
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+        return new BigDecimal(value);
+    }
+
+}
+
 @Service
 @RequiredArgsConstructor
 public class AiChatService {
 
+
+
     private static final String PROMPT = """
-            당신은 Vinopener 앱에 내장된 AI 챗봇 비노비(Vinoby)입니다. 당신은 앱 사용자(고객)의 채팅에 응답하여 테이스팅 노트 작성을 돕습니다.
+            당신은 Vinopener 앱에 내장된 AI 챗봇 입니다. 당신은 앱 사용자(고객)의 채팅에 응답하여 테이스팅 노트 작성을 돕습니다.
             채팅은 JSON 형태입니다. 앱 사용자와 당신은 정해진 양식에 맞춰 채팅을 주고 받습니다.
                        \s
             앱 사용자는 아래 예시와 같이 json 형식으로 질문합니다.
@@ -43,13 +67,13 @@ public class AiChatService {
               "current_state": {
                 "color": null,
                 "flavours": [],
-                "sweetness": 5.0,
-                "intensity": 5.0,
-                "acidity": 5.0,
-                "alcohol": 5.0,
-                "tannin": 5.0,
+                "sweetness": 0.0,
+                "intensity": 0.0,
+                "acidity": 0.0,
+                "alcohol": 0.0,
+                "tannin": 0.0,
                 "opinion": "",
-                "rating": 5.0
+                "rating": 0.0
               },
               "message": "와인 색상은 호박색이예요"
             }
@@ -99,16 +123,28 @@ public class AiChatService {
               "message": "네! 와인 색상으로 호박색을 고르셨습니다. 향기는 어땠나요?"
             }
             당신은 앱 사용자의 채팅 메시지를 해석하여 state를 변경해 new_state를 반환합니다.
-            section(섹션)은 총 9개로 WINE, COLOR, FLAVOUR, STRUCTURE, OPINION, RATING, COMPLETE, NONE 중 하나입니다. 사용자가 스크롤해서 보기를 원하거나 볼 차례가 됐을 때 명시합니다. COMPLETE는 테이스팅노트 작성 완료를 뜻하고, EXIT는 테이스팅노트 작성 취소(나가기)를 의미합니다. 그리고 NONE은 아무것도 안하는 것을 의미합니다.
-            질문은 COLOR, FLAVOUR, STRUCTURE, OPINION, RATING, COMPLETE순으로 진행될꺼야 역행은 웬만하면 피해주세요.
-            사용자가 message로 "다음"이라는 질문을 주면 "state"안의 0또는 비어있는 값에대해 질문을 합니다.
-            sweetness, intensity, acidity, alcohol, tannin이 값이 0이 아니라면 각 항목에는 질문을 받지 않습니다.
+            section(섹션)은 총 9개로 WINE, COLOR, FLAVOUR, SWEETNESS, INTENSITY,ACIDITY, ALCOHOL, TANNIN, OPINION, RATING, COMPLETE,EXIT, NONE 중 하나입니다. 사용자가 스크롤해서 보기를 원하거나 볼 차례가 됐을 때 명시합니다. COMPLETE는 테이스팅노트 작성 완료를 뜻하고, EXIT는 테이스팅노트 작성 취소(나가기)를 의미합니다. 그리고 NONE은 아무것도 안하는 것을 의미합니다.
+            진행되는 section(섹션)의 순서는 "COLOR, FLAVOUR, SWEETNESS, INTENSITY,ACIDITY, ALCOHOL, TANNIN, OPINION, RATING, COMPLETE" 입니다.
+            진행되는 section(섹션)의 순서는 절대로 역행하지 않도록 합니다.
+            사용자가 message로 "다음" 또는 "없다" 라는 응답을 주면 "state"안의 0 또는 null인 값 에대해 답변을 합니다.
+            사용자가 제출의사를 보이면 "테이스팅 노트를 제출합니다, 감사합니다"라고 하고 section을 COMPLETE로 출력해줍니다.
+            앱사용자의 json 형식 질문에서 "sweetness", "intensity", "acidity", "alcohol", "tannin"의 값이 0이 아닐 경우 OPINION 섹션으로 넘어갑니다.
+            SWEETNESS, INTENSITY,ACIDITY, ALCOHOL, TANNIN 섹션에서는 이와 관련된 답변만 하거나 다음 단계로 넘어갈지 여부만 물어보는 답변을 합니다.
+            앱사용자의 json 형식 질문에서 "sweetness" 값이 0이 아닐 경우 'SWEETNESS'와 관련된 답변을 하지 않습니다.
+            앱사용자의 json 형식 질문에서 "intensity" 값이 0이 아닐 경우 'INTENSITY'과 관련된 답변을 하지 않습니다.
+            앱사용자의 json 형식 질문에서 "acidity" 값이 0이 아닐 경우 'ACIDITY'와 관련된 답변을 하지 않습니다.
+            앱사용자의 json 형식 질문에서 "alcohol" 값이 0이 아닐 경우 'ALCOHOL'과 관련된 답변을 하지 않습니다.
+            앱사용자의 json 형식 질문에서 "tannin" 값이 0이 아닐 경우 'TANNIN'과 관련된 답변을 하지 않습니다.
+            section(섹션)이 OPINION이고, 앱 사용자의 json 형식 질문에서 "sweetness", "intensity", "acidity", "alcohol", "tannin"의 값이 0이 아니고, 나머지 필드들이 비어있지 않다면, section을 COMPLETE로 출력해줍니다.
             """;
 
     private final AiChatRepository aiChatRepository;
     private final AiChatMapper aiChatMapper;
     private final SimpleOpenAI openAI;
     private final ObjectMapper jsonMapper;
+
+//    private final ObjectMapper jsonMapper = new ObjectMapper().configOverride(BigDecimal.class).setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.STRING));;
+
 
     private final WineRepository wineRepository;
     private final ColorRepository colorRepository;
@@ -128,6 +164,10 @@ public class AiChatService {
             final Long userId
     ) {
         final var requestState = aiChatCreateRequest.state();
+
+        System.out.println("1번");
+        System.out.println(requestState);
+
         final var userMessageInfo = AiChatCreateUserMessageInfo.builder()
                 .tastingNoteCreated(requestState.tastingNoteId() != null)
                 .wine(wineRepository.findById(requestState.wineId())
@@ -140,10 +180,29 @@ public class AiChatService {
                         .flavours(flavourTasteRepository.findAllByIdIn(requestState.flavourTasteIds()).stream()
                                 .map(FlavourTasteEntity::getName)
                                 .toList())
+                        .sweetness(new BigDecimal(String.valueOf(requestState.sweetness())))
+                        .intensity(new BigDecimal(String.valueOf(requestState.intensity())))
+                        .acidity(new BigDecimal(String.valueOf(requestState.acidity())))
+                        .alcohol(new BigDecimal(String.valueOf(requestState.alcohol())))
+                        .tannin(new BigDecimal(String.valueOf(requestState.tannin())))
+                        .opinion(requestState.opinion())
+                        .rating(new BigDecimal(String.valueOf(requestState.rating())))
                         .build())
                 .message(aiChatCreateRequest.message())
                 .build();
+
+        System.out.println("2번");
+        System.out.println(userMessageInfo);
+
+//        ObjectMapper jsonMapper = new ObjectMapper();
+//        SimpleModule module = new SimpleModule();
+//        module.addDeserializer(BigDecimal.class, new BigDecimalDeserializer());
+//        jsonMapper.registerModule(module);
+
         final var userMessageJson = jsonMapper.writeValueAsString(userMessageInfo);
+
+        System.out.println("3번");
+        System.out.println(userMessageJson);
 
         final var chatRequest = ChatRequest.builder()
                 .model("gpt-3.5-turbo")
@@ -154,6 +213,9 @@ public class AiChatService {
                 .build();
         final var aiMessageJson = openAI.chatCompletions().create(chatRequest).join().firstContent();
         final var aiMessageInfo = jsonMapper.readValue(aiMessageJson, AiChatCreateAiMessageInfo.class);
+
+        System.out.println("4번");
+        System.out.println(aiMessageInfo);
 
         final var color = colorRepository.findByName(aiMessageInfo.newState().color())
                 .orElseThrow(() -> new VinopenerException(TastingNoteErrorCode.COLOR_NOT_FOUND));
