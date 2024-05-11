@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frontend/constants/colors.dart';
-import 'package:frontend/widgets/recommend/recommend_carousel_widget.dart';
+import 'package:frontend/widgets/search/search_carousel_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/providers/recommend_provider.dart';
 import 'package:frontend/widgets/recommend/recommend_wine_card_widget.dart';
@@ -10,7 +10,9 @@ import 'package:frontend/constants/fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:frontend/screens/search/search_text_screen.dart';
 
-import 'package:frontend/widgets/recommend/recommend_wine_type_widget.dart';
+import 'package:frontend/widgets/search/search_wine_type_widget.dart';
+
+import '../../widgets/search/search_wine_nation_widget.dart';
 
 class RecommendScreen extends StatefulWidget {
   @override
@@ -100,7 +102,6 @@ class _RecommendScreenState extends State<RecommendScreen> {
                   ],
                 ),
               ),
-
               SliverList(
                 delegate: SliverChildListDelegate([
                   Column(
@@ -118,7 +119,7 @@ class _RecommendScreenState extends State<RecommendScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   SizedBox(height: 15),
-                                  Text('종류',
+                                  Text('🌈 종류',
                                       style: TextStyle(
                                         fontSize: AppFontSizes.large,
                                         fontWeight: FontWeight.w600,
@@ -154,30 +155,61 @@ class _RecommendScreenState extends State<RecommendScreen> {
                       // 🔥 오늘의 인기 TOP 10 와인
                       _ContentTitleSection(context,
                           title: '🔥 오늘의 인기 TOP 10 와인'),
-                      RecommendCarouselWidget(context, recommendType: 'view'),
+                      SearchCarouselWidget(context, recommendType: 'view'),
 
                       // 🙊 꼭 마셔보세요! 회원님을 위한 와인
                       _ContentTitleSection(context,
                           title: '🙊 꼭 마셔보세요! 회원님을 위한 와인'),
-                      RecommendCarouselWidget(context,
+                      SearchCarouselWidget(context,
                           recommendType: 'tasting-note'),
+
+                      Container(
+                        color: Colors.deepPurple,
+                        width: double.maxFinite,
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                        margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                        child: Column(
+                          children: [
+                            Container(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text('🌏 국가',
+                                      style: TextStyle(
+                                        fontSize: AppFontSizes.large,
+                                        fontWeight: FontWeight.w600,
+                                      )),
+                                  Text('오늘은 어떤 나라의 와인을 마셔볼까요?',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: AppFontSizes.mediumSmall)),
+                                  SizedBox(height: 20),
+                                ],
+                              ),
+                            ),
+                            SearchWineNationWidget(context),
+                            SizedBox(height: 40),
+                          ],
+                        ),
+                      ),
 
                       // 💘 예상 평점이 높은 와인
                       _ContentTitleSection(context, title: '💘 예상 평점이 높은 와인'),
-                      RecommendCarouselWidget(context,
+                      SearchCarouselWidget(context,
                           recommendType: 'preference'),
 
                       // 👀 회원님을 위해 엄선한 오늘의 와인
                       _ContentTitleSection(context,
                           title: '👀 회원님을 위해 엄선한 오늘의 와인'),
-                      RecommendCarouselWidget(context, recommendType: 'cellar'),
+                      SearchCarouselWidget(context, recommendType: 'cellar'),
 
                       // 👏 평단의 찬사를 받은 와인
                       _ContentTitleSection(context, title: '👏 평단의 찬사를 받은 와인'),
-                      RecommendCarouselWidget(context, recommendType: 'rate'),
+                      SearchCarouselWidget(context, recommendType: 'rate'),
                       SizedBox(
                         height: 20,
-                      )
+                      ),
                     ],
                   ),
                 ]),
@@ -189,38 +221,49 @@ class _RecommendScreenState extends State<RecommendScreen> {
     );
   }
 
-  Widget _ContentTitleSection(
-    BuildContext context, {
-    required String title,
-  }) {
+  Widget _ContentTitleSection(BuildContext context, {required String title}) {
     return Container(
-      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        child: Stack(
-          alignment: Alignment.centerLeft, // 텍스트를 좌측 중앙 정렬
-          children: [
-            /// 밑줄 역할을 할 컨테이너
-            Positioned(
-              bottom: 2, // 텍스트 바닥에서 조금 위에 위치하도록 설정
-              left: 40, // 왼쪽 정렬
-              child: Container(
-                width: 105, // 밑줄의 길이를 텍스트의 대략적인 너비로 설정
-                height: 8, // 높이를 낮춰서 밑줄처럼 보이게 설정
-                color: Colors.yellow.withOpacity(0.7), // 투명도를 조절하여 스타일 적용
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          // TextPainter를 사용하여 텍스트의 너비를 계산합니다.
+          final TextPainter textPainter = TextPainter(
+            text: TextSpan(
+                text: title,
+                style: TextStyle(
+                    fontWeight: FontWeight.w600, fontSize: AppFontSizes.large)),
+            maxLines: 1,
+            textDirection: TextDirection.ltr,
+          );
+          textPainter.layout(
+              minWidth: constraints.minWidth, maxWidth: constraints.maxWidth);
+          final double textWidth = textPainter.width;
+
+          return Stack(
+            alignment: Alignment.centerLeft, // 텍스트를 좌측 중앙 정렬
+            children: [
+              // 밑줄 역할을 할 컨테이너
+              Positioned(
+                bottom: 2, // 텍스트 바닥에서 조금 위에 위치하도록 설정
+                left: 40, // 왼쪽 정렬
+                child: Container(
+                  width: 100, // 밑줄의 길이를 텍스트의 너비에 맞춥니다.
+                  height: 8, // 높이를 낮춰서 밑줄처럼 보이게 설정
+                  color: Colors.yellow.withOpacity(0.7), // 투명도를 조절하여 스타일 적용
+                ),
               ),
-            ),
-            // 텍스트 위젯
-            Text(
-              title,
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: AppFontSizes.large,
-                backgroundColor: Colors.transparent, // 텍스트 배경을 투명하게 설정
+              // 텍스트 위젯
+              Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: AppFontSizes.large,
+                  backgroundColor: Colors.transparent, // 텍스트 배경을 투명하게 설정
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          );
+        },
       ),
     );
   }

@@ -1,4 +1,4 @@
-class WineTypeResult {
+class WineTypeSearch {
   final int id;
   final String imageUrl;
   final String name;
@@ -7,7 +7,7 @@ class WineTypeResult {
   final String type;
   final int view;
 
-  WineTypeResult({
+  WineTypeSearch({
     required this.id,
     required this.imageUrl,
     required this.name,
@@ -18,8 +18,8 @@ class WineTypeResult {
   });
 
   // JSON 데이터를 받아 Wine 객체로 변환하는 팩토리 메서드
-  factory WineTypeResult.fromJson(Map<String, dynamic> json) {
-    return WineTypeResult(
+  factory WineTypeSearch.fromJson(Map<String, dynamic> json) {
+    return WineTypeSearch(
       id: json['id'],
       imageUrl: json['imageUrl'],
       name: json['name'],

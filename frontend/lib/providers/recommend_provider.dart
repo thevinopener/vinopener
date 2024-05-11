@@ -18,6 +18,28 @@ class RecommendProvider with ChangeNotifier {
   List<RecommendWine> _rateRecommendWineList = [];
   List<RecommendWine> get rateRecommendWineList => _rateRecommendWineList;
 
+  // 와인 리스트 타입 향후 결정
+  // List<> _usRecommendWineList = [];
+  // List<> get usRecommendWineList => _usRecommendWineList;
+  //
+  // List<> _itRecommendWineList = [];
+  // List<> get usRecommendWineList => _usRecommendWineList;
+  //
+  // List<> _frRecommendWineList = [];
+  // List<> get usRecommendWineList => _usRecommendWineList;
+  //
+  // List<> _chRecommendWineList = [];
+  // List<> get usRecommendWineList => _usRecommendWineList;
+  //
+  // List<> _arRecommendWineList = [];
+  // List<> get usRecommendWineList => _usRecommendWineList;
+  //
+  // List<> _spRecommendWineList = [];
+  // List<> get usRecommendWineList => _usRecommendWineList;
+  //
+  // List<> _auRecommendWineList = [];
+  // List<> get usRecommendWineList => _usRecommendWineList;
+
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
