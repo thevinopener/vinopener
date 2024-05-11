@@ -47,6 +47,7 @@ class _NoteScreenState extends State<NoteScreen> {
 
       noteProvider.updateNoteProvider(
         wineId: wine.id ?? 0,
+        colorId: 1,
         // tannin: wine.tannin ?? 0.0,
         // sweetness: wine.sweetness ?? 0.0,
         // intensity: wine.intensity ?? 0.0,

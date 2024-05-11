@@ -68,13 +68,13 @@ class NoteState {
       'wineId': wineId,
       'colorId': colorId,
       'flavourTasteIds': flavourTasteIds,
-      'sweetness': sweetness,
-      'intensity': intensity,
-      'acidity': acidity,
-      'alcohol': alcohol,
-      'tannin': tannin,
+      'sweetness': sweetness.toString(),
+      'intensity': intensity.toString(),
+      'acidity': acidity.toString(),
+      'alcohol': alcohol.toString(),
+      'tannin': tannin.toString(),
       'opinion': opinion,
-      'rating': rating,
+      'rating': rating.toString(),
     };
   }
 }
