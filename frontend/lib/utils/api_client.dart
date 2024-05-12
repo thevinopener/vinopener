@@ -10,9 +10,9 @@ class ApiClient {
   static final ApiClient _apiClient = ApiClient._internal();
   late Dio dio;
 
-  // static final baseUrl = 'https://api.thevinopener.com';
+  static final baseUrl = 'https://api.thevinopener.com';
   // static final baseUrl = 'http://localhost:8080';
-  static final baseUrl = 'http://10.0.2.2:8080';
+  // static final baseUrl = 'http://10.0.2.2:8080';
 
   static String? _accessToken = null;
   static String? _refreshToken = null;
