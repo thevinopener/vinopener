@@ -8,6 +8,7 @@ import '../../widgets/note/note_stt_widget.dart';  // STT Widget을 포함합니
 class DismissibleBottomSheetView extends StatelessWidget {
   final int currentPage;
   final Function(int) onPageChangeRequest;
+  final GlobalKey<SttWidgetState> sttWidgetKey = GlobalKey<SttWidgetState>();
 
   DismissibleBottomSheetView({Key? key, required this.currentPage, required this.onPageChangeRequest}) : super(key: key);
 
@@ -20,7 +21,6 @@ class DismissibleBottomSheetView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            // SizedBox(height: MediaQuery.of(context).size.height * 0.6),
             Expanded(
               child: ClipRRect(
                   borderRadius: const BorderRadius.only(
@@ -39,6 +39,8 @@ class DismissibleBottomSheetView extends StatelessWidget {
                             color: AppColors.white,
                           ),
                           onPressed: () {
+                            // SttWidget의 메서드 호출
+                            sttWidgetKey.currentState?.stopTtsAndStt();
                             Navigator.of(context).pop();
                           },
                         ),
@@ -47,8 +49,13 @@ class DismissibleBottomSheetView extends StatelessWidget {
                         child:Container(
                           width: MediaQuery.of(context).size.width,
                           color: AppColors.black,
-                          child: SttWidget(currentPage: currentPage, onPageChangeRequest: onPageChangeRequest),  // STT Widget 삽입
-                        ),),
+                          child: SttWidget(
+                              key: sttWidgetKey,
+                              currentPage: currentPage,
+                              onPageChangeRequest: onPageChangeRequest
+                          ),  // STT Widget 삽입
+                        ),
+                      ),
                     ],
                   )),
             ),
@@ -58,3 +65,4 @@ class DismissibleBottomSheetView extends StatelessWidget {
     );
   }
 }
+

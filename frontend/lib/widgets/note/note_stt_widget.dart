@@ -1,13 +1,14 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:frontend/constants/colors.dart';
-import 'package:frontend/models/ai_chat_model.dart';
-import 'package:frontend/services/note_service.dart';
 import 'package:provider/provider.dart';
+import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
+import '../../constants/colors.dart';
+import '../../models/ai_chat_model.dart';
 import '../../providers/note/note_wine_provider.dart';
+import '../../services/note_service.dart';
 
 class SttWidget extends StatefulWidget {
   final int currentPage;
@@ -18,10 +19,10 @@ class SttWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _SttWidgetState createState() => _SttWidgetState();
+  SttWidgetState createState() => SttWidgetState();
 }
 
-class _SttWidgetState extends State<SttWidget> {
+class SttWidgetState extends State<SttWidget> {
   final SpeechToText _speech = SpeechToText();
   final FlutterTts _flutterTts = FlutterTts();
   bool _isListening = false;
@@ -31,12 +32,17 @@ class _SttWidgetState extends State<SttWidget> {
   String _answerText = '';
   int? noteId = null;
 
+  void stopTtsAndStt() {
+    _flutterTts.stop();
+    _speech.stop();
+  }
+
   @override
   void initState() {
     super.initState();
     _currentPage = widget.currentPage;
-    _initTts();
     _initSpeech();
+    _initTts();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _promptUser();
     });
@@ -44,43 +50,51 @@ class _SttWidgetState extends State<SttWidget> {
   }
 
   void _updateQuestionText() {
-    // 질문을 업데이트하는 로직
     _questionText = "${titles[_currentPage]}은 어떠합니까?";
   }
 
   void _promptUser() async {
-    // 사용자에게 질문하는 로직
     _speak(_questionText);
   }
 
   void _initSpeech() async {
-    // STT 초기화
     bool available = await _speech.initialize(
-      onStatus: (status) => print('STT Status: $status'),
-      onError: (errorNotification){
-        print('STT Error: $errorNotification');
-      },
-    );
+        onStatus: (status) => print('STT Status: $status'),
+        onError: (error) => _onSpeechError(error) // 오류 처리를 위한 콜백
+        );
     if (!mounted) return;
     setState(() {
       _isListening = available;
     });
   }
 
+  void _onSpeechError(SpeechRecognitionError error) {
+    print("STT Error: ${error.errorMsg} - Permanent: ${error.permanent}");
+    if (error.errorMsg == "error_speech_timeout" && error.permanent) {
+      // 시간 초과 오류 처리
+      _questionText = "다시 말씀해주세요.";
+      _promptUser(); // 사용자에게 다시 질문하도록 유도
+    } else {
+      // 다른 오류 처리
+      _questionText = "오류가 발생했습니다. 다시 시도해 주세요.";
+      _promptUser();
+    }
+  }
+
   void _initTts() {
     _flutterTts.setLanguage('ko-KR');
-    _flutterTts.setPitch(0.0);
+    _flutterTts.setPitch(1.0);
 
     _flutterTts.setStartHandler(() {
       print("TTS Start");
       if (_isListening) {
-        _speech.stop(); // TTS가 시작하기 전에 STT가 활성화된 경우, STT를 중지합니다.
+        _speech.stop(); // TTS가 시작하기 전에 STT 중지
       }
     });
 
     _flutterTts.setCompletionHandler(() {
       print("TTS Complete");
-      _startListening(); // TTS 재생이 끝나면 STT를 시작합니다.
+      _startListening();
     });
 
     _flutterTts.setErrorHandler((msg) {
@@ -89,32 +103,33 @@ class _SttWidgetState extends State<SttWidget> {
   }
 
   void _startListening() {
-    _speech.initialize().then((available) {
-      if (available) {
-        setState(() => _isListening = true);
-        _speech.listen(
-          onResult: _handleResult,
-          localeId: 'ko-KR', // 한국어 음성 인식 설정
-          listenFor: Duration(seconds: 40), // 최대 30초 동안 듣기
-          pauseFor: Duration(seconds: 30), // 사용자가 5초 동안 말하지 않으면 자동으로 중지
-        );
-      } else {
-        setState(() => _isListening = false);
-        print('The user has denied the use of speech recognition.');
-      }
-    }).catchError((e) {
-      print("Error initializing speech recognizer: $e");
-      setState(() => _isListening = false);
-    });
+    if (!_isListening) {
+      _speech.initialize().then((available) {
+        if (available) {
+          setState(() => _isListening = true);
+          _speech.listen(
+            onResult: _handleResult,
+            localeId: 'ko-KR',
+            listenFor: Duration(seconds: 30),
+            pauseFor: Duration(seconds: 10),
+          );
+        } else {
+          setState(() => _isListening = false);
+          print('The user has denied the use of speech recognition.');
+        }
+      });
+    } else {
+      _speech.listen(onResult: _handleResult, localeId: 'ko-KR');
+    }
   }
 
   void _handleResult(SpeechRecognitionResult result) {
-    if (result.finalResult) { // 최종 인식 결과만 처리
+    if (result.finalResult) {
       setState(() {
-        _answerText = result.recognizedWords; // 사용자의 말을 텍스트로 저장
+        _answerText = result.recognizedWords;
       });
       _analyzeSpeech(result.recognizedWords);
-      _speech.stop(); // 음성 인식 종료
+      _speech.stop(); // Stop the speech recognizer
       setState(() => _isListening = false);
     }
   }
@@ -135,28 +150,28 @@ class _SttWidgetState extends State<SttWidget> {
       rating: noteProvider.rating,
     );
     AiChat aiChat = AiChat(state: noteState, message: text);
-
     AiChatService.postSurvey(aiChat).then((AiAnswer aiAnswer) {
       noteId = aiAnswer.id;
       noteProvider.updateNoteProvider(
-        colorId: aiAnswer.newState.color.id,
-        flavourTasteIds: aiAnswer.newState.flavours.isNotEmpty ? aiAnswer.newState.flavours.map((f) => f.id).toList() : noteProvider.flavourTasteIds,
-        sweetness: (aiAnswer.newState.sweetness != null && aiAnswer.newState.sweetness != 0) ? aiAnswer.newState.sweetness : noteProvider.sweetness,
-        intensity: (aiAnswer.newState.intensity != null && aiAnswer.newState.intensity != 0) ? aiAnswer.newState.intensity : noteProvider.intensity,
-        acidity: (aiAnswer.newState.acidity != null && aiAnswer.newState.acidity != 0) ? aiAnswer.newState.acidity : noteProvider.acidity,
-        alcohol: (aiAnswer.newState.alcohol != null && aiAnswer.newState.alcohol != 0) ? aiAnswer.newState.alcohol : noteProvider.alcohol,
-        tannin: (aiAnswer.newState.tannin != null && aiAnswer.newState.tannin != 0) ? aiAnswer.newState.tannin : noteProvider.tannin,
+        colorId: aiAnswer.newState.color?.id ?? noteProvider.colorId,
+        flavourTasteIds: aiAnswer.newState.flavours.isNotEmpty
+            ? aiAnswer.newState.flavours.map((f) => f.id).toList()
+            : noteProvider.flavourTasteIds,
+        sweetness: aiAnswer.newState.sweetness ?? noteProvider.sweetness,
+        intensity: aiAnswer.newState.intensity ?? noteProvider.intensity,
+        acidity: aiAnswer.newState.acidity ?? noteProvider.acidity,
+        alcohol: aiAnswer.newState.alcohol ?? noteProvider.alcohol,
+        tannin: aiAnswer.newState.tannin ?? noteProvider.tannin,
         opinion: aiAnswer.newState.opinion ?? noteProvider.opinion,
         rating: aiAnswer.newState.rating ?? noteProvider.rating,
       );
       _navigateToSection(aiAnswer.section);
-      _questionText=aiAnswer.message;
-      _promptUser();
+      _speak(aiAnswer.message);
     }).catchError((error) {
-      print("Error posting survey: " + error.toString());
+      print("Error posting survey: $error");
       if (error.toString().contains("COLOR_NOT_FOUND")) {
         _questionText = "입력하신 색상을 찾을 수 없습니다. 다시 입력해 주세요.";
-        _promptUser(); // 사용자로부터 다시 입력 받습니다.
+        _promptUser();
       } else {
         _questionText = "오류가 발생했습니다. 다시 시도해 주세요.";
         _promptUser();
@@ -164,30 +179,27 @@ class _SttWidgetState extends State<SttWidget> {
     });
   }
 
-
   void _navigateToSection(String section) {
     Map<String, int> sectionToPage = {
       'COLOR': 0,
       'FLAVOUR': 1,
-      'SWEETNESS':2,
-      'INTENSITY':2,
-      'ACIDITY':2,
-      'ALCOHOL':2,
-      'TANNIN':2,
+      'SWEETNESS': 2,
+      'INTENSITY': 2,
+      'ACIDITY': 2,
+      'ALCOHOL': 2,
+      'TANNIN': 2,
       'OPINION': 3,
       'RATING': 3, // OPINION과 RATING은 같은 페이지에 표시한다고 가정
       'COMPLETE': 4,
-      'EXIT':5// EXIT는 앱을 종료하거나 초기 화면으로 돌아가는 조건으로 설정
+      'EXIT': 5 // EXIT는 앱을 종료하거나 초기 화면으로 돌아가는 조건으로 설정
     };
 
     int? nextPage = sectionToPage[section];
     if (nextPage != null && nextPage == 4) {
-      // 모든 페이지를 닫고 최초 화면으로 돌아가는 로직
       postNote();
-    } else if(nextPage != null && nextPage == 5){
-      Provider.of<NoteProvider>(context, listen: false).reset();
+    } else if (nextPage != null && nextPage == 5) {
       Navigator.of(context).pop();
-    }else if(nextPage != null) {
+    } else if (nextPage != null) {
       if (_currentPage != nextPage) {
         widget.onPageChangeRequest(nextPage);
         setState(() {
@@ -215,28 +227,17 @@ class _SttWidgetState extends State<SttWidget> {
       Navigator.popUntil(context, (route) => route.isFirst);
     } catch (e) {
       print("Error posting note: $e");
-      // 오류 발생 시 처리 로직 추가
     }
   }
 
-
-
   void _speak(String text) async {
-    // 말하기 로직
     if (text.isNotEmpty) {
-      _questionText= text;
-      var result = await _flutterTts.speak(text);
-      if (result == 1) {
-        print("TTS Success");
-      } else {
-        print("TTS Failed with code: $result");
-      }
+      _flutterTts.speak(text);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // UI 구성
     return Container(
       color: AppColors.black,
       child: Column(
@@ -256,8 +257,6 @@ class _SttWidgetState extends State<SttWidget> {
               style: const TextStyle(fontSize: 24.0, color: AppColors.white),
             ),
           ),
-          Text("현재 페이지: ${_currentPage + 1}",
-              style: TextStyle(color: AppColors.white)),
         ],
       ),
     );
