@@ -20,54 +20,37 @@ class WineFlavour extends StatelessWidget {
     return Container(
       width: dimension,
       height: dimension,
-      padding: EdgeInsets.all(dimension / 20),
-      // 선택된 상태에 따라 두꺼운 테두리를 조건부로 적용
       decoration: isSelected
           ? BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.primary, width: 2.0), // 두꺼운 테두리 적용
+        border: Border.all(color: AppColors.primary, width: 1.0), // 두꺼운 테두리 적용
       )
           : BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.transparent, width: 2.0), // 두꺼운 테두리 적용
+        border: Border.all(color: Colors.grey, width: 1.0), // 두꺼운 테두리 적용
       ),
-      child: Container(
-        width: dimension*0.9,
-        height: dimension*0.9,
-        decoration: ShapeDecoration(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          shadows: [
-            BoxShadow(
-              color: Color(0x3F000000),
-              blurRadius: 4,
-              offset: Offset(0, 0),
-              spreadRadius: -4,
-            )
-          ],
-        ),
         child:
         Column(
           children: [
-            Container(
-              alignment: Alignment.center,
-              height: dimension * 0.55,
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  topRight: Radius.circular(12),
-                ),
-                image: DecorationImage(
-                  image: AssetImage(WineIcon.Flavour[flavour.taste] ?? 'assets/images/penguin.jpg'),
-                  fit: BoxFit.fitHeight,
+            Expanded(
+              child: Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
+                  ),
+                  image: DecorationImage(
+                    image: AssetImage(WineIcon.Flavour[flavour.taste] ?? 'assets/images/penguin.jpg'),
+                    fit: BoxFit.fitHeight,
+                  ),
                 ),
               ),
             ),
             Container(
               alignment: Alignment.topCenter,
-              height: dimension * 0.23,
+              height: dimension * 0.25,
               decoration: ShapeDecoration(
                 color: AppColors.white,
                 shape: RoundedRectangleBorder(
@@ -83,7 +66,7 @@ class WineFlavour extends StatelessWidget {
               ),
             ),
           ],
-        ),),
+        ),
     );
   }
 }

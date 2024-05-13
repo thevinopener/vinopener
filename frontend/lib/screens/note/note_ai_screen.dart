@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frontend/constants/colors.dart';
+import 'package:frontend/providers/note/note_wine_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../widgets/note/note_stt_widget.dart';  // STT Widget을 포함합니다.
 

@@ -17,7 +17,7 @@ class NoteDetailCard extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: dimension*0.05),
-      width: dimension * 0.91,
+      width: dimension * 0.90,
       height: dimension * 0.5,
       decoration: ShapeDecoration(
         color: AppColors.white,

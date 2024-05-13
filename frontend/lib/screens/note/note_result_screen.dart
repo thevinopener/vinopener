@@ -145,8 +145,8 @@ class NoteResultScreen extends StatelessWidget {
                             physics: NeverScrollableScrollPhysics(), // 스크롤 동작을 비활성화합니다.
                             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 5, // 한 줄에 3개의 항목이 표시됩니다.
-                              crossAxisSpacing: 0,
-                              mainAxisSpacing: 0,
+                              crossAxisSpacing: 2,
+                              mainAxisSpacing: 2,
                               childAspectRatio: 1, // 항목의 비율을 1:1로 설정합니다.
                             ),
                             itemCount: noteDetail.flavours.length,
