@@ -44,7 +44,7 @@ class _NoteScreenState extends State<NoteScreen> {
         print('Wine data is not loaded.');
         return;
       }
-
+      noteProvider.reset();
       noteProvider.updateNoteProvider(
         wineId: wine.id ?? 0,
         colorId: 1,

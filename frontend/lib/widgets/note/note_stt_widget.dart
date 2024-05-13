@@ -229,22 +229,31 @@ class SttWidgetState extends State<SttWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.black,
+      color: Color(0xFF14131C),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: Text(
               _questionText,
-              style: const TextStyle(fontSize: 24.0, color: AppColors.white),
+              style: const TextStyle(fontSize: 16.0, color: AppColors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height*0.1,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/voice.gif"), // AssetImage 사용
+                fit: BoxFit.fitHeight, // 이미지가 Container 영역을 전체 채우도록 설정
+              ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: Text(
               _answerText,
-              style: const TextStyle(fontSize: 24.0, color: AppColors.white),
+              style: const TextStyle(fontSize: 16.0, color: AppColors.white, fontWeight: FontWeight.bold),
             ),
           ),
         ],
