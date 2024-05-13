@@ -21,6 +21,10 @@ class ApiClient {
     _accessToken = newAccessToken;
   }
 
+  static String getAccessToken() {
+    return _accessToken!;
+  }
+
   static setRefreshToken(String newRefreshToken) {
     _refreshToken = newRefreshToken;
   }
