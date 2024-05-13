@@ -91,7 +91,7 @@ class CellarWineItem extends StatelessWidget {
               right: 8,
               child: Icon(
                 Icons.bookmark,
-                color: AppColors.secondary,
+                color: AppColors.primary,
               ),
             )
         ],
