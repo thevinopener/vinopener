@@ -51,7 +51,7 @@ Color RecommendTypeToColor(String recommendType) {
   }
 }
 
-Widget SearchCarouselWidget(BuildContext context,
+Widget SearchCarouselWidget (BuildContext context,
     {required String recommendType}) {
   int _current = 0;
   final CarouselController _carouselController = CarouselController();
@@ -83,6 +83,9 @@ Widget SearchCarouselWidget(BuildContext context,
       wineList = recommendProvider.rateRecommendWineList;
       type = '평점';
       break;
+    case 'wine-detail':
+      wineList = recommendProvider.wineDetailRecommendWineList;
+      type = '현재 와인과 유사한 와인';
     default:
       wineList = [];
       break;
