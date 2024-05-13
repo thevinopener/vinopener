@@ -43,6 +43,7 @@ class FeedService {
     if (response.statusCode == 200) {
       List<dynamic> responseData = response.data;
       List<Feed> myFeedList = responseData.map((feedData) => Feed.fromJson(feedData)).toList();
+      myFeedList = myFeedList.reversed.toList();
       return myFeedList;
     }
     throw Error();

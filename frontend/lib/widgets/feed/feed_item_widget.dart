@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/models/feed.dart';
 import 'package:frontend/providers/feed/feed_tab_state_provider.dart';
 import 'package:frontend/screens/search/search_detail_screen.dart';
@@ -82,7 +83,13 @@ class _FeedItemState extends State<FeedItem> {
                             NetworkImage('${widget.feed.user?.imageUrl}'),
                       ),
                       SizedBox(width: 10),
-                      Text('${widget.feed.user?.nickname}'),
+                      Text(
+                        '${widget.feed.user?.nickname}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: AppFontSizes.mediumSmall,
+                        ),
+                      ),
                     ],
                   ),
                   Text(formatDateTime(widget.feed.createdTime!)),
@@ -101,11 +108,20 @@ class _FeedItemState extends State<FeedItem> {
                       IconButton(
                         padding: EdgeInsets.all(0),
                         onPressed: _toggleLike,
-                        icon: Icon(widget.feed.isLiked!
-                            ? Icons.favorite
-                            : Icons.favorite_outline),
+                        icon: Icon(
+                          widget.feed.isLiked!
+                              ? Icons.favorite
+                              : Icons.favorite_outline,
+                          size: 30,
+                        ),
                       ),
-                      Text('${widget.feed.likeCount}'),
+                      Text(
+                        '${widget.feed.likeCount}',
+                        style: TextStyle(
+                          fontSize: AppFontSizes.mediumSmall,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ],
                   ),
                   Spacer(),
@@ -139,15 +155,17 @@ class _FeedItemState extends State<FeedItem> {
                     '${widget.feed.user?.nickname}',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
+                      fontSize: AppFontSizes.mediumSmall,
                     ),
                   ),
                   SizedBox(width: 5),
-                  Expanded(
-                    child: Text(
-                      '${widget.feed.content}',
-                      softWrap: true,
-                      overflow: TextOverflow.visible,
+                  Text(
+                    '${widget.feed.content}',
+                    style: TextStyle(
+                      fontSize: AppFontSizes.mediumSmall,
                     ),
+                    softWrap: true,
+                    overflow: TextOverflow.visible,
                   ),
                 ],
               ),

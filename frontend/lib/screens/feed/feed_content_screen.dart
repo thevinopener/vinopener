@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/models/feed/feed_post_requests.dart';
 import 'package:frontend/models/wine_model.dart';
+import 'package:frontend/providers/feed/feed_tab_state_provider.dart';
 import 'package:frontend/providers/feed/new_feed_wine_list_provider.dart';
 import 'package:frontend/screens/feed/feed_wine_search_screen.dart';
 import 'package:frontend/services/feed_service.dart';
@@ -47,6 +49,14 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
   void initState() {
     super.initState();
     _focusNode.addListener(_onFocusChange);
+    contentController.addListener(() {
+      if (contentController.text.length > 200) {
+        contentController.text = contentController.text.substring(0, 200);
+        contentController.selection = TextSelection.fromPosition(
+          TextPosition(offset: contentController.text.length),
+        );
+      }
+    });
     wineList =
         Provider.of<NewFeedWineListProvider>(context, listen: false).wineList;
   }
@@ -67,15 +77,20 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
       content = contentController.text;
       List<int> wineIdList = [];
       var newFeedWineList =
-      Provider.of<NewFeedWineListProvider>(context, listen: false)
-          .getWineList();
+          Provider.of<NewFeedWineListProvider>(context, listen: false)
+              .getWineList();
+      if (newFeedWineList.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('와인을 추가해주세요!')));
+        return;
+      }
       for (int i = 0; i < newFeedWineList.length; i++) {
         wineIdList.add(newFeedWineList[i].id!);
       }
       Provider.of<NewFeedWineListProvider>(context, listen: false)
           .clearWineList();
       MultipartFile multipartImageFile =
-      await MultipartFile.fromFile(widget.imageFile!.path);
+          await MultipartFile.fromFile(widget.imageFile!.path);
       FeedPostRequest feedPostRequest = FeedPostRequest(
         content!,
         isPublic,
@@ -83,6 +98,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
         wineIdList,
       );
       FeedService.postFeed(feedPostRequest);
+      Provider.of<FeedTabState>(context, listen: false).setFeedList();
       Navigator.popUntil(context, (route) => route.isFirst);
     }
 
@@ -138,7 +154,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                     GestureDetector(
                       onTap: () {
                         Provider.of<NewFeedWineListProvider>(context,
-                            listen: false)
+                                listen: false)
                             .clearWineList();
                         Navigator.push(
                           context,
@@ -160,12 +176,15 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                             // Text('test'),
                             TextField(
                               focusNode: _focusNode,
-                              readOnly: true,
+                              maxLength: 1,
+                              maxLengthEnforcement:
+                                  MaxLengthEnforcement.enforced,
                               decoration: InputDecoration(
                                 hintText: '와인을 검색하세요.',
                                 prefixIcon: Icon(Icons.search),
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: InputBorder.none,
+                                counterText: '',
                               ),
                             ),
                           ],
@@ -177,9 +196,9 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                         return Column(
                           children: provider.wineList
                               .map((wine) => FeedWineItem(
-                            wine: wine,
-                            isSelected: false,
-                          ))
+                                    wine: wine,
+                                    isSelected: false,
+                                  ))
                               .toList(),
                         );
                       },
@@ -196,18 +215,18 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(10), // 텍스트 필드의 둥근 모서리
+                        borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.5), // 그림자 색상 및 투명도
-                            spreadRadius: 1, // 그림자의 범위 확장
-                            blurRadius: 3, // 그림자의 흐림 정도
-                            offset: Offset(0, 2), // 그림자의 위치 조정 (x, y)
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 3,
+                            offset: Offset(0, 2),
                           ),
                         ],
                       ),
                       child: TextField(
-                        maxLines: 3,
+                        maxLength: 200,
                         controller: contentController,
                         decoration: InputDecoration(
                           hintText: '내용을 입력하세요.',
@@ -247,7 +266,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                         inactiveTrackColor: Colors.grey,
                         thumbColor: MaterialStateProperty.all(Colors.white),
                         trackOutlineColor:
-                        MaterialStateProperty.all(Colors.transparent),
+                            MaterialStateProperty.all(Colors.transparent),
                       ),
                     ),
                   ],

@@ -71,10 +71,11 @@ class LoginScreen extends StatelessWidget {
                 loginUser.id = await UserService.getMyId();
                 userProvider.setUser(loginUser);
               }
-              bool isFirstLogin = true;
+              var survey = await UserService.getSurvey();
+              bool isSurveyDone = (survey == null);
               Navigator.pushReplacement(
                 context,
-                CupertinoPageRoute(builder: (context) => isFirstLogin? SurveyScreen() : HomeScreen()),
+                CupertinoPageRoute(builder: (context) => isSurveyDone? SurveyScreen() : HomeScreen()),
               );
             },
             child: Image.asset(
