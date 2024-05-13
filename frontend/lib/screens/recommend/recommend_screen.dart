@@ -23,8 +23,6 @@ class RecommendScreen extends StatefulWidget {
 }
 
 class _RecommendScreenState extends State<RecommendScreen> {
-
-
   int _current = 0;
   final CarouselController _carouselController = CarouselController();
   final bannerImg = ['assets/images/banner1.png', 'assets/images/banner2.png'];
@@ -36,12 +34,16 @@ class _RecommendScreenState extends State<RecommendScreen> {
       _initializeRecommendations();
     });
 
-    print('============================================================================');
-    print('============================ ACCESS TOKEN START ============================');
+    print(
+        '============================================================================');
+    print(
+        '============================ ACCESS TOKEN START ============================');
     print('recommend_screen.dart의 initState 입니다. 아래는 나의 엑세스 토큰입니다.');
     print('MY ACCESS TOKEN : ' + ApiClient.getAccessToken());
-    print('============================= ACCESS TOKEN END =============================');
-    print('============================================================================');
+    print(
+        '============================= ACCESS TOKEN END =============================');
+    print(
+        '============================================================================');
   }
 
   Future<void> _initializeRecommendations() async {
@@ -56,25 +58,50 @@ class _RecommendScreenState extends State<RecommendScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white.withOpacity(0.1),
-        // AppBar의 레이아웃을 커스텀하기 위해 leading과 actions를 사용
-        leading: Padding(
-          padding: EdgeInsets.only(left: 5), // 로고에 왼쪽 여백 추가
-          child: Image.asset(
-            'assets/images/vinopener_logo.png',
-            fit: BoxFit.fitWidth,
-          ),
+        // leading: 좌측
+        leading: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SizedBox(
+              width: 5,
+            ),
+            Image.asset(
+              'assets/images/vinopener_logo.png',
+              height: 45, // 이미지 크기 조절
+              width: 45, // 이미지 크기 조절
+            ),
+            SizedBox(width: 8), // 이미지와 텍스트 사이의 간격
+            Text(
+              'VINOPENER',
+              style: TextStyle(
+                  fontSize: AppFontSizes.mediumLarge,
+                  fontWeight: FontWeight.w600),
+            ),
+          ],
         ),
-        title: Text(
-          'VINOPENER',
-          style: TextStyle(
-              fontSize: AppFontSizes.large, fontWeight: FontWeight.w600),
-        ), // 중앙에 제목 텍스트는 비워둠
-        centerTitle: true, // 제목을 중앙에 위치
+        leadingWidth: double.maxFinite,
+        // title: 가운데
+        // title: Row(
+        //   mainAxisSize: MainAxisSize.min,
+        //   children: <Widget>[
+        //     Image.asset(
+        //       'assets/images/vinopener_logo.png',
+        //       height: 40, // 이미지 크기 조절
+        //       width: 50, // 이미지 크기 조절
+        //     ),
+        //     SizedBox(width: 8), // 이미지와 텍스트 사이의 간격
+        //     Text(
+        //       'VINOPENER',
+        //       style: TextStyle(
+        //           fontSize: AppFontSizes.large, fontWeight: FontWeight.w600),
+        //     ),
+        //   ],
+        // ),
+        // centerTitle: true, // 제목을 중앙에 위치
+        // action: 동작
         actions: <Widget>[
           // 검색 아이콘 버튼
           Padding(
