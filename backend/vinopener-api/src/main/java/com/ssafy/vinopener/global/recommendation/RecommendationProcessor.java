@@ -88,8 +88,11 @@ public class RecommendationProcessor {
             List<Tuple> queryResultList = cellarRepositoryQueryImpl.findAllByCellarCount();
 
             int cellarCount = queryResultList.size();
-            if (cellarCount > 10) {
+            int remnantCount = 0;
+            if (cellarCount >= 10) {
                 cellarCount = 10;
+            } else {
+                remnantCount = 10 - cellarCount;
             }
 
             for (int i = 0; i < cellarCount; i++) {
@@ -103,6 +106,19 @@ public class RecommendationProcessor {
 
                 savingEntities.add(recommendationEntity);
                 resultList.add(wine);
+            }
+
+            // 10개가 채워지지 않는다면, rating 기반으로 평점이 높은 순으로 남은 개수를 채운다.
+            if (remnantCount >= 1) {
+                List<WineEntity> additionalList = wineRepository.findAll(Sort.by(Direction.DESC, "rating"));
+                for (int i = 0; i < remnantCount; i++) {
+                    ContentRecommendationEntity recommendationEntity = ContentRecommendationEntity.builder()
+                            .wine(additionalList.get(i))
+                            .contentRecommendationType(ContentRecommendationType.CELLAR)
+                            .build();
+                    savingEntities.add(recommendationEntity);
+                    resultList.add(additionalList.get(i));
+                }
             }
             contentRecommendationRepository.saveAll(savingEntities);
 
