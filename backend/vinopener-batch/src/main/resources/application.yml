@@ -15,6 +15,10 @@ spring:
 kafka:
   topics:
     update-view: updateView
+    update-rate: updateRate
+    update-cellar: updateCellar
+    update-preference: updatePreference
+    update-tasting-note: updateTastingNote
 
 ---
 

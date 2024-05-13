@@ -1,6 +1,5 @@
 package coffee.ssafy.vinopenerbatch.global.config.job;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -10,20 +9,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class UpdateViewJobConfig {
-    public static final String JOB_NAME = "updateViewJob";
+public class UpdateRateJobConfig {
+    public static final String JOB_NAME = "updateRateJob";
 
-    private final Step updateViewStep;
+    private final Step updateRateStep;
 
-    public UpdateViewJobConfig(@Qualifier("updateViewStep") Step updateViewStep) {
-        this.updateViewStep = updateViewStep;
+    public UpdateRateJobConfig(@Qualifier("updateRateStep") final Step updateRateStep) {
+        this.updateRateStep = updateRateStep;
     }
 
     @Bean
-    public Job updateViewJob(final JobRepository jobRepository) {
+    public Job updateRateJob(final JobRepository jobRepository) {
         return new JobBuilder(JOB_NAME, jobRepository)
-                .start(updateViewStep)
+                .start(updateRateStep)
                 .build();
     }
-
 }
