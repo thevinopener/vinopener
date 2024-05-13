@@ -24,32 +24,38 @@ class NoteOpinionScreen extends StatelessWidget {
         noteProvider.reset();
         Navigator.popUntil(context, (route) => route.isFirst);
       } catch (e) {
-        print("Error posting note: $e");
-        // 오류 발생 시 처리 로직 추가
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Error posting note: $e')));
       }
     }
 
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(height: 20),
-          Text('의견', style: TextStyle(fontSize: AppFontSizes.large)),
-          SizedBox(height: 10),
-          Text('자유롭게 의견을 적어보세요!',
-              style: TextStyle(fontSize: AppFontSizes.mediumSmall)),
-          SizedBox(height: 30),
-          NoteOpinion(),
-          SizedBox(height: 20),
-          TextButton(
-            onPressed: postNote,
-            child: Text("제출", style: TextStyle(color: Colors.white)),
-            style: TextButton.styleFrom(
-              backgroundColor: AppColors.primary, // 버튼 배경 색상
-              padding: EdgeInsets.symmetric(horizontal: 30), // 내부 여백
+    return GestureDetector(
+      onTap: () {
+        // 키보드 숨기기
+        FocusScope.of(context).unfocus();
+      },
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: 20),
+            Text('의견', style: TextStyle(fontSize: AppFontSizes.large)),
+            SizedBox(height: 10),
+            Text('자유롭게 의견을 적어보세요!',
+                style: TextStyle(fontSize: AppFontSizes.mediumSmall)),
+            SizedBox(height: 30),
+            NoteOpinion(),
+            SizedBox(height: 20),
+            TextButton(
+              onPressed: postNote,
+              child: Text("제출", style: TextStyle(color: Colors.white)),
+              style: TextButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                padding: EdgeInsets.symmetric(horizontal: 30),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
