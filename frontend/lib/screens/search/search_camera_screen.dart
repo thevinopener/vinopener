@@ -193,9 +193,6 @@ class _SearchCameraScreenState extends State<SearchCameraScreen> {
                                   MaterialPageRoute(
                                     builder: (context) => SearchResultScreen(
                                         searchValue: recognizedText),
-                                    //     SearchCameraCaptureScreen(
-                                    //   recognizedText: recognizedText,
-                                    // ),
                                   ),
                                 );
                               } catch (e) {

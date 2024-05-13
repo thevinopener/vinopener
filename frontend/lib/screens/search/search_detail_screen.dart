@@ -24,8 +24,6 @@ const Map<String, Color> wineTypeColors = {
   'sparkling': WineButtonColors.sparkling,
 };
 
-// TODO: 즐겨찾기 추가/삭제, 셀러 추가/삭제, 테이스팅 노트 라우팅, 와인 추천 API 연결, 배경색 흰색 변경, AppBar 디테일 수정, 테이스팅 노트 작성 횟수 및 뱃지 CSS 추가
-
 class SearchDetailScreen extends StatefulWidget {
   final int wineId;
 
