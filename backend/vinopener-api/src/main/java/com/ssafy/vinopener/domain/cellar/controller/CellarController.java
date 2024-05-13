@@ -3,6 +3,7 @@ package com.ssafy.vinopener.domain.cellar.controller;
 import com.ssafy.vinopener.domain.cellar.data.dto.request.CellarCreateRequest;
 import com.ssafy.vinopener.domain.cellar.data.dto.request.CellarUpdateRequest;
 import com.ssafy.vinopener.domain.cellar.data.dto.response.CellarGetListResponse;
+import com.ssafy.vinopener.domain.cellar.data.dto.response.CellarStatusGetResponse;
 import com.ssafy.vinopener.domain.cellar.service.CellarService;
 import com.ssafy.vinopener.global.annotations.UserPrincipalId;
 import com.ssafy.vinopener.global.config.SwaggerConfig;
@@ -95,11 +96,12 @@ public class CellarController {
      */
     @GetMapping({"/{wineId}"})
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
-    public boolean getCellarStatus(
+    public ResponseEntity<CellarStatusGetResponse> getCellarStatus(
             @PathVariable final Long wineId,
             @UserPrincipalId final Long userId
     ) {
-        return cellarService.getCellarStatus(wineId, userId);
+        CellarStatusGetResponse response = cellarService.getCellarStatus(wineId, userId);
+        return ResponseEntity.ok(response);
     }
 
     /**
