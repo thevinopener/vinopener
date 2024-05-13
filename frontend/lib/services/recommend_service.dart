@@ -85,4 +85,20 @@ class RecommendService {
     }
   }
 
+  // wineDetail 페이지 추천 -> 와인과 유사한 거
+  static Future<List<RecommendWine>> getWineDetailRecommend() async {
+    final response = await ApiClient().dio.get('/recommendations/wine-detail');
+
+    if (response.statusCode == 200) {
+      // 응답 데이터를 리스트로 변환
+      List<dynamic> responseData = response.data;
+      List<RecommendWine> wineList = responseData
+          .map((wineData) => RecommendWine.fromJson(wineData))
+          .toList();
+      return wineList;
+    } else {
+      throw Exception('Failed to load recommendations');
+    }
+  }
+
 }

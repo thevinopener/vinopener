@@ -17,6 +17,9 @@ import 'package:frontend/widgets/recommend/recommend_wine_card_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../widgets/search/search_carousel_widget.dart';
+import '../../widgets/search/search_wine_nation_widget.dart';
+
 const Map<String, Color> wineTypeColors = {
   'red': WineButtonColors.red,
   'white': WineButtonColors.rose,
@@ -156,7 +159,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: AppFontSizes.mediumLarge,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                             ),
                             softWrap: true,
                           ),
@@ -177,7 +180,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: AppFontSizes.mediumLarge,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                           Row(
@@ -193,7 +196,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: AppFontSizes.large,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w600,
                                   color: AppColors.primary,
                                 ),
                               ),
@@ -256,7 +259,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                                               style: TextStyle(
                                                   color: AppColors.primary,
                                                   fontSize: AppFontSizes.medium,
-                                                  fontWeight: FontWeight.w500),
+                                                  fontWeight: FontWeight.w600),
                                             ),
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor: AppColors.white,
@@ -312,7 +315,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                                               style: TextStyle(
                                                   color: AppColors.secondary,
                                                   fontSize: AppFontSizes.medium,
-                                                  fontWeight: FontWeight.w500),
+                                                  fontWeight: FontWeight.w600),
                                             ),
                                             style: ElevatedButton.styleFrom(
                                               // backgroundColor: AppColors.secondary,
@@ -359,7 +362,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                     Text(
                       '풍미',
                       style: TextStyle(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         fontSize: AppFontSizes.large,
                       ),
                     ),
@@ -401,14 +404,14 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                                       wineDetail.acidity.toStringAsFixed(1),
                                       style: const TextStyle(
                                           color: AppColors.primary,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w600,
                                           fontSize: 20),
                                     ),
                                     Text(
                                       '산미',
                                       style: const TextStyle(
                                           color: AppColors.black,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w600,
                                           fontSize: 16),
                                     ),
                                   ],
@@ -444,14 +447,14 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                                       wineDetail.intensity.toStringAsFixed(1),
                                       style: const TextStyle(
                                           color: AppColors.primary,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w600,
                                           fontSize: 20),
                                     ),
                                     Text(
                                       '바디감',
                                       style: const TextStyle(
                                           color: AppColors.black,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w600,
                                           fontSize: 16),
                                     ),
                                   ],
@@ -486,14 +489,14 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                                       wineDetail.sweetness.toStringAsFixed(1),
                                       style: const TextStyle(
                                           color: AppColors.primary,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w600,
                                           fontSize: 20),
                                     ),
                                     Text(
                                       '당도',
                                       style: const TextStyle(
                                           color: AppColors.black,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w600,
                                           fontSize: 16),
                                     ),
                                   ],
@@ -528,14 +531,14 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                                       wineDetail.tannin.toStringAsFixed(1),
                                       style: const TextStyle(
                                           color: AppColors.primary,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w600,
                                           fontSize: 20),
                                     ),
                                     Text(
                                       '타닌',
                                       style: const TextStyle(
                                           color: AppColors.black,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w600,
                                           fontSize: 16),
                                     ),
                                   ],
@@ -570,7 +573,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                         '아로마',
                         style: TextStyle(
                           fontSize: AppFontSizes.large,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
@@ -604,6 +607,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                 width: double.maxFinite,
                 height: 400,
                 decoration: BoxDecoration(
+                  color: Colors.yellow,
                     // color: Colors.blue,
                     ),
                 child: Column(
@@ -611,17 +615,18 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                       child: Text(
-                        '이런 와인은 어떠세요?',
+                        '🍷 보고 계신 것과 비슷한 와인이에요',
                         style: TextStyle(
-                          fontSize: AppFontSizes.large,
-                          fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600, fontSize: AppFontSizes.large
                         ),
                       ),
                     ),
-                    RecommendWineCardWidget(context,
-                        recommendType: 'view'), // 가로스크롤 와인추천카드 위젯
+                    SearchCarouselWidget(context,
+                        recommendType: 'wine-detail'),
+                    // RecommendWineCardWidget(context,
+                    //     recommendType: 'view'), // 가로스크롤 와인추천카드 위젯
                   ],
                 ),
               ),
@@ -634,6 +639,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                 width: double.maxFinite,
                 height: 240,
                 decoration: BoxDecoration(
+                  color: Colors.red,
                     // color: Colors.black12,
                     // color: Colors.purple,
                     ),
@@ -647,7 +653,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                         '세부정보',
                         style: TextStyle(
                           fontSize: AppFontSizes.large,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
@@ -659,9 +665,12 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                       padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
                       margin: EdgeInsets.fromLTRB(20, 10, 20, 20),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Image.asset(
                                 'assets/images/alcohol_content.png',
@@ -672,7 +681,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                               Text(
                                 '${wineDetail.abv}%',
                                 style: TextStyle(
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w600,
                                   fontSize: AppFontSizes.mediumLarge,
                                   color: Colors.black54,
                                 ),
@@ -692,7 +701,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                               Text(
                                 wineDetail.grape,
                                 style: TextStyle(
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w600,
                                   fontSize: AppFontSizes.mediumLarge,
                                   color: Colors.black54,
                                 ),
@@ -712,7 +721,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                               Text(
                                 wineDetail.country,
                                 style: TextStyle(
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w600,
                                   fontSize: AppFontSizes.mediumLarge,
                                   color: Colors.black54,
                                 ),
@@ -859,16 +868,6 @@ Widget SearchDetailSkeleton(BuildContext context) {
             );
           }),
         ),
-        // 기타 스켈레톤 정보
-        // Container(
-        //   width: double.infinity,
-        //   height: 240,
-        //   margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-        //   decoration: BoxDecoration(
-        //     color: Colors.black12,
-        //     borderRadius: BorderRadius.circular(15),
-        //   ),
-        // ),
       ],
     ),
   );

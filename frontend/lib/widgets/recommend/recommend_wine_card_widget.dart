@@ -27,6 +27,8 @@ Widget RecommendWineCardWidget(BuildContext context, {required String recommendT
     case 'rate':
       wineList = recommendProvider.rateRecommendWineList;
       break;
+    case 'wine-detail':
+      wineList = recommendProvider.wineDetailRecommendWineList;
     default:
       wineList = [];
       break;
