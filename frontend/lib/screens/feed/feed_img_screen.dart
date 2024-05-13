@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class _FeedImageScreenState extends State<FeedImageScreen> {
 
   Future pickImageFromGallery() async {
     final pickedImage =
-    await _imagePicker.pickImage(source: ImageSource.gallery);
+        await _imagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       _imageFile = File(pickedImage!.path);
@@ -110,17 +111,19 @@ class _FeedImageScreenState extends State<FeedImageScreen> {
         children: [
           SizedBox(height: 20),
           _imageFile == null
-              ? Image.asset(
-            'assets/images/wine.jpg',
-            width: 400,
-            height: 400,
-          )
-              : Image.file(
-            _imageFile!,
-            width: 400,
-            height: 400,
-            fit: BoxFit.cover,
-          ),
+              ? Center(
+                  child: Image.asset('assets/images/wine.jpg'),
+                )
+              : Center(
+                  child: Container(
+                    width: min(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height * 0.5),
+                    height: min(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height * 0.5),
+                    child: Image.file(
+                      _imageFile!,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
           SizedBox(height: 20),
           Center(
             child: TextButton(

@@ -12,7 +12,6 @@ import 'package:frontend/screens/feed/feed_wine_search_screen.dart';
 import 'package:frontend/services/feed_service.dart';
 import 'package:frontend/widgets/common/molecules/custom_list_tile_widget.dart';
 import 'package:frontend/widgets/feed/feed_wine_item.dart';
-import 'package:frontend/widgets/wine/wine_item_widget.dart';
 import 'package:provider/provider.dart';
 
 class FeedContentScreen extends StatefulWidget {
@@ -33,10 +32,6 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
   String? content;
 
   bool isPublic = true;
-
-  void searchWine(String query) {
-    print('search');
-  }
 
   void _onFocusChange() {
     if (_focusNode.hasFocus) {
@@ -121,8 +116,6 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
           children: [
             Image.file(
               widget.imageFile!,
-              width: 400,
-              height: 400,
               fit: BoxFit.cover,
             ),
             Padding(

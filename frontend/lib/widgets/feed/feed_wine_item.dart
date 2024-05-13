@@ -18,9 +18,9 @@ class FeedWineItem extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
-          color: isSelected ? AppColors.secondary : Colors.grey,
-          width: 2// Dynamic border color // Set the border width
-        ),
+            color: isSelected ? AppColors.secondary : Colors.grey,
+            width: 2 // Dynamic border color // Set the border width
+            ),
         borderRadius: BorderRadius.circular(5),
       ),
       child: Container(
@@ -28,7 +28,7 @@ class FeedWineItem extends StatelessWidget {
         child: Row(
           children: [
             Stack(
-              alignment: Alignment.bottomCenter, // Ensure label is centered at the bottom of the image
+              alignment: Alignment.bottomCenter,
               children: [
                 Container(
                   decoration: BoxDecoration(
@@ -79,7 +79,6 @@ class FeedWineItem extends StatelessWidget {
                         height: 20,
                         width: 20,
                       ),
-                      SizedBox(width: 5),
                       Text(
                         '${wine.country}',
                         style: TextStyle(
