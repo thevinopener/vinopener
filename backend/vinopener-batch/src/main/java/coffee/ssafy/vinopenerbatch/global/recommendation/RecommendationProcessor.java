@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public class RecommendationProcessor {
     private final EntityManager entityManager;
 
 
+    @Transactional
     public void createRecommendation(ContentRecommendationType type) {
         String columnName = "";
         switch (type) {

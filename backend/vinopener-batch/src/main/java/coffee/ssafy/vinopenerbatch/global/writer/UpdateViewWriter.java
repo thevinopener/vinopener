@@ -4,6 +4,7 @@ import coffee.ssafy.vinopenerbatch.domain.recommendation.entity.enums.ContentRec
 import coffee.ssafy.vinopenerbatch.domain.recommendation.repository.ContentRecommendationRepository;
 import coffee.ssafy.vinopenerbatch.domain.wine.entity.WineEntity;
 import coffee.ssafy.vinopenerbatch.domain.wine.repository.WineRepository;
+import coffee.ssafy.vinopenerbatch.global.common.TimeHolder;
 import coffee.ssafy.vinopenerbatch.global.recommendation.RecommendationProcessor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,8 +14,11 @@ import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 @Slf4j
 @Component
@@ -32,28 +36,61 @@ public class UpdateViewWriter implements ItemWriter<String> {
 
         Map<Long, Integer> wineViewCount = new HashMap<>();
 
+        if (!items.iterator().hasNext()) {
+            return;
+        }
+
+        String firstItem = items.iterator().next();
+        JsonNode firstJsonNode = objectMapper.readTree(firstItem);
+        LocalDateTime firstItemTime = LocalDateTime.parse(firstJsonNode.get("time").asText());
+        LocalDateTime previousLastTime = TimeHolder.getViewLastTime();
+        LocalDateTime lastItemTime;
+        log.info("itemTime : {}, lastTime : {}", firstItemTime, previousLastTime);
+        boolean passFirstItem = false;
+
+        if (previousLastTime != null && previousLastTime.equals(firstItemTime)) {
+            passFirstItem = true;
+        }
+
+        boolean isFirstItem = true;
+        boolean hasValidData = false;
+
         for (String item : items) {
+
+            if (isFirstItem && passFirstItem) {
+                isFirstItem = false;  // 첫 번째 아이템 처리 후 플래그 비활성화
+                continue;  // 첫 번째 아이템 스킵
+            }
+
+            hasValidData = true;
             log.info("item : {}", item);
             JsonNode jsonNode = objectMapper.readTree(item);
             long wineId = jsonNode.get("wineId").asLong();
+            String timeString = jsonNode.get("time").asText();
+            TimeHolder.setLastTime(LocalDateTime.parse(timeString));
+
             wineViewCount.put(wineId, wineViewCount.getOrDefault(wineId, 0) + 1);
         }
 
-        for (Map.Entry<Long, Integer> entry : wineViewCount.entrySet()) {
-            Long wineId = entry.getKey();
-            int viewCount = entry.getValue();
-            WineEntity wineEntity = wineRepository.findById(wineId).orElse(null);
-            if (wineEntity == null) {
-                continue;
+        if (hasValidData) {
+            for (Entry<Long, Integer> entry : wineViewCount.entrySet()) {
+                log.info("entry : {}", entry.getKey());
+                Long wineId = entry.getKey();
+                int viewCount = entry.getValue();
+                WineEntity wineEntity = wineRepository.findById(wineId).orElse(null);
+                if (wineEntity == null) {
+                    continue;
+                }
+                wineEntity = wineEntity.increaseViewByCount(viewCount);
+                wineRepository.save(wineEntity);
             }
-            wineEntity = wineEntity.increaseViewByCount(viewCount);
-            wineRepository.save(wineEntity);
+
+            //DB에 조회수 업데이트 확인됨.
+            //이제 재추천 후 테이블 갱신.
+            contentRecommendationRepository.deleteAllByContentRecommendationType(ContentRecommendationType.VIEW);
+            recommendationProcessor.createRecommendation(ContentRecommendationType.VIEW);
         }
 
-        //DB에 조회수 업데이트 확인됨.
-        //이제 재추천 후 테이블 갱신.
-        contentRecommendationRepository.deleteAllByContentRecommendationType(ContentRecommendationType.VIEW);
-        recommendationProcessor.createRecommendation(ContentRecommendationType.VIEW);
 
 
 
