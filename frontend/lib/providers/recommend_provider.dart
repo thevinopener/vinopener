@@ -18,6 +18,9 @@ class RecommendProvider with ChangeNotifier {
   List<RecommendWine> _rateRecommendWineList = [];
   List<RecommendWine> get rateRecommendWineList => _rateRecommendWineList;
 
+  List<RecommendWine> _wineDetailRecommendWineList = [];
+  List<RecommendWine> get wineDetailRecommendWineList => _wineDetailRecommendWineList;
+
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
@@ -84,6 +87,20 @@ class RecommendProvider with ChangeNotifier {
       _rateRecommendWineList = await RecommendService.getRateRecommend();
     } catch (e) {
       _rateRecommendWineList = [];
+      print('Error fetching rate recommendations: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> fetchWineDetailRecommendations() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      _wineDetailRecommendWineList = await RecommendService.getWineDetailRecommend();
+    } catch (e) {
+      _wineDetailRecommendWineList = [];
       print('Error fetching rate recommendations: $e');
     } finally {
       _isLoading = false;
