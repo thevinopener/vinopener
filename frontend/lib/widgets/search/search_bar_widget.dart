@@ -2,6 +2,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
+import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/providers/search/search_history_provider.dart';
 import 'package:frontend/screens/search/search_camera_screen.dart';
 // screens
@@ -70,7 +71,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
   @override
   Widget build(BuildContext) {
     return Container(
-      margin: EdgeInsets.all(10),
+      margin: EdgeInsets.all(7),
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3), // 좌우 패딩
       decoration: BoxDecoration(
         color: Colors.white,
@@ -86,18 +87,19 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
             child: TextField(
               // 컨트롤러 연결 -> X버튼 누르면 없어지는 것과 연결됨
               controller: _controller,
-              // 텍스트 상자에 자동 포커스 되면서 키보드 켜짐
               autofocus: widget.autoFocus,
-              // TODO: 입력값 없으면 검색 안되게 막기
               style: TextStyle(
                 color: Colors.black,
+                fontWeight: FontWeight.w600,
               ),
               decoration: InputDecoration(
                 hintText: '와인 검색',
                 hintStyle: TextStyle(color: Colors.grey), // hint 텍스트의 색상 설정
-                prefixIcon: Icon(Icons.search), // 검색 아이콘
+                prefixIcon: Icon(Icons.search,
+                color: Colors.grey,), // 검색 아이콘
                 border: InputBorder.none, // 밑줄 제거
               ),
+              // textAlign: TextAlign.center,
               onSubmitted: _handleSubmitted, // 완료 버튼 클릭 이벤트
             ),
           ),

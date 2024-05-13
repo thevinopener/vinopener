@@ -37,7 +37,9 @@ class _SearchTextScreenState extends State<SearchTextScreen> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false, // 키보드가 나타날 때 리사이즈하지 않도록 설정
-      body: Column(
+      body: Container(
+        color: Colors.purple.withOpacity(0.03),
+        child: Column(
         children: [
           // #1 검색바 시작
           Flexible(
@@ -51,14 +53,14 @@ class _SearchTextScreenState extends State<SearchTextScreen> {
           // #2 최근검색, 검색기록삭제 시작
           Flexible(
             child: Container(
-              margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              margin: EdgeInsets.fromLTRB(15, 0, 7, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     '최근 검색',
                     style: TextStyle(
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
                       fontSize: AppFontSizes.mediumLarge,
                     ),
                   ),
@@ -70,7 +72,7 @@ class _SearchTextScreenState extends State<SearchTextScreen> {
                     child: Text(
                       '전체기록삭제',
                       style: TextStyle(
-                          color: Colors.red, fontWeight: FontWeight.w400),
+                          color: Colors.red, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],
@@ -110,9 +112,11 @@ class _SearchTextScreenState extends State<SearchTextScreen> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => SearchResultScreen(
-                                            searchValue:
-                                                recentSearchList[index].content),
+                                        builder: (context) =>
+                                            SearchResultScreen(
+                                                searchValue:
+                                                    recentSearchList[index]
+                                                        .content),
                                       ),
                                     );
                                   },
@@ -126,8 +130,11 @@ class _SearchTextScreenState extends State<SearchTextScreen> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   style: TextButton.styleFrom(
-                                    alignment: Alignment.centerLeft, // Align the button's content to the left
-                                    padding: EdgeInsets.symmetric(horizontal: 20), // Remove any default padding that might center the text
+                                    alignment: Alignment
+                                        .centerLeft, // Align the button's content to the left
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            20), // Remove any default padding that might center the text
                                   ),
                                 ),
                               ),
@@ -137,7 +144,9 @@ class _SearchTextScreenState extends State<SearchTextScreen> {
                                     recentSearchList[index].id,
                                   );
                                 },
-                                icon: Icon(Icons.clear),
+                                icon: Icon(
+                                  Icons.clear,
+                                ),
                                 iconSize: 20,
                               )
                             ],
@@ -150,6 +159,7 @@ class _SearchTextScreenState extends State<SearchTextScreen> {
           // #3 검색 기록 끝
         ],
       ),
+    ),
     );
   }
 }

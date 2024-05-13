@@ -23,8 +23,6 @@ class RecommendScreen extends StatefulWidget {
 }
 
 class _RecommendScreenState extends State<RecommendScreen> {
-
-
   int _current = 0;
   final CarouselController _carouselController = CarouselController();
   final bannerImg = ['assets/images/banner1.png', 'assets/images/banner2.png'];
@@ -36,12 +34,16 @@ class _RecommendScreenState extends State<RecommendScreen> {
       _initializeRecommendations();
     });
 
-    print('============================================================================');
-    print('============================ ACCESS TOKEN START ============================');
+    print(
+        '============================================================================');
+    print(
+        '============================ ACCESS TOKEN START ============================');
     print('recommend_screen.dart의 initState 입니다. 아래는 나의 엑세스 토큰입니다.');
     print('MY ACCESS TOKEN : ' + ApiClient.getAccessToken());
-    print('============================= ACCESS TOKEN END =============================');
-    print('============================================================================');
+    print(
+        '============================= ACCESS TOKEN END =============================');
+    print(
+        '============================================================================');
   }
 
   Future<void> _initializeRecommendations() async {
@@ -56,8 +58,6 @@ class _RecommendScreenState extends State<RecommendScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white.withOpacity(0.1),
@@ -65,7 +65,9 @@ class _RecommendScreenState extends State<RecommendScreen> {
         leading: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            SizedBox(width: 5,),
+            SizedBox(
+              width: 5,
+            ),
             Image.asset(
               'assets/images/vinopener_logo.png',
               height: 45, // 이미지 크기 조절
@@ -75,7 +77,8 @@ class _RecommendScreenState extends State<RecommendScreen> {
             Text(
               'VINOPENER',
               style: TextStyle(
-                  fontSize: AppFontSizes.mediumLarge, fontWeight: FontWeight.w600),
+                  fontSize: AppFontSizes.mediumLarge,
+                  fontWeight: FontWeight.w600),
             ),
           ],
         ),

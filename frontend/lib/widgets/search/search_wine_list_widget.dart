@@ -110,18 +110,20 @@ Widget SearchWineListWidget(BuildContext context, List<dynamic> wineList) {
       child: Column(
         children: List.generate(
           wineList.length,
-              (index) {
+          (index) {
             final wine = wineList[index];
             return Padding(
               padding: EdgeInsets.fromLTRB(10, 3, 10, 3),
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SearchDetailScreen(
-                            wineId: wine.id,
-                          )));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SearchDetailScreen(
+                        wineId: wine.id,
+                      ),
+                    ),
+                  );
                 },
                 child: Container(
                   child: Row(
@@ -140,7 +142,8 @@ Widget SearchWineListWidget(BuildContext context, List<dynamic> wineList) {
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(5),
-                                border: Border.all(color: Colors.black, width: 1),
+                                border:
+                                    Border.all(color: Colors.black, width: 1),
                               ),
                               child: Image.network(wine.imageUrl,
                                   fit: BoxFit.scaleDown),
@@ -168,15 +171,15 @@ Widget SearchWineListWidget(BuildContext context, List<dynamic> wineList) {
                               Flexible(
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        wine.name,
+                                        wine.winery,
                                         style: TextStyle(
-                                          fontSize: AppFontSizes.mediumSmall,
                                           color: Colors.black,
+                                          fontSize: AppFontSizes.mediumSmall,
                                         ),
                                       ),
                                     ),
@@ -185,10 +188,11 @@ Widget SearchWineListWidget(BuildContext context, List<dynamic> wineList) {
                               ),
                               Flexible(
                                 child: Text(
-                                  wine.winery,
+                                  wine.name,
                                   style: TextStyle(
-                                    fontSize: AppFontSizes.medium,
                                     color: Colors.black,
+                                    fontSize: AppFontSizes.medium,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ),
@@ -196,9 +200,10 @@ Widget SearchWineListWidget(BuildContext context, List<dynamic> wineList) {
                                 child: Row(
                                   children: [
                                     NationFlag(
-                                        country: wine.country,
-                                        height: 20,
-                                        width: 20),
+                                      country: wine.country,
+                                      height: 20,
+                                      width: 20,
+                                    ),
                                     SizedBox(width: 10),
                                     Text(
                                       wine.country,
