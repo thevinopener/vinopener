@@ -48,8 +48,8 @@ class FeedService {
     throw Error();
   }
 
-  static void deleteFeed(Feed feed) async {
-    print('deleteFeed');
+  static void deleteFeed(int feedId) async {
+    await ApiClient().dio.delete('/feeds/${feedId}');
   }
 
   static void switchPublic(int feedId) async {
