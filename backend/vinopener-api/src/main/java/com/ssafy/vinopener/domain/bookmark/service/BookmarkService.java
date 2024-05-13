@@ -3,14 +3,16 @@ package com.ssafy.vinopener.domain.bookmark.service;
 import com.ssafy.vinopener.domain.bookmark.data.dto.request.BookmarkCreateRequest;
 import com.ssafy.vinopener.domain.bookmark.data.dto.response.BookmarkGetListResponse;
 import com.ssafy.vinopener.domain.bookmark.data.dto.response.BookmarkStatusGetResponse;
+import com.ssafy.vinopener.domain.bookmark.data.entity.BookmarkEntity;
 import com.ssafy.vinopener.domain.bookmark.data.mapper.BookmarkMapper;
 import com.ssafy.vinopener.domain.bookmark.exception.BookmarkErrorCode;
 import com.ssafy.vinopener.domain.bookmark.repository.BookmarkRepository;
 import com.ssafy.vinopener.domain.user.repository.UserRepository;
 import com.ssafy.vinopener.domain.wine.repository.WineRepository;
 import com.ssafy.vinopener.global.exception.VinopenerException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,10 +60,16 @@ public class BookmarkService {
         bookmarkRepository.deleteByIdAndUserId(bookmarkId, userId);
     }
 
+    /**
+     * 즐겨찾기 삭제 : wineID
+     *
+     * @param userId
+     * @param wineId
+     */
     @Transactional
     public void deleteByWineId(final Long userId, final Long wineId) {
         if (bookmarkRepository.existsByWineIdAndUserId(wineId, userId)) {
-            bookmarkRepository.deleteByWineIdAndUserId(userId, wineId);
+            bookmarkRepository.deleteByWineIdAndUserId(wineId, userId);
             return;
         }
 
@@ -74,15 +82,29 @@ public class BookmarkService {
      * @param userId 유저 ID
      * @return 즐겨찾기한 와인 목록
      */
+//    @Transactional(readOnly = true)
+//    public List<BookmarkGetListResponse> getList(Long userId) {
+//        return bookmarkRepository.findAllByUserId(userId).stream()
+//                .map(bookmarkMapper::toGetListResponse)
+//                .toList();
+//    }
+
+    /**
+     * 즐겨찾기 목록 조회 : 페이지네이션
+     *
+     * @param userId 유저 ID
+     */
     @Transactional(readOnly = true)
-    public List<BookmarkGetListResponse> getList(Long userId) {
-        return bookmarkRepository.findAllByUserId(userId).stream()
-                .map(bookmarkMapper::toGetListResponse)
-                .toList();
+    public Page<BookmarkGetListResponse> getList(
+            final Long userId,
+            Pageable pageable
+    ) {
+        Page<BookmarkEntity> bookmarks = bookmarkRepository.findAllByUserId(userId, pageable);
+        return bookmarks.map(bookmarkMapper::toGetListResponse);
     }
 
     /**
-     * 즐겨찾기 존재 여부 확인
+     * 즐겨찾기 존재 여부 확인 : 와인 ID
      *
      * @param wineId 와인 ID
      * @param userId 유저 ID
