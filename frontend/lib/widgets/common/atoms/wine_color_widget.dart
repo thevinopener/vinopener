@@ -27,6 +27,7 @@ class WineColorBlock extends StatelessWidget {
             child: Container(
               decoration: ShapeDecoration(
                 color: wineColor,
+
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(12),
@@ -34,6 +35,7 @@ class WineColorBlock extends StatelessWidget {
                     bottomLeft: Radius.circular(12),
                     bottomRight: Radius.circular(12),
                   ),
+                  side: BorderSide(color: Colors.grey, width: 0.8),
                 ),
               ),
             ),
