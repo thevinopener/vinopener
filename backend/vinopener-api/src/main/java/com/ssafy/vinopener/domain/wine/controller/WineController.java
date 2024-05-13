@@ -14,6 +14,12 @@ import jakarta.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +37,8 @@ public class WineController {
 
     private final WineService wineService;
     private final SearchService searchService;
+
+    private static final Logger logger = LoggerFactory.getLogger(WineController.class);
 
     /**
      * 와인 목록 조회
@@ -61,19 +69,45 @@ public class WineController {
 //        return ResponseEntity.ok(wineService.get(wineId));
 //    }
 
+//    /**
+//     * 와인 목록 조회(북마크, 셀러, 테이스팅 노트 여부 포함)
+//     *
+//     * @param userId 유저 ID
+//     */
+//    @GetMapping
+//    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+//    public ResponseEntity<List<WineGetListResponse>> getListWine(
+//            @UserPrincipalId final Long userId
+//    ) {
+//        // TODO : 페이지네이션
+//        return ResponseEntity.ok(wineService.getList(userId));
+//    }
+
     /**
-     * 와인 목록 조회(북마크, 셀러, 테이스팅 노트 여부 포함)
+     * 와인 목록 조회 페이지네이션 테스트
      *
      * @param userId 유저 ID
      */
     @GetMapping
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
-    public ResponseEntity<List<WineGetListResponse>> getListWine(
-            @UserPrincipalId final Long userId
+    public ResponseEntity<Page<WineGetListResponse>> getListWine(
+            @UserPrincipalId final Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort
+
     ) {
-        // TODO : 페이지네이션
-        return ResponseEntity.ok(wineService.getList(userId));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        logger.info("@@@ 페이지네이션 -> page: {}, size: {}, sort: {}", page, size, sort);
+        return ResponseEntity.ok(wineService.getList(userId, pageable));
     }
+
+//    @GetMapping("/test-pageable")
+//    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+//    public String testPageable(@UserPrincipalId final Long userId,
+//            Pageable pageable) {
+//        return "Page number: " + pageable.getPageNumber() + ", Page size: " + pageable.getPageSize();
+//    }
 
     /**
      * 와인 상세 조회(북마크, 셀러, 테이스팅 노트 여부 포함)
