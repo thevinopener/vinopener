@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/firebase_options.dart';
 import 'package:frontend/models/user.dart';
@@ -43,6 +44,11 @@ void main() async {
       child: MyApp(),
     ),
   );
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]);
 }
 
 class MyApp extends StatefulWidget {

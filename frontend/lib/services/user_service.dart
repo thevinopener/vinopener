@@ -35,6 +35,14 @@ class UserService {
     throw Error();
   }
 
+  static Future<Survey> getSurvey() async {
+    var response = await ApiClient().dio.get('/preference');
+    if (response.statusCode == 200 && response.data != null) {
+      return Survey.fromJson(response.data);
+    }
+    throw Error();
+  }
+
   static void postSurvey(Survey survey) async {
     await ApiClient().dio.post('/preference', data: survey.toJson());
   }

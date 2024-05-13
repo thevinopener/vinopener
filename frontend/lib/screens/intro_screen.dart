@@ -19,12 +19,14 @@ class IntroScreen extends StatelessWidget {
     );
 
     return Scaffold(
-      backgroundColor: AppColors.primary,
-      body: Center(
-        child: FractionallySizedBox(
-          widthFactor: 0.5,
-          heightFactor: 0.5,
-          child: Image.asset('assets/images/intro_logo.png'),
+      body: Container(
+        color: AppColors.primary.withOpacity(0.05),
+        child: Center(
+          child: FractionallySizedBox(
+            widthFactor: 0.5,
+            heightFactor: 0.5,
+            child: Image.asset('assets/images/intro_logo.png'),
+          ),
         ),
       ),
     );

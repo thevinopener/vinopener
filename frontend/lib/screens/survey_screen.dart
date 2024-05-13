@@ -77,13 +77,12 @@ class _SurveyScreenState extends State<SurveyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Survey")),
       body: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width * 0.05),
         child: Center(
             child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           // 수정: CrossAxisAlignment.center -> CrossAxisAlignment.stretch
           children: <Widget>[
