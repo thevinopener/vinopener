@@ -2,6 +2,7 @@ package com.ssafy.vinopener.domain.bookmark.controller;
 
 import com.ssafy.vinopener.domain.bookmark.data.dto.request.BookmarkCreateRequest;
 import com.ssafy.vinopener.domain.bookmark.data.dto.response.BookmarkGetListResponse;
+import com.ssafy.vinopener.domain.bookmark.data.dto.response.BookmarkStatusGetResponse;
 import com.ssafy.vinopener.domain.bookmark.service.BookmarkService;
 import com.ssafy.vinopener.global.annotations.UserPrincipalId;
 import com.ssafy.vinopener.global.config.SwaggerConfig;
@@ -110,11 +111,12 @@ public class BookmarkController {
      */
     @GetMapping("/{wineId}")
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
-    public boolean getBookmarkStatus(
+    public ResponseEntity<BookmarkStatusGetResponse> getBookmarkStatus(
             @PathVariable final Long wineId,
             @UserPrincipalId final Long userId
     ) {
-        return bookmarkService.getBookmarkStatus(wineId, userId);
+        BookmarkStatusGetResponse response = bookmarkService.getBookmarkStatus(wineId, userId);
+        return ResponseEntity.ok(response);
     }
 
 }
