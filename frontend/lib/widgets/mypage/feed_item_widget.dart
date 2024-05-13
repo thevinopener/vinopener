@@ -13,7 +13,6 @@ import 'package:frontend/services/feed_service.dart';
 import 'package:frontend/utils/date_time_util.dart';
 import 'package:frontend/widgets/common/molecules/custom_list_tile_widget.dart';
 import 'package:frontend/widgets/common/molecules/wine_item_widget.dart';
-import 'package:frontend/widgets/common/templates/wine_detail_template.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -98,8 +97,6 @@ class _FeedItemState extends State<FeedItem> {
                 tag: 'feedImage${widget.feed.id}',
                 child: Image.network(
                   '${widget.feed.imageUrl}',
-                  width: 400,
-                  height: 400,
                   fit: BoxFit.cover,
                 ),
               ),

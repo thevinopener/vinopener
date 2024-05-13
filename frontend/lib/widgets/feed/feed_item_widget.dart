@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frontend/models/feed.dart';
 import 'package:frontend/providers/feed/feed_tab_state_provider.dart';
 import 'package:frontend/screens/search/search_detail_screen.dart';
@@ -92,8 +91,6 @@ class _FeedItemState extends State<FeedItem> {
               SizedBox(height: 5),
               Image.network(
                 '${widget.feed.imageUrl}',
-                width: 400,
-                height: 400,
                 fit: BoxFit.cover,
               ),
               Row(
