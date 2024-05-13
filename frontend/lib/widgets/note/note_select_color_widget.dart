@@ -60,7 +60,7 @@ class _NoteColorState extends State<NoteColor> {
             child: Container(
               margin: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                border: isSelected ? Border.all(color: AppColors.primary, width: 4) : null,
+                border: isSelected ? Border.all(color: AppColors.primary, width: 3) : null,
                 borderRadius: BorderRadius.circular(15),
               ),
               child: WineColorBlock(

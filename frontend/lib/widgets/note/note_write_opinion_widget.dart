@@ -12,7 +12,7 @@ class NoteOpinion extends StatefulWidget {
 }
 
 class _NoteOpinionState extends State<NoteOpinion> {
-  TextEditingController? opinionController;
+  late TextEditingController opinionController;
 
   @override
   void initState() {
@@ -24,21 +24,22 @@ class _NoteOpinionState extends State<NoteOpinion> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final providerOpinion = Provider.of<NoteProvider>(context).opinion;
-    if (opinionController!.text != providerOpinion) {
-      opinionController!.text = providerOpinion;  // 초기 텍스트 필드 값 설정
+    if (opinionController.text != providerOpinion) {
+      opinionController.text = providerOpinion; // 초기 텍스트 필드 값 설정
     }
   }
 
   @override
   void dispose() {
-    opinionController!.dispose();
+    opinionController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.05),
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.05),
       child: Column(
         children: [
           TextField(
@@ -50,7 +51,8 @@ class _NoteOpinionState extends State<NoteOpinion> {
             maxLines: 12,
             style: TextStyle(fontSize: 16),
             onChanged: (text) {
-              Provider.of<NoteProvider>(context, listen: false).updateNoteProvider(opinion: text);
+              Provider.of<NoteProvider>(context, listen: false)
+                  .updateNoteProvider(opinion: text);
             },
           ),
           SizedBox(height: 50),
@@ -62,8 +64,9 @@ class _NoteOpinionState extends State<NoteOpinion> {
                   Text(
                     provider.rating.toStringAsFixed(1),
                     style: TextStyle(
-                        fontSize: AppFontSizes.large,
-                        fontWeight: FontWeight.bold),
+                      fontSize: AppFontSizes.large,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   SizedBox(width: 20),
                   RatingBar.builder(
@@ -78,7 +81,7 @@ class _NoteOpinionState extends State<NoteOpinion> {
                       color: Colors.amber,
                     ),
                     onRatingUpdate: (rating) {
-                      Provider.of<NoteProvider>(context, listen: false).updateNoteProvider(rating: rating);
+                      provider.updateNoteProvider(rating: rating);
                     },
                   ),
                 ],
