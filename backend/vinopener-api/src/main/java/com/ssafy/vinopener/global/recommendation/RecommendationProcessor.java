@@ -219,7 +219,7 @@ public class RecommendationProcessor {
         }
 
         //일단 모든 와인과 비교해보고, 성능이 너무 안나오면 type으로 걸러낸다.
-        List<WineEntity> wineEntityList = wineRepository.findAll();
+        List<WineEntity> wineEntityList = wineRepository.findAllExceptWineId(wineId);
 
         List<WineEntity> resultList = wineEntityList.stream()
                 .sorted(Comparator.comparingDouble((WineEntity wineEntity)
