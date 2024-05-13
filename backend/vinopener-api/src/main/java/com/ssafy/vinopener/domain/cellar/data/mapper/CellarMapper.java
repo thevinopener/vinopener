@@ -4,6 +4,7 @@ import com.ssafy.vinopener.domain.cellar.data.dto.request.CellarCreateRequest;
 import com.ssafy.vinopener.domain.cellar.data.dto.request.CellarUpdateRequest;
 import com.ssafy.vinopener.domain.cellar.data.dto.response.CellarGetListResponse;
 import com.ssafy.vinopener.domain.cellar.data.dto.response.CellarGetResponse;
+import com.ssafy.vinopener.domain.cellar.data.dto.response.CellarStatusGetResponse;
 import com.ssafy.vinopener.domain.cellar.data.entity.CellarEntity;
 import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
 import com.ssafy.vinopener.global.common.ReferenceMapper;
@@ -19,6 +20,9 @@ import org.mapstruct.ReportingPolicy;
 public interface CellarMapper {
 
     CellarGetResponse toGetResponse(CellarEntity entity);
+
+    @Mapping(target = "isCellar", source = "isCellar")
+    CellarStatusGetResponse toGetStatusResponse(Boolean isCellar);
 
     @Mapping(target = "totalNotes", source = "totalNotes")
     CellarGetListResponse toGetListResponse(CellarEntity entity, int totalNotes);

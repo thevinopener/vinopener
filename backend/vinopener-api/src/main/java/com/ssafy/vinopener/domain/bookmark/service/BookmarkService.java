@@ -2,6 +2,7 @@ package com.ssafy.vinopener.domain.bookmark.service;
 
 import com.ssafy.vinopener.domain.bookmark.data.dto.request.BookmarkCreateRequest;
 import com.ssafy.vinopener.domain.bookmark.data.dto.response.BookmarkGetListResponse;
+import com.ssafy.vinopener.domain.bookmark.data.dto.response.BookmarkStatusGetResponse;
 import com.ssafy.vinopener.domain.bookmark.data.mapper.BookmarkMapper;
 import com.ssafy.vinopener.domain.bookmark.exception.BookmarkErrorCode;
 import com.ssafy.vinopener.domain.bookmark.repository.BookmarkRepository;
@@ -87,11 +88,12 @@ public class BookmarkService {
      * @param userId 유저 ID
      */
     @Transactional(readOnly = true)
-    public boolean getBookmarkStatus(
+    public BookmarkStatusGetResponse getBookmarkStatus(
             final Long wineId,
             final Long userId
     ) {
-        return bookmarkRepository.existsByWineIdAndUserId(wineId, userId);
+        boolean isBookmark = bookmarkRepository.existsByWineIdAndUserId(wineId, userId);
+        return bookmarkMapper.toGetStatusResponse(isBookmark);
     }
 
     /**

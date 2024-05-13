@@ -3,6 +3,7 @@ package com.ssafy.vinopener.domain.cellar.service;
 import com.ssafy.vinopener.domain.cellar.data.dto.request.CellarCreateRequest;
 import com.ssafy.vinopener.domain.cellar.data.dto.request.CellarUpdateRequest;
 import com.ssafy.vinopener.domain.cellar.data.dto.response.CellarGetListResponse;
+import com.ssafy.vinopener.domain.cellar.data.dto.response.CellarStatusGetResponse;
 import com.ssafy.vinopener.domain.cellar.data.entity.CellarEntity;
 import com.ssafy.vinopener.domain.cellar.data.mapper.CellarMapper;
 import com.ssafy.vinopener.domain.cellar.exception.CellarErrorCode;
@@ -95,11 +96,14 @@ public class CellarService {
 //                .orElseThrow(() -> new VinopenerException(CellarErrorCode.CELLAR_NOT_FOUND));
 //    }
     @Transactional(readOnly = true)
-    public boolean getCellarStatus(
+    public CellarStatusGetResponse getCellarStatus(
             final Long wineId,
             final Long userId
     ) {
-        return cellarRepository.existsByWineIdAndUserId(wineId, userId);
+        boolean isCellar = cellarRepository.existsByWineIdAndUserId(wineId, userId);
+        return cellarMapper.toGetStatusResponse(isCellar);
+
+//        return cellarRepository.existsByWineIdAndUserId(wineId, userId);
     }
 
     /**
@@ -134,6 +138,12 @@ public class CellarService {
         cellarRepository.deleteByIdAndUserId(cellarId, userId);
     }
 
+    /**
+     * 셀러 아이템 삭제 : WineId
+     *
+     * @param wineId 와인 ID
+     * @param userId 유저 ID
+     */
     @Transactional
     public void deleteByWineId(
             final Long wineId,
