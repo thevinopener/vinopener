@@ -28,4 +28,24 @@ class Survey {
       'tannin': tannin,
     };
   }
+
+  factory Survey.fromJson(Map<String, dynamic> json) {
+    Set<String> mappedTypes = (json['types'] as List<dynamic>)
+        .map((type) => type as String)
+        .toSet();
+
+    return Survey(
+      types: mappedTypes,
+      minAbv: json['minAbv'] as int,
+      maxAbv: json['maxAbv'] as int,
+      sweetness: json['sweetness'] as int,
+      acidity: json['acidity'] as int,
+      tannin: json['tannin'] as int,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'Survey{types: $types, minAbv: $minAbv, maxAbv: $maxAbv, sweetness: $sweetness, acidity: $acidity, tannin: $tannin}';
+  }
 }

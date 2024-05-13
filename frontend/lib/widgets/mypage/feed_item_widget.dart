@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:frontend/constants/colors.dart';
+import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/models/feed.dart';
 import 'package:frontend/providers/feed/feed_tab_state_provider.dart';
 import 'package:frontend/screens/search/search_detail_screen.dart';
@@ -138,7 +139,27 @@ class _FeedItemState extends State<FeedItem> {
                         .toList() ??
                     [],
               ),
-              Text('${widget.feed.content}'),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${widget.feed.user?.nickname}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: AppFontSizes.mediumSmall,
+                    ),
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    '${widget.feed.content}',
+                    style: TextStyle(
+                      fontSize: AppFontSizes.mediumSmall,
+                    ),
+                    softWrap: true,
+                    overflow: TextOverflow.visible,
+                  ),
+                ],
+              ),
               SizedBox(height: 5),
               CustomListTile(
                 leadingIcon: Icons.visibility_off_outlined,

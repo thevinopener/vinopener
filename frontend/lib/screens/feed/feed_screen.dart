@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:frontend/utils/feed_util.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/providers/feed/feed_tab_state_provider.dart';
 import 'package:frontend/widgets/feed/feed_item_widget.dart';
@@ -60,16 +61,27 @@ class _FeedScreenState extends State<FeedScreen> {
             onRefresh: _refreshFeedList,
             child: provider.isLoading
                 ? FeedItemSkeleton()
-                : ListView.builder(
-                    itemCount: provider.feedList.length,
-                    itemBuilder: (context, index) {
-                      if (provider.feedList[index].isPublic!) {
-                        return FeedItem(feed: provider.feedList[index]);
-                      } else {
-                        return SizedBox.shrink();
-                      }
-                    },
-                  ),
+                : FeedUtil.countPublicFeed(provider.feedList) == 0
+                    ? Center(
+                      child: Text(
+                          '💬\n작성된 피드가 없어요!\n와인을 마신 경험을 공유해볼까요?\n🍷',
+                          style: TextStyle(
+                            fontSize: AppFontSizes.mediumLarge,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                    )
+                    : ListView.builder(
+                        itemCount: provider.feedList.length,
+                        itemBuilder: (context, index) {
+                          if (provider.feedList[index].isPublic!) {
+                            return FeedItem(feed: provider.feedList[index]);
+                          } else {
+                            return SizedBox.shrink();
+                          }
+                        },
+                      ),
           );
         },
       ),
@@ -108,9 +120,15 @@ Widget FeedItemSkeleton() {
                 ],
               ),
               SizedBox(height: 5),
-              Container(width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height * 0.5, color: Colors.white),
+              Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  color: Colors.white),
               SizedBox(height: 30),
-              Container(width: MediaQuery.of(context).size.width, height: 120, color: Colors.white),
+              Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 120,
+                  color: Colors.white),
             ],
           ),
         ),
