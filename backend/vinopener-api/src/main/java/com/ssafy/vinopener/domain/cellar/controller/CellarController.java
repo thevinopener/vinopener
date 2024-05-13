@@ -13,8 +13,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -63,13 +67,35 @@ public class CellarController {
      * @param userId 유저 ID
      * @return 셀러 아이템 목록
      */
+//    @GetMapping
+//    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+//    public ResponseEntity<List<CellarGetListResponse>> getListCellar(
+//            // TODO: pagination 추가
+//            @UserPrincipalId final Long userId
+//    ) {
+//        return ResponseEntity.ok(cellarService.getList(userId));
+//    }
+
+    /**
+     * 셀러 아이템 목록 조회 : 페이지 네이션
+     *
+     * @param userId 유저 ID
+     * @param page   시작 페이지(생략 가능, 0)
+     * @param size   페이지 당 출력 개수(생략 가능, 10)
+     * @param sort   정렬 기준(생략 가능, ID)
+     * @return 셀러 아이템 목록
+     */
     @GetMapping
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
-    public ResponseEntity<List<CellarGetListResponse>> getListCellar(
-            // TODO: pagination 추가
-            @UserPrincipalId final Long userId
+    public ResponseEntity<Page<CellarGetListResponse>> getListCellar(
+            @UserPrincipalId final Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort
+
     ) {
-        return ResponseEntity.ok(cellarService.getList(userId));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return ResponseEntity.ok(cellarService.getList(userId, pageable));
     }
 
     /**

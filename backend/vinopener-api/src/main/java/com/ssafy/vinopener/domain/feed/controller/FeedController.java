@@ -16,8 +16,11 @@ import jakarta.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -73,13 +77,34 @@ public class FeedController {
      *
      * @return 피드 전체 목록
      */
+//    @GetMapping
+//    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+//    public ResponseEntity<List<FeedGetListResponse>> getList(
+//            @UserPrincipalId final Long userId
+//    ) {
+//        // TODO: pagination 추가
+//        return ResponseEntity.ok(feedService.getList(userId));
+//    }
+
+    /**
+     * 피드 전체 목록 조회 : 페이지네이션
+     *
+     * @param userId 유저 ID
+     * @param page   시작 페이지(생략 가능, 0)
+     * @param size   페이지 당 출력 개수(생략 가능, 10)
+     * @param sort   정렬 기준(생략 가능, ID)
+     * @return 전체 피드 목록
+     */
     @GetMapping
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
-    public ResponseEntity<List<FeedGetListResponse>> getList(
-            @UserPrincipalId final Long userId
+    public ResponseEntity<Page<FeedGetListResponse>> getList(
+            @UserPrincipalId final Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort
     ) {
-        // TODO: pagination 추가
-        return ResponseEntity.ok(feedService.getList(userId));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return ResponseEntity.ok(feedService.getList(userId, pageable));
     }
 
     /**
@@ -103,12 +128,33 @@ public class FeedController {
      * @param userId 유저 ID
      * @return 내 피드 목록
      */
+//    @GetMapping("/my")
+//    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+//    public ResponseEntity<List<FeedGetListResponse>> getMyFeedList(
+//            @UserPrincipalId final Long userId
+//    ) {
+//        return ResponseEntity.ok(feedService.getMyFeedList(userId));
+//    }
+
+    /**
+     * 내 피드 목록 조회 : 페이지네이션
+     *
+     * @param userId 유저 ID
+     * @param page   시작 페이지(생략 가능, 0)
+     * @param size   페이지 당 출력 개수(생략 가능, 10)
+     * @param sort   정렬 기준(생략 가능, ID)
+     * @return 내 피드 목록
+     */
     @GetMapping("/my")
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
-    public ResponseEntity<List<FeedGetListResponse>> getMyFeedList(
-            @UserPrincipalId final Long userId
+    public ResponseEntity<Page<FeedGetListResponse>> getMyFeedList(
+            @UserPrincipalId final Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort
     ) {
-        return ResponseEntity.ok(feedService.getMyFeedList(userId));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return ResponseEntity.ok(feedService.getMyFeedList(userId, pageable));
     }
 
 //    /**

@@ -14,8 +14,9 @@ import com.ssafy.vinopener.domain.wine.exception.WineErrorCode;
 import com.ssafy.vinopener.domain.wine.repository.WineRepository;
 import com.ssafy.vinopener.global.exception.VinopenerException;
 import java.time.LocalDate;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,17 +67,36 @@ public class CellarService {
      * @param userId 유저 ID
      * @return 셀러에 추가한 와인 목록
      */
-    @Transactional(readOnly = true)
-    public List<CellarGetListResponse> getList(
-            final Long userId) {
-        List<CellarEntity> cellars = cellarRepository.findAllByUserId(userId);
+//    @Transactional(readOnly = true)
+//    public List<CellarGetListResponse> getList(
+//            final Long userId) {
+//        List<CellarEntity> cellars = cellarRepository.findAllByUserId(userId);
+//
+//        return cellars.stream()
+//                .map(cellar -> {
+//                    int totalNotes = tastingNoteRepository.countByWineIdAndUserId(cellar.getWine().getId(), userId);
+//                    return cellarMapper.toGetListResponse(cellar, totalNotes);
+//                })
+//                .toList();
+//    }
 
-        return cellars.stream()
-                .map(cellar -> {
-                    int totalNotes = tastingNoteRepository.countByWineIdAndUserId(cellar.getWine().getId(), userId);
-                    return cellarMapper.toGetListResponse(cellar, totalNotes);
-                })
-                .toList();
+    /**
+     * 셀러 아이템 목록 조회 : 페이지네이션
+     *
+     * @param userId   유저 ID
+     * @param pageable 페이지네이션
+     */
+    @Transactional(readOnly = true)
+    public Page<CellarGetListResponse> getList(
+            final Long userId,
+            Pageable pageable
+    ) {
+        Page<CellarEntity> cellars = cellarRepository.findAllByUserId(userId, pageable);
+
+        return cellars.map(cellar -> {
+            int totalNotes = tastingNoteRepository.countByWineIdAndUserId(cellar.getWine().getId(), userId);
+            return cellarMapper.toGetListResponse(cellar, totalNotes);
+        });
     }
 
     /**
@@ -95,6 +115,14 @@ public class CellarService {
 //                .map(cellarMapper::toGetResponse)
 //                .orElseThrow(() -> new VinopenerException(CellarErrorCode.CELLAR_NOT_FOUND));
 //    }
+
+    /**
+     * 셀러 등록 여부 확인 : 와인 ID
+     *
+     * @param wineId 와인 ID
+     * @param userId 유저 ID
+     * @return
+     */
     @Transactional(readOnly = true)
     public CellarStatusGetResponse getCellarStatus(
             final Long wineId,
