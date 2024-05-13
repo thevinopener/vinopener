@@ -66,9 +66,13 @@ class _NoteListScreenState extends State<NoteListScreen> {
         future: _notesFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Container(
+                alignment: Alignment.center,
+                child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Container(
+                alignment: Alignment.center,
+                child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData) {
             final notes = snapshot.data!;
             return ListView.builder(
@@ -85,7 +89,9 @@ class _NoteListScreenState extends State<NoteListScreen> {
               },
             );
           } else {
-            return Center(child: Text('No notes available'));
+            return Container(
+                alignment: Alignment.center,
+                child: Text('테이스팅 노트가 존재하지 않습니다.'));
           }
         },
       ),

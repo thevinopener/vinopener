@@ -16,19 +16,10 @@ class WineColorBlock extends StatelessWidget {
     return Container(
       width: dimension,
       height: dimension,
-      margin: EdgeInsets.all(dimension / 10),
       decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        shadows: [
-          BoxShadow(
-            color: Color(0x3F000000),
-            blurRadius: 4,
-            offset: Offset(0, 4),
-            spreadRadius: 0,
-          )
-        ],
       ),
       child: Column(
         children: [
@@ -40,28 +31,14 @@ class WineColorBlock extends StatelessWidget {
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(12),
                     topRight: Radius.circular(12),
+                    bottomLeft: Radius.circular(12),
+                    bottomRight: Radius.circular(12),
                   ),
                 ),
               ),
             ),
           ),
-          Container(
-            height: dimension / 3,
-            alignment: Alignment.center,
-            decoration: ShapeDecoration(
-              color: AppColors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(12),
-                  bottomRight: Radius.circular(12),
-                ),
-              ),
-            ),
-            child: Text(
-              colorName!,
-              style: TextStyle(fontSize: AppFontSizes.mediumSmall),
-            ),
-          ),
+
         ],
       ),
     );

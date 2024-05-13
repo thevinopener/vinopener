@@ -58,9 +58,10 @@ class _NoteColorState extends State<NoteColor> {
           return InkWell(
             onTap: () => updateAndPrintWineColorId(colorName, colorId),
             child: Container(
+              margin: EdgeInsets.all(5),
               decoration: BoxDecoration(
                 border: isSelected ? Border.all(color: AppColors.primary, width: 4) : null,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(15),
               ),
               child: WineColorBlock(
                 wineColor: wineColor,
