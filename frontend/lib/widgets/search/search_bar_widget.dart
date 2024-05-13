@@ -1,6 +1,7 @@
 // flutter
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/constants/colors.dart';
 import 'package:frontend/providers/search/search_history_provider.dart';
 import 'package:frontend/screens/search/search_camera_screen.dart';
 // screens
@@ -73,20 +74,13 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3), // 좌우 패딩
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Colors.orange, width: 2),
+        border: Border.all(color: AppColors.primary, width: 3),
         borderRadius: BorderRadius.circular(30), // 테두리 둥글게
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Flexible(
-          //   child: IconButton(
-          //     icon: Icon(Icons.arrow_back),
-          //     onPressed: () {
-          //       // 뒤로 가기 아이콘 동작 구현
-          //       Navigator.push(context, MaterialPageRoute(builder: (context) => SearchCameraScreen()));
-          //     },
-          //   ),
-          // ),
           Flexible(
             flex: 8,
             child: TextField(
