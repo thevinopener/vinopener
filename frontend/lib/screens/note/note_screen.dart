@@ -99,6 +99,7 @@ class _NoteScreenState extends State<NoteScreen> {
             fontSize: AppFontSizes.large,
             fontWeight: FontWeight.bold,
           ),
+
         ),
         actions: <Widget>[
           TextButton(
