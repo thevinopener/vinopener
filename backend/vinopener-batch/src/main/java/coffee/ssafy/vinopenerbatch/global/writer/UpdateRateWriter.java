@@ -1,8 +1,7 @@
 package coffee.ssafy.vinopenerbatch.global.writer;
 
 import coffee.ssafy.vinopenerbatch.domain.recommendation.entity.enums.ContentRecommendationType;
-import coffee.ssafy.vinopenerbatch.domain.recommendation.repository.ContentRecommendationRepository;
-import coffee.ssafy.vinopenerbatch.domain.wine.repository.WineRepository;
+import coffee.ssafy.vinopenerbatch.domain.recommendation.repository.ContentRecommendationRepositoryQuery;
 import coffee.ssafy.vinopenerbatch.global.recommendation.RecommendationProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,17 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 public class UpdateRateWriter implements ItemWriter<String> {
-
-    private final WineRepository wineRepository;
     private final RecommendationProcessor recommendationProcessor;
-    private final ContentRecommendationRepository contentRecommendationRepository;
+    private final ContentRecommendationRepositoryQuery contentRecommendationRepositoryQuery;
 
     @Transactional
     @Override
     public void write(Chunk<? extends String> items) throws Exception {
-        log.info("updateRateWriter executed ------------------");
-
-        contentRecommendationRepository.deleteAllByContentRecommendationType(ContentRecommendationType.RATE);
+        contentRecommendationRepositoryQuery.deleteAllByContentRecommendationType(ContentRecommendationType.RATE);
         recommendationProcessor.createRecommendation(ContentRecommendationType.RATE);
     }
 }
