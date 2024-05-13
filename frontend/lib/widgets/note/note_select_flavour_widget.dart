@@ -1,15 +1,13 @@
-
-
 import 'package:accordion/accordion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/note/note_select_flavour_card_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/colors.dart';
 import '../../constants/fonts.dart';
 import '../../models/note_model.dart';
 import '../../providers/note/note_wine_provider.dart';
-import '../common/atoms/wine_flavour_widget.dart';
 
 class NoteFlavour extends StatefulWidget {
 
@@ -182,6 +180,9 @@ class _NoteFlavourState extends State<NoteFlavour> {
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
         childAspectRatio: 1,
+        crossAxisSpacing: 5,
+        mainAxisSpacing: 5,
+
       ),
       itemCount: flavours.length,
       itemBuilder: (context, index) {
@@ -189,17 +190,9 @@ class _NoteFlavourState extends State<NoteFlavour> {
         return Consumer<NoteProvider>(
           builder: (context, provider, child) {
             bool isSelected = provider.flavourTasteIds.contains(flavour.id);
-            return GestureDetector(
-              onTap: () {
-                if (isSelected) {
-                  provider.removeFlavourId(flavour.id);
-                } else {
-                  provider.addFlavourId(flavour.id);
-                }
-                setState(() => currentlyOpen = sectionKey);
-              },
-              child: WineFlavour(flavour: flavour, isSelected: isSelected),
-            );
+            return
+              WineFlavourSelect(flavour: flavour, isSelected: isSelected);
+
           },
         );
       },

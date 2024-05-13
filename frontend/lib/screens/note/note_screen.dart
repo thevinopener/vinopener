@@ -100,7 +100,22 @@ class _NoteScreenState extends State<NoteScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: <Widget>[
+          TextButton(
+            child: Icon(
+              Icons.close,
+              color: AppColors.black,
+              size: 30,
+            ),
+            onPressed: () {
+              // SttWidgetState의 stopTtsAndStt 메서드를 호출
+              Provider.of<NoteProvider>(context, listen: false).reset();
+              Navigator.popUntil(context, (route) => route.isFirst);
+            },
+          ),
+        ],
         shape: Border(bottom: BorderSide(color: Colors.grey)),
+
       ),
       body: Column(
         children: [

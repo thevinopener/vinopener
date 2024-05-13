@@ -122,22 +122,43 @@ class NoteCard extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      // Expanded를 사용하여 텍스트 넘침을 방지
-                      child: Wrap(
-                        // Row 대신 Wrap 사용
-                        children: wineNoteCard.flavours
-                            .map((flavour) => Padding(
-                                  padding: const EdgeInsets.only(right: 5),
-                                  // 각 향 요소 사이에 오른쪽 패딩 추가
-                                  child: Text(
-                                    flavour.taste,
-                                    style: TextStyle(
-                                      fontSize: AppFontSizes.verySmall,
-                                      color: AppColors.black,
-                                    ),
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          const int maxFlavoursToShow = 5;
+                          List<Widget> flavourWidgets = wineNoteCard.flavours
+                              .take(maxFlavoursToShow)
+                              .map((flavour) => Padding(
+                            padding: const EdgeInsets.only(right: 5),
+                            child: Text(
+                              flavour.taste,
+                              style: TextStyle(
+                                fontSize: AppFontSizes.verySmall,
+                                color: AppColors.black,
+                              ),
+                            ),
+                          ))
+                              .toList();
+
+                          // 조건을 추가하여, 향의 수가 최대 표시 수량보다 많을 경우 '...' 추가
+                          if (wineNoteCard.flavours.length > maxFlavoursToShow) {
+                            flavourWidgets.add(
+                              Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: Text(
+                                  '...',
+                                  style: TextStyle(
+                                    fontSize: AppFontSizes.verySmall,
+                                    color: AppColors.black,
                                   ),
-                                ))
-                            .toList(),
+                                ),
+                              ),
+                            );
+                          }
+
+                          return Wrap(
+                            children: flavourWidgets,
+                          );
+                        },
                       ),
                     )
                   ],
