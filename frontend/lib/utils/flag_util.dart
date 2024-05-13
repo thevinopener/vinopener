@@ -2,12 +2,23 @@ import 'package:flag/flag.dart';
 
 class FlagUtil {
   static Map<String, FlagsCode> flagCodeMap = {
-    'United States': FlagsCode.US,
-    'Italy': FlagsCode.IT,
     'France': FlagsCode.FR,
-    'Argentina': FlagsCode.AR,
+    'Portugal': FlagsCode.PT,
+    'Hungary': FlagsCode.HU,
     'Chile': FlagsCode.CL,
     'Spain': FlagsCode.ES,
+    'New Zealand': FlagsCode.NZ,
+    'Italy': FlagsCode.IT,
+    'United States': FlagsCode.US,
     'Australia': FlagsCode.AU,
+    'South Africa': FlagsCode.ZA,
+    'Argentina': FlagsCode.AR,
+    'Germany': FlagsCode.DE,
+    'Canada': FlagsCode.CA,
+    'Slovakia': FlagsCode.SK,
+    'Austria': FlagsCode.AT,
+    'Moldova': FlagsCode.MD,
+    'Georgia': FlagsCode.GE,
+    'Israel': FlagsCode.IL,
   };
 }
