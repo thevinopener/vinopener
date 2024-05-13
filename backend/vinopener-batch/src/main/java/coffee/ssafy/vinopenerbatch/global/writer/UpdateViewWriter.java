@@ -33,21 +33,17 @@ public class UpdateViewWriter implements ItemWriter<String> {
     @Transactional
     @Override
     public void write(Chunk<? extends String> items) throws Exception {
-
         Map<Long, Integer> wineViewCount = new HashMap<>();
-
         if (!items.iterator().hasNext()) {
             return;
         }
 
         String firstItem = items.iterator().next();
         JsonNode firstJsonNode = objectMapper.readTree(firstItem);
+
         LocalDateTime firstItemTime = LocalDateTime.parse(firstJsonNode.get("time").asText());
         LocalDateTime previousLastTime = TimeHolder.getViewLastTime();
-        LocalDateTime lastItemTime;
-        log.info("itemTime : {}, lastTime : {}", firstItemTime, previousLastTime);
         boolean passFirstItem = false;
-
         if (previousLastTime != null && previousLastTime.equals(firstItemTime)) {
             passFirstItem = true;
         }
@@ -63,7 +59,6 @@ public class UpdateViewWriter implements ItemWriter<String> {
             }
 
             hasValidData = true;
-            log.info("item : {}", item);
             JsonNode jsonNode = objectMapper.readTree(item);
             long wineId = jsonNode.get("wineId").asLong();
             String timeString = jsonNode.get("time").asText();
@@ -74,7 +69,6 @@ public class UpdateViewWriter implements ItemWriter<String> {
 
         if (hasValidData) {
             for (Entry<Long, Integer> entry : wineViewCount.entrySet()) {
-                log.info("entry : {}", entry.getKey());
                 Long wineId = entry.getKey();
                 int viewCount = entry.getValue();
                 WineEntity wineEntity = wineRepository.findById(wineId).orElse(null);
@@ -91,10 +85,6 @@ public class UpdateViewWriter implements ItemWriter<String> {
             recommendationProcessor.createRecommendation(ContentRecommendationType.VIEW);
         }
 
-
-
-
-        log.info("------------------");
     }
 
 }
