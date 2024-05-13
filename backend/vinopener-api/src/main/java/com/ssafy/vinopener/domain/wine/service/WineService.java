@@ -18,6 +18,10 @@ import com.ssafy.vinopener.domain.wine.repository.WineRepository;
 import com.ssafy.vinopener.global.exception.VinopenerException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +36,7 @@ public class WineService {
     private final TastingNoteRepository tastingNoteRepository;
     private final WineFlavourRepository wineFlavourRepository;
     private final FlavourTasteRepository flavourTasteRepository;
+    private static final Logger logger = LoggerFactory.getLogger(WineService.class);
 
     /**
      * 와인 목록 조회
@@ -66,20 +71,41 @@ public class WineService {
      *
      * @param userId 유저 ID
      */
-    @Transactional(readOnly = true)
-    public List<WineGetListResponse> getList(
-            final Long userId
-    ) {
-        List<WineEntity> wines = wineRepository.findAll();
+//    @Transactional(readOnly = true)
+//    public List<WineGetListResponse> getList(
+//            final Long userId
+//    ) {
+//        List<WineEntity> wines = wineRepository.findAll();
+//
+//        return wines.stream()
+//                .map(wine -> {
+//                    boolean isBookmark = bookmarkRepository.existsByWineIdAndUserId(wine.getId(), userId);
+//                    boolean isCellar = cellarRepository.existsByWineIdAndUserId(wine.getId(), userId);
+//                    int totalNotes = tastingNoteRepository.countByWineIdAndUserId(wine.getId(), userId);
+//                    return wineMapper.toGetListResponse(wine, isBookmark, isCellar, totalNotes);
+//                })
+//                .toList();
+//    }
 
-        return wines.stream()
-                .map(wine -> {
-                    boolean isBookmark = bookmarkRepository.existsByWineIdAndUserId(wine.getId(), userId);
-                    boolean isCellar = cellarRepository.existsByWineIdAndUserId(wine.getId(), userId);
-                    int totalNotes = tastingNoteRepository.countByWineIdAndUserId(wine.getId(), userId);
-                    return wineMapper.toGetListResponse(wine, isBookmark, isCellar, totalNotes);
-                })
-                .toList();
+    /**
+     * 와인 목록 조회 페이지네이션 테스트
+     *
+     * @param userId 유저 ID
+     */
+    @Transactional(readOnly = true)
+    public Page<WineGetListResponse> getList(
+            final Long userId,
+            Pageable pageable
+    ) {
+        Page<WineEntity> wines = wineRepository.findAll(pageable);
+        logger.info("##### Pageable result - page: {}, size: {}, total elements: {}, number of elements: {}",
+                wines.getNumber(), wines.getSize(), wines.getTotalElements(), wines.getNumberOfElements());
+        return wines.map(wine -> {
+            boolean isBookmark = bookmarkRepository.existsByWineIdAndUserId(wine.getId(), userId);
+            boolean isCellar = cellarRepository.existsByWineIdAndUserId(wine.getId(), userId);
+            int totalNotes = tastingNoteRepository.countByWineIdAndUserId(wine.getId(), userId);
+            return wineMapper.toGetListResponse(wine, isBookmark, isCellar, totalNotes);
+        });
     }
 
     /**
