@@ -71,7 +71,12 @@ class LoginScreen extends StatelessWidget {
                 loginUser.id = await UserService.getMyId();
                 userProvider.setUser(loginUser);
               }
-              var survey = await UserService.getSurvey();
+              var survey = null;
+              try {
+                survey = await UserService.getSurvey();
+              } catch (e) {
+                print(e);
+              }
               bool isSurveyDone = (survey == null);
               Navigator.pushReplacement(
                 context,
