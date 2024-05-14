@@ -16,6 +16,7 @@ public interface SearchRepository extends JpaRepository<SearchEntity, Long> {
     void deleteAllByUserId(Long userId);
 
     // 검색어가 이미 존재하는지 확인
-    Optional<SearchEntity> findByContent(String query);
+//    Optional<SearchEntity> findByContent(String query);
+    Optional<SearchEntity> findByIdAndContent(Long userId, String query);
 
 }
