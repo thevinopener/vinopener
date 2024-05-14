@@ -368,7 +368,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                       '풍미',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: AppFontSizes.large,
+                        fontSize: AppFontSizes.mediumLarge,
                       ),
                     ),
                     initiallyExpanded: false, // 초기 상태 설정: 접혀있음
@@ -417,7 +417,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                               child: Text(
                                 '아로마',
                                 style: TextStyle(
-                                  fontSize: AppFontSizes.large,
+                                  fontSize: AppFontSizes.mediumLarge,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -476,7 +476,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                         title: Text(
                           '세부정보',
                           style: TextStyle(
-                            fontSize: AppFontSizes.large,
+                            fontSize: AppFontSizes.mediumLarge,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -515,7 +515,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                   width: double.maxFinite,
                   height: 400,
                   decoration: BoxDecoration(
-                    color: Colors.yellow,
+                    // color: Colors.yellow,
                     // color: Colors.blue,
                   ),
                   child: Column(
@@ -531,7 +531,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                               fontSize: AppFontSizes.large),
                         ),
                       ),
-                      SearchWineDetailRecommendWidget(context,
+                      SearchWineDetailRecommendWidget(
                           recommendType: 'wine-detail', wineId: wineDetail.id),
                       // RecommendWineCardWidget(context,
                       //     recommendType: 'view'), // 가로스크롤 와인추천카드 위젯
