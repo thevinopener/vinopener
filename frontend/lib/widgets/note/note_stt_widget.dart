@@ -63,6 +63,7 @@ class SttWidgetState extends State<SttWidget> {
 
   void _promptUser() async {
     _speak(_questionText);
+    _isSpeaking=false;
   }
 
   void _initSpeech() async {
@@ -89,7 +90,6 @@ class SttWidgetState extends State<SttWidget> {
 
   void _onSpeechError(SpeechRecognitionError error) {
     setState(() {
-      _isListening = false;
       if (error.errorMsg == "error_speech_timeout" && error.permanent) {
         _questionText = "다시 말씀해주세요.";
       } else {
@@ -186,6 +186,7 @@ class SttWidgetState extends State<SttWidget> {
       _speak(aiAnswer.message);
     }).catchError((error) {
       setState(() {
+        _isListening=true;
         _questionText = error.toString().contains("COLOR_NOT_FOUND")
             ? "입력하신 색상을 찾을 수 없습니다. 다시 입력해 주세요."
             : "오류가 발생했습니다. 다시 시도해 주세요.";
