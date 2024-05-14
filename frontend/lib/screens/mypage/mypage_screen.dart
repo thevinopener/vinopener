@@ -98,22 +98,15 @@ class _MyPageScreenState extends State<MyPageScreen>
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   heightFactor: 0.625,
-                  child: Image.network(
-                    'https://picsum.photos/200/300',
+                  child: Container(
+                    color: AppColors.white,
+                    padding: EdgeInsets.fromLTRB(70, 50, 70, 0),
+                  child: Image.asset(
+                    'assets/images/vinopener_logo.png',
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.width,
-                    fit: BoxFit.cover,
-                    errorBuilder: (
-                      BuildContext context,
-                      Object exception,
-                      StackTrace? stackTrace,
-                    ) {
-                      return Image.asset(
-                        '${user.imageUrl}',
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  ),
+                    height: MediaQuery.of(context).size.width/1.5,
+                    fit: BoxFit.fitWidth,
+                  ),),
                 ),
               ),
               Positioned(
