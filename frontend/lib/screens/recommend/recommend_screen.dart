@@ -72,10 +72,11 @@ class _RecommendScreenState extends State<RecommendScreen> {
             ),
             SizedBox(width: 8), // 이미지와 텍스트 사이의 간격
             Text(
-              'VINOPENER',
+              'Vinopener',
               style: TextStyle(
                   fontSize: AppFontSizes.mediumLarge,
-                  fontWeight: FontWeight.w600),
+                  fontWeight: FontWeight.w600,
+              ),
             ),
           ],
         ),
