@@ -146,7 +146,7 @@ public class FeedController {
      * @param sort   정렬 기준(생략 가능, ID)
      * @return 내 피드 목록
      */
-    @GetMapping("/my")
+    @GetMapping("/page/my")
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<Page<FeedGetListResponse>> getMyFeedList(
             @UserPrincipalId final Long userId,
