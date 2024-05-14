@@ -61,10 +61,13 @@ class _NoteListScreenState extends State<NoteListScreen> {
             },
           )
         ],
-        shape: Border(bottom: BorderSide(color: Colors.grey)),
+        shape: Border(bottom: BorderSide(color: Colors.grey)),backgroundColor: Colors.purple.withOpacity(0.05),
       )
       ,
-      body: FutureBuilder<List<WineNoteCard>>(
+      body: Container (
+        color: Colors.purple.withOpacity(0.05),
+      padding: EdgeInsets.fromLTRB(0, 10, 0, 0,),
+      child:FutureBuilder<List<WineNoteCard>>(
         future: _notesFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -97,7 +100,7 @@ class _NoteListScreenState extends State<NoteListScreen> {
           }
         },
       ),
-    );
+    ),);
   }
 }
 

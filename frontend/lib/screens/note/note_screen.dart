@@ -129,8 +129,11 @@ class _NoteScreenState extends State<NoteScreen> {
           ),
         ],
         shape: Border(bottom: BorderSide(color: Colors.grey)),
+        backgroundColor: Colors.purple.withOpacity(0.05),
       ),
-      body: Column(
+      body: Container(
+    color: Colors.purple.withOpacity(0.05),
+    child: Column(
         children: [
           SizedBox(height: 20),
           NoteWineCard(wine: Provider.of<NoteWineProvider>(context).getWine()),
@@ -155,7 +158,7 @@ class _NoteScreenState extends State<NoteScreen> {
             ),
           ),
         ],
-      ),
+      ),),
       floatingActionButton: FloatingChatButton(
         chatIconBackgroundColor: AppColors.primary,
         chatIconBorderColor: AppColors.primary,

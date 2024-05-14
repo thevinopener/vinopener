@@ -26,20 +26,13 @@ class _NoteColorState extends State<NoteColor> {
   @override
   Widget build(BuildContext context) {
     return Container(
+
       width: MediaQuery.of(context).size.width * 0.9,
       height: MediaQuery.of(context).size.width * 1.2,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            offset: Offset(0, 4),
-            spreadRadius: -2,
-          )
-        ],
       ),
       child: GridView.builder(
         itemCount: wineColorNames.length,
