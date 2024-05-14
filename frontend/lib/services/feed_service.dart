@@ -5,7 +5,7 @@ import 'package:frontend/utils/api_client.dart';
 
 class FeedService {
 
-  static void postFeed(FeedPostRequest feedPostRequest) async {
+  static Future<Response> postFeed(FeedPostRequest feedPostRequest) async {
 
     FormData formData = FormData.fromMap({
       'content': feedPostRequest.content,
@@ -23,8 +23,8 @@ class FeedService {
         },
       ),
     );
-    print(response);
-    print('postFeed');
+
+    return response;
   }
 
   static Future<List<Feed>> getFeedList() async {

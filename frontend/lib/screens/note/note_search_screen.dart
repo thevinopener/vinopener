@@ -17,6 +17,7 @@ class NoteSearchScreen extends StatefulWidget {
 
 class _NoteSearchScreenState extends State<NoteSearchScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
   List<Wine> _wineList = [];
   bool _isLoading = false;
   Wine? _selectedWine;
@@ -50,6 +51,14 @@ class _NoteSearchScreenState extends State<NoteSearchScreen> {
         _selectedWineId = wine.id;
         _selectedWine = wine;
       }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusScope.of(context).requestFocus(_searchFocusNode);
     });
   }
 
@@ -94,18 +103,21 @@ class _NoteSearchScreenState extends State<NoteSearchScreen> {
         ],
         backgroundColor: Colors.purple.withOpacity(0.05),
       ),
-      body: Container(
-        color: Colors.purple.withOpacity(0.05),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
+                focusNode: _searchFocusNode,
                 onSubmitted: (value) {
                   FocusScope.of(context).unfocus();
                   if (value == '') {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text('검색어를 입력해주세요!')));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('검색어를 입력해주세요!')));
                   } else {
                     _searchWines(value);
                   }
@@ -145,8 +157,7 @@ class _NoteSearchScreenState extends State<NoteSearchScreen> {
                           child: Container(
                             child: FeedWineItem(
                               wine: _wineList[index],
-                              isSelected:
-                                  _wineList[index].id == _selectedWineId,
+                              isSelected: _wineList[index].id == _selectedWineId,
                             ),
                           ),
                         );
