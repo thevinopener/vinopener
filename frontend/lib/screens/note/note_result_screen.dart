@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/models/note_model.dart';
 import 'package:frontend/widgets/common/atoms/wine_taste_chart_widget.dart';
+import 'package:frontend/widgets/note/note_wine_item.dart';
 import 'package:frontend/widgets/note/note_detail_card_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -20,30 +21,31 @@ class NoteResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void goFirst() {
-      Navigator.popUntil(context, (route) => route.isFirst);
-    }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Tasting Note',
+          '노트 기록',
           style: TextStyle(
-            fontSize: AppFontSizes.large,
+            fontSize: AppFontSizes.mediumSmall,
             fontWeight: FontWeight.bold,
           ),
         ),
+        centerTitle: true,
         actions: [
           IconButton(
-            color: Colors.black,
-            onPressed: goFirst,
-            icon: Icon(Icons.close),
+            color: Colors.red,
+            onPressed: () {
+              Navigator.of(context).pop();
+              NoteService.deleteNote(id);
+            },
+            icon: Icon(Icons.delete_outline),
           )
         ],
         shape: Border(bottom: BorderSide(color: Colors.grey)),
       ),
       body: FutureBuilder<NoteDetailModel>(
-        future: NoteDetailService.getNoteDetail(id),
+        future: NoteService.getNoteDetail(id),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -57,7 +59,7 @@ class NoteResultScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: 20),
-                    NoteDetailCard(noteWine: noteDetail.wine),
+                    NoteWineItem(wine: noteDetail.wine, isSelected: false,),
                     Container(
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: Column(
@@ -72,7 +74,7 @@ class NoteResultScreen extends StatelessWidget {
                                   Text(
                                     '색',
                                     style: TextStyle(
-                                      fontSize: AppFontSizes.mediumSmall,
+                                      fontSize: AppFontSizes.medium,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -90,7 +92,7 @@ class NoteResultScreen extends StatelessWidget {
                                       Text(
                                         "최종작성일",
                                         style: TextStyle(
-                                          fontSize: AppFontSizes.mediumSmall,
+                                          fontSize: AppFontSizes.medium,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -108,7 +110,7 @@ class NoteResultScreen extends StatelessWidget {
                                       Text(
                                         "총점",
                                         style: TextStyle(
-                                          fontSize: AppFontSizes.mediumSmall,
+                                          fontSize: AppFontSizes.medium,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -134,7 +136,7 @@ class NoteResultScreen extends StatelessWidget {
                               Text(
                                 '향',
                                 style: TextStyle(
-                                  fontSize: AppFontSizes.mediumSmall,
+                                  fontSize: AppFontSizes.medium,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -165,7 +167,7 @@ class NoteResultScreen extends StatelessWidget {
                               Text(
                                 '맛',
                                 style: TextStyle(
-                                  fontSize: AppFontSizes.mediumSmall,
+                                  fontSize: AppFontSizes.medium,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -198,7 +200,7 @@ class NoteResultScreen extends StatelessWidget {
                                     Text(
                                       '의견',
                                       style: TextStyle(
-                                        fontSize: AppFontSizes.mediumSmall,
+                                        fontSize: AppFontSizes.medium,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
