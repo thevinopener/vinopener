@@ -166,7 +166,7 @@ class SttWidgetState extends State<SttWidget> {
       rating: noteProvider.rating,
     );
     AiChat aiChat = AiChat(state: noteState, message: text);
-    AiChatService.postSurvey(aiChat).then((AiAnswer aiAnswer) {
+    AiChatService.postAiChat(aiChat).then((AiAnswer aiAnswer) {
       noteId = aiAnswer.id;
       noteProvider.updateNoteProvider(
         colorId: aiAnswer.newState.color?.id ?? noteProvider.colorId,
@@ -272,7 +272,7 @@ class SttWidgetState extends State<SttWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            padding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
             child: Text(
               _answerText,
               style: const TextStyle(fontSize: 16.0, color: AppColors.white, fontWeight: FontWeight.bold),

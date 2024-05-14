@@ -54,36 +54,40 @@ class _FeedScreenState extends State<FeedScreen> {
           )
         ],
         shape: Border(bottom: BorderSide(color: Colors.grey)),
+        backgroundColor: Colors.purple.withOpacity(0.05),
       ),
-      body: Consumer<FeedTabState>(
-        builder: (context, provider, child) {
-          return RefreshIndicator(
-            onRefresh: _refreshFeedList,
-            child: provider.isLoading
-                ? FeedItemSkeleton()
-                : FeedUtil.countPublicFeed(provider.feedList) == 0
-                    ? Center(
-                      child: Text(
-                          '💬\n작성된 피드가 없어요!\n와인을 마신 경험을 공유해볼까요?\n🍷',
-                          style: TextStyle(
-                            fontSize: AppFontSizes.mediumLarge,
-                            fontWeight: FontWeight.bold,
+      body: Container(
+        color: Colors.purple.withOpacity(0.05),
+        child: Consumer<FeedTabState>(
+          builder: (context, provider, child) {
+            return RefreshIndicator(
+              onRefresh: _refreshFeedList,
+              child: provider.isLoading
+                  ? FeedItemSkeleton()
+                  : FeedUtil.countPublicFeed(provider.feedList) == 0
+                      ? Center(
+                          child: Text(
+                            '💬\n작성된 피드가 없어요!\n와인을 마신 경험을 공유해볼까요?\n🍷',
+                            style: TextStyle(
+                              fontSize: AppFontSizes.mediumLarge,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
+                        )
+                      : ListView.builder(
+                          itemCount: provider.feedList.length,
+                          itemBuilder: (context, index) {
+                            if (provider.feedList[index].isPublic!) {
+                              return FeedItem(feed: provider.feedList[index]);
+                            } else {
+                              return SizedBox.shrink();
+                            }
+                          },
                         ),
-                    )
-                    : ListView.builder(
-                        itemCount: provider.feedList.length,
-                        itemBuilder: (context, index) {
-                          if (provider.feedList[index].isPublic!) {
-                            return FeedItem(feed: provider.feedList[index]);
-                          } else {
-                            return SizedBox.shrink();
-                          }
-                        },
-                      ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
