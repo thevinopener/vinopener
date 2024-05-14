@@ -15,12 +15,35 @@ class MyPageSurveyScreen extends StatefulWidget {
 }
 
 class _MyPageSurveyScreenState extends State<MyPageSurveyScreen> {
+
   Set<String> _selectedKinds = Set<String>();
   double _alcoholStart = 25.0;
   double _alcoholEnd = 75.0;
   int _sweetness = 50;
   int _acidity = 50;
   int _bitterness = 50;
+
+  void loadSurvey() async {
+    try {
+      Survey survey = await UserService.getSurvey();
+      print(survey);
+      setState(() {
+        _alcoholStart = survey.minAbv.toDouble();
+        _alcoholEnd = survey.maxAbv.toDouble();
+        int _sweetness = survey.sweetness;
+        int _acidity = survey.acidity;
+        int _bitterness = survey.tannin;
+      });
+    } catch (e) {
+      print("Failed to load survey: $e");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadSurvey();
+  }
 
   void _updateKind(Set<String> kinds) {
     setState(() {

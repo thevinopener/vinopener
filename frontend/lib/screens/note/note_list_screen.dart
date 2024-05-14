@@ -24,7 +24,7 @@ class _NoteListScreenState extends State<NoteListScreen> {
 
   void _loadData() {
     setState(() {
-      _notesFuture = NoteListService.getNoteList();
+      _notesFuture = NoteService.getNoteList();
     });
   }
 
