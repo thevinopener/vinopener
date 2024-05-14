@@ -270,7 +270,7 @@ public class AiChatService {
         System.out.println(userMessageJson);
 
         final var chatRequest = ChatRequest.builder()
-                .model("gpt-4o")
+                .model("gpt-4o-2024-05-13")
                 .message(SystemMessage.of(PROMPT))
                 .message(UserMessage.of(userMessageJson))
                 .temperature(0.0)
