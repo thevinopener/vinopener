@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:camera/camera.dart';
@@ -20,9 +19,6 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentPageIndex = 1; // 초기 페이지 인덱스는 1 (Home Screen)
   late Future<List<CameraDescription>> camerasFuture;
 
-  //test
-  DateTime? _lastPressed;
-
   @override
   void initState() {
     super.initState();
@@ -36,26 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  Future<bool> _onWillPop() async {
-    DateTime now = DateTime.now();
-    if (_lastPressed == null || now.difference(_lastPressed!) > Duration(seconds: 2)) {
-      _lastPressed = now;
-      Fluttertoast.showToast(
-        msg: '뒤로 버튼을 한 번 더 누르시면 종료됩니다.',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-      return false; // 뒤로가기 취소
-    }
-    return true; // 앱 종료
-  }
-
   @override
   Widget build(BuildContext context) {
-    bool _didPop = false;
     final bottomBarProvider = Provider.of<BottomBarProvider>(context);
 
     return Scaffold(
@@ -93,48 +71,24 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: _currentPageIndex != 0
           ? BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              currentIndex: bottomBarProvider.currentIndex,
-              onTap: (index) {
-                bottomBarProvider.setIndex(index);
-                _pageController.jumpToPage(index + 1); // 페이지 컨트롤러의 인덱스 조정
-              },
-            )), // 0번 페이지
-            SafeArea(child: RecommendScreen()), // 1번 페이지
-            SafeArea(child: FeedScreen()), // 2번 페이지
-            SafeArea(child: NoteListScreen()), // 3번 페이지
-            SafeArea(child: MyPageScreen()), // 4번 페이지
-          ],
-          onPageChanged: (index) {
-            setState(() {
-              _currentPageIndex = index;
-              if (index > 0) {
-                bottomBarProvider.setIndex(index - 1);
-              }
-            });
-          },
-        ),
-        bottomNavigationBar: _currentPageIndex != 0
-            ? BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                currentIndex: bottomBarProvider.currentIndex,
-                onTap: (index) {
-                  bottomBarProvider.setIndex(index);
-                  _pageController.jumpToPage(index + 1); // 페이지 컨트롤러의 인덱스 조정
-                },
-                selectedItemColor: AppColors.primary,
-                items: [
-                  BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.comment), label: 'Feed'),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.edit_note), label: 'Note'),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.person), label: 'My Page'),
-                ],
-              )
-            : null,
-      ),
+        type: BottomNavigationBarType.fixed,
+        currentIndex: bottomBarProvider.currentIndex,
+        onTap: (index) {
+          bottomBarProvider.setIndex(index);
+          _pageController.jumpToPage(index + 1); // 페이지 컨트롤러의 인덱스 조정
+        },
+        selectedItemColor: AppColors.primary,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.comment), label: 'Feed'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.edit_note), label: 'Note'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person), label: 'My Page'),
+        ],
+      )
+          : null,
     );
   }
 }
