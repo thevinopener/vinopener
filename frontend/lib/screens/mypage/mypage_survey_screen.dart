@@ -26,8 +26,6 @@ class _MyPageSurveyScreenState extends State<MyPageSurveyScreen> {
   void loadSurvey() async {
     try {
       Survey survey = await UserService.getSurvey();
-      print(survey);
-      print(survey.types.map((type) => WineType.enToKr[type]!).toSet());
       setState(() {
         _selectedKinds = survey.types.map((type) => WineType.enToKr[type]!).toSet();
         _alcoholStart = survey.minAbv.toDouble();
@@ -45,9 +43,6 @@ class _MyPageSurveyScreenState extends State<MyPageSurveyScreen> {
   void initState() {
     super.initState();
     loadSurvey();
-    setState(() {
-
-    });
   }
 
   void _updateKind(Set<String> kinds) {
@@ -108,58 +103,22 @@ class _MyPageSurveyScreenState extends State<MyPageSurveyScreen> {
         centerTitle: true,
         backgroundColor: Colors.purple.withOpacity(0.05),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.05,
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Text(
-                '당신의 취향은?',
-                style: TextStyle(
-                  fontSize: AppFontSizes.veryLarge,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text('종류',
-                            style: TextStyle(fontSize: AppFontSizes.large)),
-                      ),
-                      SelectKindButton(selectedKinds: _selectedKinds, onSelected: _updateKind),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text('도수',
-                            style: TextStyle(fontSize: AppFontSizes.large)),
-                      ),
-                      SurveyRangeSlider(currentRangeValues: RangeValues(_alcoholStart, _alcoholEnd), onRangeSelected: _updateAlcoholRange),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text('단맛',
-                            style: TextStyle(fontSize: AppFontSizes.large)),
-                      ),
-                      SurveySlider(currentSliderValue: _sweetness.toDouble(), onChanged: _updateSweetness),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text('신맛',
-                            style: TextStyle(fontSize: AppFontSizes.large)),
-                      ),
-                      SurveySlider(currentSliderValue: _acidity.toDouble(), onChanged: _updateAcidity),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text('떫기',
-                            style: TextStyle(fontSize: AppFontSizes.large)),
-                      ),
-                      SurveySlider(currentSliderValue: _bitterness.toDouble(), onChanged: _updateBitterness),
-                    ],
+      body: Container(
+        color: Colors.purple.withOpacity(0.05),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.05,
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Text(
+                  '당신의 취향은?',
+                  style: TextStyle(
+                    fontSize: AppFontSizes.veryLarge,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 Container(
@@ -172,31 +131,31 @@ class _MyPageSurveyScreenState extends State<MyPageSurveyScreen> {
                           child: Text('종류',
                               style: TextStyle(fontSize: AppFontSizes.large)),
                         ),
-                        SelectKindButton(onSelected: _updateKind),
+                        SelectKindButton(selectedKinds: _selectedKinds, onSelected: _updateKind),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text('도수',
                               style: TextStyle(fontSize: AppFontSizes.large)),
                         ),
-                        SurveyRangeSlider(onRangeSelected: _updateAlcoholRange),
+                        SurveyRangeSlider(currentRangeValues: RangeValues(_alcoholStart, _alcoholEnd), onRangeSelected: _updateAlcoholRange),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text('단맛',
                               style: TextStyle(fontSize: AppFontSizes.large)),
                         ),
-                        SurveySlider(onChanged: _updateSweetness),
+                        SurveySlider(currentSliderValue: _sweetness.toDouble(), onChanged: _updateSweetness),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text('신맛',
                               style: TextStyle(fontSize: AppFontSizes.large)),
                         ),
-                        SurveySlider(onChanged: _updateAcidity),
+                        SurveySlider(currentSliderValue: _acidity.toDouble(), onChanged: _updateAcidity),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text('떫기',
                               style: TextStyle(fontSize: AppFontSizes.large)),
                         ),
-                        SurveySlider(onChanged: _updateBitterness),
+                        SurveySlider(currentSliderValue: _bitterness.toDouble(), onChanged: _updateBitterness),
                       ],
                     ),
                   ),
