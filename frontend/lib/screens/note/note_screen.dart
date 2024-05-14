@@ -157,18 +157,10 @@ class _NoteScreenState extends State<NoteScreen> {
         ],
       ),
       floatingActionButton: FloatingChatButton(
-        chatIconBackgroundColor: AppColors.secondary,
-        chatIconBorderColor: AppColors.secondary,
-        chatIconBorderWidth: 4,
-        chatIconWidget: IconButton(
-          hoverColor: AppColors.primary,
-          onPressed: null,
-          icon: Icon(
-            Icons.nightlife_sharp,
-            color: AppColors.white,
-            size: 30,
-          ),
-        ),
+        chatIconBackgroundColor: AppColors.primary,
+        chatIconBorderColor: AppColors.primary,
+        chatIconBorderWidth: 0,
+        chatIconWidget: Container(margin: EdgeInsets.all(7), child:Image(image: AssetImage("assets/images/ai_icon.gif"), width: 50, height: 50,),),
         onTap: (BuildContext context) {
           _showBottomSheet(context);
         },
