@@ -205,12 +205,15 @@ public class WineService {
     ) {
         List<WineEntity> wines = wineRepository.findBySeoNameContainsIgnoreCase(query);
 
+        logger.info("현재 반환된 wines List : {}", wines);
+
         if (wines.isEmpty()) {
             throw new VinopenerException(WineErrorCode.WINE_NOT_FOUND);
         }
 
         return wines.stream()
                 .map(wine -> {
+                    logger.info("현재 참조 중인 wine Entity : {}", wine);
                     boolean isBookmark = bookmarkRepository.existsByWineIdAndUserId(wine.getId(), userId);
                     boolean isCellar = cellarRepository.existsByWineIdAndUserId(wine.getId(), userId);
                     int totalNotes = tastingNoteRepository.countByWineIdAndUserId(wine.getId(), userId);
