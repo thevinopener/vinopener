@@ -155,6 +155,9 @@ class _MyPageScreenState extends State<MyPageScreen>
             controller: _tabController,
             indicatorColor: AppColors.primary,
             labelColor: AppColors.primary,
+            labelStyle: TextStyle(
+              fontSize: AppFontSizes.small,
+            ),
           ),
           // 탭 뷰 추가
           Expanded(
