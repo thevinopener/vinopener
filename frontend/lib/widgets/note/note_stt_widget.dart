@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
@@ -25,6 +26,7 @@ class SttWidgetState extends State<SttWidget> {
   final SpeechToText _speech = SpeechToText();
   final FlutterTts _flutterTts = FlutterTts();
   bool _isListening = false;
+  bool _isSpeaking = false;
   int _currentPage = 0;
   List<String> titles = ['색상', '향', '맛', '의견'];
   String _questionText = '';
@@ -34,6 +36,10 @@ class SttWidgetState extends State<SttWidget> {
   void stopTtsAndStt() {
     _flutterTts.stop();
     _speech.stop();
+    setState(() {
+      _isListening = false;
+      _isSpeaking = false;
+    });
   }
 
   @override
@@ -60,8 +66,8 @@ class SttWidgetState extends State<SttWidget> {
 
   void _initSpeech() async {
     bool available = await _speech.initialize(
-        onStatus: (status) => print('STT Status: $status'),
-        onError: (error) => _onSpeechError(error)
+      onStatus: _onSpeechStatus,
+      onError: (error) => _onSpeechError(error),
     );
     if (!mounted) return;
     setState(() {
@@ -69,8 +75,20 @@ class SttWidgetState extends State<SttWidget> {
     });
   }
 
+  void _onSpeechStatus(String status) {
+    print('STT Status: $status');
+    setState(() {
+      if (status == "listening") {
+        _isListening = true;
+      } else {
+        _isListening = false;
+      }
+    });
+  }
+
   void _onSpeechError(SpeechRecognitionError error) {
     setState(() {
+      _isListening = false;
       if (error.errorMsg == "error_speech_timeout" && error.permanent) {
         _questionText = "다시 말씀해주세요.";
       } else {
@@ -85,6 +103,9 @@ class SttWidgetState extends State<SttWidget> {
     _flutterTts.setPitch(1.0);
     _flutterTts.setStartHandler(() {
       print("TTS Start");
+      setState(() {
+        _isSpeaking = true;
+      });
       if (_isListening) {
         _speech.stop();
       }
@@ -92,6 +113,9 @@ class SttWidgetState extends State<SttWidget> {
 
     _flutterTts.setCompletionHandler(() {
       print("TTS Complete");
+      setState(() {
+        _isSpeaking = false;
+      });
       _startListening();
     });
 
@@ -101,34 +125,28 @@ class SttWidgetState extends State<SttWidget> {
   }
 
   void _startListening() {
-    if (!_isListening) {
-      _speech.initialize().then((available) {
-        if (available) {
-          setState(() => _isListening = true);
-          _speech.listen(
-            onResult: _handleResult,
-            localeId: 'ko-KR',
-            listenFor: Duration(seconds: 30),
-            pauseFor: Duration(seconds: 10),
-          );
-        } else {
-          setState(() => _isListening = false);
-          print('The user has denied the use of speech recognition.');
-        }
-      });
-    } else {
-      _speech.listen(onResult: _handleResult, localeId: 'ko-KR');
-    }
+    _speech.initialize().then((available) {
+      if (available) {
+        _speech.listen(
+          onResult: _handleResult,
+          localeId: 'ko-KR',
+          listenFor: Duration(seconds: 30),
+          pauseFor: Duration(seconds: 10),
+        );
+      } else {
+        setState(() => _isListening = false);
+        print('The user has denied the use of speech recognition.');
+      }
+    });
   }
 
   void _handleResult(SpeechRecognitionResult result) {
     if (result.finalResult) {
       setState(() {
         _answerText = result.recognizedWords;
+        _isListening = false;
       });
       _analyzeSpeech(result.recognizedWords);
-      _speech.stop();
-      setState(() => _isListening = false);
     }
   }
 
@@ -221,8 +239,8 @@ class SttWidgetState extends State<SttWidget> {
 
   void _speak(String text) async {
     if (text.isNotEmpty) {
-      _questionText= text;
-      _flutterTts.speak(text);
+      _questionText = text;
+      await _flutterTts.speak(text);
     }
   }
 
@@ -241,11 +259,15 @@ class SttWidgetState extends State<SttWidget> {
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height*0.1,
+            height: MediaQuery.of(context).size.height * 0.1,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/voice.gif"), // AssetImage 사용
-                fit: BoxFit.fitHeight, // 이미지가 Container 영역을 전체 채우도록 설정
+                image: AssetImage(
+                  _isSpeaking
+                      ? "assets/images/quiet.png" // TTS가 말하는 동안 quiet.png 표시
+                      : (_isListening ? "assets/images/voice.gif" : "assets/images/quiet.png"), // STT가 활성화되면 voice.gif 표시, 기본은 quiet.png
+                ),
+                fit: BoxFit.fitHeight,
               ),
             ),
           ),

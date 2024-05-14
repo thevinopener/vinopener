@@ -61,7 +61,8 @@ class _NoteListScreenState extends State<NoteListScreen> {
           )
         ],
         shape: Border(bottom: BorderSide(color: Colors.grey)),
-      ),
+      )
+      ,
       body: FutureBuilder<List<WineNoteCard>>(
         future: _notesFuture,
         builder: (context, snapshot) {
