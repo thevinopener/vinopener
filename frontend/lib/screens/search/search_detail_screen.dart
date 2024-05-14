@@ -214,7 +214,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                             ),
 
                         SearchBookmarkWidget(wineId: wineDetail.id, bookmark: wineDetail.isBookmark,),
-                            SearchCellarWidget(wineId: wineDetail.id,),
+                            SearchCellarWidget(wineId: wineDetail.id, cellar: wineDetail.isCellar,),
 
 
                             // Consumer<SearchWineDetailProvider>(

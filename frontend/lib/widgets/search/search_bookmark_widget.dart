@@ -24,16 +24,14 @@ class _SearchBookmarkWidgetState extends State<SearchBookmarkWidget> {
   Widget build(BuildContext context) {
     return Consumer<SearchWineDetailProvider>(
       builder: (context, wineDetailProvider, child) {
-        // final isBookmark = wineDetailProvider.isBookmark!.isBookmark;
         if (widget.bookmark) {
           return Container(
             width: double.maxFinite,
             child: FilledButton(
               onPressed: () async {
                 SearchService.removeBookmark(widget.wineId);
-                widget.bookmark = false;
                 setState(() {
-
+                  widget.bookmark = false;
                 });
               },
               child: Text(
@@ -44,12 +42,12 @@ class _SearchBookmarkWidgetState extends State<SearchBookmarkWidget> {
                 ),
               ),
               style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primary,
+                backgroundColor: AppColors.secondary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
                 side: BorderSide(
-                  color: AppColors.primary,
+                  color: AppColors.secondary,
                   width: 2,
                 ),
               ),
@@ -61,16 +59,14 @@ class _SearchBookmarkWidgetState extends State<SearchBookmarkWidget> {
             child: ElevatedButton(
               onPressed: () async {
                 SearchService.addBookmark(widget.wineId);
-                widget.bookmark = true;
                 setState(() {
-
+                  widget.bookmark = true;
                 });
-                // await wineDetailProvider.findDetailByWineId(widget.wineId);
               },
               child: Text(
                 '즐겨찾기 추가',
                 style: TextStyle(
-                  color: AppColors.primary,
+                  color: AppColors.secondary,
                   fontSize: AppFontSizes.medium,
                   fontWeight: FontWeight.w600,
                 ),
@@ -82,68 +78,13 @@ class _SearchBookmarkWidgetState extends State<SearchBookmarkWidget> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 side: BorderSide(
-                  color: AppColors.primary,
+                  color: AppColors.secondary,
                   width: 2,
                 ),
               ),
             ),
           );
         }
-        // return wineDetail.isBookmark
-        //     ? Container(
-        //         width: double.maxFinite,
-        //         child: FilledButton(
-        //           onPressed: () async {
-        //             SearchService.removeBookmark(wineDetail.id);
-        //             await wineDetailProvider.getBookmarkStatus(wineId);
-        //           },
-        //           child: Text(
-        //             '즐겨찾기 삭제',
-        //             style: TextStyle(
-        //               fontSize: AppFontSizes.medium,
-        //               fontWeight: FontWeight.bold,
-        //             ),
-        //           ),
-        //           style: FilledButton.styleFrom(
-        //             backgroundColor: AppColors.primary,
-        //             shape: RoundedRectangleBorder(
-        //               borderRadius: BorderRadius.circular(10),
-        //             ),
-        //             side: BorderSide(
-        //               color: AppColors.primary,
-        //               width: 2,
-        //             ),
-        //           ),
-        //         ),
-        //       )
-        //     : Container(
-        //         width: double.maxFinite,
-        //         child: ElevatedButton(
-        //           onPressed: () async {
-        //             SearchService.addBookmark(wineDetail.id);
-        //             await wineDetailProvider.findDetailByWineId(wineId);
-        //           },
-        //           child: Text(
-        //             '즐겨찾기 추가',
-        //             style: TextStyle(
-        //               color: AppColors.primary,
-        //               fontSize: AppFontSizes.medium,
-        //               fontWeight: FontWeight.w600,
-        //             ),
-        //           ),
-        //           style: ElevatedButton.styleFrom(
-        //             backgroundColor: AppColors.white,
-        //             elevation: 0,
-        //             shape: RoundedRectangleBorder(
-        //               borderRadius: BorderRadius.circular(10),
-        //             ),
-        //             side: BorderSide(
-        //               color: AppColors.primary,
-        //               width: 2,
-        //             ),
-        //           ),
-        //         ),
-        //       );
       },
     );
   }
