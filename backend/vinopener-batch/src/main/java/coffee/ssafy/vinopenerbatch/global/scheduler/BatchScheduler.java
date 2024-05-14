@@ -83,6 +83,25 @@ public class BatchScheduler {
         }
     }
 
+    //사용자 선호도 기반 추천 스케쥴러
+    @Scheduled(cron = "40 */2 * * * *")
+    public void preferenceRecommendationSchedule() {
+        // job parameter 설정
+
+        JobParameters jobParameters = new JobParametersBuilder()
+                .addString("cellar.id", createTimestamp())
+                .toJobParameters();
+
+        try {
+            jobLauncher.run(jobConfig.updateCellarJob(jobRepository), jobParameters);
+        } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
+                 | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
+
+            log.error(e.getMessage());
+
+        }
+    }
+
     private String createTimestamp() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
         return dateFormat.format(new Date());
