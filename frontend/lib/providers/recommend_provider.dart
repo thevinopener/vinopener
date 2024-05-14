@@ -94,11 +94,11 @@ class RecommendProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchWineDetailRecommendations() async {
+  Future<void> fetchWineDetailRecommendations(int wineId) async {
     _isLoading = true;
     notifyListeners();
     try {
-      _wineDetailRecommendWineList = await RecommendService.getWineDetailRecommend();
+      _wineDetailRecommendWineList = await RecommendService.getWineDetailRecommend(wineId);
     } catch (e) {
       _wineDetailRecommendWineList = [];
       print('Error fetching rate recommendations: $e');

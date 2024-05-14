@@ -34,7 +34,7 @@ class NoteOpinionScreen extends StatelessWidget {
         // 키보드 숨기기
         FocusScope.of(context).unfocus();
       },
-      child: SingleChildScrollView(
+      child:  SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

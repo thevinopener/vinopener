@@ -80,8 +80,8 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
           Provider.of<NewFeedWineListProvider>(context, listen: false)
               .getWineList();
       if (newFeedWineList.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('와인을 추가해주세요!')));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('와인을 추가해주세요!')));
         return;
       }
       for (int i = 0; i < newFeedWineList.length; i++) {
@@ -129,150 +129,154 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
               ),
             ),
           ],
+          backgroundColor: Colors.purple.withOpacity(0.05),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.file(
-                widget.imageFile!,
-                fit: BoxFit.cover,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 10),
-                    Text(
-                      '와인 선택',
-                      style: TextStyle(
-                        fontSize: AppFontSizes.mediumSmall,
-                        fontWeight: FontWeight.bold,
+        body: Container(
+          color: Colors.purple.withOpacity(0.05),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.file(
+                  widget.imageFile!,
+                  fit: BoxFit.cover,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 10),
+                      Text(
+                        '와인 선택',
+                        style: TextStyle(
+                          fontSize: AppFontSizes.mediumSmall,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Provider.of<NewFeedWineListProvider>(context,
-                                listen: false)
-                            .clearWineList();
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) =>
-                                  FeedWineSearchScreen()), // 'SearchWineScreen'을 적절한 대상 화면으로 바꾸세요.
-                        ).then((_) {
-                          setState(() {
-                            wineList =
-                                Provider.of<NewFeedWineListProvider>(context)
-                                    .getWineList();
+                      GestureDetector(
+                        onTap: () {
+                          Provider.of<NewFeedWineListProvider>(context,
+                                  listen: false)
+                              .clearWineList();
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) =>
+                                    FeedWineSearchScreen()), // 'SearchWineScreen'을 적절한 대상 화면으로 바꾸세요.
+                          ).then((_) {
+                            setState(() {
+                              wineList =
+                                  Provider.of<NewFeedWineListProvider>(context)
+                                      .getWineList();
+                            });
                           });
-                        });
-                        ;
-                      },
-                      child: Container(
-                        child: Column(
-                          children: [
-                            // Text('test'),
-                            TextField(
-                              focusNode: _focusNode,
-                              maxLength: 1,
-                              maxLengthEnforcement:
-                                  MaxLengthEnforcement.enforced,
-                              decoration: InputDecoration(
-                                hintText: '와인을 검색하세요.',
-                                prefixIcon: Icon(Icons.search),
-                                enabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                counterText: '',
+                          ;
+                        },
+                        child: Container(
+                          child: Column(
+                            children: [
+                              // Text('test'),
+                              TextField(
+                                focusNode: _focusNode,
+                                maxLength: 1,
+                                maxLengthEnforcement:
+                                    MaxLengthEnforcement.enforced,
+                                decoration: InputDecoration(
+                                  hintText: '와인을 검색하세요.',
+                                  prefixIcon: Icon(Icons.search),
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  counterText: '',
+                                ),
                               ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Consumer<NewFeedWineListProvider>(
+                        builder: (context, provider, child) {
+                          return Column(
+                            children: provider.wineList
+                                .map((wine) => FeedWineItem(
+                                      wine: wine,
+                                      isSelected: false,
+                                    ))
+                                .toList(),
+                          );
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        '피드 내용',
+                        style: TextStyle(
+                          fontSize: AppFontSizes.mediumSmall,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 1,
+                              blurRadius: 3,
+                              offset: Offset(0, 2),
                             ),
                           ],
                         ),
-                      ),
-                    ),
-                    Consumer<NewFeedWineListProvider>(
-                      builder: (context, provider, child) {
-                        return Column(
-                          children: provider.wineList
-                              .map((wine) => FeedWineItem(
-                                    wine: wine,
-                                    isSelected: false,
-                                  ))
-                              .toList(),
-                        );
-                      },
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      '피드 내용',
-                      style: TextStyle(
-                        fontSize: AppFontSizes.mediumSmall,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 1,
-                            blurRadius: 3,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        maxLength: 200,
-                        controller: contentController,
-                        decoration: InputDecoration(
-                          hintText: '내용을 입력하세요.',
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide(
-                              color: Colors.transparent,
+                        child: TextField(
+                          maxLength: 200,
+                          controller: contentController,
+                          decoration: InputDecoration(
+                            hintText: '내용을 입력하세요.',
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                              ),
                             ),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      '피드 설정',
-                      style: TextStyle(
-                        fontSize: AppFontSizes.mediumSmall,
-                        fontWeight: FontWeight.bold,
+                      SizedBox(height: 10),
+                      Text(
+                        '피드 설정',
+                        style: TextStyle(
+                          fontSize: AppFontSizes.mediumSmall,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 5),
-                    CustomListTile(
-                      leadingIcon: Icons.visibility_off_outlined,
-                      title: '공개 여부',
-                      trailing: Switch(
-                        value: isPublic,
-                        onChanged: (bool value) {
-                          setState(() {
-                            isPublic = !isPublic;
-                          });
-                        },
-                        activeColor: AppColors.primary,
-                        activeTrackColor: AppColors.primary,
-                        inactiveTrackColor: Colors.grey,
-                        thumbColor: MaterialStateProperty.all(Colors.white),
-                        trackOutlineColor:
-                            MaterialStateProperty.all(Colors.transparent),
+                      SizedBox(height: 5),
+                      CustomListTile(
+                        leadingIcon: Icons.visibility_off_outlined,
+                        title: '공개 여부',
+                        trailing: Switch(
+                          value: isPublic,
+                          onChanged: (bool value) {
+                            setState(() {
+                              isPublic = !isPublic;
+                            });
+                          },
+                          activeColor: AppColors.primary,
+                          activeTrackColor: AppColors.primary,
+                          inactiveTrackColor: Colors.grey,
+                          thumbColor: MaterialStateProperty.all(Colors.white),
+                          trackOutlineColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

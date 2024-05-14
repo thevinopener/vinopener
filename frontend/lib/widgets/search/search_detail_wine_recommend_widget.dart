@@ -50,175 +50,206 @@ Color RecommendTypeToColor(int wineId) {
   }
 }
 
-Widget SearchWineDetailRecommendWidget(
-  BuildContext context, {
-  required String recommendType,
-  required int wineId,
-}) {
+class SearchWineDetailRecommendWidget extends StatefulWidget {
+  final String recommendType;
+  final int wineId;
+
+  const SearchWineDetailRecommendWidget({
+    Key? key,
+    required this.recommendType,
+    required this.wineId,
+  }) : super(key: key);
+
+  @override
+  _SearchWineDetailRecommendWidgetState createState() =>
+      _SearchWineDetailRecommendWidgetState();
+}
+
+class _SearchWineDetailRecommendWidgetState
+    extends State<SearchWineDetailRecommendWidget> {
   final CarouselController _carouselController = CarouselController();
 
-  final recommendProvider =
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final recommendProvider =
       Provider.of<RecommendProvider>(context, listen: false);
-  List<RecommendWine> wineList;
-  String? type;
-
-  // recommendType에 따라 해당 목록을 선택
-  switch (recommendType) {
-    case 'wine-detail':
-      wineList = recommendProvider.wineDetailRecommendWineList;
-      type = '현재 와인과 유사한 와인';
-      break;
-    default:
-      wineList = [];
-      break;
+      recommendProvider.fetchWineDetailRecommendations(widget.wineId);
+    });
   }
 
-  double screenWidth = MediaQuery.of(context).size.width;
-  double cardWidth = screenWidth * 0.4;
+  @override
+  Widget build(BuildContext context) {
+    final recommendProvider = Provider.of<RecommendProvider>(context);
+    List<RecommendWine> wineList;
+    String? type;
 
-  if (wineList.isEmpty) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(10, 35, 10, 35),
-      margin: EdgeInsets.fromLTRB(10, 35, 10, 35),
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            '😂 회원님에 대해 더 알려주세요 😂',
-            style: TextStyle(
-              fontSize: AppFontSizes.mediumLarge,
-              fontWeight: FontWeight.w600,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                '\"${type}\" ',
-                style: TextStyle(
-                    color: AppColors.primary.withOpacity(0.7),
-                    fontSize: AppFontSizes.medium,
-                    fontWeight: FontWeight.w700),
-                textAlign: TextAlign.center,
+    // recommendType에 따라 해당 목록을 선택
+    switch (widget.recommendType) {
+      case 'wine-detail':
+        wineList = recommendProvider.wineDetailRecommendWineList;
+        type = '현재 와인과 유사한 와인';
+        break;
+      default:
+        wineList = [];
+        break;
+    }
+
+    double screenWidth = MediaQuery.of(context).size.width;
+    double cardWidth = screenWidth * 0.4;
+
+    if (recommendProvider.isLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (wineList.isEmpty) {
+      return Container(
+        padding: EdgeInsets.fromLTRB(10, 35, 10, 35),
+        margin: EdgeInsets.fromLTRB(10, 35, 10, 35),
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              '😂 회원님에 대해 더 알려주세요 😂',
+              style: TextStyle(
+                fontSize: AppFontSizes.mediumLarge,
+                fontWeight: FontWeight.w600,
               ),
-              Text(
-                ' 기반 추천이에요',
-                style: TextStyle(
-                  fontSize: AppFontSizes.mediumSmall,
+              textAlign: TextAlign.center,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  '\"${type}\" ',
+                  style: TextStyle(
+                      color: AppColors.primary.withOpacity(0.7),
+                      fontSize: AppFontSizes.medium,
+                      fontWeight: FontWeight.w700),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  } else {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.05),
+                Text(
+                  ' 기반 추천이에요',
+                  style: TextStyle(
+                    fontSize: AppFontSizes.mediumSmall,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
-            child: CarouselSlider.builder(
-              itemCount: wineList.length,
-              itemBuilder: (context, index, realIndex) {
-                return Container(
-                  color: Colors.transparent,
-                  width: double.maxFinite,
-                  height: 50,
-                  alignment: Alignment.center,
-                  child: FilledButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SearchDetailScreen(
-                            wineId: wineList[index].wineId,
+          ],
+        ),
+      );
+    } else {
+      return Container(
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.05),
+              ),
+              child: CarouselSlider.builder(
+                itemCount: wineList.length,
+                itemBuilder: (context, index, realIndex) {
+                  return Container(
+                    color: Colors.transparent,
+                    width: double.maxFinite,
+                    height: 50,
+                    alignment: Alignment.center,
+                    child: FilledButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SearchDetailScreen(
+                              wineId: wineList[index].wineId,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      width: double.maxFinite,
-                      height: double.maxFinite,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Positioned(
-                            child: Transform.rotate(
-                              angle: 0.4,
-                              child: Container(
-                                width: 60,
-                                height: 150,
-                                decoration: BoxDecoration(
-                                  color: RecommendTypeToColor(wineId)
-                                      .withOpacity(0.3),
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(50),
-                                    topRight: Radius.circular(50),
-                                    bottomLeft: Radius.circular(50),
-                                    bottomRight: Radius.circular(50),
+                        );
+                      },
+                      child: Container(
+                        width: double.maxFinite,
+                        height: double.maxFinite,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Positioned(
+                              child: Transform.rotate(
+                                angle: 0.4,
+                                child: Container(
+                                  width: 60,
+                                  height: 150,
+                                  decoration: BoxDecoration(
+                                    color: RecommendTypeToColor(widget.wineId)
+                                        .withOpacity(0.3),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(50),
+                                      topRight: Radius.circular(50),
+                                      bottomLeft: Radius.circular(50),
+                                      bottomRight: Radius.circular(50),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          Container(
-                            height: 200,
-                            child: Transform.rotate(
-                              angle: 0.8, // 1.57이 눕히는거
-                              child: Image.network(wineList[index].imageUrl),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 20,
-                            right: 20,
-                            child: Text(
-                              replaceSpacesWithNewline(wineList[index].winery),
-                              style: TextStyle(
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w600,
+                            Container(
+                              height: 200,
+                              child: Transform.rotate(
+                                angle: 0.8, // 1.57이 눕히는거
+                                child: Image.network(wineList[index].imageUrl),
                               ),
-                              textAlign: TextAlign.right,
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<OutlinedBorder>(
-                        ContinuousRectangleBorder(
-                          side: BorderSide(
-                            color: Colors.transparent,
-                          ),
+                            Positioned(
+                              bottom: 20,
+                              right: 20,
+                              child: Text(
+                                replaceSpacesWithNewline(
+                                    wineList[index].winery),
+                                style: TextStyle(
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.right,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        Colors.transparent,
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                          ContinuousRectangleBorder(
+                            side: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                          ),
+                        ),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          Colors.transparent,
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-              carouselController: _carouselController,
-              options: CarouselOptions(
-                height: 250,
-                autoPlay: false,
-                aspectRatio: 6,
-                enlargeCenterPage: false,
-                viewportFraction: 0.4,
-                initialPage: 0,
+                  );
+                },
+                carouselController: _carouselController,
+                options: CarouselOptions(
+                  height: 250,
+                  autoPlay: false,
+                  aspectRatio: 6,
+                  enlargeCenterPage: false,
+                  viewportFraction: 0.4,
+                  initialPage: 0,
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    }
   }
 }

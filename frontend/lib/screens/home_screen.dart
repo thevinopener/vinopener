@@ -58,14 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
     bool _didPop = false;
     final bottomBarProvider = Provider.of<BottomBarProvider>(context);
 
-    return WillPopScope(
-      onWillPop: _onWillPop,
-      child: Scaffold(
-        body: PageView(
-          controller: _pageController,
-          children: [
-            SafeArea(
-                child: FutureBuilder<List<CameraDescription>>(
+    return Scaffold(
+      body: PageView(
+        controller: _pageController,
+        children: [
+          SafeArea(
+            child: FutureBuilder<List<CameraDescription>>(
               future: camerasFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done &&
@@ -76,6 +74,30 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Center(child: Text('카메라 로드 실패: ${snapshot.error}'));
                 }
                 return Center(child: CircularProgressIndicator());
+              },
+            ),
+          ), // 0번 페이지
+          SafeArea(child: RecommendScreen()), // 1번 페이지
+          SafeArea(child: FeedScreen()), // 2번 페이지
+          SafeArea(child: NoteListScreen()), // 3번 페이지
+          SafeArea(child: MyPageScreen()), // 4번 페이지
+        ],
+        onPageChanged: (index) {
+          setState(() {
+            _currentPageIndex = index;
+            if (index > 0) {
+              bottomBarProvider.setIndex(index - 1);
+            }
+          });
+        },
+      ),
+      bottomNavigationBar: _currentPageIndex != 0
+          ? BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              currentIndex: bottomBarProvider.currentIndex,
+              onTap: (index) {
+                bottomBarProvider.setIndex(index);
+                _pageController.jumpToPage(index + 1); // 페이지 컨트롤러의 인덱스 조정
               },
             )), // 0번 페이지
             SafeArea(child: RecommendScreen()), // 1번 페이지

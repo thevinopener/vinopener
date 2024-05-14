@@ -82,7 +82,8 @@ class _NoteSearchScreenState extends State<NoteSearchScreen> {
                     .showSnackBar(SnackBar(content: Text('와인을 선택해주세요!')));
                 return;
               }
-              Provider.of<NoteWineProvider>(context, listen: false).setWine(_selectedWine!);
+              Provider.of<NoteWineProvider>(context, listen: false)
+                  .setWine(_selectedWine!);
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -100,6 +101,7 @@ class _NoteSearchScreenState extends State<NoteSearchScreen> {
             ),
           ),
         ],
+        backgroundColor: Colors.purple.withOpacity(0.05),
       ),
       body: GestureDetector(
         onTap: () {
