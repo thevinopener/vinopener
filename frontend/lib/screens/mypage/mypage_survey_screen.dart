@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
+import 'package:frontend/constants/wine_type.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:frontend/widgets/survey/survey_select_widget.dart';
 import 'package:frontend/widgets/survey/survey_range_slider_widget.dart';
@@ -27,12 +28,14 @@ class _MyPageSurveyScreenState extends State<MyPageSurveyScreen> {
     try {
       Survey survey = await UserService.getSurvey();
       print(survey);
+      print(survey.types.map((type) => WineType.enToKr[type]!).toSet());
       setState(() {
+        _selectedKinds = survey.types.map((type) => WineType.enToKr[type]!).toSet();
         _alcoholStart = survey.minAbv.toDouble();
         _alcoholEnd = survey.maxAbv.toDouble();
-        int _sweetness = survey.sweetness;
-        int _acidity = survey.acidity;
-        int _bitterness = survey.tannin;
+        _sweetness = survey.sweetness;
+        _acidity = survey.acidity;
+        _bitterness = survey.tannin;
       });
     } catch (e) {
       print("Failed to load survey: $e");
@@ -43,6 +46,9 @@ class _MyPageSurveyScreenState extends State<MyPageSurveyScreen> {
   void initState() {
     super.initState();
     loadSurvey();
+    setState(() {
+
+    });
   }
 
   void _updateKind(Set<String> kinds) {
@@ -129,31 +135,31 @@ class _MyPageSurveyScreenState extends State<MyPageSurveyScreen> {
                         child: Text('종류',
                             style: TextStyle(fontSize: AppFontSizes.large)),
                       ),
-                      SelectKindButton(onSelected: _updateKind),
+                      SelectKindButton(selectedKinds: _selectedKinds, onSelected: _updateKind),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text('도수',
                             style: TextStyle(fontSize: AppFontSizes.large)),
                       ),
-                      SurveyRangeSlider(onRangeSelected: _updateAlcoholRange),
+                      SurveyRangeSlider(currentRangeValues: RangeValues(_alcoholStart, _alcoholEnd), onRangeSelected: _updateAlcoholRange),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text('단맛',
                             style: TextStyle(fontSize: AppFontSizes.large)),
                       ),
-                      SurveySlider(onChanged: _updateSweetness),
+                      SurveySlider(currentSliderValue: _sweetness.toDouble(), onChanged: _updateSweetness),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text('신맛',
                             style: TextStyle(fontSize: AppFontSizes.large)),
                       ),
-                      SurveySlider(onChanged: _updateAcidity),
+                      SurveySlider(currentSliderValue: _acidity.toDouble(), onChanged: _updateAcidity),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text('떫기',
                             style: TextStyle(fontSize: AppFontSizes.large)),
                       ),
-                      SurveySlider(onChanged: _updateBitterness),
+                      SurveySlider(currentSliderValue: _bitterness.toDouble(), onChanged: _updateBitterness),
                     ],
                   ),
                 ),

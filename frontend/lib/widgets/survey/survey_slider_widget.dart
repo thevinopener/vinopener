@@ -3,16 +3,17 @@ import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 
 class SurveySlider extends StatefulWidget {
+  double currentSliderValue;
   final Function(double) onChanged;  // 새로운 콜백 정의
 
-  const SurveySlider({Key? key, required this.onChanged}) : super(key: key); // 생성자에 onChanged 추가
+  SurveySlider({Key? key, required this.currentSliderValue, required this.onChanged}) : super(key: key); // 생성자에 onChanged 추가
 
   @override
   State<SurveySlider> createState() => _SliderExampleState();
 }
 
 class _SliderExampleState extends State<SurveySlider> {
-  double _currentSliderValue = 50;
+  // double _currentSliderValue = 50;
 
   String? alcohol(int number) {
     if (number <= 0) {
@@ -45,14 +46,14 @@ class _SliderExampleState extends State<SurveySlider> {
         ),
         child: Slider(
           activeColor: AppColors.primary,
-          value: _currentSliderValue,
+          value: widget.currentSliderValue,
           min: 0,
           max: 100,
           divisions: 4,
-          label: alcohol(_currentSliderValue.toInt()),
+          label: alcohol(widget.currentSliderValue.toInt()),
           onChanged: (double value) {
             setState(() {
-              _currentSliderValue = value;
+              widget.currentSliderValue = value;
             });
             widget.onChanged(value);  // 콜백 함수 호출
           },

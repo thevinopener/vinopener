@@ -7,4 +7,13 @@ class WineType {
     '디저트': 'DESSERT',
     '포트': 'FORTIFIED',
   };
+
+  static Map<String, String> enToKr = {
+    'RED': '레드',
+    'WHITE': '화이트',
+    'ROSE': '로제',
+    'SPARKLING': '스파클링',
+    'DESSERT': '디저트',
+    'FORTIFIED': '포트',
+  };
 }
