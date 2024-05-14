@@ -32,7 +32,7 @@ public class SearchService {
             final Long userId
     ) {
         // 이미 검색어와 동일한 검색기록이 있는지 확인 후 존재한다면 삭제
-        searchRepository.findByIdAndContent(userId, query.trim())
+        searchRepository.findByUserIdAndContent(userId, query.trim())
                 .ifPresent(existingSearch -> {
                     searchRepository.deleteByIdAndUserId(existingSearch.getId(), userId);
                 });
