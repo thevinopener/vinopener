@@ -39,22 +39,40 @@ class _FeedScreenState extends State<FeedScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Feed',
-          style: TextStyle(
-            fontSize: AppFontSizes.large,
-            fontWeight: FontWeight.bold,
-          ),
+        backgroundColor: Colors.white.withOpacity(0.1),
+        leading: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SizedBox(
+              width: 5,
+            ),
+            Image.asset(
+              'assets/images/vinopener_logo.png',
+              height: 45, // 이미지 크기 조절
+              width: 45, // 이미지 크기 조절
+            ),
+            SizedBox(width: 8), // 이미지와 텍스트 사이의 간격
+            Text(
+              'Feed',
+              style: TextStyle(
+                fontSize: AppFontSizes.mediumLarge,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
+        leadingWidth: double.maxFinite,
         actions: [
           IconButton(
-            color: Colors.black,
             onPressed: () => addFeed(context),
-            icon: Icon(Icons.add),
+            icon: Icon(
+              Icons.add,
+              color: Colors.black,
+              size: 35,
+            ),
           )
         ],
         shape: Border(bottom: BorderSide(color: Colors.grey)),
-        backgroundColor: Colors.purple.withOpacity(0.05),
       ),
       body: Container(
         color: Colors.purple.withOpacity(0.05),
