@@ -132,17 +132,17 @@ class _FeedImageScreenState extends State<FeedImageScreen> {
                     ),
                   ),
                 ),
-          SizedBox(height: 20),
+          SizedBox(height: 50),
           Center(
-            child: TextButton(
-              child: Text(
-                '이미지 선택',
+            child: FilledButton.icon(
+              onPressed: showOptions,
+              icon: Icon(Icons.image_search),
+              label: Text(
+                '이미지 찾기',
                 style: TextStyle(
                   fontSize: AppFontSizes.mediumSmall,
-                  color: AppColors.primary,
                 ),
               ),
-              onPressed: showOptions,
             ),
           ),
         ],

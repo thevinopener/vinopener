@@ -228,7 +228,7 @@ class SttWidgetState extends State<SttWidget> {
       final noteProvider = Provider.of<NoteProvider>(context, listen: false);
       noteProvider.updateNoteProvider(wineId: wineId);
 
-      await NoteCreateService.createNote(noteProvider);
+      await NoteService.createNote(noteProvider);
 
       noteProvider.reset();
       Navigator.popUntil(context, (route) => route.isFirst);
