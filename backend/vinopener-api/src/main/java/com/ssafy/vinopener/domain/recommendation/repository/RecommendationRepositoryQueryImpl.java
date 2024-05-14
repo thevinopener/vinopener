@@ -1,6 +1,8 @@
 package com.ssafy.vinopener.domain.recommendation.repository;
 
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.vinopener.domain.cellar.data.entity.QCellarEntity;
 import com.ssafy.vinopener.domain.wine.data.entity.QWineEntity;
 import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
 import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
@@ -25,6 +27,23 @@ public class RecommendationRepositoryQueryImpl implements RecommendationReposito
         return queryFactory
                 .selectFrom(qWineEntity)
                 .where(qWineEntity.type.in(wineTypeList))
+                .fetch();
+    }
+
+    @Override
+    public List<WineEntity> findByWineTypeSet(Set<WineType> wineTypeList, Long userId) {
+        QWineEntity qWineEntity = QWineEntity.wineEntity;
+        QCellarEntity qCellarEntity = QCellarEntity.cellarEntity;
+
+        return queryFactory
+                .selectFrom(qWineEntity)
+                .where(qWineEntity.type.in(wineTypeList)
+                        .and(qWineEntity.id.notIn(
+                                JPAExpressions
+                                        .select(qCellarEntity.wine.id)
+                                        .from(qCellarEntity)
+                                        .where(qCellarEntity.user.id.eq(userId))
+                        )))
                 .fetch();
     }
 

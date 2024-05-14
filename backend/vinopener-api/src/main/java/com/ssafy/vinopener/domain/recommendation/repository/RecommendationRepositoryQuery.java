@@ -9,4 +9,6 @@ public interface RecommendationRepositoryQuery {
 
     List<WineEntity> findByWineTypeSet(Set<WineType> wineTypeLIst);
 
+    List<WineEntity> findByWineTypeSet(Set<WineType> wineTypeList, Long userId);
+
 }
