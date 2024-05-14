@@ -272,7 +272,7 @@ class SttWidgetState extends State<SttWidget> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(
-                  (!_isListening && _isSpeaking)
+                  (_isListening && !_isSpeaking)
                       ? "assets/images/voice.gif" // 마이크가 활성화되고 TTS가 말하지 않으면 voice.gif 표시
                       : "assets/images/quiet.png", // 기본은 quiet.png
                 ),
