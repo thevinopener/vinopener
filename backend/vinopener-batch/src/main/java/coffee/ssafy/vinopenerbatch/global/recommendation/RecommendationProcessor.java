@@ -119,14 +119,16 @@ public class RecommendationProcessor {
         }
     }
 
-    public List<WineEntity> createPreferenceRecommendation(Long userId) {
+    public void createPreferenceRecommendation(Long userId) throws Exception {
         PreferenceEntity preferenceEntity = preferenceRepository.findByUserId(userId).orElse(null);
-        List<BehaviorRecommendationEntity> savingEntities = new ArrayList<>();
 
         // batch를 쓸 경우, 이러한 null 발생시에 대한 Exception을 어떻게 처리하지??
 //        if (preferenceEntity == null) {
 //            throw new VinopenerException(PreferenceErrorCode.PREFERENCE_NOT_FOUND);
 //        }
+        if (preferenceEntity == null) {
+            throw new Exception("선호도를 찾을 수 없습니다.");
+        }
 
         // 사용자가 선호하는 타입의 와인만 먼저 DB에서 골라낸다.
         Set<WineType> wineTypeSet = preferenceMapper.map(preferenceEntity);
@@ -140,8 +142,6 @@ public class RecommendationProcessor {
                 .toList();
 
         saveRecommendationResult(resultList, userId, BehaviorRecommendationType.PREFERENCE);
-
-        return resultList;
     }
 
     public List<WineEntity> createTastingNoteRecommendation(Long userId) {
@@ -226,6 +226,7 @@ public class RecommendationProcessor {
 
     }
 
+    // 사용자의 선호도 파라미터와 DB의 특정 와인과의 코사인 유사도 계산
     private double processCosineSimilarity(WineEntity wineEntity, PreferenceEntity preferenceEntity) {
         double dotProduct = wineEntity.getAbv().doubleValue() * preferenceEntity.getMinAbv().doubleValue() * 0.2 +
                 wineEntity.getAbv().doubleValue() * preferenceEntity.getMaxAbv().doubleValue() * 0.2 +
@@ -251,6 +252,7 @@ public class RecommendationProcessor {
         return dotProduct / (normWine * normPref);
     }
 
+    // 상세조회한 와인과, DB의 특정 와인과의 유사도 계산
     private double processCosineSimilarity(WineEntity wineEntity, WineEntity wineDetailEntity) {
         double dotProduct = wineEntity.getAbv().doubleValue() * wineDetailEntity.getAbv().doubleValue() * 0.2 +
                 wineEntity.getSweetness().doubleValue() * wineDetailEntity.getSweetness().doubleValue() * 0.05 +
@@ -274,6 +276,7 @@ public class RecommendationProcessor {
         return dotProduct / (normWine * normDetail);
     }
 
+    // 사용자가 작성한 모든 테이스팅 노트를 하나로 종합한 프로필과, DB의 특정 와인과의 코사인 유사도 계산
     private double processCosineSimilarity(
             WineEntity wineEntity,
             Map<String, Double> profileParameters,
