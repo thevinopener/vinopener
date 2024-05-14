@@ -41,12 +41,12 @@ public class JobConfig {
                 .build();
     }
 
-    @Bean
-    public Job updatePreferenceJob(final JobRepository jobRepository) {
-        return new JobBuilder("updatePreferenceJob", jobRepository)
-                .start(updatePreferenceStep)
-                .build();
-    }
+//    @Bean
+//    public Job updatePreferenceJob(final JobRepository jobRepository) {
+//        return new JobBuilder("updatePreferenceJob", jobRepository)
+//                .start(updatePreferenceStep)
+//                .build();
+//    }
 
 //    @Bean
 //    public Job updateTastingNoteJob(final JobRepository jobRepository) {
