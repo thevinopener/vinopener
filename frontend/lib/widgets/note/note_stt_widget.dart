@@ -15,7 +15,8 @@ class SttWidget extends StatefulWidget {
   final int currentPage;
   final Function(int) onPageChangeRequest;
 
-  const SttWidget({Key? key, required this.currentPage, required this.onPageChangeRequest})
+  const SttWidget(
+      {Key? key, required this.currentPage, required this.onPageChangeRequest})
       : super(key: key);
 
   @override
@@ -170,7 +171,9 @@ class SttWidgetState extends State<SttWidget> {
       noteId = aiAnswer.id;
       noteProvider.updateNoteProvider(
         colorId: aiAnswer.newState.color?.id ?? noteProvider.colorId,
-        flavourTasteIds: aiAnswer.newState.flavours.isNotEmpty ? aiAnswer.newState.flavours.map((f) => f.id).toList() : noteProvider.flavourTasteIds,
+        flavourTasteIds: aiAnswer.newState.flavours.isNotEmpty
+            ? aiAnswer.newState.flavours.map((f) => f.id).toList()
+            : noteProvider.flavourTasteIds,
         sweetness: aiAnswer.newState.sweetness ?? noteProvider.sweetness,
         intensity: aiAnswer.newState.intensity ?? noteProvider.intensity,
         acidity: aiAnswer.newState.acidity ?? noteProvider.acidity,
@@ -183,7 +186,9 @@ class SttWidgetState extends State<SttWidget> {
       _speak(aiAnswer.message);
     }).catchError((error) {
       setState(() {
-        _questionText = error.toString().contains("COLOR_NOT_FOUND") ? "입력하신 색상을 찾을 수 없습니다. 다시 입력해 주세요." : "오류가 발생했습니다. 다시 시도해 주세요.";
+        _questionText = error.toString().contains("COLOR_NOT_FOUND")
+            ? "입력하신 색상을 찾을 수 없습니다. 다시 입력해 주세요."
+            : "오류가 발생했습니다. 다시 시도해 주세요.";
       });
       _promptUser();
     });
@@ -224,7 +229,8 @@ class SttWidgetState extends State<SttWidget> {
 
   Future<void> postNote() async {
     try {
-      final wineId = Provider.of<NoteWineProvider>(context, listen: false).getWine().id;
+      final wineId =
+          Provider.of<NoteWineProvider>(context, listen: false).getWine().id;
       final noteProvider = Provider.of<NoteProvider>(context, listen: false);
       noteProvider.updateNoteProvider(wineId: wineId);
 
@@ -255,7 +261,10 @@ class SttWidgetState extends State<SttWidget> {
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: Text(
               _questionText,
-              style: const TextStyle(fontSize: 16.0, color: AppColors.white, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                  fontSize: 16.0,
+                  color: AppColors.white,
+                  fontWeight: FontWeight.bold),
             ),
           ),
           Container(
@@ -263,9 +272,9 @@ class SttWidgetState extends State<SttWidget> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(
-                  _isSpeaking
-                      ? "assets/images/quiet.png" // TTS가 말하는 동안 quiet.png 표시
-                      : (_isListening ? "assets/images/voice.gif" : "assets/images/quiet.png"), // STT가 활성화되면 voice.gif 표시, 기본은 quiet.png
+                  (!_isListening && _isSpeaking)
+                      ? "assets/images/voice.gif" // 마이크가 활성화되고 TTS가 말하지 않으면 voice.gif 표시
+                      : "assets/images/quiet.png", // 기본은 quiet.png
                 ),
                 fit: BoxFit.fitHeight,
               ),
@@ -275,7 +284,10 @@ class SttWidgetState extends State<SttWidget> {
             padding: const EdgeInsets.only(bottom: 8, left: 16, right: 16),
             child: Text(
               _answerText,
-              style: const TextStyle(fontSize: 16.0, color: AppColors.white, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                  fontSize: 16.0,
+                  color: AppColors.white,
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ],
