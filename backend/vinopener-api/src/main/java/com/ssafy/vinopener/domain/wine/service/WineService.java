@@ -205,7 +205,7 @@ public class WineService {
     ) {
         List<WineEntity> wines = wineRepository.findBySeoNameContainsIgnoreCase(query);
 
-        logger.info("현재 반환된 wines List : {}", wines);
+        logger.info("현재 반환된 wines List 길이 : {} / 내용 : {}", wines.size(), wines);
 
         if (wines.isEmpty()) {
             throw new VinopenerException(WineErrorCode.WINE_NOT_FOUND);
