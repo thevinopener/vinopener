@@ -3,6 +3,7 @@
 import 'dart:isolate';
 
 import 'package:dio/dio.dart';
+import 'package:frontend/models/search/search_bookmark_status.dart';
 import 'package:frontend/models/search/search_wine_name_result.dart';
 import 'package:frontend/models/search/search_wine_type_result.dart';
 import 'package:frontend/models/search/search_wine_detail.dart';
@@ -212,6 +213,18 @@ class SearchService {
       print('removeCellar API 호출 중 다른 예외 발생: $e');
       throw Exception('removeCellar API 호출 중 다른 오류 발생: ${e.message}');
     }
+  }
+
+  static Future<SearchBookmarkStatus> getBookmarkStatus(int wineId) async {
+    final response = await ApiClient().dio.get('/bookmarks/${wineId}');
+    if (response.statusCode == 200) {
+      dynamic responseData = response.data;
+      SearchBookmarkStatus isBookmark = responseData
+          .map((wineData) => SearchBookmarkStatus.fromJson(wineData));
+      return isBookmark;
+    }
+
+    throw Exception(':::: search_service.dart :::: findByWineType API 호출 실패');
   }
 
 }

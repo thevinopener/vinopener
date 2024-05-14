@@ -41,19 +41,20 @@ class _HomeScreenState extends State<HomeScreen> {
         controller: _pageController,
         children: [
           SafeArea(
-              child: FutureBuilder<List<CameraDescription>>(
-            future: camerasFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done &&
-                  snapshot.hasData &&
-                  snapshot.data!.isNotEmpty) {
-                return SearchCameraScreen(camera: snapshot.data!.first);
-              } else if (snapshot.hasError) {
-                return Center(child: Text('카메라 로드 실패: ${snapshot.error}'));
-              }
-              return Center(child: CircularProgressIndicator());
-            },
-          )), // 0번 페이지
+            child: FutureBuilder<List<CameraDescription>>(
+              future: camerasFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.hasData &&
+                    snapshot.data!.isNotEmpty) {
+                  return SearchCameraScreen(camera: snapshot.data!.first);
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('카메라 로드 실패: ${snapshot.error}'));
+                }
+                return Center(child: CircularProgressIndicator());
+              },
+            ),
+          ), // 0번 페이지
           SafeArea(child: RecommendScreen()), // 1번 페이지
           SafeArea(child: FeedScreen()), // 2번 페이지
           SafeArea(child: NoteListScreen()), // 3번 페이지

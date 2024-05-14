@@ -86,8 +86,8 @@ class RecommendService {
   }
 
   // wineDetail 페이지 추천 -> 와인과 유사한 거
-  static Future<List<RecommendWine>> getWineDetailRecommend() async {
-    final response = await ApiClient().dio.get('/recommendations/wine-detail');
+  static Future<List<RecommendWine>> getWineDetailRecommend(int wineId) async {
+    final response = await ApiClient().dio.get('/recommendations/wine-detail', queryParameters: {'wineId': wineId});
 
     if (response.statusCode == 200) {
       // 응답 데이터를 리스트로 변환
