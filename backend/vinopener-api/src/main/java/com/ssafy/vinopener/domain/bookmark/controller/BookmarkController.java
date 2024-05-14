@@ -84,7 +84,7 @@ public class BookmarkController {
      * @param sort   정렬 기준(생략 가능, ID)
      * @return 즐겨찾기 목록
      */
-    @GetMapping
+    @GetMapping("/page")
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<Page<BookmarkGetListResponse>> getListBookmark(
             @UserPrincipalId final Long userId,
