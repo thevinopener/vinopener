@@ -130,8 +130,9 @@ class NoteResultScreen extends StatelessWidget {
                                             Text(
                                               noteDetail.rating.toString(),
                                               style: TextStyle(
-                                                  fontSize:
-                                                      AppFontSizes.mediumSmall),
+                                                fontSize: AppFontSizes.medium,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -241,7 +242,7 @@ class NoteResultScreen extends StatelessWidget {
                                     width:
                                         MediaQuery.of(context).size.width * 0.9,
                                     height: MediaQuery.of(context).size.height *
-                                        0.4,
+                                        0.3,
                                     padding: EdgeInsets.all(10),
                                     decoration: ShapeDecoration(
                                       color: Colors.white,
