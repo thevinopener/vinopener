@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/models/note_model.dart';
+import 'package:frontend/providers/note/note_wine_provider.dart';
 import 'package:frontend/providers/search/search_wine_detail_provider.dart';
 import 'package:frontend/screens/note/note_screen.dart';
 import 'package:frontend/services/search_service.dart';
@@ -552,7 +553,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                       ),
                   child: ElevatedButton(
                     onPressed: () {
-                      // TODO: 해당 와인 객체정보 가지고 NoteColorScreen 페이지로 라우팅
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(

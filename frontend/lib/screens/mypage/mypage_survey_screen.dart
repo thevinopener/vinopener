@@ -15,7 +15,6 @@ class MyPageSurveyScreen extends StatefulWidget {
 }
 
 class _MyPageSurveyScreenState extends State<MyPageSurveyScreen> {
-
   Set<String> _selectedKinds = Set<String>();
   double _alcoholStart = 25.0;
   double _alcoholEnd = 75.0;
@@ -77,7 +76,6 @@ class _MyPageSurveyScreenState extends State<MyPageSurveyScreen> {
   }
 
   void _updateSurvey() {
-
     final survey = Survey(
       types: _selectedKinds,
       minAbv: _alcoholStart.toInt(),
@@ -102,88 +100,92 @@ class _MyPageSurveyScreenState extends State<MyPageSurveyScreen> {
           ),
         ),
         centerTitle: true,
+        backgroundColor: Colors.purple.withOpacity(0.05),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.05,
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Text(
-                '당신의 취향은?',
-                style: TextStyle(
-                  fontSize: AppFontSizes.veryLarge,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text('종류',
-                            style: TextStyle(fontSize: AppFontSizes.large)),
-                      ),
-                      SelectKindButton(onSelected: _updateKind),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text('도수',
-                            style: TextStyle(fontSize: AppFontSizes.large)),
-                      ),
-                      SurveyRangeSlider(onRangeSelected: _updateAlcoholRange),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text('단맛',
-                            style: TextStyle(fontSize: AppFontSizes.large)),
-                      ),
-                      SurveySlider(onChanged: _updateSweetness),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text('신맛',
-                            style: TextStyle(fontSize: AppFontSizes.large)),
-                      ),
-                      SurveySlider(onChanged: _updateAcidity),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text('떫기',
-                            style: TextStyle(fontSize: AppFontSizes.large)),
-                      ),
-                      SurveySlider(onChanged: _updateBitterness),
-                    ],
+      body: Container(
+        color: Colors.purple.withOpacity(0.05),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.05,
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Text(
+                  '당신의 취향은?',
+                  style: TextStyle(
+                    fontSize: AppFontSizes.veryLarge,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.2,
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.05,
-                width: MediaQuery.of(context).size.width * 0.5,
-                margin: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.height * 0.02,
-                  horizontal: MediaQuery.of(context).size.width * 0.2,
-                ),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: AppColors.white,
-                    backgroundColor: AppColors.primary,
-                  ),
-                  child: Text(
-                    "수정",
-                    style: TextStyle(
-                      fontSize: AppFontSizes.mediumSmall,
-                      fontWeight: FontWeight.bold,
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('종류',
+                              style: TextStyle(fontSize: AppFontSizes.large)),
+                        ),
+                        SelectKindButton(onSelected: _updateKind),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('도수',
+                              style: TextStyle(fontSize: AppFontSizes.large)),
+                        ),
+                        SurveyRangeSlider(onRangeSelected: _updateAlcoholRange),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('단맛',
+                              style: TextStyle(fontSize: AppFontSizes.large)),
+                        ),
+                        SurveySlider(onChanged: _updateSweetness),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('신맛',
+                              style: TextStyle(fontSize: AppFontSizes.large)),
+                        ),
+                        SurveySlider(onChanged: _updateAcidity),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('떫기',
+                              style: TextStyle(fontSize: AppFontSizes.large)),
+                        ),
+                        SurveySlider(onChanged: _updateBitterness),
+                      ],
                     ),
                   ),
-                  onPressed: _updateSurvey,
                 ),
-              )
-            ],
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.2,
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  margin: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.height * 0.02,
+                    horizontal: MediaQuery.of(context).size.width * 0.2,
+                  ),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: AppColors.white,
+                      backgroundColor: AppColors.primary,
+                    ),
+                    child: Text(
+                      "수정",
+                      style: TextStyle(
+                        fontSize: AppFontSizes.mediumSmall,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onPressed: _updateSurvey,
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

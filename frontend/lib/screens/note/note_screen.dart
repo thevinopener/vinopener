@@ -94,19 +94,32 @@ class _NoteScreenState extends State<NoteScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Tasting Note',
+          '테이스팅노트 작성',
           style: TextStyle(
-            fontSize: AppFontSizes.large,
+            fontSize: AppFontSizes.mediumSmall,
             fontWeight: FontWeight.bold,
           ),
-
+        ),
+        centerTitle: true,
+        leading: TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text(
+            '이전',
+            style: TextStyle(
+              fontSize: AppFontSizes.mediumSmall,
+              fontWeight: FontWeight.bold,
+              color: Colors.red, // AppColors에 정의된 색상 사용
+            ),
+          ),
         ),
         actions: <Widget>[
           TextButton(
             child: Icon(
               Icons.close,
               color: AppColors.black,
-              size: 30,
+              size: 24,
             ),
             onPressed: () {
               // SttWidgetState의 stopTtsAndStt 메서드를 호출
@@ -116,45 +129,48 @@ class _NoteScreenState extends State<NoteScreen> {
           ),
         ],
         shape: Border(bottom: BorderSide(color: Colors.grey)),
-
+        backgroundColor: Colors.purple.withOpacity(0.05),
       ),
-      body: Column(
-        children: [
-          SizedBox(height: 20),
-          NoteWineCard(wine: Provider.of<NoteWineProvider>(context).getWine()),
-          Expanded(
-            child: PageView(
-              controller: _controller,
-              onPageChanged: (page) {
-                setState(() {
-                  _currentPage = page;
-                });
-              },
-              children: [
-                NoteColorScreen(
-                  controller: _controller,
-                ),
-                NoteSmellScreen(
-                  controller: _controller,
-                ),
-                NoteTasteScreen(controller: _controller),
-                NoteOpinionScreen(),
-              ],
+      body: Container(
+        color: Colors.purple.withOpacity(0.05),
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            NoteWineCard(
+                wine: Provider.of<NoteWineProvider>(context).getWine()),
+            Expanded(
+              child: PageView(
+                controller: _controller,
+                onPageChanged: (page) {
+                  setState(() {
+                    _currentPage = page;
+                  });
+                },
+                children: [
+                  NoteColorScreen(
+                    controller: _controller,
+                  ),
+                  NoteSmellScreen(
+                    controller: _controller,
+                  ),
+                  NoteTasteScreen(controller: _controller),
+                  NoteOpinionScreen(),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButton: FloatingChatButton(
-        chatIconBackgroundColor: AppColors.secondary,
-        chatIconBorderColor: AppColors.secondary,
-        chatIconBorderWidth: 4,
-        chatIconWidget: IconButton(
-          hoverColor: AppColors.primary,
-          onPressed: null,
-          icon: Icon(
-            Icons.nightlife_sharp,
-            color: AppColors.white,
-            size: 30,
+        chatIconBackgroundColor: AppColors.primary,
+        chatIconBorderColor: AppColors.primary,
+        chatIconBorderWidth: 0,
+        chatIconWidget: Container(
+          margin: EdgeInsets.all(7),
+          child: Image(
+            image: AssetImage("assets/images/ai_icon.gif"),
+            width: 50,
+            height: 50,
           ),
         ),
         onTap: (BuildContext context) {

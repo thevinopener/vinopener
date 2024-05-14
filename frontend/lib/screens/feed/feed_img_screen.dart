@@ -105,47 +105,51 @@ class _FeedImageScreenState extends State<FeedImageScreen> {
             ),
           ),
         ],
+        backgroundColor: Colors.purple.withOpacity(0.05),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 20),
-          _imageFile == null
-              ? Center(
-                  child: Image.asset(
-                    'assets/images/intro_logo.png',
-                    width: min(MediaQuery.of(context).size.width,
-                        MediaQuery.of(context).size.height * 0.5),
-                    height: min(MediaQuery.of(context).size.width,
-                        MediaQuery.of(context).size.height * 0.5),
-                  ),
-                )
-              : Center(
-                  child: Container(
-                    width: min(MediaQuery.of(context).size.width,
-                        MediaQuery.of(context).size.height * 0.5),
-                    height: min(MediaQuery.of(context).size.width,
-                        MediaQuery.of(context).size.height * 0.5),
-                    child: Image.file(
-                      _imageFile!,
-                      fit: BoxFit.cover,
+      body: Container(
+        color: Colors.purple.withOpacity(0.05),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 20),
+            _imageFile == null
+                ? Center(
+                    child: Image.asset(
+                      'assets/images/intro_logo.png',
+                      width: min(MediaQuery.of(context).size.width,
+                          MediaQuery.of(context).size.height * 0.5),
+                      height: min(MediaQuery.of(context).size.width,
+                          MediaQuery.of(context).size.height * 0.5),
+                    ),
+                  )
+                : Center(
+                    child: Container(
+                      width: min(MediaQuery.of(context).size.width,
+                          MediaQuery.of(context).size.height * 0.5),
+                      height: min(MediaQuery.of(context).size.width,
+                          MediaQuery.of(context).size.height * 0.5),
+                      child: Image.file(
+                        _imageFile!,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-          SizedBox(height: 50),
-          Center(
-            child: FilledButton.icon(
-              onPressed: showOptions,
-              icon: Icon(Icons.image_search),
-              label: Text(
-                '이미지 찾기',
-                style: TextStyle(
-                  fontSize: AppFontSizes.mediumSmall,
+            SizedBox(height: 50),
+            Center(
+              child: FilledButton.icon(
+                onPressed: showOptions,
+                icon: Icon(Icons.image_search),
+                label: Text(
+                  '이미지 찾기',
+                  style: TextStyle(
+                    fontSize: AppFontSizes.mediumSmall,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
