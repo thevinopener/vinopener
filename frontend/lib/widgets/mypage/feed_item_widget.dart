@@ -71,7 +71,6 @@ class _FeedItemState extends State<FeedItem> {
     return RepaintBoundary(
       key: _repaintKey,
       child: Container(
-        color: Colors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

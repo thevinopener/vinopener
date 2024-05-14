@@ -86,7 +86,9 @@ class _MyPageScreenState extends State<MyPageScreen>
     double avatarRadius = 50;
 
     return Scaffold(
-      body: Column(
+      body: Container(
+        color: Colors.purple.withOpacity(0.05),
+        child:Column(
         children: [
           Stack(
             alignment: Alignment.center,
@@ -296,6 +298,6 @@ class _MyPageScreenState extends State<MyPageScreen>
           ),
         ],
       ),
-    );
+    ),);
   }
 }

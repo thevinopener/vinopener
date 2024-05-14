@@ -110,7 +110,7 @@ class _NoteScreenState extends State<NoteScreen> {
             style: TextStyle(
               fontSize: AppFontSizes.mediumSmall,
               fontWeight: FontWeight.bold,
-              color: Colors.red,// AppColors에 정의된 색상 사용
+              color: Colors.red, // AppColors에 정의된 색상 사용
             ),
           ),
         ),
@@ -132,38 +132,47 @@ class _NoteScreenState extends State<NoteScreen> {
         backgroundColor: Colors.purple.withOpacity(0.05),
       ),
       body: Container(
-    color: Colors.purple.withOpacity(0.05),
-    child: Column(
-        children: [
-          SizedBox(height: 20),
-          NoteWineCard(wine: Provider.of<NoteWineProvider>(context).getWine()),
-          Expanded(
-            child: PageView(
-              controller: _controller,
-              onPageChanged: (page) {
-                setState(() {
-                  _currentPage = page;
-                });
-              },
-              children: [
-                NoteColorScreen(
-                  controller: _controller,
-                ),
-                NoteSmellScreen(
-                  controller: _controller,
-                ),
-                NoteTasteScreen(controller: _controller),
-                NoteOpinionScreen(),
-              ],
+        color: Colors.purple.withOpacity(0.05),
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            NoteWineCard(
+                wine: Provider.of<NoteWineProvider>(context).getWine()),
+            Expanded(
+              child: PageView(
+                controller: _controller,
+                onPageChanged: (page) {
+                  setState(() {
+                    _currentPage = page;
+                  });
+                },
+                children: [
+                  NoteColorScreen(
+                    controller: _controller,
+                  ),
+                  NoteSmellScreen(
+                    controller: _controller,
+                  ),
+                  NoteTasteScreen(controller: _controller),
+                  NoteOpinionScreen(),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),),
+          ],
+        ),
+      ),
       floatingActionButton: FloatingChatButton(
         chatIconBackgroundColor: AppColors.primary,
         chatIconBorderColor: AppColors.primary,
         chatIconBorderWidth: 0,
-        chatIconWidget: Container(margin: EdgeInsets.all(7), child:Image(image: AssetImage("assets/images/ai_icon.gif"), width: 50, height: 50,),),
+        chatIconWidget: Container(
+          margin: EdgeInsets.all(7),
+          child: Image(
+            image: AssetImage("assets/images/ai_icon.gif"),
+            width: 50,
+            height: 50,
+          ),
+        ),
         onTap: (BuildContext context) {
           _showBottomSheet(context);
         },
