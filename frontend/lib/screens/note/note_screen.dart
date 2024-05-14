@@ -94,19 +94,32 @@ class _NoteScreenState extends State<NoteScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Tasting Note',
+          '테이스팅노트 작성',
           style: TextStyle(
-            fontSize: AppFontSizes.large,
+            fontSize: AppFontSizes.mediumSmall,
             fontWeight: FontWeight.bold,
           ),
-
+        ),
+        centerTitle: true,
+        leading: TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text(
+            '이전',
+            style: TextStyle(
+              fontSize: AppFontSizes.mediumSmall,
+              fontWeight: FontWeight.bold,
+              color: Colors.red,// AppColors에 정의된 색상 사용
+            ),
+          ),
         ),
         actions: <Widget>[
           TextButton(
             child: Icon(
               Icons.close,
               color: AppColors.black,
-              size: 30,
+              size: 24,
             ),
             onPressed: () {
               // SttWidgetState의 stopTtsAndStt 메서드를 호출
@@ -116,7 +129,6 @@ class _NoteScreenState extends State<NoteScreen> {
           ),
         ],
         shape: Border(bottom: BorderSide(color: Colors.grey)),
-
       ),
       body: Column(
         children: [

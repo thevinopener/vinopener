@@ -43,7 +43,7 @@ class NoteResultScreen extends StatelessWidget {
         shape: Border(bottom: BorderSide(color: Colors.grey)),
       ),
       body: FutureBuilder<NoteDetailModel>(
-        future: NoteDetailService.getNoteDetail(id),
+        future: NoteService.getNoteDetail(id),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());

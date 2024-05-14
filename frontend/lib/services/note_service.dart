@@ -7,11 +7,11 @@ import 'package:frontend/utils/api_client.dart';
 import '../models/note_model.dart';
 
 class AiChatService {
-  static Future<AiAnswer> postSurvey(AiChat aiChat) async {
+  static Future<AiAnswer> postAiChat(AiChat aiChat) async {
     try {
       print('Sending data: ${aiChat.toJson()}'); // 요청 데이터 로깅
       final response =
-          await ApiClient().dio.post('/ai-chats', data: aiChat.toJson());
+      await ApiClient().dio.post('/ai-chats', data: aiChat.toJson());
       print('Received response: ${response.data}'); // 응답 데이터 로깅
 
       if (response.statusCode != null &&
@@ -34,7 +34,7 @@ class AiChatService {
   }
 }
 
-class NoteListService {
+class NoteService {
   static Future<List<WineNoteCard>> getNoteList() async {
     try {
       final response = await ApiClient().dio.get('/tasting-notes');
@@ -43,7 +43,8 @@ class NoteListService {
           response.statusCode! < 300) {
         List<dynamic> noteJsonList = response.data as List;
         List<WineNoteCard> notes =
-            noteJsonList.map((json) => WineNoteCard.fromJson(json)).toList();
+        noteJsonList.map((json) => WineNoteCard.fromJson(json)).toList();
+        notes = notes.reversed.toList();
         return notes;
       } else {
         throw Exception("Failed to load wine notes");
@@ -52,9 +53,7 @@ class NoteListService {
       throw Exception("An error occurred while fetching data: $e");
     }
   }
-}
 
-class NoteDetailService {
   static Future<NoteDetailModel> getNoteDetail(int id) async {
     try {
       final response = await ApiClient().dio.get('/tasting-notes/$id');
@@ -70,14 +69,12 @@ class NoteDetailService {
       throw Exception("An error occurred while fetching data: $e");
     }
   }
-}
 
-class NoteCreateService {
   static Future<void> createNote(NoteProvider noteProvider) async {
     try {
       var jsonData = noteProvider.toJson(); // 가정: toJson() 메서드 구현
       final response =
-          await ApiClient().dio.post('/tasting-notes', data: jsonData);
+      await ApiClient().dio.post('/tasting-notes', data: jsonData);
       // 상태 코드가 200대인 경우 성공으로 처리
       if (response.statusCode != null &&
           response.statusCode! >= 200 &&
@@ -89,5 +86,10 @@ class NoteCreateService {
     } catch (e) {
       throw Exception("An error occurred while creating the note: $e");
     }
+  }
+
+  static void deleteNote(int noteId) async {
+    print('delete note');
+    await ApiClient().dio.delete('/tasting-notes/${noteId}');
   }
 }
