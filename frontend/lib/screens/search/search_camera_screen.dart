@@ -10,6 +10,7 @@ import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 // screen
 import 'package:frontend/screens/home_screen.dart';
+import 'package:frontend/screens/recommend/recommend_screen.dart';
 import 'package:frontend/screens/search/search_result_screen.dart';
 // package
 import 'package:scanner_overlay/scanner_overlay.dart';
@@ -48,16 +49,13 @@ class _SearchCameraScreenState extends State<SearchCameraScreen> {
     });
   }
 
-  Future<bool> _onWillPop() async {
+  void _onPopInvoked(bool shouldPop) {
     // 뒤로 가기 버튼을 눌렀을 때 명시적으로 특정 경로로 이동
-    Navigator.of(context).pushReplacement(
+    Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => HomeScreen(), // 원하는 화면이나 경로로 라우팅
+        builder: (context) => RecommendScreen(), // 원하는 화면이나 경로로 라우팅
       ),
     );
-
-    // 'false'를 반환하여 현재 화면이 닫히지 않도록 방지
-    return false;
   }
 
   @override
@@ -69,8 +67,8 @@ class _SearchCameraScreenState extends State<SearchCameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onWillPop, // 뒤로 가기 버튼 동작을 제어하는 콜백
+    return PopScope(
+      onPopInvoked: _onPopInvoked, // 뒤로 가기 버튼 동작을 제어하는 콜백
       child: Scaffold(
         body: FutureBuilder<void>(
           future: _initializeControllerFuture,
