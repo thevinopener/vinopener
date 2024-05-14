@@ -48,7 +48,8 @@ class _NoteOpinionState extends State<NoteOpinion> {
               border: OutlineInputBorder(),
               hintText: '자유롭게 의견을 적어보세요!',
             ),
-            maxLines: 12,
+            maxLength: 255, // 최대 입력 가능 문자 수를 254자로 제한
+            maxLines: 8,
             style: TextStyle(fontSize: 16),
             onChanged: (text) {
               Provider.of<NoteProvider>(context, listen: false)

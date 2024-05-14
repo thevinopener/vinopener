@@ -19,7 +19,7 @@ public interface CellarRepository extends JpaRepository<CellarEntity, Long> {
 
     boolean existsByIdAndUserId(Long id, Long userId);
 
-    boolean existsByWineIdAndUserId(Long windId, Long userId);
+    boolean existsByWineIdAndUserId(Long wineId, Long userId);
 
     void deleteByWineIdAndUserId(Long wineId, Long userId);
 

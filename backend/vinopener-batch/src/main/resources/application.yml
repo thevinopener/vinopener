@@ -7,6 +7,18 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: validate
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+
+
+kafka:
+  topics:
+    update-view: updateView
+    update-rate: updateRate
+    update-cellar: updateCellar
+    update-preference: updatePreference
+    update-tasting-note: updateTastingNote
 
 ---
 

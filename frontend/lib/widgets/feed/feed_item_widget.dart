@@ -12,6 +12,7 @@ import 'package:frontend/screens/search/search_detail_screen.dart';
 import 'package:frontend/services/feed_service.dart';
 import 'package:frontend/utils/date_time_util.dart';
 import 'package:frontend/widgets/common/molecules/wine_item_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -27,6 +28,8 @@ class FeedItem extends StatefulWidget {
 
 class _FeedItemState extends State<FeedItem> {
   final GlobalKey _repaintKey = GlobalKey();
+  bool _isExpanded = false;
+  static const int _initialItemCount = 3;
 
   void _shareAsImage() async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -66,111 +69,145 @@ class _FeedItemState extends State<FeedItem> {
     return RepaintBoundary(
       key: _repaintKey,
       child: Container(
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundImage:
-                            NetworkImage('${widget.feed.user?.imageUrl}'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage:
+                          NetworkImage('${widget.feed.user?.imageUrl}'),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      '${widget.feed.user?.nickname}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: AppFontSizes.mediumSmall,
                       ),
-                      SizedBox(width: 10),
-                      Text(
-                        '${widget.feed.user?.nickname}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: AppFontSizes.mediumSmall,
-                        ),
+                    ),
+                  ],
+                ),
+                Text(formatDateTime(widget.feed.createdTime!)),
+              ],
+            ),
+            SizedBox(height: 5),
+            Image.network(
+              '${widget.feed.imageUrl}',
+              fit: BoxFit.cover,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      padding: EdgeInsets.all(0),
+                      onPressed: _toggleLike,
+                      icon: Icon(
+                        widget.feed.isLiked!
+                            ? Icons.favorite
+                            : Icons.favorite_outline,
+                        size: 30,
                       ),
-                    ],
-                  ),
-                  Text(formatDateTime(widget.feed.createdTime!)),
-                ],
-              ),
-              SizedBox(height: 5),
-              Image.network(
-                '${widget.feed.imageUrl}',
-                fit: BoxFit.cover,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        padding: EdgeInsets.all(0),
-                        onPressed: _toggleLike,
-                        icon: Icon(
-                          widget.feed.isLiked!
-                              ? Icons.favorite
-                              : Icons.favorite_outline,
-                          size: 30,
-                        ),
+                    ),
+                    Text(
+                      '${widget.feed.likeCount}',
+                      style: TextStyle(
+                        fontSize: AppFontSizes.mediumSmall,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        '${widget.feed.likeCount}',
-                        style: TextStyle(
-                          fontSize: AppFontSizes.mediumSmall,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ),
+                  ],
+                ),
+                Spacer(),
+                IconButton(
+                  icon: Icon(Icons.ios_share),
+                  onPressed: _shareAsImage,
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                // wineList의 첫 번째 부분
+                ...widget.feed.wineList!
+                    .take(_isExpanded
+                    ? widget.feed.wineList!.length
+                    : _initialItemCount)
+                    .map((wine) => GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) =>
+                              SearchDetailScreen(wineId: wine.id!)),
+                    ).then((_) => Provider.of<FeedTabState>(context,
+                        listen: false)
+                        .setFeedList());
+                  },
+                  child: WineItem(wine: wine),
+                )),
+                // 더보기 버튼
+                if (widget.feed.wineList!.length > _initialItemCount)
+                  TextButton.icon(
+                    onPressed: () {
+                      setState(() {
+                        _isExpanded = !_isExpanded;
+                      });
+                    },
+                    icon: Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
+                    label: Text(
+                      _isExpanded ?
+                      '접기' : '더 보기',
+                      style: TextStyle(
+                        fontSize: AppFontSizes.mediumSmall,
                       ),
-                    ],
-                  ),
-                  Spacer(),
-                  IconButton(
-                    icon: Icon(Icons.ios_share),
-                    onPressed: _shareAsImage,
-                  ),
-                ],
-              ),
-              Column(
-                children: widget.feed.wineList
-                        ?.map((wine) => GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                    builder: (context) =>
-                                        SearchDetailScreen(wineId: wine.id!)),
-                              ).then((_) => Provider.of<FeedTabState>(context,
-                                      listen: false)
-                                  .setFeedList());
-                            },
-                            child: WineItem(wine: wine)))
-                        .toList() ??
-                    [],
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${widget.feed.user?.nickname}',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: AppFontSizes.mediumSmall,
                     ),
                   ),
-                  SizedBox(width: 5),
-                  Text(
-                    '${widget.feed.content}',
-                    style: TextStyle(
-                      fontSize: AppFontSizes.mediumSmall,
+              ],
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: '${widget.feed.user?.nickname} ',
+                          style: GoogleFonts.gowunDodum(
+                            textStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: AppFontSizes.mediumSmall,
+                              color: Colors
+                                  .black, // RichText의 기본 스타일과 일치시키기 위해 색상 설정
+                            ),
+                          ),
+                        ),
+                        TextSpan(
+                          text: '${widget.feed.content}',
+                          style: GoogleFonts.gowunDodum(
+                            textStyle: TextStyle(
+                              fontSize: AppFontSizes.mediumSmall,
+                              color: Colors
+                                  .black, // RichText의 기본 스타일과 일치시키기 위해 색상 설정
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     softWrap: true,
                     overflow: TextOverflow.visible,
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

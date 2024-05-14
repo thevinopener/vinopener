@@ -20,7 +20,7 @@ class _MyPageCoverScreenState extends State<MyPageCoverScreen> {
 
   Future pickImageFromGallery() async {
     final pickedImage =
-    await _imagePicker.pickImage(source: ImageSource.gallery);
+        await _imagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       _imageFile = File(pickedImage!.path);
@@ -30,26 +30,25 @@ class _MyPageCoverScreenState extends State<MyPageCoverScreen> {
   Future showOptions() async {
     showCupertinoModalPopup(
       context: context,
-      builder: (context) =>
-          CupertinoActionSheet(
-            actions: [
-              CupertinoActionSheetAction(
-                child: Text(
-                  '사진첩',
-                  style: TextStyle(
-                    color: AppColors.primary,
-                    fontSize: AppFontSizes.mediumSmall,
-                  ),
-                ),
-                onPressed: () {
-                  // close the options modal
-                  Navigator.of(context).pop();
-                  // get image from gallery
-                  pickImageFromGallery();
-                },
+      builder: (context) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            child: Text(
+              '사진첩',
+              style: TextStyle(
+                color: AppColors.primary,
+                fontSize: AppFontSizes.mediumSmall,
               ),
-            ],
+            ),
+            onPressed: () {
+              // close the options modal
+              Navigator.of(context).pop();
+              // get image from gallery
+              pickImageFromGallery();
+            },
           ),
+        ],
+      ),
     );
   }
 
@@ -85,35 +84,39 @@ class _MyPageCoverScreenState extends State<MyPageCoverScreen> {
             ),
           ),
         ],
+        backgroundColor: Colors.purple.withOpacity(0.05),
       ),
-      body: Column(
-        children: [
-          _imageFile == null
-              ? Image.asset(
-            'assets/images/wine.jpg',
-            width: 400,
-            height: 400,
-          )
-              : Image.file(
-            _imageFile!,
-            width: 400,
-            height: 400,
-            fit: BoxFit.cover,
-          ),
-          SizedBox(height: 20),
-          Center(
-            child: TextButton(
-              child: Text(
-                '이미지 선택',
-                style: TextStyle(
-                  fontSize: AppFontSizes.mediumSmall,
-                  color: AppColors.primary,
+      body: Container(
+        color: Colors.purple.withOpacity(0.05),
+        child: Column(
+          children: [
+            _imageFile == null
+                ? Image.asset(
+                    'assets/images/wine.jpg',
+                    width: 400,
+                    height: 400,
+                  )
+                : Image.file(
+                    _imageFile!,
+                    width: 400,
+                    height: 400,
+                    fit: BoxFit.cover,
+                  ),
+            SizedBox(height: 20),
+            Center(
+              child: TextButton(
+                child: Text(
+                  '이미지 선택',
+                  style: TextStyle(
+                    fontSize: AppFontSizes.mediumSmall,
+                    color: AppColors.primary,
+                  ),
                 ),
+                onPressed: showOptions,
               ),
-              onPressed: showOptions,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

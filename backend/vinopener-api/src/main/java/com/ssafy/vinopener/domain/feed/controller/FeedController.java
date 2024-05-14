@@ -18,6 +18,10 @@ import java.net.URI;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,6 +32,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -91,17 +96,17 @@ public class FeedController {
      * @param sort   정렬 기준(생략 가능, ID)
      * @return 전체 피드 목록
      */
-//    @GetMapping
-//    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
-//    public ResponseEntity<Page<FeedGetListResponse>> getList(
-//            @UserPrincipalId final Long userId,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size,
-//            @RequestParam(defaultValue = "id") String sort
-//    ) {
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
-//        return ResponseEntity.ok(feedService.getList(userId, pageable));
-//    }
+    @GetMapping("/page")
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    public ResponseEntity<Page<FeedGetListResponse>> getList(
+            @UserPrincipalId final Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return ResponseEntity.ok(feedService.getPageList(userId, pageable));
+    }
 
     /**
      * 피드 상세 조회
@@ -141,17 +146,17 @@ public class FeedController {
      * @param sort   정렬 기준(생략 가능, ID)
      * @return 내 피드 목록
      */
-//    @GetMapping("/my")
-//    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
-//    public ResponseEntity<Page<FeedGetListResponse>> getMyFeedList(
-//            @UserPrincipalId final Long userId,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size,
-//            @RequestParam(defaultValue = "id") String sort
-//    ) {
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
-//        return ResponseEntity.ok(feedService.getMyFeedList(userId, pageable));
-//    }
+    @GetMapping("/page/my")
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    public ResponseEntity<Page<FeedGetListResponse>> getMyFeedList(
+            @UserPrincipalId final Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return ResponseEntity.ok(feedService.getPageMyFeedList(userId, pageable));
+    }
 
 //    /**
 //     * 내 피드 상세 조회

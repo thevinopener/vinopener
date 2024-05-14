@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -118,20 +120,21 @@ public class FeedService {
      * @param pageable 페이지네이션
      * @return
      */
-//    @Transactional(readOnly = true)
-//    public Page<FeedGetListResponse> getList(
-//            final Long userId,
-//            Pageable pageable
-//    ) {
-//        Page<FeedEntity> feeds = feedRepository.findAll(pageable);
-//
-//        return feeds.map(feed -> {
-//            int totalLikes = feedLikeRepository.countByFeedId(feed.getId());
-//            boolean myLike = feedLikeRepository.existsByFeedIdAndUserId(feed.getId(), userId);
-//            List<FeedWineEntity> feedWines = feedWineRepository.findAllByFeedId(feed.getId());
-//            return feedMapper.toGetListResponse(feed, feedWines, totalLikes, myLike);
-//        });
-//    }
+    @Transactional(readOnly = true)
+    public Page<FeedGetListResponse> getPageList(
+            final Long userId,
+            Pageable pageable
+    ) {
+        Page<FeedEntity> feeds = feedRepository.findAll(pageable);
+
+        return feeds.map(feed -> {
+            int totalLikes = feedLikeRepository.countByFeedId(feed.getId());
+            boolean myLike = feedLikeRepository.existsByFeedIdAndUserId(feed.getId(), userId);
+            List<FeedWineEntity> feedWines = feedWineRepository.findAllByFeedId(feed.getId());
+            return feedMapper.toGetListResponse(feed, feedWines, totalLikes, myLike);
+        });
+    }
+
     @Transactional(readOnly = true)
     public FeedGetResponse get(
             final Long feedId,
@@ -175,20 +178,21 @@ public class FeedService {
      * @param pageable 페이지네이션
      * @return 내 피드 목록
      */
-//    @Transactional(readOnly = true)
-//    public Page<FeedGetListResponse> getMyFeedList(
-//            final Long userId,
-//            Pageable pageable
-//    ) {
-//        Page<FeedEntity> feeds = feedRepository.findAllByUserId(userId, pageable);
-//
-//        return feeds.map(feed -> {
-//            int totalLikes = feedLikeRepository.countByFeedId(feed.getId());
-//            boolean myLike = feedLikeRepository.existsByFeedIdAndUserId(feed.getId(), userId);
-//            List<FeedWineEntity> feedWines = feedWineRepository.findByFeedId(feed.getId());
-//            return feedMapper.toGetListResponse(feed, feedWines, totalLikes, myLike);
-//        });
-//    }
+    @Transactional(readOnly = true)
+    public Page<FeedGetListResponse> getPageMyFeedList(
+            final Long userId,
+            Pageable pageable
+    ) {
+        Page<FeedEntity> feeds = feedRepository.findAllByUserId(userId, pageable);
+
+        return feeds.map(feed -> {
+            int totalLikes = feedLikeRepository.countByFeedId(feed.getId());
+            boolean myLike = feedLikeRepository.existsByFeedIdAndUserId(feed.getId(), userId);
+            List<FeedWineEntity> feedWines = feedWineRepository.findByFeedId(feed.getId());
+            return feedMapper.toGetListResponse(feed, feedWines, totalLikes, myLike);
+        });
+    }
+
     @Transactional
     public void deleteMyFeed(
             final Long feedId,

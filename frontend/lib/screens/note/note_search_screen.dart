@@ -53,7 +53,6 @@ class _NoteSearchScreenState extends State<NoteSearchScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +73,8 @@ class _NoteSearchScreenState extends State<NoteSearchScreen> {
                     .showSnackBar(SnackBar(content: Text('와인을 선택해주세요!')));
                 return;
               }
-              Provider.of<NoteWineProvider>(context, listen: false).setWine(_selectedWine!);
+              Provider.of<NoteWineProvider>(context, listen: false)
+                  .setWine(_selectedWine!);
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -92,64 +92,69 @@ class _NoteSearchScreenState extends State<NoteSearchScreen> {
             ),
           ),
         ],
+        backgroundColor: Colors.purple.withOpacity(0.05),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              onSubmitted: (value) {
-                FocusScope.of(context).unfocus();
-                if (value == '') {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('검색어를 입력해주세요!')));
-                } else {
-                  _searchWines(value);
-                }
-              },
-              controller: _searchController,
-              decoration: InputDecoration(
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    FocusScope.of(context).unfocus();
-                    if (_searchController.text == '') {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('검색어를 입력해주세요!')));
-                    } else {
-                      _searchWines(_searchController.text);
-                    }
-                  },
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: AppColors.primary,
+      body: Container(
+        color: Colors.purple.withOpacity(0.05),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                onSubmitted: (value) {
+                  FocusScope.of(context).unfocus();
+                  if (value == '') {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text('검색어를 입력해주세요!')));
+                  } else {
+                    _searchWines(value);
+                  }
+                },
+                controller: _searchController,
+                decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      FocusScope.of(context).unfocus();
+                      if (_searchController.text == '') {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('검색어를 입력해주세요!')));
+                      } else {
+                        _searchWines(_searchController.text);
+                      }
+                    },
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppColors.primary,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: _isLoading
-                ? Center(child: CircularProgressIndicator())
-                : ListView.builder(
-                    itemCount: _wineList.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          _toggleWine(_wineList[index]);
-                        },
-                        child: Container(
-                          child: FeedWineItem(
-                            wine: _wineList[index],
-                            isSelected: _wineList[index].id == _selectedWineId,
+            Expanded(
+              child: _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      itemCount: _wineList.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            _toggleWine(_wineList[index]);
+                          },
+                          child: Container(
+                            child: FeedWineItem(
+                              wine: _wineList[index],
+                              isSelected:
+                                  _wineList[index].id == _selectedWineId,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-          ),
-        ],
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }

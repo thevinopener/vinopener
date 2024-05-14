@@ -19,7 +19,7 @@ class NoteOpinionScreen extends StatelessWidget {
         final noteProvider = Provider.of<NoteProvider>(context, listen: false);
         noteProvider.updateNoteProvider(wineId: wineId);
 
-        await NoteCreateService.createNote(noteProvider);
+        await NoteService.createNote(noteProvider);
 
         noteProvider.reset();
         Navigator.popUntil(context, (route) => route.isFirst);
@@ -34,7 +34,7 @@ class NoteOpinionScreen extends StatelessWidget {
         // 키보드 숨기기
         FocusScope.of(context).unfocus();
       },
-      child: SingleChildScrollView(
+      child:  SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

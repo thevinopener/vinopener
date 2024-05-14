@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/models/wine_model.dart';
+import 'package:frontend/providers/feed/feed_tab_state_provider.dart';
 import 'package:frontend/providers/feed/new_feed_wine_list_provider.dart';
 import 'package:frontend/services/wine_service.dart';
 import 'package:frontend/widgets/feed/feed_wine_item.dart';
@@ -16,6 +17,7 @@ class FeedWineSearchScreen extends StatefulWidget {
 
 class _FeedWineSearchScreenState extends State<FeedWineSearchScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
   List<Wine> _wineList = [];
   Set<Wine> _selectedWineSet = Set();
   bool _isLoading = false;
@@ -52,9 +54,21 @@ class _FeedWineSearchScreenState extends State<FeedWineSearchScreen> {
   }
 
   void selectWines(BuildContext context) {
-    final newFeedWineListProvider = Provider.of<NewFeedWineListProvider>(context, listen: false);
+    final newFeedWineListProvider =
+        Provider.of<NewFeedWineListProvider>(context, listen: false);
     newFeedWineListProvider.setWineList(_selectedWineSet.toList());
     Navigator.of(context).pop();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusScope.of(context).requestFocus(_searchFocusNode);
+    });
+    setState(() {
+      Provider.of<FeedTabState>(context, listen: false).setFeedList();
+    });
   }
 
   @override
@@ -82,59 +96,70 @@ class _FeedWineSearchScreenState extends State<FeedWineSearchScreen> {
             ),
           ),
         ],
+        backgroundColor: Colors.purple.withOpacity(0.05),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              onSubmitted: (value) {
-                FocusScope.of(context).unfocus();
-                if (value == '') {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('검색어를 입력해주세요!')));
-                } else {
-                  _searchWines(value);
-                }
-              },
-              controller: _searchController,
-              decoration: InputDecoration(
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Container(
+          color: Colors.purple.withOpacity(0.05),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  focusNode: _searchFocusNode,
+                  onSubmitted: (value) {
                     FocusScope.of(context).unfocus();
-                    if (_searchController.text == '') {
+                    if (value == '') {
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('검색어를 입력해주세요!')));
                     } else {
-                      _searchWines(_searchController.text);
+                      _searchWines(value);
                     }
                   },
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: AppColors.primary,
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.search),
+                      onPressed: () {
+                        FocusScope.of(context).unfocus();
+                        if (_searchController.text == '') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('검색어를 입력해주세요!')));
+                        } else {
+                          _searchWines(_searchController.text);
+                        }
+                      },
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: AppColors.primary,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+              Expanded(
+                child: _isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                        itemCount: _wineList.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                              onTap: () => _toggleWine(_wineList[index]),
+                              child: Container(
+                                  child: FeedWineItem(
+                                      wine: _wineList[index],
+                                      isSelected:
+                                          _wineList[index].isSelected)));
+                        },
+                      ),
+              ),
+            ],
           ),
-          Expanded(
-            child: _isLoading
-                ? Center(child: CircularProgressIndicator())
-                : ListView.builder(
-              itemCount: _wineList.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                    onTap: () => _toggleWine(_wineList[index]),
-                    child: Container(
-                        child: FeedWineItem(
-                            wine: _wineList[index],
-                            isSelected: _wineList[index].isSelected)));
-              },
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
