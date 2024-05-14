@@ -17,7 +17,9 @@ import 'package:frontend/widgets/recommend/recommend_wine_card_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../widgets/search/search_bookmark_widget.dart';
 import '../../widgets/search/search_carousel_widget.dart';
+import '../../widgets/search/search_cellar_widget.dart';
 import '../../widgets/search/search_detail_wine_recommend_widget.dart';
 import '../../widgets/search/search_wine_nation_widget.dart';
 
@@ -210,145 +212,153 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                                 ),
                               ],
                             ),
-                            Consumer<SearchWineDetailProvider>(
-                              builder: (context, wineDetailProvider, child) {
-                                final wineDetail =
-                                    wineDetailProvider.wineDetail;
-                                if (wineDetail == null) {
-                                  return Container();
-                                }
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    wineDetail.isBookmark
-                                        ? Container(
-                                            width: double.maxFinite,
-                                            child: FilledButton(
-                                              onPressed: () async {
-                                                SearchService.removeBookmark(
-                                                    wineDetail.id);
-                                                await wineDetailProvider
-                                                    .findDetailByWineId(
-                                                        widget.wineId);
-                                              },
-                                              child: Text(
-                                                '즐겨찾기 삭제',
-                                                style: TextStyle(
-                                                  fontSize: AppFontSizes.medium,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              style: FilledButton.styleFrom(
-                                                backgroundColor:
-                                                    AppColors.primary,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                side: BorderSide(
-                                                  color: AppColors.primary,
-                                                  width: 2,
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                        : Container(
-                                            width: double.maxFinite,
-                                            child: ElevatedButton(
-                                              onPressed: () async {
-                                                SearchService.addBookmark(
-                                                    wineDetail.id);
-                                                await wineDetailProvider
-                                                    .findDetailByWineId(
-                                                        widget.wineId);
-                                              },
-                                              child: Text(
-                                                '즐겨찾기 추가',
-                                                style: TextStyle(
-                                                    color: AppColors.primary,
-                                                    fontSize:
-                                                        AppFontSizes.medium,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    AppColors.white,
-                                                elevation: 0,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                side: BorderSide(
-                                                    color: AppColors.primary,
-                                                    width: 2),
-                                              ),
-                                            ),
-                                          ),
-                                    wineDetail.isCellar
-                                        ? Container(
-                                            width: double.maxFinite,
-                                            child: FilledButton(
-                                              onPressed: () {
-                                                SearchService.removeCellar(
-                                                    wineDetail.id);
-                                              },
-                                              child: Text(
-                                                '셀러 삭제',
-                                                style: TextStyle(
-                                                  fontSize: AppFontSizes.medium,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              style: FilledButton.styleFrom(
-                                                backgroundColor:
-                                                    AppColors.secondary,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                side: BorderSide(
-                                                  color: AppColors.secondary,
-                                                  width: 2,
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                        : Container(
-                                            width: double.maxFinite,
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                SearchService.addCellar(
-                                                    wineDetail.id);
-                                              },
-                                              child: Text(
-                                                '셀러 추가',
-                                                style: TextStyle(
-                                                    color: AppColors.secondary,
-                                                    fontSize:
-                                                        AppFontSizes.medium,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                // backgroundColor: AppColors.secondary,
-                                                elevation: 0,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                side: BorderSide(
-                                                  color: AppColors.secondary,
-                                                  width: 2,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                  ],
-                                );
-                              },
-                            ),
+
+                        SearchBookmarkWidget(wineId: wineDetail.id, bookmark: wineDetail.isBookmark,),
+                            SearchCellarWidget(wineId: wineDetail.id,),
+
+
+                            // Consumer<SearchWineDetailProvider>(
+                            //   builder: (context, wineDetailProvider, child) {
+                            //     final wineDetail =
+                            //         wineDetailProvider.wineDetail;
+                            //     if (wineDetail == null) {
+                            //       return Container();
+                            //     }
+                            //     return Column(
+                            //       mainAxisAlignment: MainAxisAlignment.center,
+                            //       crossAxisAlignment: CrossAxisAlignment.center,
+                            //       children: [
+                            //         wineDetail.isBookmark
+                            //             ? Container(
+                            //                 width: double.maxFinite,
+                            //                 child: FilledButton(
+                            //                   onPressed: () async {
+                            //                     SearchService.removeBookmark(
+                            //                         wineDetail.id);
+                            //                     await wineDetailProvider
+                            //                         .findDetailByWineId(
+                            //                             widget.wineId);
+                            //                   },
+                            //                   child: Text(
+                            //                     '즐겨찾기 삭제',
+                            //                     style: TextStyle(
+                            //                       fontSize: AppFontSizes.medium,
+                            //                       fontWeight: FontWeight.bold,
+                            //                     ),
+                            //                   ),
+                            //                   style: FilledButton.styleFrom(
+                            //                     backgroundColor:
+                            //                         AppColors.primary,
+                            //                     shape: RoundedRectangleBorder(
+                            //                       borderRadius:
+                            //                           BorderRadius.circular(10),
+                            //                     ),
+                            //                     side: BorderSide(
+                            //                       color: AppColors.primary,
+                            //                       width: 2,
+                            //                     ),
+                            //                   ),
+                            //                 ),
+                            //               )
+                            //             : Container(
+                            //                 width: double.maxFinite,
+                            //                 child: ElevatedButton(
+                            //                   onPressed: () async {
+                            //                     SearchService.addBookmark(
+                            //                         wineDetail.id);
+                            //                     await wineDetailProvider
+                            //                         .findDetailByWineId(
+                            //                             widget.wineId);
+                            //                   },
+                            //                   child: Text(
+                            //                     '즐겨찾기 추가',
+                            //                     style: TextStyle(
+                            //                         color: AppColors.primary,
+                            //                         fontSize:
+                            //                             AppFontSizes.medium,
+                            //                         fontWeight:
+                            //                             FontWeight.w600),
+                            //                   ),
+                            //                   style: ElevatedButton.styleFrom(
+                            //                     backgroundColor:
+                            //                         AppColors.white,
+                            //                     elevation: 0,
+                            //                     shape: RoundedRectangleBorder(
+                            //                       borderRadius:
+                            //                           BorderRadius.circular(10),
+                            //                     ),
+                            //                     side: BorderSide(
+                            //                         color: AppColors.primary,
+                            //                         width: 2),
+                            //                   ),
+                            //                 ),
+                            //               ),
+                            //         wineDetail.isCellar
+                            //             ? Container(
+                            //                 width: double.maxFinite,
+                            //                 child: FilledButton(
+                            //                   onPressed: () {
+                            //                     SearchService.removeCellar(
+                            //                         wineDetail.id);
+                            //                   },
+                            //                   child: Text(
+                            //                     '셀러 삭제',
+                            //                     style: TextStyle(
+                            //                       fontSize: AppFontSizes.medium,
+                            //                       fontWeight: FontWeight.bold,
+                            //                     ),
+                            //                   ),
+                            //                   style: FilledButton.styleFrom(
+                            //                     backgroundColor:
+                            //                         AppColors.secondary,
+                            //                     shape: RoundedRectangleBorder(
+                            //                       borderRadius:
+                            //                           BorderRadius.circular(10),
+                            //                     ),
+                            //                     side: BorderSide(
+                            //                       color: AppColors.secondary,
+                            //                       width: 2,
+                            //                     ),
+                            //                   ),
+                            //                 ),
+                            //               )
+                            //             : Container(
+                            //                 width: double.maxFinite,
+                            //                 child: ElevatedButton(
+                            //                   onPressed: () {
+                            //                     SearchService.addCellar(
+                            //                         wineDetail.id);
+                            //                   },
+                            //                   child: Text(
+                            //                     '셀러 추가',
+                            //                     style: TextStyle(
+                            //                         color: AppColors.secondary,
+                            //                         fontSize:
+                            //                             AppFontSizes.medium,
+                            //                         fontWeight:
+                            //                             FontWeight.w600),
+                            //                   ),
+                            //                   style: ElevatedButton.styleFrom(
+                            //                     // backgroundColor: AppColors.secondary,
+                            //                     elevation: 0,
+                            //                     shape: RoundedRectangleBorder(
+                            //                       borderRadius:
+                            //                           BorderRadius.circular(10),
+                            //                     ),
+                            //                     side: BorderSide(
+                            //                       color: AppColors.secondary,
+                            //                       width: 2,
+                            //                     ),
+                            //                   ),
+                            //                 ),
+                            //               ),
+                            //       ],
+                            //     );
+                            //   },
+                            // ),
+
+
+
                           ],
                         ),
                       ),
