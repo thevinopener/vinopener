@@ -18,51 +18,82 @@ class RecommendProvider with ChangeNotifier {
   List<RecommendWine> _rateRecommendWineList = [];
   List<RecommendWine> get rateRecommendWineList => _rateRecommendWineList;
 
-  // 와인 리스트 타입 향후 결정
-  // List<> _usRecommendWineList = [];
-  // List<> get usRecommendWineList => _usRecommendWineList;
-  //
-  // List<> _itRecommendWineList = [];
-  // List<> get usRecommendWineList => _usRecommendWineList;
-  //
-  // List<> _frRecommendWineList = [];
-  // List<> get usRecommendWineList => _usRecommendWineList;
-  //
-  // List<> _chRecommendWineList = [];
-  // List<> get usRecommendWineList => _usRecommendWineList;
-  //
-  // List<> _arRecommendWineList = [];
-  // List<> get usRecommendWineList => _usRecommendWineList;
-  //
-  // List<> _spRecommendWineList = [];
-  // List<> get usRecommendWineList => _usRecommendWineList;
-  //
-  // List<> _auRecommendWineList = [];
-  // List<> get usRecommendWineList => _usRecommendWineList;
-
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  Future<void> fetchAllRecommendations() async {
+  Future<void> fetchViewRecommendations() async {
     _isLoading = true;
     notifyListeners();
-
     try {
       _viewRecommendWineList = await RecommendService.getViewRecommend();
-      _preferenceRecommendWineList = await RecommendService.getPreferenceRecommend();
-      _tastingNoteRecommendWineList = await RecommendService.getTastingNoteRecommend();
-      _cellarRecommendWineList = await RecommendService.getCellarRecommend();
-      _rateRecommendWineList = await RecommendService.getRateRecommend();
     } catch (e) {
-      // 실패 시 모든 목록을 빈 상태로 설정
       _viewRecommendWineList = [];
-      _preferenceRecommendWineList = [];
-      _tastingNoteRecommendWineList = [];
-      _cellarRecommendWineList = [];
-      _rateRecommendWineList = [];
+      print('Error fetching view recommendations: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> fetchPreferenceRecommendations() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      _preferenceRecommendWineList = await RecommendService.getPreferenceRecommend();
+    } catch (e) {
+      _preferenceRecommendWineList = [];
+      print('Error fetching preference recommendations: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> fetchTastingNoteRecommendations() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      _tastingNoteRecommendWineList = await RecommendService.getTastingNoteRecommend();
+    } catch (e) {
+      _tastingNoteRecommendWineList = [];
+      print('Error fetching tasting note recommendations: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> fetchCellarRecommendations() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      _cellarRecommendWineList = await RecommendService.getCellarRecommend();
+    } catch (e) {
+      _cellarRecommendWineList = [];
+      print('Error fetching cellar recommendations: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> fetchRateRecommendations() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      _rateRecommendWineList = await RecommendService.getRateRecommend();
+    } catch (e) {
+      _rateRecommendWineList = [];
+      print('Error fetching rate recommendations: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // 전체 로딩 상태를 확인하기 위한 헬퍼 함수
+  void checkOverallLoading() {
+    _isLoading = false;
+    notifyListeners();
   }
 }

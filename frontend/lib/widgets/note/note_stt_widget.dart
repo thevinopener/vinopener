@@ -14,8 +14,7 @@ class SttWidget extends StatefulWidget {
   final int currentPage;
   final Function(int) onPageChangeRequest;
 
-  const SttWidget(
-      {Key? key, required this.currentPage, required this.onPageChangeRequest})
+  const SttWidget({Key? key, required this.currentPage, required this.onPageChangeRequest})
       : super(key: key);
 
   @override
@@ -44,13 +43,15 @@ class SttWidgetState extends State<SttWidget> {
     _initSpeech();
     _initTts();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateQuestionText();
       _promptUser();
     });
-    _updateQuestionText();
   }
 
   void _updateQuestionText() {
-    _questionText = "${titles[_currentPage]}은 어떠합니까?";
+    setState(() {
+      _questionText = "${titles[_currentPage]}은 어떠합니까?";
+    });
   }
 
   void _promptUser() async {
@@ -60,8 +61,8 @@ class SttWidgetState extends State<SttWidget> {
   void _initSpeech() async {
     bool available = await _speech.initialize(
         onStatus: (status) => print('STT Status: $status'),
-        onError: (error) => _onSpeechError(error) // 오류 처리를 위한 콜백
-        );
+        onError: (error) => _onSpeechError(error)
+    );
     if (!mounted) return;
     setState(() {
       _isListening = available;
@@ -69,26 +70,23 @@ class SttWidgetState extends State<SttWidget> {
   }
 
   void _onSpeechError(SpeechRecognitionError error) {
-    print("STT Error: ${error.errorMsg} - Permanent: ${error.permanent}");
-    if (error.errorMsg == "error_speech_timeout" && error.permanent) {
-      // 시간 초과 오류 처리
-      _questionText = "다시 말씀해주세요.";
-      _promptUser(); // 사용자에게 다시 질문하도록 유도
-    } else {
-      // 다른 오류 처리
-      _questionText = "오류가 발생했습니다. 다시 시도해 주세요.";
-      _promptUser();
-    }
+    setState(() {
+      if (error.errorMsg == "error_speech_timeout" && error.permanent) {
+        _questionText = "다시 말씀해주세요.";
+      } else {
+        _questionText = "오류가 발생했습니다. 다시 시도해 주세요.";
+      }
+    });
+    _promptUser();
   }
 
   void _initTts() {
     _flutterTts.setLanguage('ko-KR');
     _flutterTts.setPitch(1.0);
-
     _flutterTts.setStartHandler(() {
       print("TTS Start");
       if (_isListening) {
-        _speech.stop(); // TTS가 시작하기 전에 STT 중지
+        _speech.stop();
       }
     });
 
@@ -129,7 +127,7 @@ class SttWidgetState extends State<SttWidget> {
         _answerText = result.recognizedWords;
       });
       _analyzeSpeech(result.recognizedWords);
-      _speech.stop(); // Stop the speech recognizer
+      _speech.stop();
       setState(() => _isListening = false);
     }
   }
@@ -154,9 +152,7 @@ class SttWidgetState extends State<SttWidget> {
       noteId = aiAnswer.id;
       noteProvider.updateNoteProvider(
         colorId: aiAnswer.newState.color?.id ?? noteProvider.colorId,
-        flavourTasteIds: aiAnswer.newState.flavours.isNotEmpty
-            ? aiAnswer.newState.flavours.map((f) => f.id).toList()
-            : noteProvider.flavourTasteIds,
+        flavourTasteIds: aiAnswer.newState.flavours.isNotEmpty ? aiAnswer.newState.flavours.map((f) => f.id).toList() : noteProvider.flavourTasteIds,
         sweetness: aiAnswer.newState.sweetness ?? noteProvider.sweetness,
         intensity: aiAnswer.newState.intensity ?? noteProvider.intensity,
         acidity: aiAnswer.newState.acidity ?? noteProvider.acidity,
@@ -168,14 +164,10 @@ class SttWidgetState extends State<SttWidget> {
       _navigateToSection(aiAnswer.section);
       _speak(aiAnswer.message);
     }).catchError((error) {
-      print("Error posting survey: $error");
-      if (error.toString().contains("COLOR_NOT_FOUND")) {
-        _questionText = "입력하신 색상을 찾을 수 없습니다. 다시 입력해 주세요.";
-        _promptUser();
-      } else {
-        _questionText = "오류가 발생했습니다. 다시 시도해 주세요.";
-        _promptUser();
-      }
+      setState(() {
+        _questionText = error.toString().contains("COLOR_NOT_FOUND") ? "입력하신 색상을 찾을 수 없습니다. 다시 입력해 주세요." : "오류가 발생했습니다. 다시 시도해 주세요.";
+      });
+      _promptUser();
     });
   }
 
@@ -200,14 +192,12 @@ class SttWidgetState extends State<SttWidget> {
     } else if (nextPage != null && nextPage == 5) {
       Navigator.of(context).pop();
     } else if (nextPage != null) {
-      if (_currentPage != nextPage) {
-        widget.onPageChangeRequest(nextPage);
-        setState(() {
-          _currentPage = nextPage;
-        });
+      widget.onPageChangeRequest(nextPage);
+      setState(() {
+        _currentPage = nextPage;
         _updateQuestionText();
         _promptUser();
-      }
+      });
     } else {
       _speak("섹션을 찾을 수 없습니다.");
       _promptUser();
@@ -216,8 +206,7 @@ class SttWidgetState extends State<SttWidget> {
 
   Future<void> postNote() async {
     try {
-      final wineId =
-          Provider.of<NoteWineProvider>(context, listen: false).getWine().id;
+      final wineId = Provider.of<NoteWineProvider>(context, listen: false).getWine().id;
       final noteProvider = Provider.of<NoteProvider>(context, listen: false);
       noteProvider.updateNoteProvider(wineId: wineId);
 
@@ -232,6 +221,7 @@ class SttWidgetState extends State<SttWidget> {
 
   void _speak(String text) async {
     if (text.isNotEmpty) {
+      _questionText= text;
       _flutterTts.speak(text);
     }
   }
@@ -239,22 +229,31 @@ class SttWidgetState extends State<SttWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.black,
+      color: Color(0xFF14131C),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: Text(
               _questionText,
-              style: const TextStyle(fontSize: 24.0, color: AppColors.white),
+              style: const TextStyle(fontSize: 16.0, color: AppColors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height*0.1,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/voice.gif"), // AssetImage 사용
+                fit: BoxFit.fitHeight, // 이미지가 Container 영역을 전체 채우도록 설정
+              ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: Text(
               _answerText,
-              style: const TextStyle(fontSize: 24.0, color: AppColors.white),
+              style: const TextStyle(fontSize: 16.0, color: AppColors.white, fontWeight: FontWeight.bold),
             ),
           ),
         ],

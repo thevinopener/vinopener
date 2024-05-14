@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -94,6 +95,23 @@ public class RecommendationController {
     ) {
         List<RecommendationGetListResponse> recommendationList
                 = recommendationService.getTastingNoteRecommendation(userId);
+        return ResponseEntity.ok(recommendationList);
+    }
+
+    /**
+     * 특정 와인의 id가 주어졌을 때, 해당 와인과 가장 유사한 다른 와인을 추천
+     *
+     * @param wineId 와인 ID
+     * @return 추천된 와인 List(10개)
+     */
+    @GetMapping("/wine-detail")
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    public ResponseEntity<?> wineDetailRecommendation(
+            @RequestParam("wineId") Long wineId
+    ) {
+        List<RecommendationGetListResponse> recommendationList
+                = recommendationService.getWineDetailRecommendation(wineId);
+
         return ResponseEntity.ok(recommendationList);
     }
 

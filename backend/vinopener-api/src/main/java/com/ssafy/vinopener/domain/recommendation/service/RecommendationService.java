@@ -145,4 +145,16 @@ public class RecommendationService {
                 .toList();
     }
 
+    public List<RecommendationGetListResponse> getWineDetailRecommendation(Long wineId) {
+        //일단 각 와인별 가장 유사한 와인 추천의 경우, 전부 테이블로 결과를 보관하기엔 무리가 있다고 판단됨.
+        //따라서 wineDetail 추천은 요청이 들어오는 즉시 처리하는걸로 일단 구현하였음.
+
+        List<WineEntity> resultList
+                = recommendationProcessor.createWineDetailRecommendation(wineId);
+
+        return resultList.stream()
+                .map(recommendationMapper::toGetListResponse)
+                .toList();
+    }
+
 }

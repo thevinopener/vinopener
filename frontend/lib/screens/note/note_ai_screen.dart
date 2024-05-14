@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frontend/constants/colors.dart';
-import 'package:frontend/providers/note/note_wine_provider.dart';
-import 'package:provider/provider.dart';
 
 import '../../widgets/note/note_stt_widget.dart';  // STT Widget을 포함합니다.
 
@@ -18,6 +16,7 @@ class DismissibleBottomSheetView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.transparent,
+      height: MediaQuery.of(context).size.height*0.3,
       child: SafeArea(
         bottom: false,
         child: Column(
@@ -27,12 +26,18 @@ class DismissibleBottomSheetView extends StatelessWidget {
               child: ClipRRect(
                   borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(20),
-                      topLeft: Radius.circular(20)),
+                      topLeft: Radius.circular(20),
+                  ),
                   child: Column(
                     children: [
                       Container(
+                        decoration: BoxDecoration(color: Color(0xFF14131C),
+                          border: Border.all(
+                            color: Color(0xFF14131C), // 여기서 원하는 경계선의 색상으로 변경하세요.
+                            width: 1.0, // 경계선의 두께를 조절할 수 있습니다.
+                          ),
+                        ),
                         alignment: Alignment.topRight,
-                        color: AppColors.black,
                         padding: const EdgeInsets.all(5),
                         child: TextButton(
                           child: Icon(
@@ -49,8 +54,9 @@ class DismissibleBottomSheetView extends StatelessWidget {
                       ),
                       Expanded(
                         child:Container(
+                          alignment: Alignment.topCenter,
                           width: MediaQuery.of(context).size.width,
-                          color: AppColors.black,
+                          color: Color(0xFF14131C),
                           child: SttWidget(
                               key: sttWidgetKey,
                               currentPage: currentPage,
@@ -59,7 +65,7 @@ class DismissibleBottomSheetView extends StatelessWidget {
                         ),
                       ),
                     ],
-                  )),
+                  ),),
             ),
           ],
         ),

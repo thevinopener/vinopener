@@ -98,8 +98,8 @@ class _MyPageScreenState extends State<MyPageScreen>
                   heightFactor: 0.625,
                   child: Image.network(
                     'https://picsum.photos/200/300',
-                    width: 400,
-                    height: 400,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.width,
                     fit: BoxFit.cover,
                     errorBuilder: (
                       BuildContext context,

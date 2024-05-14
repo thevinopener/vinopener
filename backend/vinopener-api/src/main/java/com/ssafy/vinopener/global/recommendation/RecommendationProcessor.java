@@ -88,8 +88,11 @@ public class RecommendationProcessor {
             List<Tuple> queryResultList = cellarRepositoryQueryImpl.findAllByCellarCount();
 
             int cellarCount = queryResultList.size();
-            if (cellarCount > 10) {
+            int remnantCount = 0;
+            if (cellarCount >= 10) {
                 cellarCount = 10;
+            } else {
+                remnantCount = 10 - cellarCount;
             }
 
             for (int i = 0; i < cellarCount; i++) {
@@ -103,6 +106,19 @@ public class RecommendationProcessor {
 
                 savingEntities.add(recommendationEntity);
                 resultList.add(wine);
+            }
+
+            // 10개가 채워지지 않는다면, rating 기반으로 평점이 높은 순으로 남은 개수를 채운다.
+            if (remnantCount >= 1) {
+                List<WineEntity> additionalList = wineRepository.findAll(Sort.by(Direction.DESC, "rating"));
+                for (int i = 0; i < remnantCount; i++) {
+                    ContentRecommendationEntity recommendationEntity = ContentRecommendationEntity.builder()
+                            .wine(additionalList.get(i))
+                            .contentRecommendationType(ContentRecommendationType.CELLAR)
+                            .build();
+                    savingEntities.add(recommendationEntity);
+                    resultList.add(additionalList.get(i));
+                }
             }
             contentRecommendationRepository.saveAll(savingEntities);
 
@@ -195,6 +211,26 @@ public class RecommendationProcessor {
         return resultList;
     }
 
+    public List<WineEntity> createWineDetailRecommendation(Long wineId) {
+        WineEntity wineDetailEntity = wineRepository.findById(wineId).orElse(null);
+
+        if (wineDetailEntity == null) {
+            throw new VinopenerException(WineErrorCode.WINE_NOT_FOUND);
+        }
+
+        //일단 모든 와인과 비교해보고, 성능이 너무 안나오면 type으로 걸러낸다.
+        List<WineEntity> wineEntityList = wineRepository.findAllExceptWineId(wineId);
+
+        List<WineEntity> resultList = wineEntityList.stream()
+                .sorted(Comparator.comparingDouble((WineEntity wineEntity)
+                        -> processCosineSimilarity(wineEntity, wineDetailEntity)).reversed())
+                .limit(10)
+                .toList();
+
+        return resultList;
+
+    }
+
     private double processCosineSimilarity(WineEntity wineEntity, PreferenceEntity preferenceEntity) {
         double dotProduct = wineEntity.getAbv().doubleValue() * preferenceEntity.getMinAbv().doubleValue() * 0.2 +
                 wineEntity.getAbv().doubleValue() * preferenceEntity.getMaxAbv().doubleValue() * 0.2 +
@@ -218,6 +254,29 @@ public class RecommendationProcessor {
         );
 
         return dotProduct / (normWine * normPref);
+    }
+
+    private double processCosineSimilarity(WineEntity wineEntity, WineEntity wineDetailEntity) {
+        double dotProduct = wineEntity.getAbv().doubleValue() * wineDetailEntity.getAbv().doubleValue() * 0.2 +
+                wineEntity.getSweetness().doubleValue() * wineDetailEntity.getSweetness().doubleValue() * 0.05 +
+                wineEntity.getAcidity().doubleValue() * wineDetailEntity.getAcidity().doubleValue() * 0.05 +
+                wineEntity.getTannin().doubleValue() * wineDetailEntity.getTannin().doubleValue() * 0.05;
+
+        double normWine = Math.sqrt(
+                Math.pow(wineEntity.getAbv().doubleValue(), 2) +
+                        Math.pow(wineEntity.getAbv().doubleValue(), 2) +
+                        Math.pow(wineEntity.getSweetness().doubleValue(), 2) +
+                        Math.pow(wineEntity.getAcidity().doubleValue(), 2) +
+                        Math.pow(wineEntity.getTannin().doubleValue(), 2)
+        );
+        double normDetail = Math.sqrt(
+                Math.pow(wineDetailEntity.getAbv().doubleValue() * 0.2, 2) +
+                        Math.pow(wineDetailEntity.getSweetness().doubleValue() * 0.05, 2) +
+                        Math.pow(wineDetailEntity.getAcidity().doubleValue() * 0.05, 2) +
+                        Math.pow(wineDetailEntity.getTannin().doubleValue() * 0.05, 2)
+        );
+
+        return dotProduct / (normWine * normDetail);
     }
 
     private double processCosineSimilarity(

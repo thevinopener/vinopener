@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frontend/constants/colors.dart';
+import 'package:frontend/providers/user_provider.dart';
 import 'package:frontend/widgets/search/search_carousel_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/providers/recommend_provider.dart';
@@ -13,6 +14,7 @@ import 'package:frontend/screens/search/search_text_screen.dart';
 import 'package:frontend/widgets/search/search_wine_type_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../utils/api_client.dart';
 import '../../widgets/search/search_wine_nation_widget.dart';
 
 class RecommendScreen extends StatefulWidget {
@@ -21,6 +23,8 @@ class RecommendScreen extends StatefulWidget {
 }
 
 class _RecommendScreenState extends State<RecommendScreen> {
+
+
   int _current = 0;
   final CarouselController _carouselController = CarouselController();
   final bannerImg = ['assets/images/banner1.png', 'assets/images/banner2.png'];
@@ -31,16 +35,29 @@ class _RecommendScreenState extends State<RecommendScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeRecommendations();
     });
+
+    print('============================================================================');
+    print('============================ ACCESS TOKEN START ============================');
+    print('recommend_screen.dart의 initState 입니다. 아래는 나의 엑세스 토큰입니다.');
+    print('MY ACCESS TOKEN : ' + ApiClient.getAccessToken());
+    print('============================= ACCESS TOKEN END =============================');
+    print('============================================================================');
   }
 
   Future<void> _initializeRecommendations() async {
     final recommendProvider =
         Provider.of<RecommendProvider>(context, listen: false);
-    await recommendProvider.fetchAllRecommendations();
+    await recommendProvider.fetchViewRecommendations();
+    await recommendProvider.fetchTastingNoteRecommendations();
+    await recommendProvider.fetchPreferenceRecommendations();
+    await recommendProvider.fetchCellarRecommendations();
+    await recommendProvider.fetchRateRecommendations();
   }
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white.withOpacity(0.1),
