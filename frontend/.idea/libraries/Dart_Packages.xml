@@ -271,22 +271,14 @@
         <entry key="flutter">
           <value>
             <list>
-<<<<<<< 4a0af279ef0669987ab1352f17a8331e1c477853
-              <option value="$PROJECT_DIR$/../../../../../../tools/flutter/packages/flutter/lib" />
-=======
-              <option value="$USER_HOME$/scoop/apps/flutter/3.19.6/packages/flutter/lib" />
->>>>>>> cc53ff8aefafb8eac10c496bc9558608fbc58806
+              <option value="$USER_HOME$/scoop/apps/flutter/current/packages/flutter/lib" />
             </list>
           </value>
         </entry>
         <entry key="flutter_driver">
           <value>
             <list>
-<<<<<<< 4a0af279ef0669987ab1352f17a8331e1c477853
-              <option value="$PROJECT_DIR$/../../../../../../tools/flutter/packages/flutter_driver/lib" />
-=======
-              <option value="$USER_HOME$/scoop/apps/flutter/3.19.6/packages/flutter_driver/lib" />
->>>>>>> cc53ff8aefafb8eac10c496bc9558608fbc58806
+              <option value="$USER_HOME$/scoop/apps/flutter/current/packages/flutter_driver/lib" />
             </list>
           </value>
         </entry>
@@ -311,6 +303,13 @@
             </list>
           </value>
         </entry>
+        <entry key="flutter_staggered_grid_view">
+          <value>
+            <list>
+              <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_staggered_grid_view-0.7.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flutter_svg">
           <value>
             <list>
@@ -321,11 +320,7 @@
         <entry key="flutter_test">
           <value>
             <list>
-<<<<<<< 4a0af279ef0669987ab1352f17a8331e1c477853
-              <option value="$PROJECT_DIR$/../../../../../../tools/flutter/packages/flutter_test/lib" />
-=======
-              <option value="$USER_HOME$/scoop/apps/flutter/3.19.6/packages/flutter_test/lib" />
->>>>>>> cc53ff8aefafb8eac10c496bc9558608fbc58806
+              <option value="$USER_HOME$/scoop/apps/flutter/current/packages/flutter_test/lib" />
             </list>
           </value>
         </entry>
@@ -339,18 +334,7 @@
         <entry key="flutter_web_plugins">
           <value>
             <list>
-<<<<<<< 4a0af279ef0669987ab1352f17a8331e1c477853
-              <option value="$PROJECT_DIR$/../../../../../../tools/flutter/packages/flutter_web_plugins/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="fluttertoast">
-          <value>
-            <list>
-              <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/fluttertoast-8.2.5/lib" />
-=======
-              <option value="$USER_HOME$/scoop/apps/flutter/3.19.6/packages/flutter_web_plugins/lib" />
->>>>>>> cc53ff8aefafb8eac10c496bc9558608fbc58806
+              <option value="$USER_HOME$/scoop/apps/flutter/current/packages/flutter_web_plugins/lib" />
             </list>
           </value>
         </entry>
@@ -364,11 +348,7 @@
         <entry key="fuchsia_remote_debug_protocol">
           <value>
             <list>
-<<<<<<< 4a0af279ef0669987ab1352f17a8331e1c477853
-              <option value="$PROJECT_DIR$/../../../../../../tools/flutter/packages/fuchsia_remote_debug_protocol/lib" />
-=======
-              <option value="$USER_HOME$/scoop/apps/flutter/3.19.6/packages/fuchsia_remote_debug_protocol/lib" />
->>>>>>> cc53ff8aefafb8eac10c496bc9558608fbc58806
+              <option value="$USER_HOME$/scoop/apps/flutter/current/packages/fuchsia_remote_debug_protocol/lib" />
             </list>
           </value>
         </entry>
@@ -519,14 +499,17 @@
             </list>
           </value>
         </entry>
+        <entry key="infinite_scroll_pagination">
+          <value>
+            <list>
+              <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/infinite_scroll_pagination-4.0.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="integration_test">
           <value>
             <list>
-<<<<<<< 4a0af279ef0669987ab1352f17a8331e1c477853
-              <option value="$PROJECT_DIR$/../../../../../../tools/flutter/packages/integration_test/lib" />
-=======
-              <option value="$USER_HOME$/scoop/apps/flutter/3.19.6/packages/integration_test/lib" />
->>>>>>> cc53ff8aefafb8eac10c496bc9558608fbc58806
+              <option value="$USER_HOME$/scoop/apps/flutter/current/packages/integration_test/lib" />
             </list>
           </value>
         </entry>
@@ -785,11 +768,14 @@
         <entry key="sky_engine">
           <value>
             <list>
-<<<<<<< 4a0af279ef0669987ab1352f17a8331e1c477853
-              <option value="$PROJECT_DIR$/../../../../../../tools/flutter/bin/cache/pkg/sky_engine/lib" />
-=======
-              <option value="$USER_HOME$/scoop/apps/flutter/3.19.6/bin/cache/pkg/sky_engine/lib" />
->>>>>>> cc53ff8aefafb8eac10c496bc9558608fbc58806
+              <option value="$USER_HOME$/scoop/apps/flutter/current/bin/cache/pkg/sky_engine/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="sliver_tools">
+          <value>
+            <list>
+              <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/sliver_tools-0.2.12/lib" />
             </list>
           </value>
         </entry>
@@ -1040,9 +1026,9 @@
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.19/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_radar_chart-0.2.1/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_rating_bar-4.0.1/lib" />
+      <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_staggered_grid_view-0.7.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_svg-2.0.10+1/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_tts-3.8.5/lib" />
-      <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/fluttertoast-8.2.5/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/focused_area_ocr_flutter-0.0.3/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/get-4.6.6/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/google_fonts-6.2.1/lib" />
@@ -1065,6 +1051,7 @@
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_macos-0.2.1+1/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_platform_interface-2.10.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_windows-0.2.1+1/lib" />
+      <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/infinite_scroll_pagination-4.0.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.17.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/js-0.7.1/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/json_annotation-4.9.0/lib" />
@@ -1101,6 +1088,7 @@
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/share_plus-9.0.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/share_plus_platform_interface-4.0.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/shimmer-3.0.0/lib" />
+      <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/sliver_tools-0.2.12/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/smooth_page_indicator-1.1.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/source_span-1.10.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/speech_to_text-6.6.1/lib" />
@@ -1130,23 +1118,13 @@
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/win32-5.5.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/xdg_directories-1.0.4/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/xml-6.5.0/lib" />
-<<<<<<< 4a0af279ef0669987ab1352f17a8331e1c477853
-      <root url="file://$PROJECT_DIR$/../../../../../../tools/flutter/bin/cache/pkg/sky_engine/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../../../tools/flutter/packages/flutter/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../../../tools/flutter/packages/flutter_driver/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../../../tools/flutter/packages/flutter_test/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../../../tools/flutter/packages/flutter_web_plugins/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../../../tools/flutter/packages/fuchsia_remote_debug_protocol/lib" />
-      <root url="file://$PROJECT_DIR$/../../../../../../tools/flutter/packages/integration_test/lib" />
-=======
-      <root url="file://$USER_HOME$/scoop/apps/flutter/3.19.6/bin/cache/pkg/sky_engine/lib" />
-      <root url="file://$USER_HOME$/scoop/apps/flutter/3.19.6/packages/flutter/lib" />
-      <root url="file://$USER_HOME$/scoop/apps/flutter/3.19.6/packages/flutter_driver/lib" />
-      <root url="file://$USER_HOME$/scoop/apps/flutter/3.19.6/packages/flutter_test/lib" />
-      <root url="file://$USER_HOME$/scoop/apps/flutter/3.19.6/packages/flutter_web_plugins/lib" />
-      <root url="file://$USER_HOME$/scoop/apps/flutter/3.19.6/packages/fuchsia_remote_debug_protocol/lib" />
-      <root url="file://$USER_HOME$/scoop/apps/flutter/3.19.6/packages/integration_test/lib" />
->>>>>>> cc53ff8aefafb8eac10c496bc9558608fbc58806
+      <root url="file://$USER_HOME$/scoop/apps/flutter/current/bin/cache/pkg/sky_engine/lib" />
+      <root url="file://$USER_HOME$/scoop/apps/flutter/current/packages/flutter/lib" />
+      <root url="file://$USER_HOME$/scoop/apps/flutter/current/packages/flutter_driver/lib" />
+      <root url="file://$USER_HOME$/scoop/apps/flutter/current/packages/flutter_test/lib" />
+      <root url="file://$USER_HOME$/scoop/apps/flutter/current/packages/flutter_web_plugins/lib" />
+      <root url="file://$USER_HOME$/scoop/apps/flutter/current/packages/fuchsia_remote_debug_protocol/lib" />
+      <root url="file://$USER_HOME$/scoop/apps/flutter/current/packages/integration_test/lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

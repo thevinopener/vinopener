@@ -115,23 +115,32 @@ class _FeedImageScreenState extends State<FeedImageScreen> {
             SizedBox(height: 20),
             _imageFile == null
                 ? Center(
-                    child: Image.asset(
-                      'assets/images/intro_logo.png',
-                      width: min(MediaQuery.of(context).size.width,
-                          MediaQuery.of(context).size.height * 0.5),
-                      height: min(MediaQuery.of(context).size.width,
-                          MediaQuery.of(context).size.height * 0.5),
+                    child: Container(
+                      color: AppColors.white,
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.width,
+                      child: Container (
+                        padding: EdgeInsets.all(100),
+                      child: Image.asset(
+                        'assets/images/vinopener_logo.png',
+                        width: min(MediaQuery.of(context).size.width,
+                            MediaQuery.of(context).size.height * 0.5),
+                        height: min(MediaQuery.of(context).size.width,
+                            MediaQuery.of(context).size.height * 0.5),
+                      ),
+                      ),
                     ),
                   )
                 : Center(
                     child: Container(
+                      color: Colors.black,
                       width: min(MediaQuery.of(context).size.width,
                           MediaQuery.of(context).size.height * 0.5),
                       height: min(MediaQuery.of(context).size.width,
                           MediaQuery.of(context).size.height * 0.5),
                       child: Image.file(
                         _imageFile!,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.scaleDown,
                       ),
                     ),
                   ),

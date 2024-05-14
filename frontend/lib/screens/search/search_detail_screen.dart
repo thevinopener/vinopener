@@ -335,6 +335,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                 // #3 아로마 끝
 
                 // #4 와인 기타 세부정보 시작
+                // TODO: SearchDetail ExpanededTile() 적용 가능할까용 ♥ 아니요는 거절합니다.
                 Container(
                   padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),

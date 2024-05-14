@@ -10,6 +10,7 @@ import 'package:frontend/widgets/search/search_wine_list_widget.dart';
 // package
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class SearchResultScreen extends StatefulWidget {
   final String searchValue;
@@ -101,6 +102,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                       ),
                                     ),
                                     SizedBox(height: 5),
+                                    Text('테스트테스트테스트'),
                                     Expanded(
                                       child: searchProvider.wineNameList.isEmpty
                                           ? Center(
@@ -150,6 +152,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                     ),
                                   ),
                                   SizedBox(height: 5),
+                                  Text('테스트테스트테스트'),
                                   Expanded(
                                     child: searchProvider.wineNationList.isEmpty
                                         ? Center(
@@ -200,6 +203,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                     ),
                                   ),
                                   SizedBox(height: 5),
+                        Text('테스트테스트테스트'),
                                   Expanded(
                                     child: searchProvider.wineTypeList.isEmpty
                                         ? Center(

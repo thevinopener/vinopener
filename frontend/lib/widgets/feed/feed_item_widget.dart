@@ -74,32 +74,41 @@ class _FeedItemState extends State<FeedItem> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundImage:
-                          NetworkImage('${widget.feed.user?.imageUrl}'),
-                    ),
-                    SizedBox(width: 10),
-                    Text(
-                      '${widget.feed.user?.nickname}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: AppFontSizes.mediumSmall,
+            // 프로필, 닉네임, 날짜
+            Container(
+              padding: EdgeInsets.fromLTRB(5, 0, 10, 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage:
+                            NetworkImage('${widget.feed.user?.imageUrl}'),
                       ),
-                    ),
-                  ],
-                ),
-                Text(formatDateTime(widget.feed.createdTime!)),
-              ],
+                      SizedBox(width: 10),
+                      Text(
+                        '${widget.feed.user?.nickname}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: AppFontSizes.mediumSmall,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(formatDateTime(widget.feed.createdTime!)),
+                ],
+              ),
             ),
             SizedBox(height: 5),
-            Image.network(
-              '${widget.feed.imageUrl}',
-              fit: BoxFit.cover,
+            Container(
+              color: Colors.black,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.width,
+              child: Image.network(
+                '${widget.feed.imageUrl}',
+                fit: BoxFit.scaleDown,
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -137,21 +146,21 @@ class _FeedItemState extends State<FeedItem> {
                 // wineList의 첫 번째 부분
                 ...widget.feed.wineList!
                     .take(_isExpanded
-                    ? widget.feed.wineList!.length
-                    : _initialItemCount)
+                        ? widget.feed.wineList!.length
+                        : _initialItemCount)
                     .map((wine) => GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          builder: (context) =>
-                              SearchDetailScreen(wineId: wine.id!)),
-                    ).then((_) => Provider.of<FeedTabState>(context,
-                        listen: false)
-                        .setFeedList());
-                  },
-                  child: WineItem(wine: wine),
-                )),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) =>
+                                      SearchDetailScreen(wineId: wine.id!)),
+                            ).then((_) => Provider.of<FeedTabState>(context,
+                                    listen: false)
+                                .setFeedList());
+                          },
+                          child: WineItem(wine: wine),
+                        )),
                 // 더보기 버튼
                 if (widget.feed.wineList!.length > _initialItemCount)
                   TextButton.icon(
@@ -160,10 +169,10 @@ class _FeedItemState extends State<FeedItem> {
                         _isExpanded = !_isExpanded;
                       });
                     },
-                    icon: Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
+                    icon: Icon(
+                        _isExpanded ? Icons.expand_less : Icons.expand_more),
                     label: Text(
-                      _isExpanded ?
-                      '접기' : '더 보기',
+                      _isExpanded ? '접기' : '더 보기',
                       style: TextStyle(
                         fontSize: AppFontSizes.mediumSmall,
                       ),
@@ -171,44 +180,59 @@ class _FeedItemState extends State<FeedItem> {
                   ),
               ],
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '${widget.feed.user?.nickname} ',
-                          style: GoogleFonts.gowunDodum(
-                            textStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: AppFontSizes.mediumSmall,
-                              color: Colors
-                                  .black, // RichText의 기본 스타일과 일치시키기 위해 색상 설정
-                            ),
-                          ),
-                        ),
-                        TextSpan(
-                          text: '${widget.feed.content}',
-                          style: GoogleFonts.gowunDodum(
-                            textStyle: TextStyle(
-                              fontSize: AppFontSizes.mediumSmall,
-                              color: Colors
-                                  .black, // RichText의 기본 스타일과 일치시키기 위해 색상 설정
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    softWrap: true,
-                    overflow: TextOverflow.visible,
-                  ),
-                ),
-              ],
-            ),
+            // 피드 본문 부분
+            isContent(widget.feed.user!.nickname!, widget.feed.content!),
           ],
         ),
+      ),
+    );
+  }
+}
+
+Widget isContent(String nickname, String content) {
+  if (content != "") {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.fromLTRB(10, 5, 10, 30),
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: '${nickname} ',
+                    style: GoogleFonts.gowunDodum(
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: AppFontSizes.mediumSmall,
+                        color: Colors.black, // RichText의 기본 스타일과 일치시키기 위해 색상 설정
+                      ),
+                    ),
+                  ),
+                  TextSpan(
+                    text: '${content}',
+                    style: GoogleFonts.gowunDodum(
+                      textStyle: TextStyle(
+                        fontSize: AppFontSizes.mediumSmall,
+                        color: Colors.black, // RichText의 기본 스타일과 일치시키기 위해 색상 설정
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              softWrap: true,
+              overflow: TextOverflow.visible,
+            ),
+          ),
+        ),
+        // SizedBox(height: 50,)
+      ],
+    );
+  } else {
+    return Container(
+      child: SizedBox(
+        height: 50,
       ),
     );
   }
