@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../widgets/search/search_carousel_widget.dart';
+import '../../widgets/search/search_detail_wine_recommend_widget.dart';
 import '../../widgets/search/search_wine_nation_widget.dart';
 
 const Map<String, Color> wineTypeColors = {
@@ -425,27 +426,31 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                         ),
                         initiallyExpanded: false, // 최초에는 접힌 상태
                         children: [
-                          GridView.builder(
-                            shrinkWrap: true,
-                            physics:
-                                NeverScrollableScrollPhysics(), // 스크롤 동작을 비활성화합니다.
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 5, // 한 줄에 5개의 항목이 표시됩니다.
-                              crossAxisSpacing: 2,
-                              mainAxisSpacing: 2,
-                              childAspectRatio: 1, // 항목의 비율을 1:1로 설정합니다.
+                          Container(
+                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              physics:
+                              NeverScrollableScrollPhysics(), // 스크롤 동작을 비활성화
+                              gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 5, // 한 줄에 5개의 항목이 표시
+                                crossAxisSpacing: 5,
+                                mainAxisSpacing: 5,
+                                childAspectRatio: 1, // 항목의 비율을 1:1로 설정
+                              ),
+                              itemCount: wineDetail.tastes.length,
+                              itemBuilder: (context, index) {
+                                final flavour = wineDetail.tastes[index];
+                                return WineFlavour(
+                                  flavour: Flavour(
+                                      id: 0,
+                                      taste: wineDetail.tastes[index].name),
+                                  isSelected: false,
+                                );
+                              },
                             ),
-                            itemCount: wineDetail.tastes.length,
-                            itemBuilder: (context, index) {
-                              final flavour = wineDetail.tastes[index];
-                              return WineFlavour(
-                                flavour: Flavour(
-                                    id: 0,
-                                    taste: wineDetail.tastes[index].name),
-                                isSelected: false,
-                              );
-                            },
                           ),
                         ],
                       ),
@@ -526,8 +531,8 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                               fontSize: AppFontSizes.large),
                         ),
                       ),
-                      SearchCarouselWidget(context,
-                          recommendType: 'wine-detail'),
+                      SearchWineDetailRecommendWidget(context,
+                          recommendType: 'wine-detail', wineId: wineDetail.id),
                       // RecommendWineCardWidget(context,
                       //     recommendType: 'view'), // 가로스크롤 와인추천카드 위젯
                     ],
