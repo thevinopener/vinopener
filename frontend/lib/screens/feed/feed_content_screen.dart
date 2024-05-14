@@ -97,7 +97,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
         multipartImageFile,
         wineIdList,
       );
-      FeedService.postFeed(feedPostRequest);
+      await FeedService.postFeed(feedPostRequest);
       Provider.of<FeedTabState>(context, listen: false).setFeedList();
       Navigator.popUntil(context, (route) => route.isFirst);
     }

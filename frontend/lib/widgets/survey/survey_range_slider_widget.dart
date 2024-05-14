@@ -3,16 +3,16 @@ import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 
 class SurveyRangeSlider extends StatefulWidget {
+  RangeValues currentRangeValues;
   final Function(RangeValues) onRangeSelected; // 상위 위젯에서 범위 변경을 처리할 수 있도록 콜백 추가
 
-  const SurveyRangeSlider({Key? key, required this.onRangeSelected}) : super(key: key);
+  SurveyRangeSlider({Key? key, required this.currentRangeValues, required this.onRangeSelected}) : super(key: key);
 
   @override
   State<SurveyRangeSlider> createState() => _SliderExampleState();
 }
 
 class _SliderExampleState extends State<SurveyRangeSlider> {
-  RangeValues _currentRangeValues = const RangeValues(25, 75);
 
   String alcohol(double value) {
     int intValue = value.toInt();
@@ -48,17 +48,17 @@ class _SliderExampleState extends State<SurveyRangeSlider> {
         ),
         child: RangeSlider(
           activeColor: AppColors.primary,
-          values: _currentRangeValues,
+          values: widget.currentRangeValues,
           min: 0,
           max: 100,
           divisions: 4,
           labels: RangeLabels(
-            alcohol(_currentRangeValues.start),
-            alcohol(_currentRangeValues.end),
+            alcohol(widget.currentRangeValues.start),
+            alcohol(widget.currentRangeValues.end),
           ),
           onChanged: (RangeValues values) {
             setState(() {
-              _currentRangeValues = values;
+              widget.currentRangeValues = values;
             });
             widget.onRangeSelected(values); // 상위 위젯에 변경사항 전달
           },

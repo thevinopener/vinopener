@@ -4,9 +4,10 @@ import 'package:frontend/constants/colors.dart';
 import '../../constants/fonts.dart';
 
 class SelectKindButton extends StatefulWidget {
+  Set<String> selectedKinds = {};
   final Function(Set<String>) onSelected; // 새로운 콜백 정의
 
-  const SelectKindButton({Key? key, required this.onSelected})
+  SelectKindButton({Key? key, required this.selectedKinds, required this.onSelected})
       : super(key: key);
 
   @override
@@ -14,21 +15,20 @@ class SelectKindButton extends StatefulWidget {
 }
 
 class _SelectedStatus extends State<SelectKindButton> {
-  Set<String> _selectedKinds = {};
 
   void _toggleKind(String kind) {
     setState(() {
-      if (_selectedKinds.contains(kind)) {
-        _selectedKinds.remove(kind);
+      if (widget.selectedKinds.contains(kind)) {
+        widget.selectedKinds.remove(kind);
       } else {
-        _selectedKinds.add(kind);
+        widget.selectedKinds.add(kind);
       }
     });
-    widget.onSelected(_selectedKinds); // 콜백 함수 호출
+    widget.onSelected(widget.selectedKinds); // 콜백 함수 호출
   }
 
   Widget _buildButton(String label) {
-    final bool isSelected = _selectedKinds.contains(label);
+    final bool isSelected = widget.selectedKinds.contains(label);
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 3.0),
         // 좌우 패딩으로 버튼 사이 간격 조절
