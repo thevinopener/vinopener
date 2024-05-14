@@ -84,7 +84,7 @@ class _MyAppState extends State<MyApp> {
           ),
           scaffoldBackgroundColor: AppColors.backgroundColor,
         ),
-        home: IntroScreen(),
+        home: LoginScreen(),
         debugShowCheckedModeBanner: false,
       ),
     );
