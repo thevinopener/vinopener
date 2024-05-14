@@ -16,6 +16,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,18 +77,18 @@ public class WineController {
      * @param sort   정렬 기준(생략 가능, ID)
      * @return 와인 목록
      */
-//    @GetMapping
-//    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
-//    public ResponseEntity<Page<WineGetListResponse>> getListWine(
-//            @UserPrincipalId final Long userId,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size,
-//            @RequestParam(defaultValue = "id") String sort
-//    ) {
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
-//        logger.info("@@@ 페이지네이션 -> page: {}, size: {}, sort: {}", page, size, sort);
-//        return ResponseEntity.ok(wineService.getList(userId, pageable));
-//    }
+    @GetMapping("/page")
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    public ResponseEntity<Page<WineGetListResponse>> getPageListWine(
+            @UserPrincipalId final Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        logger.info("@@@ 페이지네이션 -> page: {}, size: {}, sort: {}", page, size, sort);
+        return ResponseEntity.ok(wineService.getPageList(userId, pageable));
+    }
 
     /**
      * 와인 상세 조회(북마크, 셀러, 테이스팅 노트 여부 포함)
@@ -124,17 +129,17 @@ public class WineController {
      * @param size 페이지 당 출력 개수(생략 가능, 10)
      * @param sort 정렬 기준(생략 가능, ID)
      */
-//    @GetMapping("/types/{type}")
-//    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
-//    public ResponseEntity<Page<WineTypeGetListResponse>> getTypeList(
-//            @PathVariable @Valid final WineType type,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size,
-//            @RequestParam(defaultValue = "id") String sort
-//    ) {
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
-//        return ResponseEntity.ok(wineService.getTypeList(type, pageable));
-//    }
+    @GetMapping("/page/types/{type}")
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    public ResponseEntity<Page<WineTypeGetListResponse>> getPageTypeList(
+            @PathVariable @Valid final WineType type,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return ResponseEntity.ok(wineService.getPageTypeList(type, pageable));
+    }
 
     /**
      * 국가별 와인 검색
@@ -161,18 +166,18 @@ public class WineController {
      * @param sort    정렬 기준(생략 가능, ID)
      * @return 국가별 와인 목록
      */
-//    @GetMapping("/country/{country}")
-//    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
-//    public ResponseEntity<Page<WineGetListResponse>> searchCountryWine(
-//            @PathVariable @Valid String country,
-//            @UserPrincipalId final Long userId,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size,
-//            @RequestParam(defaultValue = "id") String sort
-//    ) {
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
-//        return ResponseEntity.ok(wineService.getCountryList(country, userId, pageable));
-//    }
+    @GetMapping("/page/country/{country}")
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    public ResponseEntity<Page<WineGetListResponse>> searchPageCountryWine(
+            @PathVariable @Valid String country,
+            @UserPrincipalId final Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return ResponseEntity.ok(wineService.getPageCountryList(country, userId, pageable));
+    }
 
     /**
      * 일반 와인 검색 : 페이지네이션
@@ -180,24 +185,24 @@ public class WineController {
      * @param query 검색어
      * @return 검색어에 해당하는 와인 목록
      */
-//    @GetMapping("/search")
-//    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
-//    public ResponseEntity<Page<WineGetListResponse>> searchWine(
-//            @RequestParam(value = "query", required = false) String query,
-//            @UserPrincipalId final Long userId,
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size,
-//            @RequestParam(defaultValue = "id") String sort
-//    ) {
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
-//        if (query != null && !query.trim().isEmpty()) {
-//            searchService.create(query, userId);
-//            return ResponseEntity.ok(wineService.searchWine(query, userId, pageable));
-//        } else {
-//            Page<WineGetListResponse> emptyPage = new PageImpl<>(Collections.emptyList(), pageable, 0);
-//            return ResponseEntity.ok(emptyPage);
-//        }
-//    }
+    @GetMapping("/page/search")
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    public ResponseEntity<Page<WineGetListResponse>> searchWine(
+            @RequestParam(value = "query", required = false) String query,
+            @UserPrincipalId final Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        if (query != null && !query.trim().isEmpty()) {
+            searchService.create(query, userId);
+            return ResponseEntity.ok(wineService.searchPageWine(query, userId, pageable));
+        } else {
+            Page<WineGetListResponse> emptyPage = new PageImpl<>(Collections.emptyList(), pageable, 0);
+            return ResponseEntity.ok(emptyPage);
+        }
+    }
 
     /**
      * 일반 와인 검색
