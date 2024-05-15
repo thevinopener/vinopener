@@ -23,6 +23,21 @@ class WineService {
     throw Error();
   }
 
+  static Future<List<Wine>> pageSearchWineList(String keyword, int page) async {
+    final response = await ApiClient().dio.get('/wines/page/search', queryParameters: {
+      'query': keyword,
+      'page': page,
+      'size': 10,
+      'sort': "id"
+    });
+    if (response.statusCode == 200) {
+      List<dynamic> responseData = response.data['content'];
+      List<Wine> wineList = responseData.map((wineData) => Wine.fromJson(wineData)).toList();
+      return wineList;
+    }
+    throw Error();
+  }
+
   static void addWineToBookmark() {
     print('addWineToBookmark');
   }
