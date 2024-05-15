@@ -9,6 +9,7 @@ import 'package:frontend/widgets/feed/feed_wine_item.dart';
 
 // constants
 import 'package:frontend/constants/fonts.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
 class NoteSearchScreen extends StatefulWidget {
@@ -23,24 +24,30 @@ class _NoteSearchScreenState extends State<NoteSearchScreen> {
   Wine? _selectedWine;
   int? _selectedWineId;
 
-  _searchWines(String keyword) async {
-    if (keyword.isEmpty) return;
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      List<Wine> wineList = await WineService.searchWineList(keyword);
-      setState(() {
-        _wineList = wineList;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
-      print('Failed to fetch wines: $e');
-    }
-  }
+  static const _pageSize = 10;
+  final PagingController<int, Wine> _pagingController =
+  PagingController(firstPageKey: 0);
+
+  // _searchWines(String keyword) async {
+  //   if (keyword.isEmpty) return;
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+  //   try {
+  //     WineService.pageSearchWineList(keyword, 0);
+  //     // List<Wine> wineList = await WineService.searchWineList(keyword);
+  //     List<Wine> wineList = [];
+  //     setState(() {
+  //       _wineList = wineList;
+  //       _isLoading = false;
+  //     });
+  //   } catch (e) {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //     print('Failed to fetch wines: $e');
+  //   }
+  // }
 
   void _toggleWine(Wine wine) {
     setState(() {
@@ -54,12 +61,37 @@ class _NoteSearchScreenState extends State<NoteSearchScreen> {
     });
   }
 
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      final newItems =
+      await WineService.pageSearchWineList(_searchController.text, pageKey);
+      final isLastPage = newItems.length < _pageSize;
+      if (isLastPage) {
+        _pagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + newItems.length;
+        _pagingController.appendPage(newItems, nextPageKey);
+      }
+    } catch (error) {
+      _pagingController.error = error;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_searchFocusNode);
     });
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
   }
 
   @override
@@ -116,10 +148,11 @@ class _NoteSearchScreenState extends State<NoteSearchScreen> {
                 onSubmitted: (value) {
                   FocusScope.of(context).unfocus();
                   if (value == '') {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('검색어를 입력해주세요!')));
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text('검색어를 입력해주세요!')));
                   } else {
-                    _searchWines(value);
+                    // _searchWines(value);
+                    _pagingController.refresh();
                   }
                 },
                 controller: _searchController,
@@ -132,7 +165,8 @@ class _NoteSearchScreenState extends State<NoteSearchScreen> {
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('검색어를 입력해주세요!')));
                       } else {
-                        _searchWines(_searchController.text);
+                        // _searchWines(_searchController.text);
+                        _pagingController.refresh();
                       }
                     },
                   ),
@@ -147,22 +181,43 @@ class _NoteSearchScreenState extends State<NoteSearchScreen> {
             Expanded(
               child: _isLoading
                   ? Center(child: CircularProgressIndicator())
-                  : ListView.builder(
-                      itemCount: _wineList.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
+                  : PagedListView<int, Wine>(
+                pagingController: _pagingController,
+                builderDelegate: PagedChildBuilderDelegate<Wine>(
+                    itemBuilder: (context, item, index) =>
+                        GestureDetector(
                           onTap: () {
-                            _toggleWine(_wineList[index]);
+                            _toggleWine(item);
                           },
                           child: Container(
                             child: FeedWineItem(
-                              wine: _wineList[index],
-                              isSelected: _wineList[index].id == _selectedWineId,
+                              wine: item,
+                              isSelected: item.id == _selectedWineId,
                             ),
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                    noItemsFoundIndicatorBuilder: (context) =>
+                        Center(
+                          child: Text(
+                            '🔍\n검색된 와인이 없습니다!\n다른 키워드로 검색해볼까요?\n✏',
+                            style: TextStyle(
+                              fontSize: AppFontSizes.mediumLarge,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                    newPageErrorIndicatorBuilder: (context) =>
+                        Text(
+                          '\n🔍 더 이상 표시할 와인이 없습니다!\n다른 검색어로 새로운 와인을 찾아보세요! 🧭',
+                          style: TextStyle(
+                            fontSize: AppFontSizes.mediumSmall,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                ),
+              ),
             ),
           ],
         ),

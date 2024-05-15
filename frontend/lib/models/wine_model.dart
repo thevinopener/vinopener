@@ -124,4 +124,9 @@ class Wine {
     data['countOfNotes'] = this.countOfNotes;
     return data;
   }
+
+  @override
+  String toString() {
+    return 'Wine{id: $id, name: $name, imageUrl: $imageUrl, grape: $grape, winery: $winery, country: $country, price: $price, rating: $rating, vintage: $vintage, type: $type, acidity: $acidity, intensity: $intensity, sweetness: $sweetness, tannin: $tannin, abv: $abv, view: $view, flavours: $flavours, isBookmarked: $isBookmarked, isAddedToCellar: $isAddedToCellar, countOfNotes: $countOfNotes, isSelected: $isSelected}';
+  }
 }
