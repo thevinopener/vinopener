@@ -2,6 +2,7 @@
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 // constant
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
@@ -427,6 +428,40 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                       // color: Colors.grey,
                       ),
                   child: ElevatedButton(
+                    onLongPress: () {
+                      showToastWidget(
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24.0, vertical: 12.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25.0),
+                            color: AppColors.black,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.edit_note_outlined, color: Colors.white),
+                              SizedBox(width: 10.0),
+                              Text(
+                                '까먹기 전에 얼른 쓰러 가자고요 !',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: AppFontSizes.medium,
+                                ),
+                              ),
+                              SizedBox(width: 12.0),
+                              Icon(Icons.edit_note_outlined, color: Colors.white),
+                            ],
+                          ),
+                        ),
+                        context: context,
+                        duration: Duration(seconds: 2),
+                        position: StyledToastPosition(
+                          align: Alignment(0, -0.4), // 좌상단 (-1, -1) / 우하단 (1, 1)
+                        ),
+                      );
+                    },
                     onPressed: () {
                       Provider.of<NoteProvider>(context, listen: false).reset();
                       Provider.of<NoteProvider>(context, listen: false)

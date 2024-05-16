@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
@@ -30,6 +31,42 @@ class _SearchCellarWidgetState extends State<SearchCellarWidget> {
           return Container(
             width: double.maxFinite,
             child: FilledButton(
+              onLongPress: () {
+                showToastWidget(
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24.0, vertical: 12.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25.0),
+                      color: AppColors.black,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.sentiment_very_satisfied_outlined,
+                            color: Colors.white),
+                        SizedBox(width: 10.0),
+                        Text(
+                          '벌써 다 마셨나요?',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: AppFontSizes.medium,
+                          ),
+                        ),
+                        SizedBox(width: 12.0),
+                        Icon(Icons.sentiment_very_satisfied_outlined,
+                            color: Colors.white),
+                      ],
+                    ),
+                  ),
+                  context: context,
+                  duration: Duration(seconds: 2),
+                  position: StyledToastPosition(
+                    align: Alignment(0, -0.1), // 좌상단 (-1, -1) / 우하단 (1, 1)
+                  ),
+                );
+              },
               onPressed: () async {
                 SearchService.removeCellar(widget.wineId);
                 setState(() {
@@ -59,6 +96,42 @@ class _SearchCellarWidgetState extends State<SearchCellarWidget> {
           return Container(
             width: double.maxFinite,
             child: ElevatedButton(
+              onLongPress: () {
+                showToastWidget(
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24.0, vertical: 12.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25.0),
+                      color: AppColors.black,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.sentiment_satisfied_outlined,
+                            color: Colors.white),
+                        SizedBox(width: 10.0),
+                        Text(
+                          '대단한 와인수집가네요 !',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: AppFontSizes.medium,
+                          ),
+                        ),
+                        SizedBox(width: 12.0),
+                        Icon(Icons.sentiment_satisfied_outlined,
+                            color: Colors.white),
+                      ],
+                    ),
+                  ),
+                  context: context,
+                  duration: Duration(seconds: 2),
+                  position: StyledToastPosition(
+                    align: Alignment(0, -0.1), // 좌상단 (-1, -1) / 우하단 (1, 1)
+                  ),
+                );
+              },
               onPressed: () async {
                 SearchService.addCellar(widget.wineId);
                 setState(() {

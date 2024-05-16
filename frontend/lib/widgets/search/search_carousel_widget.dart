@@ -159,6 +159,40 @@ Widget SearchCarouselWidget (BuildContext context,
                   height: 50,
                   alignment: Alignment.center,
                   child: FilledButton(
+                    onLongPress: () {
+                      showToastWidget(
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24.0, vertical: 12.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25.0),
+                            color: AppColors.black,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.thumb_up, color: Colors.white),
+                              SizedBox(width: 10.0),
+                              Text(
+                                'Good Choice! 더 알아보러 가시죠!',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: AppFontSizes.medium,
+                                ),
+                              ),
+                              SizedBox(width: 12.0),
+                              Icon(Icons.thumb_up, color: Colors.white),
+                            ],
+                          ),
+                        ),
+                        context: context,
+                        duration: Duration(seconds: 2),
+                        position: StyledToastPosition(
+                          align: Alignment(0, -0.4), // 좌상단 (-1, -1) / 우하단 (1, 1)
+                        ),
+                      );
+                    },
                     onPressed: () {
                       Navigator.push(
                           context,
