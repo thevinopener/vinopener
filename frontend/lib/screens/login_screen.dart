@@ -15,6 +15,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/utils/api_client.dart';
 
+import '../widgets/wine/login_empty_animation.dart';
+
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -54,13 +56,64 @@ class LoginScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Container(
+        color: Colors.purple.withOpacity(0.03),
+        child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(child: Image.asset('assets/images/logo.png')),
-          SizedBox(height: 50),
+
+          Container(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: Image.asset(
+                    'assets/images/vinopener_logo.png',
+                    width: MediaQuery.of(context).size.width * 0.3,
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    'VINOPENER',
+                    style: TextStyle(
+                      fontSize: AppFontSizes.veryLarge,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          Container(
+            width: double.maxFinite,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('오늘은 어떤 나라의 와인을 마셔볼까요?',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: AppFontSizes.mediumSmall),
+                ),
+                SizedBox(height: 30),
+                LoginEmptyAnimation(context),
+              ],
+            ),
+          ),
+
+
+
           OutlinedButton(
+            onLongPress: () {
+              // TODO: 안녕하세요 반가워요 로그인 해주실래요 ㅋㅋ?
+            },
             onPressed: () async {
               String? accessToken = await onGoogleLoginPress(context);
               if (accessToken != null) {
@@ -84,10 +137,12 @@ class LoginScreen extends StatelessWidget {
                 context,
                 CupertinoPageRoute(
                     builder: (context) =>
-                        isSurveyDone ? SurveyScreen() : HomeScreen()),
+                    isSurveyDone ? SurveyScreen() : HomeScreen()),
               );
             },
-            child: Row(
+            child: Container(
+              width: MediaQuery.of(context).size.width / 1.5,
+              child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -103,13 +158,15 @@ class LoginScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ],
-            ),
+            ),),
             style: OutlinedButton.styleFrom(
-              side: BorderSide(color: Color(0xFF7587A7), width: 1), // 1px 테두리 설정
+              side:
+              BorderSide(color: Color(0xFF7587A7), width: 1), // 1px 테두리 설정
             ),
           ),
         ],
       ),
+    ),
     );
   }
 }
