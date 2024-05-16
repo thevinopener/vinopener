@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
@@ -36,6 +37,9 @@ class MyPageScreen extends StatefulWidget {
 
 class _MyPageScreenState extends State<MyPageScreen>
     with SingleTickerProviderStateMixin {
+
+  DateTime? lastPressedTime;
+
   late TabController _tabController;
 
   late Future<List<Feed>> myFeedList;
@@ -86,220 +90,282 @@ class _MyPageScreenState extends State<MyPageScreen>
 
     double avatarRadius = 50;
 
-    return Scaffold(
-      body: Container(
-        color: Colors.purple.withOpacity(0.05),
-        child: Column(
-          children: [
-            Stack(
-              alignment: Alignment.center,
-              clipBehavior: Clip.none,
-              children: [
-                ClipRect(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    heightFactor: 0.625,
+    void handleBackPress(BuildContext context) {
+      final now = DateTime.now();
+      if (lastPressedTime == null ||
+          now.difference(lastPressedTime!) > Duration(seconds: 2)) {
+        lastPressedTime = now;
+        ScaffoldMessenger.of(context)
+          ..removeCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0),),
+              content: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 1,
+                          offset: Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
                     child: Container(
-                      color: AppColors.white,
-                      padding: EdgeInsets.fromLTRB(70, 50, 70, 0),
+                      margin: EdgeInsets.all(5),
                       child: Image.asset(
                         'assets/images/vinopener_logo.png',
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.width / 1.5,
-                        fit: BoxFit.fitWidth,
+                        width: 25,
+                        height: 25,
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  top: 10,
-                  right: 10,
-                  child: Container(
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.settings,
-                        color: Colors.black54,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => MyPageSettingScreen(),
-                          ),
-                        );
-                      },
+                  Text(
+                    '  종료하려면 뒤로 가기를 다시 눌러주세요.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
                     ),
-                  ),
-                ),
-                Positioned(
-                  bottom: -avatarRadius,
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage('${user.imageUrl}'),
-                    radius: avatarRadius,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              width: avatarRadius,
-              height: avatarRadius,
-            ),
-            Text(
-              '${user.nickname}',
-              style: TextStyle(
-                fontSize: AppFontSizes.mediumSmall,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            // 탭 바 추가
-            TabBar(
-              tabs: const [
-                Tab(text: 'Feed'),
-                Tab(text: 'Bookmark'),
-                Tab(text: 'Cellar'),
-              ],
-              controller: _tabController,
-              indicatorColor: AppColors.primary,
-              labelColor: AppColors.primary,
-              labelStyle: TextStyle(
-                fontSize: AppFontSizes.small,
-              ),
-            ),
-            // 탭 뷰 추가
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  FutureBuilder(
-                    future: myFeedList,
-                    builder: (
-                      BuildContext context,
-                      AsyncSnapshot<dynamic> snapshot,
-                    ) {
-                      if (snapshot.hasData) {
-                        return GridView.builder(
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  CustomCupertinoPageRoute(
-                                    builder: (context) =>
-                                        FeedDetailScreen(snapshot.data[index]),
-                                    settings: RouteSettings(),
-                                  ),
-                                ).then((_) {
-                                  setState(() {
-                                    myFeedList = FeedService.getMyFeedList();
-                                  });
-                                });
-                              },
-                              child: Hero(
-                                tag: 'feedImage${snapshot.data[index].id}',
-                                child: Image.network(
-                                  snapshot.data[index].imageUrl,
-                                  width: 135,
-                                  height: 135,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            );
-                          },
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                          ),
-                        );
-                      }
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    },
-                  ),
-                  FutureBuilder(
-                    future: listBookmark,
-                    builder: (
-                      BuildContext context,
-                      AsyncSnapshot<dynamic> snapshot,
-                    ) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (
-                            context,
-                            index,
-                          ) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                    builder: (context) => SearchDetailScreen(
-                                        wineId: snapshot.data[index].wine.id),
-                                  ),
-                                ).then((_) {
-                                  setState(() {
-                                    listBookmark =
-                                        BookmarkService.getListBookmark();
-                                  });
-                                });
-                              },
-                              child: BookmarkWineItem(
-                                bookmark: snapshot.data![index],
-                              ),
-                            );
-                          },
-                        );
-                      }
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    },
-                  ),
-                  FutureBuilder(
-                    future: listCellar,
-                    builder: (
-                      BuildContext context,
-                      AsyncSnapshot<dynamic> snapshot,
-                    ) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (
-                            context,
-                            index,
-                          ) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                    builder: (context) => SearchDetailScreen(
-                                        wineId: snapshot.data[index].wine.id),
-                                  ),
-                                ).then((_) {
-                                  setState(() {
-                                    listCellar = CellarService.getListCellar();
-                                  });
-                                });
-                              },
-                              child: CellarWineItem(
-                                cellar: snapshot.data![index],
-                              ),
-                            );
-                          },
-                        );
-                      }
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    },
                   ),
                 ],
               ),
+              duration: Duration(seconds: 2),
             ),
-          ],
+          );
+      } else {
+        SystemNavigator.pop();
+      }
+    }
+
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (!didPop) {
+          handleBackPress(context);
+        }
+      },
+      child: Scaffold(
+        body: Container(
+          color: Colors.purple.withOpacity(0.05),
+          child: Column(
+            children: [
+              Stack(
+                alignment: Alignment.center,
+                clipBehavior: Clip.none,
+                children: [
+                  ClipRect(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      heightFactor: 0.625,
+                      child: Container(
+                        color: AppColors.white,
+                        padding: EdgeInsets.fromLTRB(70, 50, 70, 0),
+                        child: Image.asset(
+                          'assets/images/vinopener_logo.png',
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.width / 1.5,
+                          fit: BoxFit.fitWidth,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 10,
+                    right: 10,
+                    child: Container(
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.settings,
+                          color: Colors.black54,
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (context) => MyPageSettingScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: -avatarRadius,
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage('${user.imageUrl}'),
+                      radius: avatarRadius,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: avatarRadius,
+                height: avatarRadius,
+              ),
+              Text(
+                '${user.nickname}',
+                style: TextStyle(
+                  fontSize: AppFontSizes.mediumSmall,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              // 탭 바 추가
+              TabBar(
+                tabs: const [
+                  Tab(text: 'Feed'),
+                  Tab(text: 'Bookmark'),
+                  Tab(text: 'Cellar'),
+                ],
+                controller: _tabController,
+                indicatorColor: AppColors.primary,
+                labelColor: AppColors.primary,
+                labelStyle: TextStyle(
+                  fontSize: AppFontSizes.small,
+                ),
+              ),
+              // 탭 뷰 추가
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    FutureBuilder(
+                      future: myFeedList,
+                      builder: (
+                        BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot,
+                      ) {
+                        if (snapshot.hasData) {
+                          return GridView.builder(
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    CustomCupertinoPageRoute(
+                                      builder: (context) =>
+                                          FeedDetailScreen(snapshot.data[index]),
+                                      settings: RouteSettings(),
+                                    ),
+                                  ).then((_) {
+                                    setState(() {
+                                      myFeedList = FeedService.getMyFeedList();
+                                    });
+                                  });
+                                },
+                                child: Hero(
+                                  tag: 'feedImage${snapshot.data[index].id}',
+                                  child: Image.network(
+                                    snapshot.data[index].imageUrl,
+                                    width: 135,
+                                    height: 135,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              );
+                            },
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                            ),
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                    ),
+                    FutureBuilder(
+                      future: listBookmark,
+                      builder: (
+                        BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot,
+                      ) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (
+                              context,
+                              index,
+                            ) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      builder: (context) => SearchDetailScreen(
+                                          wineId: snapshot.data[index].wine.id),
+                                    ),
+                                  ).then((_) {
+                                    setState(() {
+                                      listBookmark =
+                                          BookmarkService.getListBookmark();
+                                    });
+                                  });
+                                },
+                                child: BookmarkWineItem(
+                                  bookmark: snapshot.data![index],
+                                ),
+                              );
+                            },
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                    ),
+                    FutureBuilder(
+                      future: listCellar,
+                      builder: (
+                        BuildContext context,
+                        AsyncSnapshot<dynamic> snapshot,
+                      ) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (
+                              context,
+                              index,
+                            ) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                      builder: (context) => SearchDetailScreen(
+                                          wineId: snapshot.data[index].wine.id),
+                                    ),
+                                  ).then((_) {
+                                    setState(() {
+                                      listCellar = CellarService.getListCellar();
+                                    });
+                                  });
+                                },
+                                child: CellarWineItem(
+                                  cellar: snapshot.data![index],
+                                ),
+                              );
+                            },
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

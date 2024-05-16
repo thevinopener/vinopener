@@ -86,7 +86,7 @@ class _FeedScreenState extends State<FeedScreen> {
                   ),
                 ],
               ),
-              duration: Duration(seconds: 3600),
+              duration: Duration(seconds: 2),
             ),
           );
       } else {
