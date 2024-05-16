@@ -282,13 +282,6 @@
             </list>
           </value>
         </entry>
-        <entry key="flutter_localizations">
-          <value>
-            <list>
-              <option value="$USER_HOME$/scoop/apps/flutter/current/packages/flutter_localizations/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="flutter_plugin_android_lifecycle">
           <value>
             <list>
@@ -314,13 +307,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_staggered_grid_view-0.7.0/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="flutter_styled_toast">
-          <value>
-            <list>
-              <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_styled_toast-2.2.1/lib" />
             </list>
           </value>
         </entry>
@@ -530,7 +516,7 @@
         <entry key="intl">
           <value>
             <list>
-              <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.18.1/lib" />
+              <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.17.0/lib" />
             </list>
           </value>
         </entry>
@@ -1041,7 +1027,6 @@
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_radar_chart-0.2.1/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_rating_bar-4.0.1/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_staggered_grid_view-0.7.0/lib" />
-      <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_styled_toast-2.2.1/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_svg-2.0.10+1/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_tts-3.8.5/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/focused_area_ocr_flutter-0.0.3/lib" />
@@ -1067,7 +1052,7 @@
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_platform_interface-2.10.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/image_picker_windows-0.2.1+1/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/infinite_scroll_pagination-4.0.0/lib" />
-      <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.18.1/lib" />
+      <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.17.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/js-0.7.1/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/json_annotation-4.9.0/lib" />
       <root url="file://$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/leak_tracker-10.0.0/lib" />
@@ -1136,7 +1121,6 @@
       <root url="file://$USER_HOME$/scoop/apps/flutter/current/bin/cache/pkg/sky_engine/lib" />
       <root url="file://$USER_HOME$/scoop/apps/flutter/current/packages/flutter/lib" />
       <root url="file://$USER_HOME$/scoop/apps/flutter/current/packages/flutter_driver/lib" />
-      <root url="file://$USER_HOME$/scoop/apps/flutter/current/packages/flutter_localizations/lib" />
       <root url="file://$USER_HOME$/scoop/apps/flutter/current/packages/flutter_test/lib" />
       <root url="file://$USER_HOME$/scoop/apps/flutter/current/packages/flutter_web_plugins/lib" />
       <root url="file://$USER_HOME$/scoop/apps/flutter/current/packages/fuchsia_remote_debug_protocol/lib" />
