@@ -8,8 +8,10 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
+@Repository
 public class WineRepositoryQueryImpl implements WineRepositoryQuery {
 
     private final JPAQueryFactory queryFactory;

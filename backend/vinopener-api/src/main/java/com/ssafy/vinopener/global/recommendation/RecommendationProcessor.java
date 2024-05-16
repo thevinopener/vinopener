@@ -25,6 +25,7 @@ import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
 import com.ssafy.vinopener.domain.wine.exception.WineErrorCode;
 import com.ssafy.vinopener.domain.wine.repository.FlavourTasteRepository;
 import com.ssafy.vinopener.domain.wine.repository.WineRepository;
+import com.ssafy.vinopener.domain.wine.repository.WineRepositoryQuery;
 import com.ssafy.vinopener.global.exception.VinopenerException;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ public class RecommendationProcessor {
     private final BehaviorRecommendationRepository behaviorRecommendationRepository;
     private final UserRepository userRepository;
     private final FlavourTasteRepository flavourTasteRepository;
+    private final WineRepositoryQuery wineRepositoryQuery;
 
     public List<WineEntity> createRecommendation(ContentRecommendationType type) {
         String columnName = "";
@@ -199,7 +201,8 @@ public class RecommendationProcessor {
         profileParameters.put("intensity", sumIntensity / tastingNoteEntityList.size());
 
         //"프로필"과 가장 유사한 와인을 추천한다
-        List<WineEntity> wineEntityList = wineRepository.findAll();
+        List<WineEntity> wineEntityList = wineRepositoryQuery.findAllExceptCellar(userId);
+
         List<WineEntity> resultList = wineEntityList.stream()
                 .sorted(Comparator.comparingDouble((WineEntity wineEntity)
                         -> processCosineSimilarity(wineEntity, profileParameters, profileVector)).reversed())
