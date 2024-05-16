@@ -4,18 +4,18 @@ import 'package:flutter/services.dart';
 import 'package:frontend/screens/note/note_search_screen.dart';
 import 'package:frontend/services/note_service.dart';
 import 'package:shimmer/shimmer.dart';
-
 import '../../constants/fonts.dart';
 import '../../models/note_model.dart';
 import '../../widgets/note/note_list_card_widget.dart';
 import 'note_result_screen.dart';
+import '../../main.dart'; // RouteObserver가 정의된 파일을 import
 
 class NoteListScreen extends StatefulWidget {
   @override
   _NoteListScreenState createState() => _NoteListScreenState();
 }
 
-class _NoteListScreenState extends State<NoteListScreen> {
+class _NoteListScreenState extends State<NoteListScreen> with RouteAware {
   Future<List<WineNoteCard>>? _notesFuture;
 
   DateTime? lastPressedTime;
@@ -23,6 +23,27 @@ class _NoteListScreenState extends State<NoteListScreen> {
   @override
   void initState() {
     super.initState();
+    _loadData();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final modalRoute = ModalRoute.of(context);
+    if (modalRoute is PageRoute) {
+      routeObserver.subscribe(this, modalRoute);
+    }
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    // 현재 화면으로 돌아올 때 호출
     _loadData();
   }
 
@@ -41,10 +62,8 @@ class _NoteListScreenState extends State<NoteListScreen> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     void handleBackPress(BuildContext context) {
       final now = DateTime.now();
       if (lastPressedTime == null ||
@@ -56,7 +75,8 @@ class _NoteListScreenState extends State<NoteListScreen> {
             SnackBar(
               backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50.0),),
+                borderRadius: BorderRadius.circular(50.0),
+              ),
               content: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -99,12 +119,10 @@ class _NoteListScreenState extends State<NoteListScreen> {
       }
     }
 
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) {
-        if (!didPop) {
-          handleBackPress(context);
-        }
+    return WillPopScope(
+      onWillPop: () async {
+        handleBackPress(context);
+        return false;
       },
       child: Scaffold(
         appBar: AppBar(
