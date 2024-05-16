@@ -63,7 +63,6 @@ class SttWidgetState extends State<SttWidget> {
 
   void _promptUser() async {
     _speak(_questionText);
-    _isSpeaking=false;
   }
 
   void _initSpeech() async {
@@ -86,6 +85,7 @@ class SttWidgetState extends State<SttWidget> {
         _isListening = false;
       }
     });
+    _isListening=false;
   }
 
   void _onSpeechError(SpeechRecognitionError error) {
@@ -127,6 +127,7 @@ class SttWidgetState extends State<SttWidget> {
 
   void _startListening() {
     _speech.initialize().then((available) {
+      _isListening=available;
       if (available) {
         _speech.listen(
           onResult: _handleResult,
@@ -139,13 +140,13 @@ class SttWidgetState extends State<SttWidget> {
         print('The user has denied the use of speech recognition.');
       }
     });
+    _isListening = false;
   }
 
   void _handleResult(SpeechRecognitionResult result) {
     if (result.finalResult) {
       setState(() {
         _answerText = result.recognizedWords;
-        _isListening = false;
       });
       _analyzeSpeech(result.recognizedWords);
     }
@@ -186,7 +187,6 @@ class SttWidgetState extends State<SttWidget> {
       _speak(aiAnswer.message);
     }).catchError((error) {
       setState(() {
-        _isListening=true;
         _questionText = error.toString().contains("COLOR_NOT_FOUND")
             ? "입력하신 색상을 찾을 수 없습니다. 다시 입력해 주세요."
             : "오류가 발생했습니다. 다시 시도해 주세요.";
