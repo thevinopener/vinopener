@@ -51,11 +51,13 @@ class _SearchCameraScreenState extends State<SearchCameraScreen> {
 
   void _onPopInvoked(bool shouldPop) {
     // 뒤로 가기 버튼을 눌렀을 때 명시적으로 특정 경로로 이동
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => RecommendScreen(), // 원하는 화면이나 경로로 라우팅
-      ),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(),
+        ),
+      );
+    });
   }
 
   @override
