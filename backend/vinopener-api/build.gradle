@@ -70,7 +70,8 @@ dependencies {
   // https://mvnrepository.com/artifact/software.amazon.awssdk/s3
   implementation 'software.amazon.awssdk:s3:2.+'
 
-  implementation('io.github.sashirestela:simple-openai:3.2.0') {
+  // https://github.com/sashirestela/simple-openai
+  implementation('io.github.sashirestela:simple-openai:3.1.0') {
     exclude group: 'org.slf4j', module: 'slf4j-simple'
   }
 }
