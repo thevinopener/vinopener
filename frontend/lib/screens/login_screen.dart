@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/models/token.dart';
@@ -16,7 +15,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/utils/api_client.dart';
 
-import '../constants/colors.dart';
 import '../widgets/wine/login_empty_animation.dart';
 import 'introduce_screen.dart';
 
@@ -103,7 +101,7 @@ class LoginScreen extends StatelessWidget {
                 Text('오늘은 어떤 나라의 와인을 마셔볼까요?',
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: AppFontSizes.medium),
+                        fontSize: AppFontSizes.mediumSmall),
                 ),
                 SizedBox(height: 30),
                 LoginEmptyAnimation(context),
@@ -115,36 +113,7 @@ class LoginScreen extends StatelessWidget {
 
           OutlinedButton(
             onLongPress: () {
-              showToastWidget(
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 24.0, vertical: 12.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25.0),
-                    color: AppColors.primary,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.error, color: Colors.white),
-                      SizedBox(width: 12.0),
-                      Text(
-                        '꾹~ 아니고 한번만 툭 !',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: AppFontSizes.medium,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                context: context,
-                duration: Duration(seconds: 2),
-                position: StyledToastPosition(
-                  align: Alignment(0, -0.4), // 좌상단 (-1, -1) / 우하단 (1, 1)
-                ),
-              );
+              // TODO: 안녕하세요 반가워요 로그인 해주실래요 ㅋㅋ?
             },
             onPressed: () async {
               String? accessToken = await onGoogleLoginPress(context);

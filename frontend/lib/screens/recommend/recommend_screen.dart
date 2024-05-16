@@ -58,6 +58,7 @@ class _RecommendScreenState extends State<RecommendScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     void handleBackPress(BuildContext context) {
       final now = DateTime.now();
       if (lastPressedTime == null ||
@@ -67,36 +68,39 @@ class _RecommendScreenState extends State<RecommendScreen> {
           ..removeCurrentSnackBar()
           ..showSnackBar(
             SnackBar(
-              padding: EdgeInsets.all(6),
-              backgroundColor: Colors.black87,
-              behavior: SnackBarBehavior.floating,
+              backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50.0),
-              ),
+                borderRadius: BorderRadius.circular(50.0),),
               content: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    padding: EdgeInsets.all(2),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 1,
+                          offset: Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
                     ),
-                    margin: EdgeInsets.all(5),
-                    child: Image.asset(
-                      'assets/images/vinopener_logo.png',
-                      width: 30,
-                      height: 30,
+                    child: Container(
+                      margin: EdgeInsets.all(5),
+                      child: Image.asset(
+                        'assets/images/vinopener_logo.png',
+                        width: 25,
+                        height: 25,
+                      ),
                     ),
                   ),
                   Text(
                     '  종료하려면 뒤로 가기를 다시 눌러주세요.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: AppFontSizes.mediumSmall,
+                      color: Colors.black,
                     ),
                   ),
                 ],
@@ -135,8 +139,8 @@ class _RecommendScreenState extends State<RecommendScreen> {
               Text(
                 'Vinopener',
                 style: TextStyle(
-                  fontSize: AppFontSizes.mediumLarge,
-                  fontWeight: FontWeight.w600,
+                    fontSize: AppFontSizes.mediumLarge,
+                    fontWeight: FontWeight.w600,
                 ),
               ),
             ],
@@ -382,16 +386,14 @@ class _RecommendScreenState extends State<RecommendScreen> {
                           SizedBox(height: 40),
 
                           // 💘 예상 평점이 높은 와인
-                          _ContentTitleSection(context,
-                              title: '💘 예상 평점이 높은 와인'),
+                          _ContentTitleSection(context, title: '💘 예상 평점이 높은 와인'),
                           SearchCarouselWidget(context,
                               recommendType: 'preference'),
 
                           // 👀 회원님을 위해 엄선한 오늘의 와인
                           _ContentTitleSection(context,
                               title: '👀 회원님을 위해 엄선한 오늘의 와인'),
-                          SearchCarouselWidget(context,
-                              recommendType: 'cellar'),
+                          SearchCarouselWidget(context, recommendType: 'cellar'),
 
                           // 👏 평단의 찬사를 받은 와인
                           _ContentTitleSection(context,
