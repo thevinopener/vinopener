@@ -197,6 +197,7 @@ class _NoteSearchScreenState extends State<NoteSearchScreen> {
                           ),
                         ),
                     noItemsFoundIndicatorBuilder: (context) =>
+                    //TODO: 검색을 하지 않아서 현재 검색 결과가 비어 있는 경우
                         Center(
                           child: Text(
                             '🔍\n검색된 와인이 없습니다!\n다른 키워드로 검색해볼까요?\n✏',
@@ -207,7 +208,18 @@ class _NoteSearchScreenState extends State<NoteSearchScreen> {
                             textAlign: TextAlign.center,
                           ),
                         ),
+                    firstPageErrorIndicatorBuilder: (context) =>
+                    //TODO: 검색어가 괴상해서 검색 결과가 안 나오는 경우
+                        Text(
+                          '\n검색 결과가 없습니다.\n다른 검색어로 새로운 와인을 찾아보세요!',
+                          style: TextStyle(
+                            fontSize: AppFontSizes.mediumSmall,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                     newPageErrorIndicatorBuilder: (context) =>
+                    //TODO: 검색 결과가 있지만 끝을 봐서 아래에 알려줄 문구
                         Text(
                           '\n🔍 더 이상 표시할 와인이 없습니다!\n다른 검색어로 새로운 와인을 찾아보세요! 🧭',
                           style: TextStyle(
