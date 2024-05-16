@@ -7,6 +7,7 @@ import 'package:frontend/constants/fonts.dart';
 
 // provider
 import 'package:frontend/providers/search/search_history_provider.dart';
+import 'package:frontend/screens/recommend/recommend_screen.dart';
 import 'package:frontend/screens/search/search_result_screen.dart';
 
 // screens
@@ -40,126 +41,145 @@ class _SearchTextScreenState extends State<SearchTextScreen> {
       body: Container(
         color: Colors.purple.withOpacity(0.03),
         child: Column(
-        children: [
-          // #1 검색바 시작
-          Flexible(
-            child: SearchBarWidget(
-              autoFocus: true,
-              contextType: SearchContext.searchTextScreen,
-            ), // 검색바 위젯
-          ),
-          // #1 검색바 끝
-
-          // #2 최근검색, 검색기록삭제 시작
-          Flexible(
-            child: Container(
-              margin: EdgeInsets.fromLTRB(15, 0, 7, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '최근 검색',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: AppFontSizes.mediumLarge,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      // 전체 기록 삭제 호출
-                      searchHistoryProvider.deleteAllSearchHistory();
-                    },
-                    child: Text(
-                      '전체기록삭제',
-                      style: TextStyle(
-                          color: Colors.red, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ],
-              ),
+          children: [
+            Row(
+              children: [
+                // #1 검색바 시작
+                Flexible(
+                  child: SearchBarWidget(
+                    autoFocus: true,
+                    contextType: SearchContext.searchTextScreen,
+                  ), // 검색바 위젯
+                ),
+                // #1 검색바 끝
+                // IconButton(
+                //   onPressed: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => RecommendScreen(),
+                //       ),
+                //     );
+                //   },
+                //   icon: Icon(
+                //     Icons.arrow_back,
+                //     size: 25,
+                //   ),
+                //   alignment: Alignment.center,
+                // ),
+              ],
             ),
-          ),
-          // #2 최근검색, 검색기록삭제 끝
-
-          // #3 검색 기록 시작
-          Flexible(
-            flex: 9,
-            child: recentSearchList.isEmpty
-                ? Center(
-                    child: Text(
-                      '최근 검색기록이 없습니다.',
+            // #2 최근검색, 검색기록삭제 시작
+            Flexible(
+              child: Container(
+                margin: EdgeInsets.fromLTRB(15, 0, 7, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '최근 검색',
                       style: TextStyle(
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w600,
                         fontSize: AppFontSizes.mediumLarge,
                       ),
                     ),
-                  )
-                : SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      children: List.generate(
-                        recentSearchList.length,
-                        (index) => Padding(
-                          padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            SearchResultScreen(
-                                                searchValue:
-                                                    recentSearchList[index]
-                                                        .content),
+                    TextButton(
+                      onPressed: () {
+                        // 전체 기록 삭제 호출
+                        searchHistoryProvider.deleteAllSearchHistory();
+                      },
+                      child: Text(
+                        '전체기록삭제',
+                        style: TextStyle(
+                            color: Colors.red, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            // #2 최근검색, 검색기록삭제 끝
+
+            // #3 검색 기록 시작
+            Flexible(
+              flex: 9,
+              child: recentSearchList.isEmpty
+                  ? Center(
+                      child: Text(
+                        '최근 검색기록이 없습니다.',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: AppFontSizes.mediumLarge,
+                        ),
+                      ),
+                    )
+                  : SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      child: Column(
+                        children: List.generate(
+                          recentSearchList.length,
+                          (index) => Padding(
+                            padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              SearchResultScreen(
+                                                  searchValue:
+                                                      recentSearchList[index]
+                                                          .content),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      recentSearchList[index].content,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: AppFontSizes.mediumSmall,
                                       ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    style: TextButton.styleFrom(
+                                      alignment: Alignment
+                                          .centerLeft, // Align the button's content to the left
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal:
+                                              20), // Remove any default padding that might center the text
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    searchHistoryProvider
+                                        .deleteSearchHistoryById(
+                                      recentSearchList[index].id,
                                     );
                                   },
-                                  child: Text(
-                                    recentSearchList[index].content,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: AppFontSizes.mediumSmall,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
+                                  icon: Icon(
+                                    Icons.clear,
                                   ),
-                                  style: TextButton.styleFrom(
-                                    alignment: Alignment
-                                        .centerLeft, // Align the button's content to the left
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal:
-                                            20), // Remove any default padding that might center the text
-                                  ),
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  searchHistoryProvider.deleteSearchHistoryById(
-                                    recentSearchList[index].id,
-                                  );
-                                },
-                                icon: Icon(
-                                  Icons.clear,
-                                ),
-                                iconSize: 20,
-                              )
-                            ],
+                                  iconSize: 20,
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-          ),
-          // #3 검색 기록 끝
-        ],
+            ),
+            // #3 검색 기록 끝
+          ],
+        ),
       ),
-    ),
     );
   }
 }
