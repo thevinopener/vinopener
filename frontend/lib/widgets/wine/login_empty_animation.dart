@@ -10,6 +10,7 @@ import '../../constants/fonts.dart';
 import '../../providers/recommend_provider.dart';
 import '../../providers/search/search_wine_list_provider.dart';
 import '../../screens/search/search_result_screen.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
 Widget LoginEmptyAnimation(BuildContext context) {
   final CarouselController _carouselController = CarouselController();
@@ -59,22 +60,49 @@ Widget LoginEmptyAnimation(BuildContext context) {
             return Container(
               width: cardWidth, // 버튼 너비 설정
               height: cardWidth, // 버튼 높이를 너비와 동일하게 설정하여 정사각형 만듦
+
               alignment: Alignment.center,
               decoration: BoxDecoration(
+                // 이미지를 버튼 배경으로 사용
                 image: DecorationImage(
                   image: AssetImage(nationImg[index]), // 이미지 경로 지정
                   fit: BoxFit.cover, // 이미지를 정사각형 크기에 맞게 조절
                 ),
                 borderRadius: BorderRadius.circular(15), // 버튼의 테두리를 둥글게
               ),
-              child: Container(
-                width: cardWidth,
-                height: cardWidth,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.transparent,
-                ),
+              child: ElevatedButton(
+                onPressed: () async {
+                  showToastWidget(
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24.0, vertical: 12.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25.0),
+                        color: AppColors.secondary,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.info, color: Colors.white),
+                          SizedBox(width: 12.0),
+                          Text(
+                            '로그인 하고 ${translateCountryName(wineNationList[index])} 가자~!',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: AppFontSizes.medium,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    context: context,
+                    duration: Duration(seconds: 2),
+                    position: StyledToastPosition(
+                      align: Alignment(0, -0.4), // 좌상단 (-1, -1) / 우하단 (1, 1)
+                    ),
+                  );
+                },
                 child: Text(
                   translateCountryName(wineNationList[index]),
                   style: TextStyle(
@@ -82,6 +110,16 @@ Widget LoginEmptyAnimation(BuildContext context) {
                     fontWeight: FontWeight.w700,
                     fontSize: AppFontSizes.veryLarge,
                   ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(cardWidth, cardWidth), // 버튼 크기 고정
+                  backgroundColor: Colors.transparent, // 배경색 투명
+                  padding: EdgeInsets.zero,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  side: BorderSide(color: Colors.transparent),
+                  elevation: 0,
+                  shadowColor: Colors.transparent,
                 ),
               ),
             );
