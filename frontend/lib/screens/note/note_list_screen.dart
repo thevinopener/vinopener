@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:frontend/screens/note/note_search_screen.dart';
 import 'package:frontend/services/note_service.dart';
 import 'package:shimmer/shimmer.dart';
@@ -16,6 +17,8 @@ class NoteListScreen extends StatefulWidget {
 
 class _NoteListScreenState extends State<NoteListScreen> {
   Future<List<WineNoteCard>>? _notesFuture;
+
+  DateTime? lastPressedTime;
 
   @override
   void initState() {
@@ -38,94 +41,158 @@ class _NoteListScreenState extends State<NoteListScreen> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white.withOpacity(0.1),
-        leading: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            SizedBox(
-              width: 5,
-            ),
-            Image.asset(
-              'assets/images/vinopener_logo.png',
-              height: 45, // 이미지 크기 조절
-              width: 45, // 이미지 크기 조절
-            ),
-            SizedBox(width: 8), // 이미지와 텍스트 사이의 간격
-            Text(
-              'Tasting Note',
-              style: TextStyle(
-                fontSize: AppFontSizes.mediumLarge,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-        leadingWidth: double.maxFinite,
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.add,
-              color: Colors.black,
-              size: 35,
-            ),
-            onPressed: () async {
-              await Navigator.push(
-                context,
-                CupertinoPageRoute(builder: (context) => NoteSearchScreen()),
-              );
-              _loadData(); // 노트 추가 후 화면으로 돌아왔을 때 데이터 새로고침
-            },
-          )
-        ],
-        shape: Border(
-          bottom: BorderSide(color: Colors.grey),
-        ),
-      ),
-      body: Container(
-        color: Colors.purple.withOpacity(0.05),
-        padding: EdgeInsets.fromLTRB(
-          0,
-          10,
-          0,
-          0,
-        ),
-        child: FutureBuilder<List<WineNoteCard>>(
-          future: _notesFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Container(
-                alignment: Alignment.center,
-                child: NoteListSkeleton(context),
-              );
-            } else if (snapshot.hasError) {
-              return Container(
-                  alignment: Alignment.center,
-                  child: Text('Error: ${snapshot.error}'));
-            } else if (snapshot.hasData) {
-              final notes = snapshot.data!;
-              return ListView.builder(
-                itemCount: notes.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 8.0), // 각 아이템에 추가 패딩
-                    child: GestureDetector(
-                      onTap: () => viewDetail(notes[index].id),
-                      child: NoteCard(wineNoteCard: notes[index]), // 아이템 카드
+
+    void handleBackPress(BuildContext context) {
+      final now = DateTime.now();
+      if (lastPressedTime == null ||
+          now.difference(lastPressedTime!) > Duration(seconds: 2)) {
+        lastPressedTime = now;
+        ScaffoldMessenger.of(context)
+          ..removeCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0),),
+              content: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 1,
+                          offset: Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
                     ),
-                  );
-                },
-              );
-            } else {
-              return Container(
+                    child: Container(
+                      margin: EdgeInsets.all(5),
+                      child: Image.asset(
+                        'assets/images/vinopener_logo.png',
+                        width: 25,
+                        height: 25,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    '  종료하려면 뒤로 가기를 다시 눌러주세요.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+              duration: Duration(seconds: 2),
+            ),
+          );
+      } else {
+        SystemNavigator.pop();
+      }
+    }
+
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (!didPop) {
+          handleBackPress(context);
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white.withOpacity(0.1),
+          leading: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              SizedBox(
+                width: 5,
+              ),
+              Image.asset(
+                'assets/images/vinopener_logo.png',
+                height: 45, // 이미지 크기 조절
+                width: 45, // 이미지 크기 조절
+              ),
+              SizedBox(width: 8), // 이미지와 텍스트 사이의 간격
+              Text(
+                'Tasting Note',
+                style: TextStyle(
+                  fontSize: AppFontSizes.mediumLarge,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          leadingWidth: double.maxFinite,
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.add,
+                color: Colors.black,
+                size: 35,
+              ),
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  CupertinoPageRoute(builder: (context) => NoteSearchScreen()),
+                );
+                _loadData(); // 노트 추가 후 화면으로 돌아왔을 때 데이터 새로고침
+              },
+            )
+          ],
+          shape: Border(
+            bottom: BorderSide(color: Colors.grey),
+          ),
+        ),
+        body: Container(
+          color: Colors.purple.withOpacity(0.05),
+          padding: EdgeInsets.fromLTRB(
+            0,
+            10,
+            0,
+            0,
+          ),
+          child: FutureBuilder<List<WineNoteCard>>(
+            future: _notesFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container(
                   alignment: Alignment.center,
-                  child: Text('테이스팅 노트가 존재하지 않습니다.'));
-            }
-          },
+                  child: NoteListSkeleton(context),
+                );
+              } else if (snapshot.hasError) {
+                return Container(
+                    alignment: Alignment.center,
+                    child: Text('Error: ${snapshot.error}'));
+              } else if (snapshot.hasData) {
+                final notes = snapshot.data!;
+                return ListView.builder(
+                  itemCount: notes.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0), // 각 아이템에 추가 패딩
+                      child: GestureDetector(
+                        onTap: () => viewDetail(notes[index].id),
+                        child: NoteCard(wineNoteCard: notes[index]), // 아이템 카드
+                      ),
+                    );
+                  },
+                );
+              } else {
+                return Container(
+                    alignment: Alignment.center,
+                    child: Text('테이스팅 노트가 존재하지 않습니다.'));
+              }
+            },
+          ),
         ),
       ),
     );
