@@ -14,11 +14,13 @@ import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TastingNoteService {
 
     @PersistenceContext
@@ -56,6 +58,18 @@ public class TastingNoteService {
     public List<TastingNoteGetListResponse> getList(
             final Long userId
     ) {
+        AssistantThreadEntity assistantThreadEntity
+                = assistantThreadRepository.findByUserId(userId).orElse(null);
+
+        if (assistantThreadEntity != null) {
+            try {
+                assistantStream.cleanConversation(assistantThreadEntity.getThreadId());
+            } catch (Exception e) {
+                log.info("e : {}", e.toString());
+            }
+
+        }
+        assistantThreadRepository.deleteAllByUserId(userId);
         return tastingNoteRepository.findAllByUserId(userId).stream()
                 .map(tastingNoteMapper::toGetListResponse)
                 .toList();
