@@ -45,6 +45,7 @@ class _NoteListScreenState extends State<NoteListScreen> {
   @override
   Widget build(BuildContext context) {
 
+
     void handleBackPress(BuildContext context) {
       final now = DateTime.now();
       if (lastPressedTime == null ||
@@ -54,39 +55,36 @@ class _NoteListScreenState extends State<NoteListScreen> {
           ..removeCurrentSnackBar()
           ..showSnackBar(
             SnackBar(
-              backgroundColor: Colors.white,
+              padding: EdgeInsets.all(6),
+              backgroundColor: Colors.black87,
+              behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50.0),),
+                borderRadius: BorderRadius.circular(50.0),
+              ),
               content: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
+                    padding: EdgeInsets.all(2),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 1,
-                          blurRadius: 1,
-                          offset: Offset(0, 3), // changes position of shadow
-                        ),
-                      ],
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                    child: Container(
-                      margin: EdgeInsets.all(5),
-                      child: Image.asset(
-                        'assets/images/vinopener_logo.png',
-                        width: 25,
-                        height: 25,
-                      ),
+                    margin: EdgeInsets.all(5),
+                    child: Image.asset(
+                      'assets/images/vinopener_logo.png',
+                      width: 30,
+                      height: 30,
                     ),
                   ),
                   Text(
                     '  종료하려면 뒤로 가기를 다시 눌러주세요.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
+                      fontSize: AppFontSizes.mediumSmall,
                     ),
                   ),
                 ],
