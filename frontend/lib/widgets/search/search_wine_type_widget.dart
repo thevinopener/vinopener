@@ -1,5 +1,7 @@
 // flutter
 import 'package:flutter/material.dart';
+import 'package:frontend/constants/wine_type.dart';
+import 'package:frontend/screens/wine/type_search_screen.dart';
 import 'package:provider/provider.dart';
 
 // constants
@@ -39,7 +41,8 @@ Widget RecommendWineTypeWidget(BuildContext context, String wineType) {
   return ElevatedButton(
     onPressed: () async {
       await context.read<SearchWineListProvider>().findByWineType(wineType);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultScreen(searchValue: wineType, isWineType: true)));
+      // Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultScreen(searchValue: wineType, isWineType: true)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => TypeSearchScreen(type: WineType.wineTypeMap[wineType])));
     },
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,

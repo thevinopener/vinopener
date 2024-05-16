@@ -5,13 +5,17 @@ import 'dart:ui' as ui;
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:focused_area_ocr_flutter/focused_area_ocr_flutter.dart';
+
 // constants
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
+
 // screen
 import 'package:frontend/screens/home_screen.dart';
 import 'package:frontend/screens/recommend/recommend_screen.dart';
 import 'package:frontend/screens/search/search_result_screen.dart';
+import 'package:frontend/screens/wine/wine_search_screen.dart';
+
 // package
 import 'package:scanner_overlay/scanner_overlay.dart';
 
@@ -52,9 +56,9 @@ class _SearchCameraScreenState extends State<SearchCameraScreen> {
   void _onPopInvoked(bool shouldPop) {
     // 뒤로 가기 버튼을 눌렀을 때 명시적으로 특정 경로로 이동
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => HomeScreen(),
+          builder: (context) => HomeScreen(), // 원하는 화면이나 경로로 라우팅
         ),
       );
     });
@@ -191,8 +195,10 @@ class _SearchCameraScreenState extends State<SearchCameraScreen> {
                                 await _initializeControllerFuture;
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => SearchResultScreen(
-                                        searchValue: recognizedText),
+                                    // builder: (context) => SearchResultScreen(
+                                    //     searchValue: recognizedText),
+                                    builder: (context) => WineSearchScreen(
+                                        keyword: recognizedText),
                                   ),
                                 );
                               } catch (e) {
