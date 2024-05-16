@@ -38,6 +38,34 @@ class WineService {
     throw Error();
   }
 
+  static Future<List<Wine>> pageSearchTypeWineList(String type, int page) async {
+    final response = await ApiClient().dio.get('/wines/page/types/${type}', queryParameters: {
+      'page': page,
+      'size': 10,
+      'sort': "id"
+    });
+    if (response.statusCode == 200) {
+      List<dynamic> responseData = response.data['content'];
+      List<Wine> wineList = responseData.map((wineData) => Wine.fromJson(wineData)).toList();
+      return wineList;
+    }
+    throw Error();
+  }
+
+  static Future<List<Wine>> pageSearchCountryWineList(String country, int page) async {
+    final response = await ApiClient().dio.get('/wines/page/country/${country}', queryParameters: {
+      'page': page,
+      'size': 10,
+      'sort': "id"
+    });
+    if (response.statusCode == 200) {
+      List<dynamic> responseData = response.data['content'];
+      List<Wine> wineList = responseData.map((wineData) => Wine.fromJson(wineData)).toList();
+      return wineList;
+    }
+    throw Error();
+  }
+
   static void addWineToBookmark() {
     print('addWineToBookmark');
   }

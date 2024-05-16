@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/search/search_wine_name_result.dart';
+import 'package:frontend/screens/wine/country_search_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/colors.dart';
@@ -77,9 +78,11 @@ Widget SearchWineNationWidget(BuildContext context) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SearchResultScreen(
-                              searchValue: wineNationList[index],
-                              isNation: true)));
+                          // builder: (context) => SearchResultScreen(
+                          //     searchValue: wineNationList[index],
+                          //     isNation: true)));
+                          builder: (context) => CountrySearchScreen(
+                              country: wineNationList[index],)));
                 },
                 child: Text(
                   translateCountryName(wineNationList[index]),
