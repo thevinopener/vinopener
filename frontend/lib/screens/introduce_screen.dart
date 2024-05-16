@@ -58,7 +58,7 @@ class OnboardingPage extends StatelessWidget {
         PageViewModel(
           title: "검색",
           body:
-              "글자뿐만 아니라 카메라를 통한 검색도 가능해요 !\n다양한 와인을 검색하고 저장해보세요.\n음주 후, 자꾸 오타가 나진 않았나요?\nVinopener가 도와드릴게요 !",
+              "글자뿐만 아니라 카메라를 통한 검색도 가능해요 !\n메인화면에서 좌측으로 드래그 해보세요.\n다양한 와인을 검색하고 저장해보세요.\n음주 후, 자꾸 오타가 나진 않았나요?\nVinopener가 도와드릴게요 !",
           image: Center(
             child: Image.asset("assets/images/search.gif",
                 height: MediaQuery.of(context).size.height * 0.5),
