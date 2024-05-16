@@ -2,6 +2,7 @@ package com.ssafy.vinopener.domain.aichat.controller;
 
 import com.ssafy.vinopener.domain.aichat.data.dto.request.AiChatCreateRequest;
 import com.ssafy.vinopener.domain.aichat.data.dto.response.AiChatCreateResponse;
+import com.ssafy.vinopener.domain.aichat.data.dto.response.AiChatGetListResponse;
 import com.ssafy.vinopener.domain.aichat.service.AiChatService;
 import com.ssafy.vinopener.global.annotations.UserPrincipalId;
 import com.ssafy.vinopener.global.config.SwaggerConfig;
@@ -11,9 +12,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +51,34 @@ public class AiChatController {
         return ResponseEntity
                 .created(URI.create(REQUEST_PATH))
                 .body(aiChatService.create(aiChatCreateRequest, userId));
+    }
+
+    /**
+     * AI채팅 목록 조회
+     *
+     * @param userId 유저 ID
+     * @return AI채팅 목록
+     */
+    @GetMapping
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    public ResponseEntity<List<AiChatGetListResponse>> getListAiChat(
+            @UserPrincipalId final Long userId
+    ) {
+        return ResponseEntity.ok(aiChatService.getList(userId));
+    }
+
+    /**
+     * AI채팅 목록 초기화
+     *
+     * @param userId 유저 ID
+     */
+    @DeleteMapping
+    @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
+    public ResponseEntity<Void> clearAiChat(
+            @UserPrincipalId final Long userId
+    ) {
+        aiChatService.clear(userId);
+        return ResponseEntity.noContent().build();
     }
 
 }
