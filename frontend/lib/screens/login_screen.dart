@@ -100,7 +100,7 @@ class LoginScreen extends StatelessWidget {
                 Text('오늘은 어떤 나라의 와인을 마셔볼까요?',
                     style: TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: AppFontSizes.mediumSmall),
+                        fontSize: AppFontSizes.medium),
                 ),
                 SizedBox(height: 30),
                 LoginEmptyAnimation(context),
@@ -112,7 +112,7 @@ class LoginScreen extends StatelessWidget {
 
           OutlinedButton(
             onLongPress: () {
-              // TODO: 안녕하세요 반가워요 로그인 해주실래요 ㅋㅋ?
+
             },
             onPressed: () async {
               String? accessToken = await onGoogleLoginPress(context);
