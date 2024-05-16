@@ -18,6 +18,7 @@ import 'package:frontend/utils/api_client.dart';
 
 import '../constants/colors.dart';
 import '../widgets/wine/login_empty_animation.dart';
+import 'introduce_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -164,11 +165,12 @@ class LoginScreen extends StatelessWidget {
                 print(e);
               }
               bool isSurveyDone = (survey == null);
+              // bool isSurveyDone = true;
               Navigator.pushReplacement(
                 context,
                 CupertinoPageRoute(
                     builder: (context) =>
-                    isSurveyDone ? SurveyScreen() : HomeScreen()),
+                    isSurveyDone ? OnboardingPage() : HomeScreen()),
               );
             },
             child: Container(

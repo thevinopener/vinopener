@@ -160,7 +160,6 @@ Widget SearchCarouselWidget (BuildContext context,
                   height: 50,
                   alignment: Alignment.center,
                   child: FilledButton(
-
                     onLongPress: () {
                       showToastWidget(
                         Container(

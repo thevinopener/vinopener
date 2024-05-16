@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/providers/search/search_history_provider.dart';
+import 'package:frontend/screens/home_screen.dart';
 import 'package:frontend/screens/search/search_camera_screen.dart';
 // screens
 import 'package:frontend/screens/search/search_result_screen.dart';
@@ -121,10 +122,10 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                     // color: Colors.grey,), // 검색 아이콘
                     IconButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => RecommendScreen(),
+                        builder: (context) => HomeScreen(),
                       ),
                     );
                   },
