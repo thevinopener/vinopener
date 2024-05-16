@@ -20,6 +20,8 @@ import 'providers/search/search_wine_detail_provider.dart';
 import 'providers/search/search_history_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -75,10 +77,10 @@ class _MyAppState extends State<MyApp> {
     return SafeArea(
       child: MaterialApp(
         navigatorKey: navigatorKey,
+        navigatorObservers: [routeObserver], // Add this line
         title: 'VinOpener',
         theme: ThemeData(
           fontFamily: GoogleFonts.gowunDodum().fontFamily,
-          // textTheme: GoogleFonts.gowunDodumTextTheme(),
           appBarTheme: AppBarTheme(
             color: AppColors.backgroundColor,
           ),

@@ -5,7 +5,6 @@ import 'package:frontend/constants/colors.dart';
 import 'package:frontend/models/note_model.dart';
 import 'package:frontend/widgets/common/atoms/wine_taste_chart_widget.dart';
 import 'package:frontend/widgets/note/note_wine_item.dart';
-import 'package:frontend/widgets/note/note_detail_card_widget.dart';
 import 'package:intl/intl.dart';
 
 import '../../constants/fonts.dart';
@@ -35,8 +34,8 @@ class NoteResultScreen extends StatelessWidget {
           IconButton(
             color: Colors.red,
             onPressed: () {
-              Navigator.of(context).pop();
               NoteService.deleteNote(id);
+              Navigator.of(context).pop();
             },
             icon: Icon(Icons.delete_outline),
           )
