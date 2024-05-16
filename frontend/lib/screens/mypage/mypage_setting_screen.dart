@@ -49,19 +49,19 @@ class _MyPageSettingScreenState extends State<MyPageSettingScreen> {
               ],
             ),
             SizedBox(height: 20),
-            CustomListTile(
-              leadingIcon: Icons.image_outlined,
-              title: '커버 변경',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => MyPageCoverScreen(),
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 10),
+            // CustomListTile(
+            //   leadingIcon: Icons.image_outlined,
+            //   title: '커버 변경',
+            //   onTap: () {
+            //     Navigator.push(
+            //       context,
+            //       CupertinoPageRoute(
+            //         builder: (context) => MyPageCoverScreen(),
+            //       ),
+            //     );
+            //   },
+            // ),
+            // SizedBox(height: 10),
             CustomListTile(
               leadingIcon: Icons.checklist,
               title: '취향 설문 수정',
