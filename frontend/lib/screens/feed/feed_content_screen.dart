@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -137,9 +138,16 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.file(
-                  widget.imageFile!,
-                  fit: BoxFit.cover,
+                Container(
+                  color: Colors.black,
+                  width: min(MediaQuery.of(context).size.width,
+                      MediaQuery.of(context).size.height * 0.5),
+                  height: min(MediaQuery.of(context).size.width,
+                      MediaQuery.of(context).size.height * 0.5),
+                  child: Image.file(
+                    widget.imageFile!,
+                    fit: BoxFit.scaleDown,
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
