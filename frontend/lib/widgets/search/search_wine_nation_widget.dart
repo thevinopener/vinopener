@@ -113,7 +113,7 @@ Widget SearchWineNationWidget(BuildContext context) {
                 onPressed: () async {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      CupertinoPageRoute(
                           // builder: (context) => SearchResultScreen(
                           //     searchValue: wineNationList[index],
                           //     isNation: true)));

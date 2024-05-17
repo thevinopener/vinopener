@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:focused_area_ocr_flutter/focused_area_ocr_flutter.dart';
 
@@ -194,7 +195,7 @@ class _SearchCameraScreenState extends State<SearchCameraScreen> {
                                 // TODO: 인식된 와인명이 없을 경우, 와인이름을 인식하세요 Toast 띄우고 이동 거부
                                 await _initializeControllerFuture;
                                 Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
+                                  CupertinoPageRoute(
                                     // builder: (context) => SearchResultScreen(
                                     //     searchValue: recognizedText),
                                     builder: (context) => WineSearchScreen(

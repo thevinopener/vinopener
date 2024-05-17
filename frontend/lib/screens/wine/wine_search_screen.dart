@@ -133,9 +133,22 @@ class _WineSearchScreenState extends State<WineSearchScreen> {
         },
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            Container(
+              height: 60,
+              alignment: Alignment.center,
+              margin: EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: AppColors.primary,
+                  width: 3.0,
+                ),
+                borderRadius: BorderRadius.circular(50.0),
+              ),
               child: TextField(
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlignVertical: TextAlignVertical.center,
                 focusNode: _searchFocusNode,
                 onSubmitted: (value) {
                   FocusScope.of(context).unfocus();
@@ -149,11 +162,16 @@ class _WineSearchScreenState extends State<WineSearchScreen> {
                 },
                 controller: _searchController,
                 decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(vertical: 0),
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
                   suffix: Row(
                     mainAxisSize: MainAxisSize.min, // Row가 차지하는 공간을 최소로 하여 아이콘들이 압축되지 않게 함
                     children: <Widget>[
                       IconButton(
-                          icon: Icon(Icons.camera_alt),
+                          icon: Icon(Icons.camera_alt_outlined),
                           onPressed: _isCameraInitialized
                               ? () {
                             Navigator.of(context).pushReplacement(
@@ -177,16 +195,17 @@ class _WineSearchScreenState extends State<WineSearchScreen> {
                     ],
                   ),
                   prefixIcon: IconButton(
+                    padding: EdgeInsets.only(left: 20, right: 10),
                     icon: Icon(Icons.arrow_back),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: AppColors.primary,
-                    ),
-                  ),
+                  // focusedBorder: UnderlineInputBorder(
+                  //   borderSide: BorderSide(
+                  //     color: AppColors.primary,
+                  //   ),
+                  // ),
                 ),
               ),
             ),
