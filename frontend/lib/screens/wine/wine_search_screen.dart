@@ -1,11 +1,14 @@
 // flutter
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/models/wine_model.dart';
 import 'package:frontend/providers/note/note_wine_provider.dart';
+import 'package:frontend/screens/feed/feed_wine_search_screen.dart';
 import 'package:frontend/screens/note/note_screen.dart';
 import 'package:frontend/screens/search/search_camera_screen.dart';
+import 'package:frontend/screens/search/search_detail_screen.dart';
 import 'package:frontend/services/wine_service.dart';
 import 'package:frontend/widgets/feed/feed_wine_item.dart';
 
@@ -196,12 +199,17 @@ class _WineSearchScreenState extends State<WineSearchScreen> {
                   itemBuilder: (context, item, index) =>
                       GestureDetector(
                         onTap: () {
-                          _toggleWine(item);
+                          Navigator.of(context).push(
+                            CupertinoPageRoute(
+                              builder: (context) =>
+                                  SearchDetailScreen(wineId: item.id!),
+                            ),
+                          );
                         },
                         child: Container(
                           child: FeedWineItem(
                             wine: item,
-                            isSelected: item.id == _selectedWineId,
+                            isSelected: false,
                           ),
                         ),
                       ),
