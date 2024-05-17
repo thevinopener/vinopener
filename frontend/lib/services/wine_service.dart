@@ -38,6 +38,19 @@ class WineService {
     throw Error();
   }
 
+  static Future<int> countPageSearchWineList(String keyword) async {
+    final response = await ApiClient().dio.get('/wines/page/search', queryParameters: {
+      'query': keyword,
+      'page': 0,
+      'size': 10,
+      'sort': "id"
+    });
+    if (response.statusCode == 200) {
+      return response.data['totalElements'];
+    }
+    throw Error();
+  }
+
   static Future<List<Wine>> pageSearchTypeWineList(String type, int page) async {
     final response = await ApiClient().dio.get('/wines/page/types/${type}', queryParameters: {
       'page': page,

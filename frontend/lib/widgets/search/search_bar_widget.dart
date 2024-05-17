@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/providers/search/search_history_provider.dart';
+import 'package:frontend/screens/paging/wine_page_search_screen.dart';
 import 'package:frontend/screens/home_screen.dart';
 import 'package:frontend/screens/search/search_camera_screen.dart';
 // screens
@@ -78,8 +79,10 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
           //     builder: (context) => SearchResultScreen(searchValue: value)));
           // MaterialPageRoute(
           //     builder: (context) => TypeSearchScreen(type: value)));
+          // CupertinoPageRoute(
+          //     builder: (context) => WineSearchScreen(keyword: value)));
           CupertinoPageRoute(
-              builder: (context) => WineSearchScreen(keyword: value)));
+              builder: (context) => WinePageSearchScreen(keyword: value!)));
     } else {
       await Navigator.pushReplacement(
           context,
