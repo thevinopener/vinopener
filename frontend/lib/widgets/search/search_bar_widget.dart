@@ -14,6 +14,7 @@ import 'package:frontend/screens/wine/wine_search_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../screens/recommend/recommend_screen.dart';
+import '../../screens/search/search_second_camera_screen.dart';
 
 enum SearchContext { searchTextScreen, searchResultScreen }
 
@@ -161,7 +162,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) =>
-                              SearchCameraScreen(camera: firstCamera),
+                              SearchSecondCameraScreen(camera: firstCamera),
                         ),
                       );
                     }
