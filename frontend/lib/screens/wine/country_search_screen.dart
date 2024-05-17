@@ -5,7 +5,7 @@ import 'package:frontend/constants/colors.dart';
 import 'package:frontend/models/wine_model.dart';
 import 'package:frontend/providers/note/note_wine_provider.dart';
 import 'package:frontend/screens/note/note_screen.dart';
-import 'package:frontend/screens/search/search_camera_screen.dart';
+import 'package:frontend/screens/search/search_main_camera_screen.dart';
 import 'package:frontend/screens/search/search_detail_screen.dart';
 import 'package:frontend/services/wine_service.dart';
 import 'package:frontend/widgets/feed/feed_wine_item.dart';
@@ -14,6 +14,8 @@ import 'package:frontend/widgets/feed/feed_wine_item.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
+
+import '../search/search_second_camera_screen.dart';
 
 class CountrySearchScreen extends StatefulWidget {
   String? country;
@@ -221,7 +223,7 @@ class _CountrySearchScreenState extends State<CountrySearchScreen> {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    SearchCameraScreen(camera: firstCamera),
+                                    SearchSecondCameraScreen(camera: firstCamera),
                               ),
                             );
                           }
