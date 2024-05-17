@@ -14,6 +14,7 @@ import 'package:frontend/constants/fonts.dart';
 // screen
 import 'package:frontend/screens/home_screen.dart';
 import 'package:frontend/screens/recommend/recommend_screen.dart';
+import 'package:frontend/screens/search/search_camera_bottom_screen.dart';
 import 'package:frontend/screens/search/search_result_screen.dart';
 import 'package:frontend/screens/wine/wine_search_screen.dart';
 
@@ -71,6 +72,15 @@ class _SearchCameraScreenState extends State<SearchCameraScreen> {
     controller.close();
     super.dispose();
   }
+
+  Future<void> _showCameraBottomSheet(BuildContext context, {required String recognizedText}) async {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => CameraBottomSheetView(recognizedText: recognizedText),
+
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -194,14 +204,15 @@ class _SearchCameraScreenState extends State<SearchCameraScreen> {
                               try {
                                 // TODO: 인식된 와인명이 없을 경우, 와인이름을 인식하세요 Toast 띄우고 이동 거부
                                 await _initializeControllerFuture;
-                                Navigator.of(context).pushReplacement(
-                                  CupertinoPageRoute(
-                                    // builder: (context) => SearchResultScreen(
-                                    //     searchValue: recognizedText),
-                                    builder: (context) => WineSearchScreen(
-                                        keyword: recognizedText),
-                                  ),
-                                );
+                                _showCameraBottomSheet(context, recognizedText: recognizedText);
+                                // Navigator.of(context).pushReplacement(
+                                //   CupertinoPageRoute(
+                                //     // builder: (context) => SearchResultScreen(
+                                //     //     searchValue: recognizedText),
+                                //     builder: (context) => WineSearchScreen(
+                                //         keyword: recognizedText),
+                                //   ),
+                                // );
                               } catch (e) {
                                 print('카메라 오류: $e');
                               }
