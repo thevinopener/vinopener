@@ -9,6 +9,7 @@ import com.ssafy.vinopener.domain.cellar.data.mapper.CellarMapper;
 import com.ssafy.vinopener.domain.cellar.exception.CellarErrorCode;
 import com.ssafy.vinopener.domain.cellar.repository.CellarRepository;
 import com.ssafy.vinopener.domain.tastingnote.repository.TastingNoteRepository;
+import com.ssafy.vinopener.domain.user.exception.UserErrorCode;
 import com.ssafy.vinopener.domain.user.repository.UserRepository;
 import com.ssafy.vinopener.domain.wine.exception.WineErrorCode;
 import com.ssafy.vinopener.domain.wine.repository.WineRepository;
@@ -42,13 +43,17 @@ public class CellarService {
     public Long create(final CellarCreateRequest request,
             Long userId) {
         var user = userRepository.findById(userId)
-                .orElseThrow(() -> new VinopenerException(CellarErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new VinopenerException(UserErrorCode.USER_NOT_FOUND));
 
         var wine = wineRepository.findById(request.wineId())
-                .orElseThrow(() -> new VinopenerException(CellarErrorCode.WINE_NOT_FOUND));
+                .orElseThrow(() -> new VinopenerException(WineErrorCode.WINE_NOT_FOUND));
 
         // 마신 날짜 null 여부 설정
         LocalDate finishedDate = request.finishedDate() != null ? request.finishedDate() : null;
+
+        if (cellarRepository.existsByWineIdAndUserId(wine.getId(), userId)) {
+            throw new VinopenerException(CellarErrorCode.CELLAR_ALREADY_EXISTS);
+        }
 
         CellarEntity cellar = CellarEntity
                 .builder()
