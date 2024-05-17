@@ -27,7 +27,7 @@ public class BatchScheduler {
 
 
     //조회수 기반 추천 스케쥴러
-    @Scheduled(cron = "0 */2 * * * *")
+    @Scheduled(cron = "0 */1 * * * *")
     public void viewRecommendationSchedule() {
         // job parameter 설정
 
@@ -46,7 +46,7 @@ public class BatchScheduler {
     }
 
     //평점 기반 추천 스케쥴러
-    @Scheduled(cron = "20 */2 * * * *")
+    @Scheduled(cron = "20 */1 * * * *")
     public void rateRecommendationSchedule() {
         // job parameter 설정
 
@@ -65,7 +65,7 @@ public class BatchScheduler {
     }
 
     //셀러에 많이 추가한 사람 수 기반 추천 스케쥴러
-    @Scheduled(cron = "30 */2 * * * *")
+    @Scheduled(cron = "40 */1 * * * *")
     public void cellarRecommendationSchedule() {
         // job parameter 설정
 
