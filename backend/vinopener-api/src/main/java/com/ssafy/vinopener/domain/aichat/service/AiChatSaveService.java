@@ -1,7 +1,6 @@
 package com.ssafy.vinopener.domain.aichat.service;
 
 import com.ssafy.vinopener.domain.aichat.data.entity.AssistantThreadEntity;
-import com.ssafy.vinopener.domain.aichat.repository.AiChatRepository;
 import com.ssafy.vinopener.domain.aichat.repository.AssistantThreadRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AiChatSaveService {
 
-    private final AiChatRepository aiChatRepository;
     private final AssistantThreadRepository assistantThreadRepository;
 
     @Transactional

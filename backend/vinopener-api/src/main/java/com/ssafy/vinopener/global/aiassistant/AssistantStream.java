@@ -5,28 +5,23 @@ import com.ssafy.vinopener.domain.aichat.repository.AiChatRepository;
 import com.ssafy.vinopener.domain.aichat.service.AiChatSaveService;
 import com.ssafy.vinopener.domain.user.data.entity.UserEntity;
 import com.ssafy.vinopener.domain.user.repository.UserRepository;
+import com.ssafy.vinopener.global.config.props.OpenAiProps;
 import io.github.sashirestela.cleverclient.Event;
 import io.github.sashirestela.openai.SimpleOpenAI;
 import io.github.sashirestela.openai.common.content.ContentPart.ContentPartTextAnnotation;
 import io.github.sashirestela.openai.common.function.FunctionDef;
 import io.github.sashirestela.openai.common.function.FunctionExecutor;
 import io.github.sashirestela.openai.common.function.Functional;
-import io.github.sashirestela.openai.domain.assistant.ThreadMessage;
-import io.github.sashirestela.openai.domain.assistant.ThreadMessageRequest;
-import io.github.sashirestela.openai.domain.assistant.ThreadMessageRole;
-import io.github.sashirestela.openai.domain.assistant.ThreadRequest;
-import io.github.sashirestela.openai.domain.assistant.ThreadRun;
+import io.github.sashirestela.openai.domain.assistant.*;
 import io.github.sashirestela.openai.domain.assistant.ThreadRun.RunStatus;
-import io.github.sashirestela.openai.domain.assistant.ThreadRunRequest;
-import io.github.sashirestela.openai.domain.assistant.ThreadRunSubmitOutputRequest;
 import io.github.sashirestela.openai.domain.assistant.ThreadRunSubmitOutputRequest.ToolOutput;
 import io.github.sashirestela.openai.domain.assistant.events.EventName;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
@@ -36,6 +31,7 @@ public class AssistantStream {
     private final AiChatRepository aiChatRepository;
     private final AiChatSaveService aiChatSaveService;
     private final UserRepository userRepository;
+    private final OpenAiProps openAiProps;
     private String fileId;
     private String vectorStoreId;
     private FunctionExecutor functionExecutor;
@@ -45,16 +41,17 @@ public class AssistantStream {
     private volatile boolean shouldStop = false;
 
     public AssistantStream(
-            @Value("${openai.api-key}") String apiKey,
-            @Value("${openai.organization-id}") String organizationId,
-            @Value("${openai.project-id}") String projectId,
+//            @Value("${openai.api-key}") String apiKey,
+//            @Value("${openai.organization-id}") String organizationId,
+//            @Value("${openai.project-id}") String projectId,
             AiChatRepository aiChatRepository,
             AiChatSaveService aiChatSaveService,
-            UserRepository userRepository) {
+            UserRepository userRepository, OpenAiProps openAiProps) {
+        this.openAiProps = openAiProps;
         openAI = SimpleOpenAI.builder()
-                .apiKey(apiKey)
-                .organizationId(organizationId)
-                .projectId(projectId)
+                .apiKey(openAiProps.apiKey())
+                .organizationId(openAiProps.organizationId())
+                .projectId(openAiProps.projectId())
                 .build();
         this.aiChatRepository = aiChatRepository;
         this.aiChatSaveService = aiChatSaveService;
