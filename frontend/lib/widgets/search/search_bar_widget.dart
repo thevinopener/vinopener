@@ -1,5 +1,6 @@
 // flutter
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
@@ -77,7 +78,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
           //     builder: (context) => SearchResultScreen(searchValue: value)));
           // MaterialPageRoute(
           //     builder: (context) => TypeSearchScreen(type: value)));
-          MaterialPageRoute(
+          CupertinoPageRoute(
               builder: (context) => WineSearchScreen(keyword: value)));
     } else {
       await Navigator.pushReplacement(
@@ -86,7 +87,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
           //     builder: (context) => SearchResultScreen(searchValue: value)));
           // MaterialPageRoute(
           //     builder: (context) => WineSearchScreen(keyword: value)));
-      MaterialPageRoute(
+          CupertinoPageRoute(
           builder: (context) => TypeSearchScreen(type: value)));
     }
     Provider.of<SearchHistoryProvider>(context, listen: false).loadHistory();
