@@ -1,4 +1,4 @@
-package com.ssafy.vinopener.domain.aichat.controller;
+package com.ssafy.vinopener.domain.assistant.controller;
 
 import com.ssafy.vinopener.domain.aichat.data.dto.request.AiChatCreateRequest;
 import com.ssafy.vinopener.domain.aichat.data.dto.response.AiChatCreateResponse;
@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(AiChatController.REQUEST_PATH)
+@RequestMapping(com.ssafy.vinopener.domain.assistant.controller.AssistantController.REQUEST_PATH)
 @RequiredArgsConstructor
-public class AiChatController {
+public class AssistantController {
 
-    public static final String REQUEST_PATH = "/ai-chats";
+    public static final String REQUEST_PATH = "/ai-chats-test";
     private final AiChatService aiChatService;
 
     /**

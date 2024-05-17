@@ -71,7 +71,7 @@ dependencies {
   implementation 'software.amazon.awssdk:s3:2.+'
 
   // https://github.com/sashirestela/simple-openai
-  implementation('io.github.sashirestela:simple-openai:3.1.0') {
+  implementation('io.github.sashirestela:simple-openai:3.2.0') {
     exclude group: 'org.slf4j', module: 'slf4j-simple'
   }
 }
