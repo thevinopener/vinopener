@@ -193,7 +193,7 @@ class _SearchCameraScreenState extends State<SearchCameraScreen> {
                               try {
                                 // TODO: 인식된 와인명이 없을 경우, 와인이름을 인식하세요 Toast 띄우고 이동 거부
                                 await _initializeControllerFuture;
-                                Navigator.of(context).push(
+                                Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
                                     // builder: (context) => SearchResultScreen(
                                     //     searchValue: recognizedText),
