@@ -10,6 +10,9 @@ spring:
   kafka:
     consumer:
       auto-offset-reset: earliest
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
 
 
 kafka:

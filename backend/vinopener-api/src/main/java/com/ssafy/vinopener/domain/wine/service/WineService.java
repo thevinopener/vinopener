@@ -9,15 +9,18 @@ import com.ssafy.vinopener.domain.wine.data.dto.response.WineTypeGetListResponse
 import com.ssafy.vinopener.domain.wine.data.entity.FlavourTasteEntity;
 import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
 import com.ssafy.vinopener.domain.wine.data.entity.WineFlavourEntity;
+import com.ssafy.vinopener.domain.wine.data.entity.WineViewEntity;
 import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
 import com.ssafy.vinopener.domain.wine.data.mapper.WineMapper;
 import com.ssafy.vinopener.domain.wine.exception.WineErrorCode;
 import com.ssafy.vinopener.domain.wine.repository.FlavourTasteRepository;
 import com.ssafy.vinopener.domain.wine.repository.WineFlavourRepository;
 import com.ssafy.vinopener.domain.wine.repository.WineRepository;
+import com.ssafy.vinopener.domain.wine.repository.WineViewRepository;
 import com.ssafy.vinopener.global.exception.VinopenerException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -27,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class WineService {
 
     private final WineRepository wineRepository;
@@ -37,6 +41,7 @@ public class WineService {
     private final WineFlavourRepository wineFlavourRepository;
     private final FlavourTasteRepository flavourTasteRepository;
     private static final Logger logger = LoggerFactory.getLogger(WineService.class);
+    private final WineViewRepository wineViewRepository;
 
     /**
      * 와인 목록 조회(북마크, 셀러, 테이스팅 노트 여부 포함)
@@ -87,15 +92,23 @@ public class WineService {
      * @param wineId 와인 ID
      * @param userId 유저 ID
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public WineGetResponse get(
             final Long wineId,
             final Long userId
     ) {
+//        WineEntity wine = wineRepository.findById(wineId)
+//                .map(WineEntity::increaseView)
+//                .orElseThrow(() -> new VinopenerException(WineErrorCode.WINE_NOT_FOUND));
+
         WineEntity wine = wineRepository.findById(wineId)
-                .map(WineEntity::increaseView)
                 .orElseThrow(() -> new VinopenerException(WineErrorCode.WINE_NOT_FOUND));
 
+        WineViewEntity wineViewEntity = wineViewRepository.findById(wineId)
+                .orElse(WineViewEntity.builder().wineId(wineId).viewCount(0L).build());
+        wineViewEntity.increaseViewCount();
+        wineViewRepository.save(wineViewEntity);
+        
         List<WineFlavourEntity> wineFlavours = wineFlavourRepository.findByWineId(wineId);
         List<Long> flavourTasteIds = wineFlavours.stream()
                 .map(wf -> wf.getFlavourTaste().getId())
