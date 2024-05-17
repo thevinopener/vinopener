@@ -7,7 +7,9 @@ import com.ssafy.vinopener.domain.bookmark.data.entity.BookmarkEntity;
 import com.ssafy.vinopener.domain.bookmark.data.mapper.BookmarkMapper;
 import com.ssafy.vinopener.domain.bookmark.exception.BookmarkErrorCode;
 import com.ssafy.vinopener.domain.bookmark.repository.BookmarkRepository;
+import com.ssafy.vinopener.domain.user.exception.UserErrorCode;
 import com.ssafy.vinopener.domain.user.repository.UserRepository;
+import com.ssafy.vinopener.domain.wine.exception.WineErrorCode;
 import com.ssafy.vinopener.domain.wine.repository.WineRepository;
 import com.ssafy.vinopener.global.exception.VinopenerException;
 import java.util.List;
@@ -37,10 +39,14 @@ public class BookmarkService {
     public Long create(final BookmarkCreateRequest bookmarkCreateRequest,
             Long userId) {
         userRepository.findById(userId)
-                .orElseThrow(() -> new VinopenerException(BookmarkErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new VinopenerException(UserErrorCode.USER_NOT_FOUND));
 
         var wine = wineRepository.findById(bookmarkCreateRequest.wineId())
-                .orElseThrow(() -> new VinopenerException(BookmarkErrorCode.WINE_NOT_FOUND));
+                .orElseThrow(() -> new VinopenerException(WineErrorCode.WINE_NOT_FOUND));
+
+        if (bookmarkRepository.existsByWineIdAndUserId(wine.getId(),userId)) {
+            throw new VinopenerException(BookmarkErrorCode.BOOKMARK_ALREADY_EXISTS);
+        }
 
         return bookmarkRepository
                 .save(bookmarkMapper.toEntity(userId, bookmarkCreateRequest, wine))
