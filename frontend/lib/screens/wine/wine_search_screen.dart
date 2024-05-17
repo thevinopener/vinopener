@@ -236,12 +236,18 @@ class _WineSearchScreenState extends State<WineSearchScreen> {
                               ),
                             );
                           },
+
+
+
                           child: Container(
                             child: FeedWineItem(
                               wine: item,
                               isSelected: false,
                             ),
                           ),
+
+
+
                         ),
                         noItemsFoundIndicatorBuilder: (context) =>
                             //TODO: 검색을 하지 않아서 현재 검색 결과가 비어 있는 경우
