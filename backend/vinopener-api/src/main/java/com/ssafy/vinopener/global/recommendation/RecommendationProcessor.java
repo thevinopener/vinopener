@@ -10,10 +10,8 @@ import com.ssafy.vinopener.domain.recommendation.data.entity.BehaviorRecommendat
 import com.ssafy.vinopener.domain.recommendation.data.entity.ContentRecommendationEntity;
 import com.ssafy.vinopener.domain.recommendation.data.entity.enums.BehaviorRecommendationType;
 import com.ssafy.vinopener.domain.recommendation.data.entity.enums.ContentRecommendationType;
-import com.ssafy.vinopener.domain.recommendation.data.mapper.RecommendationMapper;
 import com.ssafy.vinopener.domain.recommendation.repository.BehaviorRecommendationRepository;
 import com.ssafy.vinopener.domain.recommendation.repository.ContentRecommendationRepository;
-import com.ssafy.vinopener.domain.recommendation.repository.RecommendationRepositoryQueryImpl;
 import com.ssafy.vinopener.domain.tastingnote.data.entity.TastingNoteEntity;
 import com.ssafy.vinopener.domain.tastingnote.data.entity.TastingNoteFlavourEntity;
 import com.ssafy.vinopener.domain.tastingnote.exception.TastingNoteErrorCode;
@@ -21,10 +19,12 @@ import com.ssafy.vinopener.domain.tastingnote.repository.TastingNoteRepository;
 import com.ssafy.vinopener.domain.user.exception.UserErrorCode;
 import com.ssafy.vinopener.domain.user.repository.UserRepository;
 import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
+import com.ssafy.vinopener.domain.wine.data.entity.WineFlavourEntity;
 import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
 import com.ssafy.vinopener.domain.wine.exception.WineErrorCode;
-import com.ssafy.vinopener.domain.wine.repository.FlavourTasteRepository;
+import com.ssafy.vinopener.domain.wine.repository.WineFlavourRepository;
 import com.ssafy.vinopener.domain.wine.repository.WineRepository;
+import com.ssafy.vinopener.domain.wine.repository.WineRepositoryQuery;
 import com.ssafy.vinopener.global.exception.VinopenerException;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
@@ -47,15 +47,16 @@ public class RecommendationProcessor {
     private final WineRepository wineRepository;
     private final PreferenceRepository preferenceRepository;
     private final TastingNoteRepository tastingNoteRepository;
-    private final RecommendationMapper recommendationMapper;
     private final ContentRecommendationRepository contentRecommendationRepository;
     private final CellarRepositoryQueryImpl cellarRepositoryQueryImpl;
     private final EntityManager entityManager;
     private final PreferenceMapper preferenceMapper;
-    private final RecommendationRepositoryQueryImpl recommendationRepositoryQueryImpl;
     private final BehaviorRecommendationRepository behaviorRecommendationRepository;
     private final UserRepository userRepository;
-    private final FlavourTasteRepository flavourTasteRepository;
+    private final WineRepositoryQuery wineRepositoryQuery;
+    private final WineFlavourRepository wineFlavourRepository;
+
+    private final int ALL_FLAVOURS_COUNT = 109;
 
     public List<WineEntity> createRecommendation(ContentRecommendationType type) {
         String columnName = "";
@@ -135,7 +136,7 @@ public class RecommendationProcessor {
 
         // 사용자가 선호하는 타입의 와인만 먼저 DB에서 골라낸다.
         Set<WineType> wineTypeSet = preferenceMapper.map(preferenceEntity);
-        List<WineEntity> wineEntityList = recommendationRepositoryQueryImpl.findByWineTypeSet(wineTypeSet);
+        List<WineEntity> wineEntityList = wineRepositoryQuery.findAllByTypeExceptCellar(wineTypeSet, userId);
 
         // 해당하는 타입의 모든 와인에 대해, 사용자의 선호도와 코사인 유사도 계산 후
         List<WineEntity> resultList = wineEntityList.stream()
@@ -151,7 +152,7 @@ public class RecommendationProcessor {
 
     public List<WineEntity> createTastingNoteRecommendation(Long userId) {
         List<TastingNoteEntity> tastingNoteEntityList = tastingNoteRepository.findAllByUserId(userId);
-        int totalFlavourCount = flavourTasteRepository.findAll().size();
+//        int totalFlavourCount = flavourTasteRepository.findAll().size();
 
         if (tastingNoteEntityList.isEmpty()) {
             throw new VinopenerException(TastingNoteErrorCode.TASTING_NOTE_NOT_FOUND);
@@ -174,35 +175,47 @@ public class RecommendationProcessor {
         double sumAcidity = 0;
         double sumTannin = 0;
         double sumIntensity = 0;
-        int[] profileVector = new int[totalFlavourCount];
+        double[] profileVector = new double[ALL_FLAVOURS_COUNT];
         Map<Long, Object> tastingVectors = new HashMap<>();
+        double currentRating = 0;
+        double sumWeight = 0;
         for (TastingNoteEntity tastingNoteEntity : tastingNoteEntityList) {
+            currentRating = tastingNoteEntity.getRating().doubleValue();
 
-            sumAbv += tastingNoteEntity.getAlcohol().doubleValue();
-            sumSweetness += tastingNoteEntity.getSweetness().doubleValue();
-            sumAcidity += tastingNoteEntity.getAcidity().doubleValue();
-            sumTannin += tastingNoteEntity.getTannin().doubleValue();
-            sumIntensity += tastingNoteEntity.getIntensity().doubleValue();
+            sumAbv += tastingNoteEntity.getAlcohol().doubleValue() * currentRating;
+            sumSweetness += tastingNoteEntity.getSweetness().doubleValue() * currentRating;
+            sumAcidity += tastingNoteEntity.getAcidity().doubleValue() * currentRating;
+            sumTannin += tastingNoteEntity.getTannin().doubleValue() * currentRating;
+            sumIntensity += tastingNoteEntity.getIntensity().doubleValue() * currentRating;
+
+            sumWeight += currentRating;
 
             for (TastingNoteFlavourEntity tastingNoteFlavourEntity : tastingNoteEntity.getFlavours()) {
-                profileVector[(int) (tastingNoteFlavourEntity.getFlavourTaste().getId() - 1)] += 1;
+                profileVector[(int) (tastingNoteFlavourEntity.getFlavourTaste().getId() - 1)]
+                        += 1 * currentRating * 0.2;
             }
         }
 
         //vector화 된 parameter들을 종합해 하나의 "프로필"을 만든다.
         //알코올, 당도, 산도, 타닌, 바디감은 평균으로
         Map<String, Double> profileParameters = new HashMap<>();
-        profileParameters.put("abv", sumAbv / tastingNoteEntityList.size());
-        profileParameters.put("sweetness", sumSweetness / tastingNoteEntityList.size());
-        profileParameters.put("acidity", sumAcidity / tastingNoteEntityList.size());
-        profileParameters.put("tannin", sumTannin / tastingNoteEntityList.size());
-        profileParameters.put("intensity", sumIntensity / tastingNoteEntityList.size());
+        profileParameters.put("abv", sumAbv / sumWeight);
+        profileParameters.put("sweetness", sumSweetness / sumWeight);
+        profileParameters.put("acidity", sumAcidity / sumWeight);
+        profileParameters.put("tannin", sumTannin / sumWeight);
+        profileParameters.put("intensity", sumIntensity / sumWeight);
 
         //"프로필"과 가장 유사한 와인을 추천한다
-        List<WineEntity> wineEntityList = wineRepository.findAll();
+        //일단 와인들을 가져오고,
+        List<WineEntity> wineEntityList = wineRepositoryQuery.findAllExceptCellar(userId);
+
+        //각 와인이 어떤 맛을 가지고 있는지 다 가져온다.
+        List<WineFlavourEntity> wineFlavourEntityList = wineFlavourRepository.findAll();
+
         List<WineEntity> resultList = wineEntityList.stream()
                 .sorted(Comparator.comparingDouble((WineEntity wineEntity)
-                        -> processCosineSimilarity(wineEntity, profileParameters, profileVector)).reversed())
+                                -> processCosineSimilarity(wineEntity, wineFlavourEntityList, profileParameters, profileVector))
+                        .reversed())
                 .limit(10)
                 .toList();
 
@@ -281,8 +294,9 @@ public class RecommendationProcessor {
 
     private double processCosineSimilarity(
             WineEntity wineEntity,
+            List<WineFlavourEntity> wineFlavourEntityList,
             Map<String, Double> profileParameters,
-            int[] profileVector
+            double[] profileVector
     ) {
         double result;
         // 알당산타바
@@ -310,21 +324,42 @@ public class RecommendationProcessor {
         double parameterCosineSim = parameterDotProduct / (normWineParameter * normProfileParameter);
 
         //맛 벡터 유사도 구하기
-        //wineFlavourRepository 작성 후, 와인 id로 해당 와인이 갖는 모든 맛을 가져와서,
+        //비교하는 와인 id로 해당 와인이 갖는 모든 맛을 가져와서,
+        List<WineFlavourEntity> filteredFlavourEntityList = wineFlavourEntityList.stream()
+                .filter(wineFlavour -> wineFlavour.getWine().getId().equals(wineEntity.getId()))
+                .toList();
+        double[] wineFlavourVector = new double[ALL_FLAVOURS_COUNT];
+        for (WineFlavourEntity wineFlavourEntity : filteredFlavourEntityList) {
+            wineFlavourVector[wineFlavourEntity.getFlavourTaste().getId().intValue() - 1] += 1;
+        }
+
         //profileVector와 각각 dotProduct 진행.
         double vectorDotProduct = 0;
+        for (int i = 0; i < ALL_FLAVOURS_COUNT; i++) {
+            vectorDotProduct += profileVector[i] * wineFlavourVector[i];
+        }
 
         //각 wine의 맛벡터 norm 계산
-        double normWineVector = 1;
+        double powOfWineSize = 0;
+        for (double i : wineFlavourVector) {
+            powOfWineSize += Math.pow(i, 2);
+        }
+        double normWineVector = Math.sqrt(powOfWineSize);
 
         // profile 맛벡터 norm 계산
-        double powOfVectorSize = 0;
-        for (int i : profileVector) {
-            powOfVectorSize += Math.pow(i, 2);
+        double powOfProfileSize = 0;
+        for (double i : profileVector) {
+            powOfProfileSize += Math.pow(i, 2);
         }
-        double normProfileVector = Math.sqrt(powOfVectorSize);
+        double normProfileVector = Math.sqrt(powOfProfileSize);
+
         //최종 맛 벡터 유사도 계산
-        double vectorCosineSim = vectorDotProduct / (normWineVector * normProfileVector);
+        double vectorCosineSim;
+        if (normWineVector * normProfileVector == 0) {
+            vectorCosineSim = vectorDotProduct;
+        } else {
+            vectorCosineSim = vectorDotProduct / (normWineVector * normProfileVector);
+        }
 
         //parameter(알당산타바)와 맛벡터 유사도 합산
         return parameterCosineSim + vectorCosineSim;
