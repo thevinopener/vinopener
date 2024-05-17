@@ -165,8 +165,8 @@ class LoginScreen extends StatelessWidget {
               } catch (e) {
                 print(e);
               }
-              bool isSurveyDone = (survey == null);
-              // bool isSurveyDone = true;
+              // bool isSurveyDone = (survey == null);
+              bool isSurveyDone = true;
               Navigator.pushReplacement(
                 context,
                 CupertinoPageRoute(
