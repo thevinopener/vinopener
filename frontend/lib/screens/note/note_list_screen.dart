@@ -116,10 +116,12 @@ class _NoteListScreenState extends State<NoteListScreen> with RouteAware {
       }
     }
 
-    return WillPopScope(
-      onWillPop: () async {
-        handleBackPress(context);
-        return false;
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (!didPop) {
+          handleBackPress(context);
+        }
       },
       child: Scaffold(
         appBar: AppBar(
