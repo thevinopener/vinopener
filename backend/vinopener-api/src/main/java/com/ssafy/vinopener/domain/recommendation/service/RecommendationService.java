@@ -37,29 +37,8 @@ public class RecommendationService {
     public List<RecommendationGetListResponse> getContentRecommendation(ContentRecommendationType type) {
         List<ContentRecommendationEntity> contentRecommendationEntityList
                 = contentRecommendationRepository.findAllByContentRecommendationType(type);
-        List<WineEntity> resultList;
 
-        //기존 테이블 내용이 없으면, 새로 추천해서 결과를 테이블에 추가한다.
-        if (contentRecommendationEntityList.isEmpty()) {
-            resultList = recommendationProcessor.createRecommendation(type);
-        }
-        //내용이 있으면, 갱신 시간 이내인지 확인한다.
-        else {
-            Duration duration = Duration.between(
-                    contentRecommendationEntityList.getFirst().getCreatedTime(),
-                    LocalDateTime.now()
-            );
-
-            if (duration.toHours() < RENEWAL_HOUR) {
-                return contentRecommendationEntityList.stream()
-                        .map(recommendationMapper::toGetListResponse)
-                        .toList();
-            } else {
-                contentRecommendationRepository.deleteAllByContentRecommendationType(type);
-                resultList = recommendationProcessor.createRecommendation(type);
-            }
-        }
-        return resultList.stream()
+        return contentRecommendationEntityList.stream()
                 .map(recommendationMapper::toGetListResponse)
                 .toList();
     }
