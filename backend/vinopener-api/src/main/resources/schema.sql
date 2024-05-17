@@ -294,3 +294,14 @@ CREATE TABLE `behavior_recommendation`
   FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
   FOREIGN KEY (`wine_id`) REFERENCES `wine` (`wine_id`)
 );
+
+CREATE TABLE `assistant_thread`
+(
+  `assistant_thread_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+  `user_id`             BIGINT       NOT NULL,
+  `thread_id`           VARCHAR(255) NOT NULL,
+  `created_time`                 TIMESTAMP                           NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time`                 TIMESTAMP                           NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE (user_id),
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+);
