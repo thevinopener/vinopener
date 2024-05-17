@@ -42,3 +42,4 @@ public class AssistantThreadEntity extends BaseTimeEntity {
     private String threadId;
 
 }
+

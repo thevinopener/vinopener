@@ -1,5 +1,7 @@
 package com.ssafy.vinopener.domain.tastingnote.service;
 
+import com.ssafy.vinopener.domain.aichat.data.entity.AssistantThreadEntity;
+import com.ssafy.vinopener.domain.aichat.repository.AssistantThreadRepository;
 import com.ssafy.vinopener.domain.tastingnote.data.dto.request.TastingNoteCreateRequest;
 import com.ssafy.vinopener.domain.tastingnote.data.dto.request.TastingNoteUpdateRequest;
 import com.ssafy.vinopener.domain.tastingnote.data.dto.response.TastingNoteGetListResponse;
@@ -8,6 +10,7 @@ import com.ssafy.vinopener.domain.tastingnote.data.mapper.TastingNoteFlavourMapp
 import com.ssafy.vinopener.domain.tastingnote.data.mapper.TastingNoteMapper;
 import com.ssafy.vinopener.domain.tastingnote.exception.TastingNoteErrorCode;
 import com.ssafy.vinopener.domain.tastingnote.repository.TastingNoteRepository;
+import com.ssafy.vinopener.global.aiassistant.AssistantStream;
 import com.ssafy.vinopener.global.exception.VinopenerException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -28,6 +31,8 @@ public class TastingNoteService {
     private final TastingNoteRepository tastingNoteRepository;
     private final TastingNoteMapper tastingNoteMapper;
     private final TastingNoteFlavourMapper tastingNoteFlavourMapper;
+    private final AssistantThreadRepository assistantThreadRepository;
+    private final AssistantStream assistantStream;
 
     /**
      * 테이스팅노트 생성
@@ -54,7 +59,7 @@ public class TastingNoteService {
      * @param userId 유저 ID
      * @return 테이스팅노트 목록
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public List<TastingNoteGetListResponse> getList(
             final Long userId
     ) {
@@ -70,6 +75,7 @@ public class TastingNoteService {
 
         }
         assistantThreadRepository.deleteAllByUserId(userId);
+
         return tastingNoteRepository.findAllByUserId(userId).stream()
                 .map(tastingNoteMapper::toGetListResponse)
                 .toList();
@@ -137,3 +143,4 @@ public class TastingNoteService {
     }
 
 }
+
