@@ -10,10 +10,8 @@ import com.ssafy.vinopener.domain.recommendation.data.entity.BehaviorRecommendat
 import com.ssafy.vinopener.domain.recommendation.data.entity.ContentRecommendationEntity;
 import com.ssafy.vinopener.domain.recommendation.data.entity.enums.BehaviorRecommendationType;
 import com.ssafy.vinopener.domain.recommendation.data.entity.enums.ContentRecommendationType;
-import com.ssafy.vinopener.domain.recommendation.data.mapper.RecommendationMapper;
 import com.ssafy.vinopener.domain.recommendation.repository.BehaviorRecommendationRepository;
 import com.ssafy.vinopener.domain.recommendation.repository.ContentRecommendationRepository;
-import com.ssafy.vinopener.domain.recommendation.repository.RecommendationRepositoryQueryImpl;
 import com.ssafy.vinopener.domain.tastingnote.data.entity.TastingNoteEntity;
 import com.ssafy.vinopener.domain.tastingnote.data.entity.TastingNoteFlavourEntity;
 import com.ssafy.vinopener.domain.tastingnote.exception.TastingNoteErrorCode;
@@ -24,7 +22,6 @@ import com.ssafy.vinopener.domain.wine.data.entity.WineEntity;
 import com.ssafy.vinopener.domain.wine.data.entity.WineFlavourEntity;
 import com.ssafy.vinopener.domain.wine.data.entity.enums.WineType;
 import com.ssafy.vinopener.domain.wine.exception.WineErrorCode;
-import com.ssafy.vinopener.domain.wine.repository.FlavourTasteRepository;
 import com.ssafy.vinopener.domain.wine.repository.WineFlavourRepository;
 import com.ssafy.vinopener.domain.wine.repository.WineRepository;
 import com.ssafy.vinopener.domain.wine.repository.WineRepositoryQuery;
@@ -50,15 +47,12 @@ public class RecommendationProcessor {
     private final WineRepository wineRepository;
     private final PreferenceRepository preferenceRepository;
     private final TastingNoteRepository tastingNoteRepository;
-    private final RecommendationMapper recommendationMapper;
     private final ContentRecommendationRepository contentRecommendationRepository;
     private final CellarRepositoryQueryImpl cellarRepositoryQueryImpl;
     private final EntityManager entityManager;
     private final PreferenceMapper preferenceMapper;
-    private final RecommendationRepositoryQueryImpl recommendationRepositoryQueryImpl;
     private final BehaviorRecommendationRepository behaviorRecommendationRepository;
     private final UserRepository userRepository;
-    private final FlavourTasteRepository flavourTasteRepository;
     private final WineRepositoryQuery wineRepositoryQuery;
     private final WineFlavourRepository wineFlavourRepository;
 
@@ -142,7 +136,7 @@ public class RecommendationProcessor {
 
         // 사용자가 선호하는 타입의 와인만 먼저 DB에서 골라낸다.
         Set<WineType> wineTypeSet = preferenceMapper.map(preferenceEntity);
-        List<WineEntity> wineEntityList = recommendationRepositoryQueryImpl.findByWineTypeSet(wineTypeSet);
+        List<WineEntity> wineEntityList = wineRepositoryQuery.findAllByTypeExceptCellar(wineTypeSet, userId);
 
         // 해당하는 타입의 모든 와인에 대해, 사용자의 선호도와 코사인 유사도 계산 후
         List<WineEntity> resultList = wineEntityList.stream()
