@@ -6,7 +6,7 @@ import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/providers/search/search_history_provider.dart';
 import 'package:frontend/screens/home_screen.dart';
-import 'package:frontend/screens/search/search_camera_screen.dart';
+import 'package:frontend/screens/search/search_main_camera_screen.dart';
 // screens
 import 'package:frontend/screens/search/search_result_screen.dart';
 import 'package:frontend/screens/wine/type_search_screen.dart';

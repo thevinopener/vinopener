@@ -7,7 +7,7 @@ import 'package:frontend/models/wine_model.dart';
 import 'package:frontend/providers/note/note_wine_provider.dart';
 import 'package:frontend/screens/feed/feed_wine_search_screen.dart';
 import 'package:frontend/screens/note/note_screen.dart';
-import 'package:frontend/screens/search/search_camera_screen.dart';
+import 'package:frontend/screens/search/search_main_camera_screen.dart';
 import 'package:frontend/screens/search/search_detail_screen.dart';
 import 'package:frontend/services/wine_service.dart';
 import 'package:frontend/widgets/feed/feed_wine_item.dart';
@@ -236,12 +236,18 @@ class _WineSearchScreenState extends State<WineSearchScreen> {
                               ),
                             );
                           },
+
+
+
                           child: Container(
                             child: FeedWineItem(
                               wine: item,
                               isSelected: false,
                             ),
                           ),
+
+
+
                         ),
                         noItemsFoundIndicatorBuilder: (context) =>
                             //TODO: 검색을 하지 않아서 현재 검색 결과가 비어 있는 경우

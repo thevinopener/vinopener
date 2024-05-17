@@ -6,7 +6,7 @@ import 'package:frontend/providers/bottombar_provider.dart';
 import 'package:frontend/screens/feed/feed_screen.dart';
 import 'package:frontend/screens/note/note_list_screen.dart';
 import 'package:frontend/screens/mypage/mypage_screen.dart';
-import 'package:frontend/screens/search/search_camera_screen.dart';
+import 'package:frontend/screens/search/search_main_camera_screen.dart';
 import 'package:frontend/screens/recommend/recommend_screen.dart';
 
 class HomeScreen extends StatefulWidget {
