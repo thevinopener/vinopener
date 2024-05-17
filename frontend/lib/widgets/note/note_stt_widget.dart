@@ -132,8 +132,8 @@ class SttWidgetState extends State<SttWidget> {
         _speech.listen(
           onResult: _handleResult,
           localeId: 'ko-KR',
-          listenFor: Duration(seconds: 30),
-          pauseFor: Duration(seconds: 10),
+          listenFor: Duration(seconds: 10),
+          pauseFor: Duration(seconds: 5),
         );
       } else {
         setState(() => _isListening = false);
