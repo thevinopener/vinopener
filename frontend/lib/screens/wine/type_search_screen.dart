@@ -3,7 +3,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/models/wine_model.dart';
-import 'package:frontend/screens/search/search_camera_screen.dart';
 import 'package:frontend/screens/search/search_detail_screen.dart';
 import 'package:frontend/services/wine_service.dart';
 import 'package:frontend/widgets/feed/feed_wine_item.dart';
