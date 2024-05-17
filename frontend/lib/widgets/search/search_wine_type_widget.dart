@@ -1,4 +1,5 @@
 // flutter
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:frontend/constants/wine_type.dart';
@@ -77,7 +78,7 @@ Widget RecommendWineTypeWidget(BuildContext context, String wineType) {
     onPressed: () async {
       await context.read<SearchWineListProvider>().findByWineType(wineType);
       // Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultScreen(searchValue: wineType, isWineType: true)));
-      Navigator.push(context, MaterialPageRoute(builder: (context) => TypeSearchScreen(type: WineType.wineTypeMap[wineType])));
+      Navigator.push(context, CupertinoPageRoute(builder: (context) => TypeSearchScreen(type: WineType.wineTypeMap[wineType])));
     },
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
