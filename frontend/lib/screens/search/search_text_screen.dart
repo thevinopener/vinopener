@@ -129,15 +129,19 @@ class _SearchTextScreenState extends State<SearchTextScreen> {
                                 Expanded(
                                   child: TextButton(
                                     onPressed: () {
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: (context) =>
+                                      //         SearchResultScreen(
+                                      //             searchValue:
+                                      //                 recentSearchList[index]
+                                      //                     .content),
+                                      //   ),
+                                      // );
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              SearchResultScreen(
-                                                  searchValue:
-                                                      recentSearchList[index]
-                                                          .content),
-                                        ),
+                                        CupertinoPageRoute(builder: (context) => WineSearchScreen(keyword: recentSearchList[index].content)),
                                       );
                                     },
                                     child: Text(
