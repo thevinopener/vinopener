@@ -16,7 +16,7 @@ class DismissibleBottomSheetView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.transparent,
-      height: MediaQuery.of(context).size.height*0.35,
+      height: MediaQuery.of(context).size.height*0.4,
       child: SafeArea(
         bottom: false,
         child: Column(
