@@ -5,6 +5,8 @@ import com.ssafy.vinopener.domain.preference.data.dto.response.PreferenceGetResp
 import com.ssafy.vinopener.domain.preference.data.mapper.PreferenceMapper;
 import com.ssafy.vinopener.domain.preference.exception.PreferenceErrorCode;
 import com.ssafy.vinopener.domain.preference.repository.PreferenceRepository;
+import com.ssafy.vinopener.domain.recommendation.data.entity.enums.BehaviorRecommendationType;
+import com.ssafy.vinopener.domain.recommendation.repository.BehaviorRecommendationRepository;
 import com.ssafy.vinopener.global.exception.VinopenerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ public class PreferenceService {
 
     private final PreferenceRepository preferenceRepository;
     private final PreferenceMapper preferenceMapper;
+    private final BehaviorRecommendationRepository behaviorRecommendationRepository;
 
     /**
      * 선호도 생성
@@ -30,6 +33,8 @@ public class PreferenceService {
     ) {
         preferenceRepository
                 .save(preferenceMapper.toEntity(createRequest, userId));
+        behaviorRecommendationRepository.deleteAllByUserIdAndBehaviorRecommendationType(userId,
+                BehaviorRecommendationType.PREFERENCE);
     }
 
     /**
@@ -62,6 +67,8 @@ public class PreferenceService {
                 .orElseThrow(() -> new VinopenerException(PreferenceErrorCode.PREFERENCE_NOT_FOUND))
                 .getId();
         preferenceRepository.save(preferenceMapper.toEntity(preferenceId, updateRequest, userId));
+        behaviorRecommendationRepository.deleteAllByUserIdAndBehaviorRecommendationType(userId,
+                BehaviorRecommendationType.PREFERENCE);
     }
 
 }

@@ -12,6 +12,8 @@ import 'package:frontend/widgets/feed/feed_wine_item.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import '../search/search_second_camera_screen.dart';
+
 class CountrySearchScreen extends StatefulWidget {
   String? country;
 
