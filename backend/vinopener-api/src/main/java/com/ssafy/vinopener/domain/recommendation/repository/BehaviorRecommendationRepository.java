@@ -16,4 +16,7 @@ public interface BehaviorRecommendationRepository extends JpaRepository<Behavior
     @Transactional
     void deleteAllByUserId(Long userId);
 
+    @Transactional
+    void deleteAllByUserIdAndBehaviorRecommendationType(Long userId, BehaviorRecommendationType type);
+
 }
