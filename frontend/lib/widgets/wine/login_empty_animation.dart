@@ -60,7 +60,6 @@ Widget LoginEmptyAnimation(BuildContext context) {
             return Container(
               width: cardWidth, // 버튼 너비 설정
               height: cardWidth, // 버튼 높이를 너비와 동일하게 설정하여 정사각형 만듦
-
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 // 이미지를 버튼 배경으로 사용
@@ -71,6 +70,40 @@ Widget LoginEmptyAnimation(BuildContext context) {
                 borderRadius: BorderRadius.circular(15), // 버튼의 테두리를 둥글게
               ),
               child: ElevatedButton(
+                onLongPress: () async {
+                  showToastWidget(
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24.0, vertical: 12.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25.0),
+                        color: AppColors.primary,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.language, color: Colors.white),
+                          SizedBox(width: 12.0),
+                          Text(
+                            '${translateCountryName(wineNationList[index])} 와인이 궁금한가요?',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: AppFontSizes.medium,
+                            ),
+                          ),
+                          SizedBox(width: 12.0),
+                          Icon(Icons.language, color: Colors.white),
+                        ],
+                      ),
+                    ),
+                    context: context,
+                    duration: Duration(seconds: 2),
+                    position: StyledToastPosition(
+                      align: Alignment(0, -0.4), // 좌상단 (-1, -1) / 우하단 (1, 1)
+                    ),
+                  );
+                },
                 onPressed: () async {
                   showToastWidget(
                     Container(
@@ -78,7 +111,7 @@ Widget LoginEmptyAnimation(BuildContext context) {
                           horizontal: 24.0, vertical: 12.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25.0),
-                        color: AppColors.secondary,
+                        color: AppColors.primary,
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -86,7 +119,7 @@ Widget LoginEmptyAnimation(BuildContext context) {
                           Icon(Icons.info, color: Colors.white),
                           SizedBox(width: 12.0),
                           Text(
-                            '로그인 하고 ${translateCountryName(wineNationList[index])} 가자~!',
+                            '로그인 하면 알려줄게요 !',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
