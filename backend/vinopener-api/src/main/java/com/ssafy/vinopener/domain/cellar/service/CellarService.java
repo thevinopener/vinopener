@@ -8,12 +8,17 @@ import com.ssafy.vinopener.domain.cellar.data.entity.CellarEntity;
 import com.ssafy.vinopener.domain.cellar.data.mapper.CellarMapper;
 import com.ssafy.vinopener.domain.cellar.exception.CellarErrorCode;
 import com.ssafy.vinopener.domain.cellar.repository.CellarRepository;
+import com.ssafy.vinopener.domain.recommendation.data.entity.BehaviorRecommendationEntity;
+import com.ssafy.vinopener.domain.recommendation.data.entity.enums.BehaviorRecommendationType;
+import com.ssafy.vinopener.domain.recommendation.repository.BehaviorRecommendationRepository;
+import com.ssafy.vinopener.domain.recommendation.repository.BehaviorRecommendationRepositoryQuery;
 import com.ssafy.vinopener.domain.tastingnote.repository.TastingNoteRepository;
 import com.ssafy.vinopener.domain.user.exception.UserErrorCode;
 import com.ssafy.vinopener.domain.user.repository.UserRepository;
 import com.ssafy.vinopener.domain.wine.exception.WineErrorCode;
 import com.ssafy.vinopener.domain.wine.repository.WineRepository;
 import com.ssafy.vinopener.global.exception.VinopenerException;
+import com.ssafy.vinopener.global.recommendation.RecommendationProcessor;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +36,9 @@ public class CellarService {
     private final WineRepository wineRepository;
     private final UserRepository userRepository;
     private final TastingNoteRepository tastingNoteRepository;
+    private final BehaviorRecommendationRepositoryQuery behaviorRecommendationRepositoryQuery;
+    private final RecommendationProcessor recommendationProcessor;
+    private final BehaviorRecommendationRepository behaviorRecommendationRepository;
 
     /**
      * 셀러에 아이템 추가
@@ -53,6 +61,25 @@ public class CellarService {
 
         if (cellarRepository.existsByWineIdAndUserId(wine.getId(), userId)) {
             throw new VinopenerException(CellarErrorCode.CELLAR_ALREADY_EXISTS);
+        }
+
+        //셀러에 추가된 와인이 사용자의 선호도, 테이스팅 노트 추천 결과 테이블에 존재하는지 확인
+        List<BehaviorRecommendationEntity> prefRecommendationList
+                = behaviorRecommendationRepositoryQuery
+                .findAllByUserIdAndWineIdWithPref(userId, wine.getId());
+
+        List<BehaviorRecommendationEntity> noteRecommendationList
+                = behaviorRecommendationRepositoryQuery
+                .findAllByUserIdAndWineIdWithNote(userId, wine.getId());
+
+        if (!prefRecommendationList.isEmpty()) {
+            behaviorRecommendationRepository.deleteAllByUserIdAndBehaviorRecommendationType(userId,
+                    BehaviorRecommendationType.PREFERENCE);
+        }
+
+        if (!noteRecommendationList.isEmpty()) {
+            behaviorRecommendationRepository.deleteAllByUserIdAndBehaviorRecommendationType(userId,
+                    BehaviorRecommendationType.TASTING_NOTE);
         }
 
         CellarEntity cellar = CellarEntity

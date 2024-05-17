@@ -2,6 +2,8 @@ package com.ssafy.vinopener.domain.tastingnote.service;
 
 import com.ssafy.vinopener.domain.aichat.data.entity.AssistantThreadEntity;
 import com.ssafy.vinopener.domain.aichat.repository.AssistantThreadRepository;
+import com.ssafy.vinopener.domain.recommendation.data.entity.enums.BehaviorRecommendationType;
+import com.ssafy.vinopener.domain.recommendation.repository.BehaviorRecommendationRepository;
 import com.ssafy.vinopener.domain.tastingnote.data.dto.request.TastingNoteCreateRequest;
 import com.ssafy.vinopener.domain.tastingnote.data.dto.request.TastingNoteUpdateRequest;
 import com.ssafy.vinopener.domain.tastingnote.data.dto.response.TastingNoteGetListResponse;
@@ -33,6 +35,7 @@ public class TastingNoteService {
     private final TastingNoteFlavourMapper tastingNoteFlavourMapper;
     private final AssistantThreadRepository assistantThreadRepository;
     private final AssistantStream assistantStream;
+    private final BehaviorRecommendationRepository behaviorRecommendationRepository;
 
     /**
      * 테이스팅노트 생성
@@ -50,6 +53,9 @@ public class TastingNoteService {
         tastingNote.getFlavours().addAll(createRequest.flavourTasteIds().stream()
                 .map(flavourTasteId -> tastingNoteFlavourMapper.toEntity(tastingNote, flavourTasteId))
                 .toList());
+
+        behaviorRecommendationRepository.deleteAllByUserIdAndBehaviorRecommendationType(userId,
+                BehaviorRecommendationType.TASTING_NOTE);
         return tastingNoteRepository.save(tastingNote).getId();
     }
 
@@ -126,6 +132,9 @@ public class TastingNoteService {
         tastingNote.getFlavours().addAll(updateRequest.flavourTasteIds().stream()
                 .map(flavourTasteId -> tastingNoteFlavourMapper.toEntity(tastingNote, flavourTasteId))
                 .toList());
+
+        behaviorRecommendationRepository.deleteAllByUserIdAndBehaviorRecommendationType(userId,
+                BehaviorRecommendationType.TASTING_NOTE);
     }
 
     /**
@@ -140,6 +149,8 @@ public class TastingNoteService {
             final Long userId
     ) {
         tastingNoteRepository.deleteByIdAndUserId(id, userId);
+        behaviorRecommendationRepository.deleteAllByUserIdAndBehaviorRecommendationType(userId,
+                BehaviorRecommendationType.TASTING_NOTE);
     }
 
 }
