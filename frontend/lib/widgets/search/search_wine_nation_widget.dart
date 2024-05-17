@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:frontend/models/search/search_wine_name_result.dart';
 import 'package:frontend/screens/wine/country_search_screen.dart';
 import 'package:provider/provider.dart';
@@ -74,6 +75,41 @@ Widget SearchWineNationWidget(BuildContext context) {
                 borderRadius: BorderRadius.circular(15), // 버튼의 테두리를 둥글게
               ),
               child: ElevatedButton(
+                onLongPress: () async {
+                  showToastWidget(
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24.0, vertical: 12.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25.0),
+                        color: AppColors.black,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.language, color: Colors.white),
+                          SizedBox(width: 12.0),
+                          Text(
+                            '오늘은 ${translateCountryName(wineNationList[index])} 와인으로?!',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: AppFontSizes.medium,
+                            ),
+                          ),
+                          SizedBox(width: 12.0),
+                          Icon(Icons.language, color: Colors.white),
+                        ],
+                      ),
+                    ),
+                    context: context,
+                    duration: Duration(seconds: 2),
+                    position: StyledToastPosition(
+                      align: Alignment(0, -0.4), // 좌상단 (-1, -1) / 우하단 (1, 1)
+                    ),
+                  );
+                },
+
                 onPressed: () async {
                   Navigator.push(
                       context,

@@ -1,5 +1,6 @@
 // flutter
 import 'package:flutter/material.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:frontend/constants/wine_type.dart';
 import 'package:frontend/screens/wine/type_search_screen.dart';
 import 'package:provider/provider.dart';
@@ -39,6 +40,40 @@ Color getColorFromWineButtonColor(String color) {
 
 Widget RecommendWineTypeWidget(BuildContext context, String wineType) {
   return ElevatedButton(
+    onLongPress: () {
+      showToastWidget(
+        Container(
+          padding: const EdgeInsets.symmetric(
+              horizontal: 24.0, vertical: 12.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25.0),
+            color: Colors.black,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.favorite, color: Colors.white),
+              SizedBox(width: 12.0),
+              Text(
+                '오늘은 ${wineType}와인이 끌리시나요?',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: AppFontSizes.medium,
+                ),
+              ),
+              SizedBox(width: 12.0),
+              Icon(Icons.favorite, color: Colors.white),
+            ],
+          ),
+        ),
+        context: context,
+        duration: Duration(seconds: 2),
+        position: StyledToastPosition(
+          align: Alignment(0, -0.4), // 좌상단 (-1, -1) / 우하단 (1, 1)
+        ),
+      );
+    },
     onPressed: () async {
       await context.read<SearchWineListProvider>().findByWineType(wineType);
       // Navigator.push(context, MaterialPageRoute(builder: (context) => SearchResultScreen(searchValue: wineType, isWineType: true)));

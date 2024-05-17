@@ -52,7 +52,7 @@ Color RecommendTypeToColor(String recommendType) {
   }
 }
 
-Widget SearchCarouselWidget (BuildContext context,
+Widget SearchCarouselWidget(BuildContext context,
     {required String recommendType}) {
   int _current = 0;
   final CarouselController _carouselController = CarouselController();
