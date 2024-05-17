@@ -3,9 +3,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/models/wine_model.dart';
-import 'package:frontend/providers/note/note_wine_provider.dart';
-import 'package:frontend/screens/note/note_screen.dart';
-import 'package:frontend/screens/search/search_main_camera_screen.dart';
+import 'package:frontend/screens/search/search_camera_screen.dart';
 import 'package:frontend/screens/search/search_detail_screen.dart';
 import 'package:frontend/services/wine_service.dart';
 import 'package:frontend/widgets/feed/feed_wine_item.dart';
@@ -13,7 +11,6 @@ import 'package:frontend/widgets/feed/feed_wine_item.dart';
 // constants
 import 'package:frontend/constants/fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:provider/provider.dart';
 
 import '../search/search_second_camera_screen.dart';
 
@@ -35,67 +32,16 @@ class _TypeSearchScreenState extends State<TypeSearchScreen> {
 
   TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
-  List<Wine> _wineList = [];
   bool _isLoading = false;
-  Wine? _selectedWine;
   int? _selectedWineId;
 
   static const _pageSize = 10;
   PagingController<int, Wine> _pagingController =
   PagingController(firstPageKey: 0);
 
-  // _searchWines(String keyword) async {
-  //   if (keyword.isEmpty) return;
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //   try {
-  //     WineService.pageSearchWineList(keyword, 0);
-  //     // List<Wine> wineList = await WineService.searchWineList(keyword);
-  //     List<Wine> wineList = [];
-  //     setState(() {
-  //       _wineList = wineList;
-  //       _isLoading = false;
-  //     });
-  //   } catch (e) {
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //     print('Failed to fetch wines: $e');
-  //   }
-  // }
-
-  void _toggleWine(Wine wine) {
-    setState(() {
-      if (_selectedWineId == wine.id) {
-        _selectedWineId = null;
-        _selectedWine = null;
-      } else {
-        _selectedWineId = wine.id;
-        _selectedWine = wine;
-      }
-    });
-  }
-
-  Future<void> _fetchTypePage(int pageKey) async {
-    try {
-      final newItems =
-      await WineService.pageSearchTypeWineList(widget.type!, pageKey);
-      final isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
-      } else {
-        final nextPageKey = pageKey + 1;
-        _pagingController.appendPage(newItems, nextPageKey);
-      }
-    } catch (error) {
-      _pagingController.error = error;
-    }
-  }
-
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems =
+      final newItems = isFirstSearch ? await WineService.pageSearchTypeWineList(widget.type!, pageKey) :
       await WineService.pageSearchWineList(_searchController.text, pageKey);
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
@@ -127,17 +73,10 @@ class _TypeSearchScreenState extends State<TypeSearchScreen> {
     super.initState();
     _initCameras();
     _searchController = TextEditingController(text: widget.type);
-    // _pagingController.addPageRequestListener((pageKey) {
-    //   _fetchTypePage(pageKey);
-    // });
     _pagingController.addPageRequestListener((pageKey) {
-      isFirstSearch ? _fetchTypePage(pageKey) : _fetchPage(pageKey);
+      _fetchPage(pageKey);
     });
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   FocusScope.of(context).requestFocus(_searchFocusNode);
-    // });
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // 초기 포커스 설정하지만 키보드는 올리지 않음
       _searchFocusNode.canRequestFocus = false;
       FocusScope.of(context).requestFocus(_searchFocusNode);
     });
@@ -147,25 +86,6 @@ class _TypeSearchScreenState extends State<TypeSearchScreen> {
   void dispose() {
     _pagingController.dispose();
     super.dispose();
-  }
-
-  void setPagingFunction() {
-    _pagingController.itemList = [];
-    _pagingController.removePageRequestListener((pageKey){_fetchTypePage(pageKey);});
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
-  }
-
-  void _resetAndChangePagingListener() {
-    _pagingController.itemList = []; // 현재 페이지 데이터 초기화
-    _pagingController.nextPageKey = 0; // 페이지 키 초기화
-    _pagingController.removePageRequestListener((pageKey) {
-      isFirstSearch ? _fetchTypePage(pageKey) : _fetchPage(pageKey);
-    });
-    isFirstSearch = false; // 첫 검색이 아니므로 플래그 변경
-    _pagingController.addPageRequestListener(_fetchPage); // 새 리스너 설정
-    _pagingController.refresh(); // 페이지 컨트롤러 새로고침
   }
 
   @override
@@ -200,11 +120,8 @@ class _TypeSearchScreenState extends State<TypeSearchScreen> {
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text('검색어를 입력해주세요!')));
                   } else {
-                    // _searchWines(value);
-                    // setPagingFunction();
-                    // _pagingController.refresh();
-                    _searchController.text = value;
-                    _resetAndChangePagingListener();
+                    isFirstSearch = false;
+                    _pagingController.refresh();
                   }
                 },
                 controller: _searchController,
