@@ -3,11 +3,14 @@ package coffee.ssafy.vinopenerbatch.global.writer;
 import coffee.ssafy.vinopenerbatch.domain.recommendation.entity.enums.ContentRecommendationType;
 import coffee.ssafy.vinopenerbatch.domain.recommendation.repository.ContentRecommendationRepositoryQuery;
 import coffee.ssafy.vinopenerbatch.domain.wine.entity.WineEntity;
+import coffee.ssafy.vinopenerbatch.domain.wine.entity.WineViewEntity;
 import coffee.ssafy.vinopenerbatch.domain.wine.repository.WineRepository;
+import coffee.ssafy.vinopenerbatch.domain.wine.repository.WineViewRepository;
 import coffee.ssafy.vinopenerbatch.global.common.TimeHolder;
 import coffee.ssafy.vinopenerbatch.global.recommendation.RecommendationProcessor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.Chunk;
@@ -16,7 +19,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -29,10 +34,25 @@ public class UpdateViewWriter implements ItemWriter<String> {
     //단순 scheduler 용 코드
     private final RecommendationProcessor recommendationProcessor;
     private final ContentRecommendationRepositoryQuery contentRecommendationRepositoryQuery;
+    private final WineViewRepository wineViewRepository;
+    private final WineRepository wineRepository;
 
     @Transactional
     @Override
     public void write(Chunk<? extends String> items) throws Exception {
+
+        Iterable<WineViewEntity> wineViewEntityList = wineViewRepository.findAll();
+        wineViewEntityList.forEach(wineViewEntity -> {
+            WineEntity wineEntity = wineRepository.findById(wineViewEntity.getWineId())
+                    .orElseThrow(() -> new EntityNotFoundException("Wine not found"));
+            wineEntity.increaseViewByCount(wineViewEntity.getViewCount().intValue());
+            wineRepository.save(wineEntity);
+//            wineViewEntity.setView(0L);
+//            wineViewRepository.save(wineViewEntity);
+            wineViewRepository.delete(wineViewEntity);
+
+        });
+
         contentRecommendationRepositoryQuery.deleteAllByContentRecommendationType(ContentRecommendationType.VIEW);
         recommendationProcessor.createRecommendation(ContentRecommendationType.VIEW);
     }

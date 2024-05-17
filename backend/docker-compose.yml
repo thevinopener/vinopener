@@ -75,6 +75,7 @@ services:
     build: vinopener-batch
     restart: on-failure
     networks:
+      - redis
       - db
     environment:
       - TZ=Asia/Seoul
@@ -84,7 +85,9 @@ services:
       - MARIADB_DATABASE
       - MARIADB_USER
       - MARIADB_PASSWORD
+      - REDIS_HOST=redis
     depends_on:
+      - redis
       - mariadb
   
   redis:
