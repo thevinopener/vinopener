@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +18,7 @@ import 'package:frontend/services/feed_service.dart';
 import 'package:frontend/widgets/mypage/bookmark_wine_item.dart';
 import 'package:frontend/widgets/mypage/cellar_wine_item.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CustomCupertinoPageRoute extends CupertinoPageRoute {
   CustomCupertinoPageRoute(
@@ -197,7 +199,7 @@ class _MyPageScreenState extends State<MyPageScreen>
                   Positioned(
                     bottom: -avatarRadius,
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage('${user.imageUrl}'),
+                      backgroundImage: CachedNetworkImageProvider('${user.imageUrl}'),
                       radius: avatarRadius,
                     ),
                   ),
@@ -260,8 +262,8 @@ class _MyPageScreenState extends State<MyPageScreen>
                                 },
                                 child: Hero(
                                   tag: 'feedImage${snapshot.data[index].id}',
-                                  child: Image.network(
-                                    snapshot.data[index].imageUrl,
+                                  child: Image(image: CachedNetworkImageProvider(
+                                    snapshot.data[index].imageUrl),
                                     width: 135,
                                     height: 135,
                                     fit: BoxFit.cover,
@@ -275,8 +277,106 @@ class _MyPageScreenState extends State<MyPageScreen>
                             ),
                           );
                         }
-                        return const Center(
-                          child: CircularProgressIndicator(),
+                        return Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width / 3.2,
+                                    height: MediaQuery.of(context).size.width / 3.2,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(width: 1),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width / 3.2,
+                                    height: MediaQuery.of(context).size.width / 3.2,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(width: 1),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width / 3.2,
+                                    height: MediaQuery.of(context).size.width / 3.2,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 5),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width / 3.2,
+                                    height: MediaQuery.of(context).size.width / 3.2,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(width: 1),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width / 3.2,
+                                    height: MediaQuery.of(context).size.width / 3.2,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(width: 1),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width / 3.2,
+                                    height: MediaQuery.of(context).size.width / 3.2,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 5),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width / 3.2,
+                                    height: MediaQuery.of(context).size.width / 3.2,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(width: 1),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width / 3.2,
+                                    height: MediaQuery.of(context).size.width / 3.2,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(width: 1),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width / 3.2,
+                                    height: MediaQuery.of(context).size.width / 3.2,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+
                         );
                       },
                     ),

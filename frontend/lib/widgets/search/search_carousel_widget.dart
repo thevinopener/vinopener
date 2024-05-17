@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -190,7 +191,8 @@ Widget SearchCarouselWidget(BuildContext context,
                         context: context,
                         duration: Duration(seconds: 2),
                         position: StyledToastPosition(
-                          align: Alignment(0, -0.4), // 좌상단 (-1, -1) / 우하단 (1, 1)
+                          align:
+                              Alignment(0, -0.4), // 좌상단 (-1, -1) / 우하단 (1, 1)
                         ),
                       );
                     },
@@ -231,7 +233,9 @@ Widget SearchCarouselWidget(BuildContext context,
                             height: 200,
                             child: Transform.rotate(
                               angle: 0.8, // 1.57이 눕히는거
-                              child: Image.network(wineList[index].imageUrl),
+                              child: Image(
+                                  image: CachedNetworkImageProvider(
+                                      wineList[index].imageUrl)),
                             ),
                           ),
                           // 생산국가

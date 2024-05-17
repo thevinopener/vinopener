@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/colors.dart';
 import 'package:frontend/constants/fonts.dart';
@@ -59,7 +60,8 @@ class NoteCard extends StatelessWidget {
                     bottomLeft: Radius.circular(12),
                   ),
                   image: DecorationImage(
-                    image: NetworkImage(wineNoteCard.wine.imageUrl),
+                    image: CachedNetworkImageProvider(
+                        wineNoteCard.wine.imageUrl),
                     fit: BoxFit.fitHeight, // 이미지가 컨테이너를 꽉 채우도록 설정
                   ),
                 ),

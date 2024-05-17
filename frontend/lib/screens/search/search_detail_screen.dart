@@ -177,6 +177,7 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                               ),
                               softWrap: true,
                             ),
+                            SizedBox(height: 10),
                             Text(
                               wineDetail.winery,
                               textAlign: TextAlign.center,
@@ -193,16 +194,17 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                               wineDetail.vintage.toString(),
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: AppFontSizes.mediumLarge,
+                                fontSize: AppFontSizes.medium,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
+                            SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
                                   Icons.star,
-                                  color: AppColors.primary,
+                                  color: AppColors.secondary,
                                 ),
                                 Text(
                                   // ' 4.6',
@@ -211,11 +213,12 @@ class _SearchDetailScreenState extends State<SearchDetailScreen> {
                                   style: TextStyle(
                                     fontSize: AppFontSizes.large,
                                     fontWeight: FontWeight.w600,
-                                    color: AppColors.primary,
+                                    color: AppColors.secondary,
                                   ),
                                 ),
                               ],
                             ),
+                            SizedBox(height: 10),
                             SearchBookmarkWidget(
                               wineId: wineDetail.id,
                               bookmark: wineDetail.isBookmark,

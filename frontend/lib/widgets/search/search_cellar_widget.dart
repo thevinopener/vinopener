@@ -69,6 +69,34 @@ class _SearchCellarWidgetState extends State<SearchCellarWidget> {
               },
               onPressed: () async {
                 SearchService.removeCellar(widget.wineId);
+                showToastWidget(
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24.0, vertical: 12.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25.0),
+                      color: Colors.black,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '셀러에서 삭제되었습니다.',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: AppFontSizes.medium,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  context: context,
+                  duration: Duration(seconds: 1),
+                  position: StyledToastPosition(
+                    align: Alignment(0, 0.9), // 좌상단 (-1, -1) / 우하단 (1, 1)
+                  ),
+                );
                 setState(() {
                   widget.cellar = false;
                 });
@@ -134,6 +162,34 @@ class _SearchCellarWidgetState extends State<SearchCellarWidget> {
               },
               onPressed: () async {
                 SearchService.addCellar(widget.wineId);
+                showToastWidget(
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24.0, vertical: 12.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25.0),
+                      color: Colors.black,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '셀러에 추가되었습니다.',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: AppFontSizes.medium,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  context: context,
+                  duration: Duration(seconds: 1),
+                  position: StyledToastPosition(
+                    align: Alignment(0, 0.9), // 좌상단 (-1, -1) / 우하단 (1, 1)
+                  ),
+                );
                 setState(() {
                   widget.cellar = true;
                 });
