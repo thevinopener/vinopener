@@ -26,7 +26,6 @@ class WineSearchScreen extends StatefulWidget {
 }
 
 class _WineSearchScreenState extends State<WineSearchScreen> {
-
   late List<CameraDescription> cameras;
   late CameraDescription firstCamera;
   bool _isCameraInitialized = false;
@@ -40,7 +39,7 @@ class _WineSearchScreenState extends State<WineSearchScreen> {
 
   static const _pageSize = 10;
   final PagingController<int, Wine> _pagingController =
-  PagingController(firstPageKey: 0);
+      PagingController(firstPageKey: 0);
 
   // _searchWines(String keyword) async {
   //   if (keyword.isEmpty) return;
@@ -91,7 +90,7 @@ class _WineSearchScreenState extends State<WineSearchScreen> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems =
-      await WineService.pageSearchWineList(_searchController.text, pageKey);
+          await WineService.pageSearchWineList(_searchController.text, pageKey);
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
@@ -129,7 +128,7 @@ class _WineSearchScreenState extends State<WineSearchScreen> {
     return Scaffold(
       body: GestureDetector(
         onTap: () {
-          FocusScope.of(context).unfocus();
+          // FocusScope.of(context).unfocus();
         },
         child: Column(
           children: [
@@ -162,37 +161,48 @@ class _WineSearchScreenState extends State<WineSearchScreen> {
                 },
                 controller: _searchController,
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(vertical: 0),
+                  contentPadding: EdgeInsets.symmetric(vertical: 8),
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   disabledBorder: InputBorder.none,
-                  suffix: Row(
-                    mainAxisSize: MainAxisSize.min, // Row가 차지하는 공간을 최소로 하여 아이콘들이 압축되지 않게 함
-                    children: <Widget>[
-                      IconButton(
-                          icon: Icon(Icons.camera_alt_outlined),
-                          onPressed: _isCameraInitialized
-                              ? () {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    SearchCameraScreen(camera: firstCamera),
-                              ),
-                            );
-                          }
-                              : null
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.clear), // 두 번째 아이콘 예시로 'clear' 아이콘을 추가
-                        onPressed: () {
-                          setState(() {
-                            _searchController.clear();
-                            FocusScope.of(context).requestFocus(_searchFocusNode);
-                          });// 텍스트 필드 내용 지우기
-                        },
-                      ),
-                    ],
+                  suffix: Container(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      // Row가 차지하는 공간을 최소로 하여 아이콘들이 압축되지 않게 함
+                      children: <Widget>[
+                        IconButton(
+                            icon: Padding(
+                              padding: EdgeInsets.only(top: 10.0),
+                              child: Icon(Icons.camera_alt_outlined),
+                            ),
+                            onPressed: _isCameraInitialized
+                                ? () {
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            SearchCameraScreen(
+                                                camera: firstCamera),
+                                      ),
+                                    );
+                                  }
+                                : null),
+                        IconButton(
+                          icon: Padding(
+                            padding: EdgeInsets.only(top: 10.0),
+                            child: Icon(Icons.clear),
+                          ),
+                          // 두 번째 아이콘 예시로 'clear' 아이콘을 추가
+                          onPressed: () {
+                            setState(() {
+                              _searchController.clear();
+                              FocusScope.of(context)
+                                  .requestFocus(_searchFocusNode);
+                            }); // 텍스트 필드 내용 지우기
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                   prefixIcon: IconButton(
                     padding: EdgeInsets.only(left: 20, right: 10),
@@ -213,59 +223,58 @@ class _WineSearchScreenState extends State<WineSearchScreen> {
               child: _isLoading
                   ? Center(child: CircularProgressIndicator())
                   : PagedListView<int, Wine>(
-                pagingController: _pagingController,
-                builderDelegate: PagedChildBuilderDelegate<Wine>(
-                  itemBuilder: (context, item, index) =>
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            CupertinoPageRoute(
-                              builder: (context) =>
-                                  SearchDetailScreen(wineId: item.id!),
+                      pagingController: _pagingController,
+                      builderDelegate: PagedChildBuilderDelegate<Wine>(
+                        itemBuilder: (context, item, index) => GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              CupertinoPageRoute(
+                                builder: (context) =>
+                                    SearchDetailScreen(wineId: item.id!),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            child: FeedWineItem(
+                              wine: item,
+                              isSelected: false,
                             ),
-                          );
-                        },
-                        child: Container(
-                          child: FeedWineItem(
-                            wine: item,
-                            isSelected: false,
                           ),
                         ),
+                        noItemsFoundIndicatorBuilder: (context) =>
+                            //TODO: 검색을 하지 않아서 현재 검색 결과가 비어 있는 경우
+                            Center(
+                          child: Text(
+                            '🔍\n검색된 와인이 없습니다!\n다른 키워드로 검색해볼까요?\n✏',
+                            style: TextStyle(
+                              fontSize: AppFontSizes.mediumLarge,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        firstPageErrorIndicatorBuilder: (context) =>
+                            //TODO: 검색어가 괴상해서 검색 결과가 안 나오는 경우
+                            Text(
+                          '\n검색 결과가 없습니다.\n다른 검색어로 새로운 와인을 찾아보세요!',
+                          style: TextStyle(
+                            fontSize: AppFontSizes.mediumSmall,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        newPageErrorIndicatorBuilder: (context) =>
+                            //TODO: 검색 결과가 있지만 끝을 봐서 아래에 알려줄 문구
+                            Text(
+                          '\n🔍 더 이상 표시할 와인이 없습니다!\n다른 검색어로 새로운 와인을 찾아보세요! 🧭',
+                          style: TextStyle(
+                            fontSize: AppFontSizes.mediumSmall,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                  noItemsFoundIndicatorBuilder: (context) =>
-                  //TODO: 검색을 하지 않아서 현재 검색 결과가 비어 있는 경우
-                  Center(
-                    child: Text(
-                      '🔍\n검색된 와인이 없습니다!\n다른 키워드로 검색해볼까요?\n✏',
-                      style: TextStyle(
-                        fontSize: AppFontSizes.mediumLarge,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
                     ),
-                  ),
-                  firstPageErrorIndicatorBuilder: (context) =>
-                  //TODO: 검색어가 괴상해서 검색 결과가 안 나오는 경우
-                  Text(
-                    '\n검색 결과가 없습니다.\n다른 검색어로 새로운 와인을 찾아보세요!',
-                    style: TextStyle(
-                      fontSize: AppFontSizes.mediumSmall,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  newPageErrorIndicatorBuilder: (context) =>
-                  //TODO: 검색 결과가 있지만 끝을 봐서 아래에 알려줄 문구
-                  Text(
-                    '\n🔍 더 이상 표시할 와인이 없습니다!\n다른 검색어로 새로운 와인을 찾아보세요! 🧭',
-                    style: TextStyle(
-                      fontSize: AppFontSizes.mediumSmall,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
             ),
           ],
         ),

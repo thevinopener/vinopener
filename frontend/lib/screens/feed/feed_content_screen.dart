@@ -133,20 +133,24 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
           backgroundColor: Colors.purple.withOpacity(0.05),
         ),
         body: Container(
+          width: MediaQuery.of(context).size.width, // 화면 너비 최대로 설정
+          height: MediaQuery.of(context).size.height, // 화면 높이 최대로 설정
           color: Colors.purple.withOpacity(0.05),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  color: Colors.black,
-                  width: min(MediaQuery.of(context).size.width,
-                      MediaQuery.of(context).size.height * 0.5),
-                  height: min(MediaQuery.of(context).size.width,
-                      MediaQuery.of(context).size.height * 0.5),
-                  child: Image.file(
-                    widget.imageFile!,
-                    fit: BoxFit.scaleDown,
+                Center(
+                  child: Container(
+                    color: Colors.black,
+                    width: min(MediaQuery.of(context).size.width,
+                        MediaQuery.of(context).size.height * 0.5),
+                    height: min(MediaQuery.of(context).size.width,
+                        MediaQuery.of(context).size.height * 0.5),
+                    child: Image.file(
+                      widget.imageFile!,
+                      fit: BoxFit.scaleDown,
+                    ),
                   ),
                 ),
                 Padding(
