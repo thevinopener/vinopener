@@ -171,7 +171,7 @@ class SttWidgetState extends State<SttWidget> {
     AiChatService.postAiChat(aiChat).then((AiAnswer aiAnswer) {
       noteId = aiAnswer.id;
       noteProvider.updateNoteProvider(
-        colorId: aiAnswer.newState.color?.id ?? noteProvider.colorId,
+        colorId: aiAnswer.newState.color.id,
         flavourTasteIds: aiAnswer.newState.flavours.isNotEmpty
             ? aiAnswer.newState.flavours.map((f) => f.id).toList()
             : noteProvider.flavourTasteIds,
@@ -269,7 +269,7 @@ class SttWidgetState extends State<SttWidget> {
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.1,
+            height: MediaQuery.of(context).size.height * 0.2,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(
@@ -287,7 +287,7 @@ class SttWidgetState extends State<SttWidget> {
               _answerText,
               style: const TextStyle(
                   fontSize: 16.0,
-                  color: AppColors.white,
+                  color: Colors.purpleAccent,
                   fontWeight: FontWeight.bold),
             ),
           ),
