@@ -15,6 +15,8 @@ import 'package:frontend/constants/fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
+import '../search/search_second_camera_screen.dart';
+
 class TypeSearchScreen extends StatefulWidget {
   String? type;
 
@@ -223,7 +225,7 @@ class _TypeSearchScreenState extends State<TypeSearchScreen> {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    SearchCameraScreen(camera: firstCamera),
+                                    SearchSecondCameraScreen(camera: firstCamera),
                               ),
                             );
                           }
