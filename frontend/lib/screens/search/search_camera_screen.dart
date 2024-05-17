@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:focused_area_ocr_flutter/focused_area_ocr_flutter.dart';
 
 // constants
@@ -30,6 +31,8 @@ class SearchCameraScreen extends StatefulWidget {
 }
 
 class _SearchCameraScreenState extends State<SearchCameraScreen> {
+
+  DateTime? lastPressedTime;
   final StreamController<String> controller = StreamController<String>();
   final double _textViewHeight = 80.0;
   late CameraController _controller;
@@ -54,15 +57,56 @@ class _SearchCameraScreenState extends State<SearchCameraScreen> {
     });
   }
 
-  void _onPopInvoked(bool shouldPop) {
-    // 뒤로 가기 버튼을 눌렀을 때 명시적으로 특정 경로로 이동
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(), // 원하는 화면이나 경로로 라우팅
-        ),
-      );
-    });
+  void handleBackPress(BuildContext context) {
+    final now = DateTime.now();
+    if (lastPressedTime == null ||
+        now.difference(lastPressedTime!) > Duration(seconds: 2)) {
+      lastPressedTime = now;
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(
+            padding: EdgeInsets.all(6),
+            backgroundColor: Colors.black87,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50.0),
+            ),
+            content: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  margin: EdgeInsets.all(5),
+                  child: Image.asset(
+                    'assets/images/vinopener_logo.png',
+                    width: 30,
+                    height: 30,
+                  ),
+                ),
+                Text(
+                  '  종료하려면 뒤로 가기를 다시 눌러주세요.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: AppFontSizes.mediumSmall,
+
+                  ),
+                ),
+              ],
+            ),
+            duration: Duration(seconds: 2),
+          ),
+        );
+    } else {
+      SystemNavigator.pop();
+    }
   }
 
   @override
@@ -75,7 +119,12 @@ class _SearchCameraScreenState extends State<SearchCameraScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: _onPopInvoked, // 뒤로 가기 버튼 동작을 제어하는 콜백
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (!didPop) {
+          handleBackPress(context);
+        }
+      },
       child: Scaffold(
         body: FutureBuilder<void>(
           future: _initializeControllerFuture,

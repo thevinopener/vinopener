@@ -17,6 +17,8 @@ import 'package:frontend/constants/fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
+import '../search/search_second_camera_screen.dart';
+
 class WineSearchScreen extends StatefulWidget {
   String? keyword;
 
@@ -181,7 +183,7 @@ class _WineSearchScreenState extends State<WineSearchScreen> {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            SearchCameraScreen(
+                                            SearchSecondCameraScreen(
                                                 camera: firstCamera),
                                       ),
                                     );
