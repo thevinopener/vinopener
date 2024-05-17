@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/models/wine_model.dart';
@@ -24,8 +25,8 @@ class WineItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 margin: EdgeInsets.all(10),
-                child: Image.network(
-                  '${wine.imageUrl}',
+                child: Image(image: CachedNetworkImageProvider(
+                  '${wine.imageUrl}'),
                   width: 100,
                   height: 120,
                 ),

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -83,8 +84,9 @@ class _FeedItemState extends State<FeedItem> {
                   Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage:
-                            NetworkImage('${widget.feed.user?.imageUrl}'),
+                        backgroundImage: CachedNetworkImageProvider(
+                          '${widget.feed.user?.imageUrl}',
+                        ),
                       ),
                       SizedBox(width: 10),
                       Text(
@@ -105,8 +107,8 @@ class _FeedItemState extends State<FeedItem> {
               color: Colors.black,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.width,
-              child: Image.network(
-                '${widget.feed.imageUrl}',
+              child: Image(image: CachedNetworkImageProvider(
+                '${widget.feed.imageUrl}'),
                 fit: BoxFit.scaleDown,
               ),
             ),
