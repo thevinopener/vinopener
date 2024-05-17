@@ -202,7 +202,7 @@ class _CameraBottomSheetViewState extends State<CameraBottomSheetView> {
                     child: LoadingWineCard(),
                   ),
                   newPageErrorIndicatorBuilder: (context) => Container(
-                      // TODO: 새 페이지를 로드하다 에러 터졌을 때 보여줄 화면
+                    // TODO: 새 페이지를 로드하다 에러 터졌을 때 보여줄 화면
                     alignment: Alignment.center,
                     child: Text(
                       '검색 결과가 없습니다.',
@@ -211,23 +211,22 @@ class _CameraBottomSheetViewState extends State<CameraBottomSheetView> {
                           fontSize: AppFontSizes.mediumLarge,
                           fontWeight: FontWeight.w600),
                     ),
-                      ),
+                  ),
                   newPageProgressIndicatorBuilder: (context) => Container(
-                      // TODO: 새 페이지 데이터 로딩 중 표시될 화면
+                    // TODO: 새 페이지 데이터 로딩 중 표시될 화면
                     child: LoadingWineCard(),
-                      ),
+                  ),
                   noMoreItemsIndicatorBuilder: (context) => Container(
-                      // TODO: 더이상 보여줄 화면이 없을 때 보여줄 화면
+                    // TODO: 더이상 보여줄 화면이 없을 때 보여줄 화면
                     alignment: Alignment.center,
                     child: Text(
-                      '마지막 항목입니다.',
+                      '마   \n지   \n막   \n페   \n이   \n지',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: AppColors.secondary,
                           fontSize: AppFontSizes.mediumLarge,
                           fontWeight: FontWeight.w600),
                     ),
-
-                      ),
+                  ),
                 ),
               ),
             ),
