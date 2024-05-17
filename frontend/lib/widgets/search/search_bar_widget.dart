@@ -8,6 +8,8 @@ import 'package:frontend/screens/home_screen.dart';
 import 'package:frontend/screens/search/search_camera_screen.dart';
 // screens
 import 'package:frontend/screens/search/search_result_screen.dart';
+import 'package:frontend/screens/wine/type_search_screen.dart';
+import 'package:frontend/screens/wine/wine_search_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../screens/recommend/recommend_screen.dart';
@@ -71,13 +73,21 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
     if (widget.contextType == SearchContext.searchTextScreen) {
       await Navigator.push(
           context,
+          // MaterialPageRoute(
+          //     builder: (context) => SearchResultScreen(searchValue: value)));
+          // MaterialPageRoute(
+          //     builder: (context) => TypeSearchScreen(type: value)));
           MaterialPageRoute(
-              builder: (context) => SearchResultScreen(searchValue: value)));
+              builder: (context) => WineSearchScreen(keyword: value)));
     } else {
       await Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-              builder: (context) => SearchResultScreen(searchValue: value)));
+          // MaterialPageRoute(
+          //     builder: (context) => SearchResultScreen(searchValue: value)));
+          // MaterialPageRoute(
+          //     builder: (context) => WineSearchScreen(keyword: value)));
+      MaterialPageRoute(
+          builder: (context) => TypeSearchScreen(type: value)));
     }
     Provider.of<SearchHistoryProvider>(context, listen: false).loadHistory();
   }

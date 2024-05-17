@@ -9,6 +9,7 @@ import 'package:frontend/constants/fonts.dart';
 import 'package:frontend/providers/search/search_history_provider.dart';
 import 'package:frontend/screens/recommend/recommend_screen.dart';
 import 'package:frontend/screens/search/search_result_screen.dart';
+import 'package:frontend/screens/wine/wine_search_screen.dart';
 
 // screens
 import 'package:frontend/widgets/search/search_bar_widget.dart';
@@ -149,8 +150,8 @@ class _SearchTextScreenState extends State<SearchTextScreen> {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     style: TextButton.styleFrom(
-                                      alignment: Alignment
-                                          .centerLeft, // Align the button's content to the left
+                                      alignment: Alignment.centerLeft,
+                                      // Align the button's content to the left
                                       padding: EdgeInsets.symmetric(
                                           horizontal:
                                               20), // Remove any default padding that might center the text
