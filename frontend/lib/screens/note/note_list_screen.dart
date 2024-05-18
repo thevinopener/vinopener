@@ -47,8 +47,8 @@ class _NoteListScreenState extends State<NoteListScreen> with RouteAware {
     _loadData();
   }
 
-  void _loadData() {
-    setState(() {
+  void _loadData() async {
+     setState(() {
       _notesFuture = NoteService.getNoteList();
     });
   }
