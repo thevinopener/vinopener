@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/recommendations")
 @RequiredArgsConstructor
-@Slf4j
 public class RecommendationController {
 
     private final RecommendationService recommendationService;
@@ -45,7 +43,6 @@ public class RecommendationController {
     @GetMapping("/cellar")
     @Operation(security = @SecurityRequirement(name = SwaggerConfig.SECURITY_BEARER))
     public ResponseEntity<?> cellarRecommendation() {
-        //Cellar의 경우, CellarRepository에서 GroupBy 와인으로 묶고, 각 와인별 유저 수를 내림차순으로 정렬하는 쿼리를 작성해야함.
         List<RecommendationGetListResponse> recommendationList
                 = recommendationService.getContentRecommendation(ContentRecommendationType.CELLAR);
         return ResponseEntity.ok(recommendationList);
@@ -75,10 +72,8 @@ public class RecommendationController {
     public ResponseEntity<List<RecommendationGetListResponse>> preferenceRecommendation(
             @UserPrincipalId final Long userId
     ) {
-        log.info("Preference userId: {}", userId);
         List<RecommendationGetListResponse> recommendationList
                 = recommendationService.getPreferenceRecommendation(userId);
-
         return ResponseEntity.ok(recommendationList);
     }
 
@@ -111,7 +106,6 @@ public class RecommendationController {
     ) {
         List<RecommendationGetListResponse> recommendationList
                 = recommendationService.getWineDetailRecommendation(wineId);
-
         return ResponseEntity.ok(recommendationList);
     }
 
