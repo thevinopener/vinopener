@@ -44,6 +44,8 @@ class NoteService {
         List<dynamic> noteJsonList = response.data as List;
         List<WineNoteCard> notes =
         noteJsonList.map((json) => WineNoteCard.fromJson(json)).toList();
+// id 속성을 기준으로 오름차순 정렬
+        notes.sort((a, b) => a.id.compareTo(b.id));
         notes = notes.reversed.toList();
         return notes;
       } else {

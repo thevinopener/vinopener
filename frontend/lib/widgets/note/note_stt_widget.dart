@@ -15,9 +15,7 @@ class SttWidget extends StatefulWidget {
   final int currentPage;
   final Function(int) onPageChangeRequest;
 
-  const SttWidget(
-      {Key? key, required this.currentPage, required this.onPageChangeRequest})
-      : super(key: key);
+  const SttWidget({Key? key, required this.currentPage, required this.onPageChangeRequest}) : super(key: key);
 
   @override
   SttWidgetState createState() => SttWidgetState();
@@ -33,15 +31,6 @@ class SttWidgetState extends State<SttWidget> {
   String _questionText = '';
   String _answerText = '';
   int? noteId = null;
-
-  void stopTtsAndStt() {
-    _flutterTts.stop();
-    _speech.stop();
-    setState(() {
-      _isListening = false;
-      _isSpeaking = false;
-    });
-  }
 
   @override
   void initState() {
@@ -62,14 +51,11 @@ class SttWidgetState extends State<SttWidget> {
   }
 
   void _promptUser() async {
-    _speak(_questionText);
+    await _speak(_questionText);
   }
 
   void _initSpeech() async {
-    bool available = await _speech.initialize(
-      onStatus: _onSpeechStatus,
-      onError: (error) => _onSpeechError(error),
-    );
+    bool available = await _speech.initialize(onStatus: _onSpeechStatus, onError: _onSpeechError);
     if (!mounted) return;
     setState(() {
       _isListening = available;
@@ -79,22 +65,15 @@ class SttWidgetState extends State<SttWidget> {
   void _onSpeechStatus(String status) {
     print('STT Status: $status');
     setState(() {
-      if (status == "listening") {
-        _isListening = true;
-      } else {
-        _isListening = false;
-      }
+      _isListening = status == "listening";
     });
-    _isListening=false;
   }
 
   void _onSpeechError(SpeechRecognitionError error) {
     setState(() {
-      if (error.errorMsg == "error_speech_timeout" && error.permanent) {
-        _questionText = "다시 말씀해주세요.";
-      } else {
-        _questionText = "오류가 발생했습니다. 다시 시도해 주세요.";
-      }
+      _questionText = error.errorMsg == "error_speech_timeout" && error.permanent
+          ? "다시 말씀해주세요."
+          : "오류가 발생했습니다. 다시 시도해 주세요.";
     });
     _promptUser();
   }
@@ -125,9 +104,16 @@ class SttWidgetState extends State<SttWidget> {
     });
   }
 
+  Future<void> _speak(String text) async {
+    if (text.isNotEmpty) {
+      _questionText = text;
+      await _flutterTts.speak(text);
+    }
+  }
+
   void _startListening() {
     _speech.initialize().then((available) {
-      _isListening=available;
+      setState(() => _isListening = available);
       if (available) {
         _speech.listen(
           onResult: _handleResult,
@@ -140,7 +126,6 @@ class SttWidgetState extends State<SttWidget> {
         print('The user has denied the use of speech recognition.');
       }
     });
-    _isListening = false;
   }
 
   void _handleResult(SpeechRecognitionResult result) {
@@ -183,8 +168,9 @@ class SttWidgetState extends State<SttWidget> {
         opinion: aiAnswer.newState.opinion ?? noteProvider.opinion,
         rating: aiAnswer.newState.rating ?? noteProvider.rating,
       );
-      _navigateToSection(aiAnswer.section);
+
       _speak(aiAnswer.message);
+      _navigateToSection(aiAnswer.section);
     }).catchError((error) {
       setState(() {
         _questionText = error.toString().contains("COLOR_NOT_FOUND")
@@ -205,23 +191,25 @@ class SttWidgetState extends State<SttWidget> {
       'ALCOHOL': 2,
       'TANNIN': 2,
       'OPINION': 3,
-      'RATING': 3, // OPINION과 RATING은 같은 페이지에 표시한다고 가정
+      'RATING': 3, // OPINION과 RATING은 같은 페이지에 표시
       'COMPLETE': 4,
-      'EXIT': 5 // EXIT는 앱을 종료하거나 초기 화면으로 돌아가는 조건으로 설정
+      'EXIT': 5 // EXIT는 앱을 종료하거나 초기 화면으로 돌아가는 조건
     };
 
     int? nextPage = sectionToPage[section];
-    if (nextPage != null && nextPage == 4) {
-      postNote();
-    } else if (nextPage != null && nextPage == 5) {
-      Navigator.of(context).pop();
-    } else if (nextPage != null) {
-      widget.onPageChangeRequest(nextPage);
-      setState(() {
-        _currentPage = nextPage;
-        _updateQuestionText();
-        _promptUser();
-      });
+    if (nextPage != null) {
+      if (nextPage == 4) {
+        postNote();
+      } else if (nextPage == 5) {
+        Navigator.of(context).pop();
+      } else {
+        widget.onPageChangeRequest(nextPage);
+        setState(() {
+          _currentPage = nextPage;
+          _updateQuestionText();
+          _promptUser();
+        });
+      }
     } else {
       _speak("섹션을 찾을 수 없습니다.");
       _promptUser();
@@ -230,25 +218,32 @@ class SttWidgetState extends State<SttWidget> {
 
   Future<void> postNote() async {
     try {
-      final wineId =
-          Provider.of<NoteWineProvider>(context, listen: false).getWine().id;
+      final wineId = Provider.of<NoteWineProvider>(context, listen: false).getWine().id;
       final noteProvider = Provider.of<NoteProvider>(context, listen: false);
       noteProvider.updateNoteProvider(wineId: wineId);
 
       await NoteService.createNote(noteProvider);
 
       noteProvider.reset();
-      Navigator.popUntil(context, (route) => route.isFirst);
+      Future.delayed(
+        Duration(seconds: 3),
+            () {
+              Navigator.popUntil(context, (route) => route.isFirst);
+        },
+      );
+
     } catch (e) {
       print("Error posting note: $e");
     }
   }
 
-  void _speak(String text) async {
-    if (text.isNotEmpty) {
-      _questionText = text;
-      await _flutterTts.speak(text);
-    }
+  void stopTtsAndStt() {
+    _flutterTts.stop();
+    _speech.stop();
+    setState(() {
+      _isListening = false;
+      _isSpeaking = false;
+    });
   }
 
   @override
