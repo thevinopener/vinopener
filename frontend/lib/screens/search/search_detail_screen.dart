@@ -32,6 +32,8 @@ const Map<String, Color> wineTypeColors = {
   'white': WineButtonColors.white,
   'rose': WineButtonColors.rose,
   'sparkling': WineButtonColors.sparkling,
+  'dessert': WineButtonColors.dessert,
+  'fortified': WineButtonColors.fortified,
 };
 
 class SearchDetailScreen extends StatefulWidget {
