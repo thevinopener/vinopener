@@ -1,15 +1,12 @@
 package com.ssafy.vinopener.global.recommendation;
 
-import com.querydsl.core.Tuple;
 import com.ssafy.vinopener.domain.cellar.repository.CellarRepositoryQueryImpl;
 import com.ssafy.vinopener.domain.preference.data.entity.PreferenceEntity;
 import com.ssafy.vinopener.domain.preference.data.mapper.PreferenceMapper;
 import com.ssafy.vinopener.domain.preference.exception.PreferenceErrorCode;
 import com.ssafy.vinopener.domain.preference.repository.PreferenceRepository;
 import com.ssafy.vinopener.domain.recommendation.data.entity.BehaviorRecommendationEntity;
-import com.ssafy.vinopener.domain.recommendation.data.entity.ContentRecommendationEntity;
 import com.ssafy.vinopener.domain.recommendation.data.entity.enums.BehaviorRecommendationType;
-import com.ssafy.vinopener.domain.recommendation.data.entity.enums.ContentRecommendationType;
 import com.ssafy.vinopener.domain.recommendation.repository.BehaviorRecommendationRepository;
 import com.ssafy.vinopener.domain.recommendation.repository.ContentRecommendationRepository;
 import com.ssafy.vinopener.domain.tastingnote.data.entity.TastingNoteEntity;
@@ -35,8 +32,6 @@ import java.util.Map;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -58,75 +53,6 @@ public class RecommendationProcessor {
 
     private final int ALL_FLAVOURS_COUNT = 109;
 
-    public List<WineEntity> createRecommendation(ContentRecommendationType type) {
-        String columnName = "";
-        switch (type) {
-            case VIEW -> columnName = "view";
-            case RATE -> columnName = "rating";
-            case CELLAR -> columnName = "cellar";
-
-        }
-        List<WineEntity> resultList = new ArrayList<>();
-        List<ContentRecommendationEntity> savingEntities = new ArrayList<>();
-
-        // VIEW, RATE
-        if (!columnName.equals("cellar")) {
-            List<WineEntity> wineList = wineRepository.findAll(Sort.by(Direction.DESC, columnName));
-
-            for (int i = 0; i < 10; i++) {
-                ContentRecommendationEntity recommendationEntity = ContentRecommendationEntity.builder()
-                        .wine(wineList.get(i))
-                        .contentRecommendationType(type)
-                        .build();
-
-                savingEntities.add(recommendationEntity);
-                resultList.add(wineList.get(i));
-            }
-            contentRecommendationRepository.saveAll(savingEntities);
-        }
-        // CELLAR
-        else {
-            List<Tuple> queryResultList = cellarRepositoryQueryImpl.findAllByCellarCount();
-
-            int cellarCount = queryResultList.size();
-            int remnantCount = 0;
-            if (cellarCount >= 10) {
-                cellarCount = 10;
-            } else {
-                remnantCount = 10 - cellarCount;
-            }
-
-            for (int i = 0; i < cellarCount; i++) {
-                Long wineId = queryResultList.get(i).get(0, Long.class);
-                WineEntity wine = entityManager.getReference(WineEntity.class, wineId);
-
-                ContentRecommendationEntity recommendationEntity = ContentRecommendationEntity.builder()
-                        .wine(wine)
-                        .contentRecommendationType(ContentRecommendationType.CELLAR)
-                        .build();
-
-                savingEntities.add(recommendationEntity);
-                resultList.add(wine);
-            }
-
-            // 10개가 채워지지 않는다면, rating 기반으로 평점이 높은 순으로 남은 개수를 채운다.
-            if (remnantCount >= 1) {
-                List<WineEntity> additionalList = wineRepository.findAll(Sort.by(Direction.DESC, "rating"));
-                for (int i = 0; i < remnantCount; i++) {
-                    ContentRecommendationEntity recommendationEntity = ContentRecommendationEntity.builder()
-                            .wine(additionalList.get(i))
-                            .contentRecommendationType(ContentRecommendationType.CELLAR)
-                            .build();
-                    savingEntities.add(recommendationEntity);
-                    resultList.add(additionalList.get(i));
-                }
-            }
-            contentRecommendationRepository.saveAll(savingEntities);
-
-        }
-        return resultList;
-    }
-
     public List<WineEntity> createPreferenceRecommendation(Long userId) {
         PreferenceEntity preferenceEntity = preferenceRepository.findByUserId(userId).orElse(null);
         List<BehaviorRecommendationEntity> savingEntities = new ArrayList<>();
@@ -138,7 +64,7 @@ public class RecommendationProcessor {
         Set<WineType> wineTypeSet = preferenceMapper.map(preferenceEntity);
         List<WineEntity> wineEntityList = wineRepositoryQuery.findAllByTypeExceptCellar(wineTypeSet, userId);
 
-        // 해당하는 타입의 모든 와인에 대해, 사용자의 선호도와 코사인 유사도 계산 후
+        // 해당하는 타입의 모든 와인에 대해, 사용자의 선호도와 코사인 유사도 계산
         List<WineEntity> resultList = wineEntityList.stream()
                 .sorted(Comparator.comparingDouble((WineEntity wineEntity)
                         -> processCosineSimilarity(wineEntity, preferenceEntity)).reversed())
@@ -152,7 +78,6 @@ public class RecommendationProcessor {
 
     public List<WineEntity> createTastingNoteRecommendation(Long userId) {
         List<TastingNoteEntity> tastingNoteEntityList = tastingNoteRepository.findAllByUserId(userId);
-//        int totalFlavourCount = flavourTasteRepository.findAll().size();
 
         if (tastingNoteEntityList.isEmpty()) {
             throw new VinopenerException(TastingNoteErrorCode.TASTING_NOTE_NOT_FOUND);
@@ -197,7 +122,6 @@ public class RecommendationProcessor {
         }
 
         //vector화 된 parameter들을 종합해 하나의 "프로필"을 만든다.
-        //알코올, 당도, 산도, 타닌, 바디감은 평균으로
         Map<String, Double> profileParameters = new HashMap<>();
         profileParameters.put("abv", sumAbv / sumWeight);
         profileParameters.put("sweetness", sumSweetness / sumWeight);
@@ -206,7 +130,6 @@ public class RecommendationProcessor {
         profileParameters.put("intensity", sumIntensity / sumWeight);
 
         //"프로필"과 가장 유사한 와인을 추천한다
-        //일단 와인들을 가져오고,
         List<WineEntity> wineEntityList = wineRepositoryQuery.findAllExceptCellar(userId);
 
         //각 와인이 어떤 맛을 가지고 있는지 다 가져온다.
@@ -231,9 +154,7 @@ public class RecommendationProcessor {
             throw new VinopenerException(WineErrorCode.WINE_NOT_FOUND);
         }
 
-        //일단 모든 와인과 비교해보고, 성능이 너무 안나오면 type으로 걸러낸다.
         List<WineEntity> wineEntityList = wineRepository.findAllExceptWineId(wineId);
-
         List<WineEntity> resultList = wineEntityList.stream()
                 .sorted(Comparator.comparingDouble((WineEntity wineEntity)
                         -> processCosineSimilarity(wineEntity, wineDetailEntity)).reversed())
