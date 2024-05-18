@@ -29,8 +29,8 @@ import '../../widgets/search/search_wine_nation_widget.dart';
 
 const Map<String, Color> wineTypeColors = {
   'red': WineButtonColors.red,
-  'white': WineButtonColors.rose,
-  'rose': WineButtonColors.white,
+  'white': WineButtonColors.white,
+  'rose': WineButtonColors.rose,
   'sparkling': WineButtonColors.sparkling,
 };
 
