@@ -10,7 +10,6 @@ import com.ssafy.vinopener.domain.recommendation.data.entity.enums.BehaviorRecom
 import com.ssafy.vinopener.domain.recommendation.repository.BehaviorRecommendationRepository;
 import com.ssafy.vinopener.domain.recommendation.repository.ContentRecommendationRepository;
 import com.ssafy.vinopener.domain.tastingnote.data.entity.TastingNoteEntity;
-import com.ssafy.vinopener.domain.tastingnote.data.entity.TastingNoteFlavourEntity;
 import com.ssafy.vinopener.domain.tastingnote.exception.TastingNoteErrorCode;
 import com.ssafy.vinopener.domain.tastingnote.repository.TastingNoteRepository;
 import com.ssafy.vinopener.domain.user.exception.UserErrorCode;
@@ -115,10 +114,10 @@ public class RecommendationProcessor {
 
             sumWeight += currentRating;
 
-            for (TastingNoteFlavourEntity tastingNoteFlavourEntity : tastingNoteEntity.getFlavours()) {
-                profileVector[(int) (tastingNoteFlavourEntity.getFlavourTaste().getId() - 1)]
-                        += 1 * currentRating * 0.2;
-            }
+//            for (TastingNoteFlavourEntity tastingNoteFlavourEntity : tastingNoteEntity.getFlavours()) {
+//                profileVector[(int) (tastingNoteFlavourEntity.getFlavourTaste().getId() - 1)]
+//                        += 1 * currentRating * 0.2;
+//            }
         }
 
         //vector화 된 parameter들을 종합해 하나의 "프로필"을 만든다.
@@ -132,16 +131,25 @@ public class RecommendationProcessor {
         //"프로필"과 가장 유사한 와인을 추천한다
         List<WineEntity> wineEntityList = wineRepositoryQuery.findAllExceptCellar(userId);
 
-        //각 와인이 어떤 맛을 가지고 있는지 다 가져온다.
-        List<WineFlavourEntity> wineFlavourEntityList = wineFlavourRepository.findAll();
-
         List<WineEntity> resultList = wineEntityList.stream()
                 .sorted(Comparator.comparingDouble((WineEntity wineEntity)
-                                -> processCosineSimilarity(wineEntity, wineFlavourEntityList, profileParameters, profileVector))
+                                -> processCosineSimilarity(wineEntity, profileParameters))
                         .reversed())
                 .limit(10)
                 .toList();
 
+        // 맛벡터를 쓰면 너무 오래걸림. 일단 맛벡터 제외.=================
+
+        //각 와인이 어떤 맛을 가지고 있는지 다 가져온다.
+//        List<WineFlavourEntity> wineFlavourEntityList = wineFlavourRepository.findAll();
+//
+//        List<WineEntity> resultList = wineEntityList.stream()
+//                .sorted(Comparator.comparingDouble((WineEntity wineEntity)
+//                                -> processCosineSimilarity(wineEntity, wineFlavourEntityList, profileParameters, profileVector))
+//                        .reversed())
+//                .limit(10)
+//                .toList();
+//
         saveRecommendationResult(resultList, userId, BehaviorRecommendationType.TASTING_NOTE);
 
         return resultList;
@@ -284,6 +292,38 @@ public class RecommendationProcessor {
 
         //parameter(알당산타바)와 맛벡터 유사도 합산
         return parameterCosineSim + vectorCosineSim;
+    }
+
+    private double processCosineSimilarity(
+            WineEntity wineEntity,
+            Map<String, Double> profileParameters
+    ) {
+        double result;
+        // 알당산타바
+        double parameterDotProduct = wineEntity.getAbv().doubleValue() * profileParameters.get("abv") * 0.2 +
+                wineEntity.getSweetness().doubleValue() * profileParameters.get("sweetness") * 0.05 +
+                wineEntity.getAcidity().doubleValue() * profileParameters.get("acidity") * 0.05 +
+                wineEntity.getTannin().doubleValue() * profileParameters.get("tannin") * 0.05 +
+                wineEntity.getIntensity().doubleValue() * profileParameters.get("intensity") * 0.05;
+
+        double normWineParameter = Math.sqrt(
+                Math.pow(wineEntity.getAbv().doubleValue(), 2) +
+                        Math.pow(wineEntity.getSweetness().doubleValue(), 2) +
+                        Math.pow(wineEntity.getAcidity().doubleValue(), 2) +
+                        Math.pow(wineEntity.getTannin().doubleValue(), 2) +
+                        Math.pow(wineEntity.getIntensity().doubleValue(), 2)
+        );
+        double normProfileParameter = Math.sqrt(
+                Math.pow(profileParameters.get("abv") * 0.2, 2) +
+                        Math.pow(profileParameters.get("sweetness") * 0.05, 2) +
+                        Math.pow(profileParameters.get("acidity") * 0.05, 2) +
+                        Math.pow(profileParameters.get("tannin") * 0.05, 2) +
+                        Math.pow(profileParameters.get("intensity") * 0.05, 2)
+        );
+
+        double parameterCosineSim = parameterDotProduct / (normWineParameter * normProfileParameter);
+
+        return parameterCosineSim;
     }
 
     private void saveRecommendationResult(List<WineEntity> resultList, Long userId, BehaviorRecommendationType type) {
