@@ -25,6 +25,10 @@ spring:
             profile-url: https://www.googleapis.com/userinfo/v2/me
             access-token-url: https://oauth2.googleapis.com/token
             authorization-code: authorization_code
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
   data:
     redis:
       host: ${REDIS_HOST:localhost}
