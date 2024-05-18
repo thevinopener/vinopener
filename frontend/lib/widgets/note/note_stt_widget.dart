@@ -31,6 +31,7 @@ class SttWidgetState extends State<SttWidget> {
   String _questionText = '';
   String _answerText = '';
   int? noteId = null;
+  bool _isOpen = false;
 
   @override
   void initState() {
@@ -205,9 +206,8 @@ class SttWidgetState extends State<SttWidget> {
       } else {
         widget.onPageChangeRequest(nextPage);
         setState(() {
-          _currentPage = nextPage;
-          _updateQuestionText();
           _promptUser();
+          _currentPage = nextPage;
         });
       }
     } else {
