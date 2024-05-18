@@ -20,5 +20,12 @@ class FlagUtil {
     'Moldova': FlagsCode.MD,
     'Georgia': FlagsCode.GE,
     'Israel': FlagsCode.IL,
+    'United Kingdom': FlagsCode.GB,
+    'Greece': FlagsCode.GR,
+    'Mexico': FlagsCode.MX,
+    'Romania': FlagsCode.RO,
+    'Slovenia': FlagsCode.SI,
+
+
   };
 }

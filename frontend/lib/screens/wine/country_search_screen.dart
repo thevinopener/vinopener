@@ -150,6 +150,7 @@ class _CountrySearchScreenState extends State<CountrySearchScreen> {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
+                textAlignVertical: TextAlignVertical.center,
                 focusNode: _searchFocusNode,
                 onSubmitted: (value) {
                   FocusScope.of(context).unfocus();
@@ -172,28 +173,58 @@ class _CountrySearchScreenState extends State<CountrySearchScreen> {
                     mainAxisSize: MainAxisSize.min,
                     // Row가 차지하는 공간을 최소로 하여 아이콘들이 압축되지 않게 함
                     children: <Widget>[
-                      IconButton(
-                          icon: Icon(Icons.camera_alt_outlined),
-                          onPressed: _isCameraInitialized
-                              ? () {
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (context) => SearchSecondCameraScreen(
-                                          camera: firstCamera),
-                                    ),
-                                  );
-                                }
-                              : null),
-                      IconButton(
-                        icon: Icon(Icons.clear), // 두 번째 아이콘 예시로 'clear' 아이콘을 추가
-                        onPressed: () {
+                      // IconButton(
+                      //     icon: Icon(Icons.camera_alt_outlined),
+                      //     onPressed: _isCameraInitialized
+                      //         ? () {
+                      //             Navigator.of(context).pushReplacement(
+                      //               MaterialPageRoute(
+                      //                 builder: (context) => SearchSecondCameraScreen(
+                      //                     camera: firstCamera),
+                      //               ),
+                      //             );
+                      //           }
+                      //         : null),
+                      // IconButton(
+                      //   icon: Icon(Icons.clear), // 두 번째 아이콘 예시로 'clear' 아이콘을 추가
+                      //   onPressed: () {
+                      //     setState(() {
+                      //       _searchController.clear();
+                      //       FocusScope.of(context)
+                      //           .requestFocus(_searchFocusNode);
+                      //     }); // 텍스트 필드 내용 지우기
+                      //   },
+                      // ),
+
+                      InkWell(
+                        onTap: _isCameraInitialized
+                            ? () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => SearchSecondCameraScreen(camera: firstCamera),
+                            ),
+                          );
+                        }
+                            : null,
+                        child: Padding(
+                          padding: EdgeInsets.all(0), // 패딩을 제로로 설정
+                          child: Icon(Icons.camera_alt_outlined, size: 24), // 아이콘 크기를 조절
+                        ),
+                      ),
+                      SizedBox(width: 10), // 간격을 0으로 설정
+                      InkWell(
+                        onTap: () {
                           setState(() {
                             _searchController.clear();
-                            FocusScope.of(context)
-                                .requestFocus(_searchFocusNode);
-                          }); // 텍스트 필드 내용 지우기
+                            FocusScope.of(context).requestFocus(_searchFocusNode);
+                          });
                         },
+                        child: Padding(
+                          padding: EdgeInsets.all(0),
+                          child: Icon(Icons.clear, size: 24),
+                        ),
                       ),
+                      SizedBox(width: 10),
                     ],
                   ),
                   prefixIcon: IconButton(
