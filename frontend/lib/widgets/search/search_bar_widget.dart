@@ -83,7 +83,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
           // CupertinoPageRoute(
           //     builder: (context) => WineSearchScreen(keyword: value)));
           CupertinoPageRoute(
-              builder: (context) => WinePageSearchScreen(keyword: value!)));
+              builder: (context) => WineSearchScreen(keyword: value!)));
     } else {
       await Navigator.pushReplacement(
           context,
