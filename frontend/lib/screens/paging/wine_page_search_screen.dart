@@ -98,10 +98,10 @@ class _WinePageSearchScreenState extends State<WinePageSearchScreen> {
       body: Container(
         color: Colors.purple.withOpacity(0.04),
         // 전체 뒷배경색
-        padding: EdgeInsets.all(10),
+        // padding: EdgeInsets.all(10),
         // 상하좌우 여백
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        // width: MediaQuery.of(context).size.width,
+        // height: MediaQuery.of(context).size.height,
 
         // 전체 배경(화면의 모든 요소를 감싸고 있음)에 세로로 요소를 쌓을 것임.
         child: Column(
@@ -109,9 +109,7 @@ class _WinePageSearchScreenState extends State<WinePageSearchScreen> {
           crossAxisAlignment: CrossAxisAlignment.center, // 열 정렬
           children: [
             // 검색바 시작
-            Flexible(
-              flex: 1,
-              child: Container(
+          Container(
                 height: 60,
                 alignment: Alignment.center,
                 margin: EdgeInsets.all(8.0),
@@ -195,22 +193,20 @@ class _WinePageSearchScreenState extends State<WinePageSearchScreen> {
                   ),
                 ),
               ),
-            ),
+
             // 검색바 끝
 
             // Text('총 ${list.length}개의 검색결과') 시작
-            Flexible(
-              flex: 1,
-              child: Container(
+              Container(
                 child: Text(
                     '총 ${widget.totalElements}개의 검색결과'), // TODO: 리스트 길이 바인딩 할 곳
               ),
-            ),
+
             // Text('총 ${list.length}개의 검색결과') 끝
 
             // 검색결과 리스트 뿌리기 시작
             Flexible(
-              flex: 8,
+              flex: 10,
               child: Container(
                 child: PagedListView<int, Wine>(
                   physics: BouncingScrollPhysics(),
