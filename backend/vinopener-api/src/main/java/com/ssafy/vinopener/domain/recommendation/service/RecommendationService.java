@@ -24,7 +24,6 @@ public class RecommendationService {
     private final BehaviorRecommendationRepository behaviorRecommendationRepository;
     private final RecommendationProcessor recommendationProcessor;
     private final RecommendationMapper recommendationMapper;
-    private final int RENEWAL_HOUR = 3;
 
     /**
      * 조회수 / 셀러 / 평점 기반 추천
@@ -52,12 +51,11 @@ public class RecommendationService {
                 behaviorRecommendationRepository.findAllByBehaviorRecommendationTypeAndUserId(
                         BehaviorRecommendationType.PREFERENCE, userId
                 );
-        List<WineEntity> resultList;
 
+        List<WineEntity> resultList;
         //기존 테이블 내용이 없으면, 새로 추천해서 결과를 테이블에 추가한다.
         if (existingEntityList.isEmpty()) {
             resultList = recommendationProcessor.createPreferenceRecommendation(userId);
-            // 추천 결과를 return
             return resultList.stream()
                     .map(recommendationMapper::toGetListResponse)
                     .toList();
@@ -82,28 +80,27 @@ public class RecommendationService {
                 behaviorRecommendationRepository.findAllByBehaviorRecommendationTypeAndUserId(
                         BehaviorRecommendationType.TASTING_NOTE, userId
                 );
-        List<WineEntity> resultList;
 
-        //내용이 없으면, 새로 추천해서 테이블에 추가한다.
+        List<WineEntity> resultList;
         if (existingEntityList.isEmpty()) {
             resultList = recommendationProcessor.createTastingNoteRecommendation(userId);
-            // 추천 결과를 return
             return resultList.stream()
                     .map(recommendationMapper::toGetListResponse)
                     .toList();
-        }
-        //내용이 있으면, 갱신 시간 이내인지 확인한다.
-        else {
+        } else {
             return existingEntityList.stream()
                     .map(recommendationMapper::toGetListResponse)
                     .toList();
         }
     }
 
+    /**
+     * 와인 상세 조회 시, 해당 와인과 가장 유사한 와인을 추천
+     *
+     * @param wineId 와인 ID
+     * @return 추천된 와인 List (10개)
+     */
     public List<RecommendationGetListResponse> getWineDetailRecommendation(Long wineId) {
-        //일단 각 와인별 가장 유사한 와인 추천의 경우, 전부 테이블로 결과를 보관하기엔 무리가 있다고 판단됨.
-        //따라서 wineDetail 추천은 요청이 들어오는 즉시 처리하는걸로 일단 구현하였음.
-
         List<WineEntity> resultList
                 = recommendationProcessor.createWineDetailRecommendation(wineId);
 

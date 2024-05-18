@@ -12,10 +12,7 @@ public interface BehaviorRecommendationRepository extends JpaRepository<Behavior
 
     List<BehaviorRecommendationEntity> findAllByBehaviorRecommendationTypeAndUserId(BehaviorRecommendationType type,
             Long id);
-
-    @Transactional
-    void deleteAllByUserId(Long userId);
-
+    
     @Transactional
     void deleteAllByUserIdAndBehaviorRecommendationType(Long userId, BehaviorRecommendationType type);
 

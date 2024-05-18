@@ -1,6 +1,5 @@
 package coffee.ssafy.vinopenerbatch.global.scheduler;
 
-//import coffee.ssafy.vinopenerbatch.global.config.JobConfigurer;
 import coffee.ssafy.vinopenerbatch.global.config.job.JobConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +28,6 @@ public class BatchScheduler {
     //조회수 기반 추천 스케쥴러
     @Scheduled(cron = "0 */1 * * * *")
     public void viewRecommendationSchedule() {
-        // job parameter 설정
-
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("view.id", createTimestamp())
                 .toJobParameters();
@@ -48,8 +45,6 @@ public class BatchScheduler {
     //평점 기반 추천 스케쥴러
     @Scheduled(cron = "20 */1 * * * *")
     public void rateRecommendationSchedule() {
-        // job parameter 설정
-
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("rate.id", createTimestamp())
                 .toJobParameters();
@@ -67,8 +62,6 @@ public class BatchScheduler {
     //셀러에 많이 추가한 사람 수 기반 추천 스케쥴러
     @Scheduled(cron = "40 */1 * * * *")
     public void cellarRecommendationSchedule() {
-        // job parameter 설정
-
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("cellar.id", createTimestamp())
                 .toJobParameters();
@@ -82,25 +75,6 @@ public class BatchScheduler {
 
         }
     }
-
-    //사용자 선호도 기반 추천 스케쥴러
-//    @Scheduled(cron = "40 */2 * * * *")
-//    public void preferenceRecommendationSchedule() {
-//        // job parameter 설정
-//
-//        JobParameters jobParameters = new JobParametersBuilder()
-//                .addString("cellar.id", createTimestamp())
-//                .toJobParameters();
-//
-//        try {
-//            jobLauncher.run(jobConfig.updateCellarJob(jobRepository), jobParameters);
-//        } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
-//                 | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
-//
-//            log.error(e.getMessage());
-//
-//        }
-//    }
 
     private String createTimestamp() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");

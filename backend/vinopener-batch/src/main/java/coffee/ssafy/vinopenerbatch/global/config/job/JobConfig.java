@@ -18,7 +18,6 @@ public class JobConfig {
     private final Step updateViewStep;
     private final Step updateRateStep;
     private final Step updateCellarStep;
-    private final Step updatePreferenceStep;
 
     @Bean
     public Job updateViewJob(final JobRepository jobRepository) {
@@ -40,18 +39,4 @@ public class JobConfig {
                 .start(updateCellarStep)
                 .build();
     }
-
-//    @Bean
-//    public Job updatePreferenceJob(final JobRepository jobRepository) {
-//        return new JobBuilder("updatePreferenceJob", jobRepository)
-//                .start(updatePreferenceStep)
-//                .build();
-//    }
-
-//    @Bean
-//    public Job updateTastingNoteJob(final JobRepository jobRepository) {
-//        return new JobBuilder("updateTastingNoteJob", jobRepository)
-//                .start(updateTastingNoteStep)
-//                .build();
-//    }
 }
