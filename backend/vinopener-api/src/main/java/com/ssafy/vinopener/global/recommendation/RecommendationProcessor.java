@@ -150,7 +150,7 @@ public class RecommendationProcessor {
 //                .limit(10)
 //                .toList();
 //
-//        saveRecommendationResult(resultList, userId, BehaviorRecommendationType.TASTING_NOTE);
+        saveRecommendationResult(resultList, userId, BehaviorRecommendationType.TASTING_NOTE);
 
         return resultList;
     }
