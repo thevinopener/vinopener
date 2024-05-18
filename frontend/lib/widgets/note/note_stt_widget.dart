@@ -31,7 +31,6 @@ class SttWidgetState extends State<SttWidget> {
   String _questionText = '';
   String _answerText = '';
   int? noteId = null;
-  bool _isOpen = false;
 
   @override
   void initState() {
@@ -261,7 +260,10 @@ class SttWidgetState extends State<SttWidget> {
                   fontSize: 16.0,
                   color: AppColors.white,
                   fontWeight: FontWeight.bold),
+              maxLines: 2, // 최대 두 줄로 제한
+              overflow: TextOverflow.ellipsis, // 넘치는 텍스트를 ...으로 표시
             ),
+
           ),
           Container(
             height: MediaQuery.of(context).size.height * 0.2,
