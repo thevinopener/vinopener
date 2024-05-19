@@ -12,16 +12,21 @@ import io.github.sashirestela.openai.common.content.ContentPart.ContentPartTextA
 import io.github.sashirestela.openai.common.function.FunctionDef;
 import io.github.sashirestela.openai.common.function.FunctionExecutor;
 import io.github.sashirestela.openai.common.function.Functional;
-import io.github.sashirestela.openai.domain.assistant.*;
+import io.github.sashirestela.openai.domain.assistant.ThreadMessage;
+import io.github.sashirestela.openai.domain.assistant.ThreadMessageRequest;
+import io.github.sashirestela.openai.domain.assistant.ThreadMessageRole;
+import io.github.sashirestela.openai.domain.assistant.ThreadRequest;
+import io.github.sashirestela.openai.domain.assistant.ThreadRun;
 import io.github.sashirestela.openai.domain.assistant.ThreadRun.RunStatus;
+import io.github.sashirestela.openai.domain.assistant.ThreadRunRequest;
+import io.github.sashirestela.openai.domain.assistant.ThreadRunSubmitOutputRequest;
 import io.github.sashirestela.openai.domain.assistant.ThreadRunSubmitOutputRequest.ToolOutput;
 import io.github.sashirestela.openai.domain.assistant.events.EventName;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
@@ -35,7 +40,7 @@ public class AssistantStream {
     private String fileId;
     private String vectorStoreId;
     private FunctionExecutor functionExecutor;
-    private final String assistantId = "asst_IIXx6NI9lo60ukuwzAgoBaUr";
+    private final String assistantId = "asst_2AUC8Wqp4xQYvNrdC05e1jfq";
     private String threadId;
     private String resultString;
     private volatile boolean shouldStop = false;
