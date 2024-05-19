@@ -95,11 +95,11 @@ backend
 
 # 시스템 아키텍처
 
-![시스템아키텍처](/uploads/67812a05b6a8887d9662501f4db328f0/System_Architecture.png)
+![System_Architecture](/uploads/4e32b4a3211df23fd01666db80942294/System_Architecture.png)
 
 # ERD
 
-![ERD](/uploads/9a2ecd9e6644bdb2e818e294020073a9/ERD.png)
+![ERD]()
 
 
 # 화면 정의서
@@ -108,7 +108,7 @@ backend
 
 ### 전체 와이어 프레임
 
-![전체 와이어 프레임](/uploads/f817e803299a2d8836bb3bc8bec7a7f6/WireFrame.png)
+![WireFrame](/uploads/c8c7f4133527cb00839b0e4d2fb2ee98/WireFrame.png)
 
 
 ---
@@ -117,7 +117,7 @@ backend
 
 ![로그인]()
 
-![로그인_온보딩_샘플](/uploads/84e1e7d5909bf0132562501667000b40/로그인_온보딩_샘플.gif)
+![로그인_온보딩_샘플](/uploads/2d4d9858028622001e76a38c2468c78c/로그인_온보딩_샘플.gif)
 
 ![설문조사]()
 
@@ -315,10 +315,3 @@ type: <subject>
 6. Related to #<이슈번호>
 7. e.g. `Fixes: #47`, `Related to: #32, 21`
 ```
-
-# DATA
-
--네이버 영화 리뷰 : https://github.com/e9t/nsmc<br/>
--네이버쇼핑, Steam 플랫폼 리뷰 데이터 : https://github.com/bab2min/corpus<br/>
--한국어 단발성 대화 데이터셋 : https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100<br/>
--감성 대화 말뭉치 : https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=realm&dataSetSn=86<br/>
