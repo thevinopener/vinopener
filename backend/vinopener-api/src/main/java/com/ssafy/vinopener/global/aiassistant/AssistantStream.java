@@ -40,7 +40,7 @@ public class AssistantStream {
     private String fileId;
     private String vectorStoreId;
     private FunctionExecutor functionExecutor;
-    private final String assistantId = "asst_2AUC8Wqp4xQYvNrdC05e1jfq";
+    private final String assistantId = "asst_fNLL5WdMUxJIlGbe5509oKvG";
     private String threadId;
     private String resultString;
     private volatile boolean shouldStop = false;
