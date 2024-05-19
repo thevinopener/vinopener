@@ -756,12 +756,10 @@ backend
 </details>
 
 # 시스템 아키텍처
-
+![시스템아키텍처](/uploads/e013dabdbad183f6d6152fd8613b4319/시스템아키텍처.png)
 
 # ERD
-![최종발표_ERD_전체](/uploads/e1976c59ccc70b86901ff11e0ea142ec/최종발표_ERD_전체.png)
-
-![최종발표_ERD_간략화](/uploads/2266625693fa614943c996e69e937e39/최종발표_ERD_간략화.png)
+![최종발표_ERD](/uploads/d134173fff8c618a7521814db9143fbf/최종발표_ERD.png)
 
 # 화면 정의서
 
