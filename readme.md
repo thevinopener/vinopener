@@ -1,10 +1,11 @@
-![header](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=180&section=header&text=VINOPENER&fontSize=32&animation=fadeIn&fontAlignY=36&fontColor=000000)
+![header](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=180&section=header&text=🍷%20VINOPENER&fontSize=32&animation=fadeIn&fontAlignY=36&fontColor=ffffff)
 
 <h2 align="center">
 차별성은 남다름이 아닌 나다움에서 온다. 관심이 취미가 되는 단, 하나의 서비스
 </h2>
+<br>
 <p align="center">
-<!-- <a href="https://ssafy.coffee">Visit Our Site</a> -->
+<a href="https://vinopener.netlify.app/">Download Our App</a>
 </p>
 
 ## 개발 기간
@@ -756,12 +757,11 @@ backend
 
 # 시스템 아키텍처
 
-![SystemArchitecture](/uploads/08ad96874b133486caa42f4c3ea726c7/SystemArchitecture.png)
 
 # ERD
+![최종발표_ERD_전체](/uploads/e1976c59ccc70b86901ff11e0ea142ec/최종발표_ERD_전체.png)
 
-![ERD]()
-
+![최종발표_ERD_간략화](/uploads/2266625693fa614943c996e69e937e39/최종발표_ERD_간략화.png)
 
 # 화면 정의서
 
@@ -777,112 +777,86 @@ backend
 
 ## 로그인
 
-![로그인]()
-#### 로그인
+#### 로그인 화면
+![로그인](/uploads/a4ffc581e546098dc64f44680dad9887/로그인전.gif)
 
-![로그인_온보딩](/uploads/7101834d1b0e80b18d25cd1cb44437ee/로그인_온보딩.gif)
 #### 로그인 온보딩 샘플
+![로그인_온보딩](/uploads/7101834d1b0e80b18d25cd1cb44437ee/로그인_온보딩.gif)
 
-![선호도조사](/uploads/59ff0dfcfcc6967c20f89ae4e21807f9/선호도조사.gif)
 #### 설문조사
+![선호도조사](/uploads/59ff0dfcfcc6967c20f89ae4e21807f9/선호도조사.gif)
 
 ---
 
 ## 추천
 
-![메인화면_구경](/uploads/8e4b710cf5f1f3fdcd7bf708f80322ac/메인화면_구경.gif)
 #### 메인화면
+![메인화면_구경](/uploads/8e4b710cf5f1f3fdcd7bf708f80322ac/메인화면_구경.gif)
 
-![와인_상세조회](/uploads/c420d1846a508c7876b25f59e114317a/와인_상세조회.gif)
 #### 와인상세조회
+![와인_상세조회](/uploads/c420d1846a508c7876b25f59e114317a/와인_상세조회.gif)
 
 ---
 
 ## 검색
 
-![와인_타입별_검색](/uploads/a33f4c5326dc56e8ca9ce96998335641/와인_타입별_검색.gif)
 #### 타입별검색
+![와인_타입별_검색](/uploads/a33f4c5326dc56e8ca9ce96998335641/와인_타입별_검색.gif)
 
-![와인_국가별_검색](/uploads/4a28a60c6543ea13e17a88629ecbf4d9/와인_국가별_검색.gif)
 #### 국가별검색
+![와인_국가별_검색](/uploads/4a28a60c6543ea13e17a88629ecbf4d9/와인_국가별_검색.gif)
 
-![문자검색]()
 #### 문자검색
+![문자검색](/uploads/361f0cdc8355c92926ab49afece4260a/문자검색.gif)
 
-![검색기록]()
 #### 검색기록
+![검색기록](/uploads/28a6c07f9d157c5ff3da8cee8be3a59a/검색기록.gif)
 
-![검색결과]()
 #### 검색결과
+![검색결과](/uploads/860563408fe7c29131570a084025daf4/검색결과.gif)
 
-![상세조회]()
 #### 상세조회
+![와인상세조회](/uploads/99cd6be5ac261df428f692f911b80ab7/와인상세조회.gif)
 
-![사진검색]()
-#### 사진검색
+#### 이미지 검색
+![OCR](/uploads/abf09a404f891df86b7f57dd0a853d7d/OCR_팀소유와인.gif)
 
 ---
 
 ## 피드
 
-![피드목록]()
 #### 피드목록
+![피드목록](/uploads/2d92a9d5d6c283545c190037a3d2451e/피드목록.gif)
 
-![피드작성]()
 #### 피드작성
-
-![피드공유]()
-#### 피드공유
+![피드작성](/uploads/7d0345757b3e1434866a39a6921db3fb/피드작성.gif)
 
 ---
 
 ## 테이스팅 노트
 
-![노트목록]()
 #### 노트목록
+![테노목록](/uploads/5dbe17f272eeb8203ed6aa780d9d2c9f/테노목록.gif)
 
-![노트작성 1단계]()
-#### 노트작성 (1/4)
+#### 일반 노트 작성
+![일반 노트 작성](/uploads/5c88a527da69bb81a0f2caff2a38cb62/테노-수기작성.gif)
 
-![노트작성 2단계]()
-#### 노트작성 (2/4)
-
-![노트작성 3단계]()
-#### 노트작성 (3/4)
-
-![노트작성 4단계]()
-#### 노트작성 (4/4)
-
-![음성노트작성 1단계]()
-#### 음성노트작성 (1/4)
-
-![음성노트작성 2단계]()
-#### 음성노트작성 (2/4)
-
-![음성노트작성 3단계]()
-#### 음성노트작성 (3/4)
-
-![음성노트작성 4단계]()
-#### 음성노트작성 (4/4)
+#### AI 음성 노트작성 (1/4)
+![AI 음성 노트 작성](/uploads/a3a3d260a47440e30b465c6611a23b1e/테이스팅노트-AI_2배속.gif)
 
 ---
 
 ## 마이페이지
 
-![피드목록]()
-#### 내 피드 목록
+### 피드 / 즐겨찾기 / 셀러
+![마페-피드_북마크_셀러](/uploads/252466d0607babb01ea691ab39244630/마페-피드_북마크_셀러.gif)
 
-![피드삭제]()
 #### 피드삭제
+![피드삭제](/uploads/05e212daa874b10592d7088207342f5e/피드삭제.gif)
 
-![즐겨찾기]()
-#### 즐겨찾기
-
-![셀러]()
-#### 셀러
-
-![로그아웃]()
 #### 로그아웃
+![로그아웃](/uploads/e6aca5fc2948c385500540da55e62bff/로그아웃.gif)
+
 
 ---
 
@@ -946,3 +920,156 @@ backend
 
 
 # 컨벤션
+
+<details>
+<summary>
+<b>GIT</b>
+</summary>
+
+# Workflow
+
+1. 양식에 맞춰 이슈를 생성합니다.
+2. 컨벤션에 따라 브랜치를 생성합니다.
+3. 컨벤션에 따라 커밋을 작성합니다.
+4. 양식에 맞춰 머지 리퀘스트를 생성합니다.
+
+# Branch
+
+| 브랜치 이름 | 설명 |
+| --- | --- |
+| main | 기본 브랜치 |
+| feat/{issue}-{part}-{feature}
+ex ) feat / 1 - {be} - { login } | 기능 구현을 위해 생성하는 브랜치
+e.g. 깃랩 이슈 69번에 해당하고 백엔드에서 로그인 API를 구현하는 경우
+→ feat/69-be-login-api |
+| hotfix/{yyyymmdd}-{number} | 배포 후 긴급 수정을 위해 생성하는 브랜치
+e.g. 2024년 4월 8일에 두 번, 2024년 4월 9일에 한 번 생성하는 경우
+→ hotfix/20240408-1, hotfix/20240408-2, hotfix/20240409-1 |
+- 브랜치 이름은 소문자, 숫자, `/-`만 허용합니다.
+- 대문자나 `_`를 사용하지 마세요.
+- `/`는 딱 한 번만 쓰세요.
+- **절대절대절대 main에서 feat로 merge하면 안됩니다.**
+    - 대신 **rebase(fast-forward merge)**를 사용하세요.
+
+### main
+
+- 이 브랜치에서 직접 커밋하지 않습니다. (순수 문서 작업 제외)
+- 반드시 GitLab의 Merge Request 기능을 통해 병합합니다.
+
+### feat
+
+- `issue`: 깃랩 이슈 번호
+- `part`: 역할 (be, fe, infra, etc 등)
+- `feature`: 기능이나 식별하기 편한 이름
+
+### hotfix
+
+- `yyyymmdd`: 오늘 날짜
+- `number`: 오늘 핫픽스 순번
+
+# Commit
+
+커밋 메시지 구조는 다음과 같습니다.
+
+```
+type: subject (#issue)
+
+body ← 생략 가능
+
+footer ← 생략 가능
+```
+
+- `[#issue] type: subject`과 `body`, 그리고 `footer` 사이에는 개행(`\n`)이 반드시 2개 들어갑니다.
+- e.g.
+    
+    ```
+    refactor: 로그인 서비스의 쓸모없는 조건문 삭제 (#70)
+    
+    왜 쓸모없는 조건문인가?
+    데드라인을 넘겨서 OAuth2 구현을 하지 않기로 했는데,
+    이 코드는 OAuth2를 위한 코드기 때문이다.
+    
+    Close #70
+    Co-Authored-By: 양희승 <heeseung0223@naver.com>
+    ```
+    
+
+### type: subject (#issue)
+
+- `type`: **주요 수정사항이 무엇인가?**
+    - 자주 사용
+        - `feat`: 기능 추가
+        - `fix`: 버그 수정
+        - `refactor`: 기능 개선 (코드를 얼마나 썼는지와 상관 없이 기능 추가가 아니면)
+        - `build`: 빌드 관련 (빌드 스크립트 수정, 패키지 추가, 버전 업데이트 등)
+        - `docs`: 문서 작업 (리드미, 산출물, 주석)
+        - `chore`: 분류하기 애매한 노잼 작업들 → ex) DB 작업 등
+    - 가끔 사용
+        - `test`: 테스트 코드 추가
+        - `style`: 코드 스타일 적용 → ex) 코딩 컨벤션
+        - `revert`: 예전 코드로 롤백
+        - `rename`: 파일 이름 변경
+        - `remove`: 파일 삭제
+        - `TEMP`: 임시용 (main 브랜치에 병합하면 안됩니다)
+- `subject`: 한국어로 간결하고 명확하게 커밋 내용 요약 (50자 이내)
+- `issue`: 깃랩 이슈 번호
+
+### body
+
+**이 커밋이 왜 필요한지** 설명할 때 적습니다.
+
+- e.g. refactor 왜 했음? rename 왜 했음? revert 왜 했음? remove 왜 했음?
+- 이 커밋을 어떻게 구현했는지 ← 이거 필요 없음
+
+### footer
+
+주로 커밋의 부가기능을 활용하고자 할 때 적습니다.
+
+- `Close #n`: 커밋과 동시에 n번 이슈를 자동으로 닫고 싶을 때
+- `Co-Authored-By: name <email>`: 공동으로 작업한 사람을 표시하고 싶을 때
+
+# GitLab Issue
+
+기본적으로 아래 양식을 사용합니다. 대충 적어도 되는데 이슈 생성은 필수입니다. 여기서 생성된 이슈 번호를 사용합니다.
+
+```markdown
+## Summary
+
+이슈요약
+
+## Todos
+
+- [ ] 할일
+- [ ] 또할일
+
+```
+
+# GitLab Merge Request
+
+기본적으로 아래 양식을 사용합니다. 대충 적어도 되는데 이슈 번호는 필수입니다.
+
+```markdown
+## Summary
+
+%{first_multiline_commit}
+
+## Issue
+
+- #69
+
+## Checklist
+
+- [ ] 깃 컨벤션
+- [ ] 코드 스타일
+- [ ] 로컬 테스트
+- [ ] 코드 리뷰
+
+## Screenshots
+
+| Before | After  |
+| ------ | ------ |
+|        |        |
+
+```
+
+</details>
