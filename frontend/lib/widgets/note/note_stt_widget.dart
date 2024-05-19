@@ -44,13 +44,22 @@ class SttWidgetState extends State<SttWidget> {
     });
   }
 
+  @override
+  void dispose() {
+    _flutterTts.stop();
+    _speech.stop();
+    super.dispose();
+  }
+
   void _updateQuestionText() {
+    if (!mounted) return;
     setState(() {
       _questionText = "${titles[_currentPage]}은 어떠합니까?";
     });
   }
 
   void _promptUser() async {
+    if (!mounted) return;
     await _speak(_questionText);
   }
 
@@ -64,12 +73,14 @@ class SttWidgetState extends State<SttWidget> {
 
   void _onSpeechStatus(String status) {
     print('STT Status: $status');
+    if (!mounted) return;
     setState(() {
       _isListening = status == "listening";
     });
   }
 
   void _onSpeechError(SpeechRecognitionError error) {
+    if (!mounted) return;
     setState(() {
       _questionText = error.errorMsg == "error_speech_timeout" && error.permanent
           ? "다시 말씀해주세요."
@@ -83,6 +94,7 @@ class SttWidgetState extends State<SttWidget> {
     _flutterTts.setPitch(1.0);
     _flutterTts.setStartHandler(() {
       print("TTS Start");
+      if (!mounted) return;
       setState(() {
         _isSpeaking = true;
       });
@@ -93,6 +105,7 @@ class SttWidgetState extends State<SttWidget> {
 
     _flutterTts.setCompletionHandler(() {
       print("TTS Complete");
+      if (!mounted) return;
       setState(() {
         _isSpeaking = false;
       });
@@ -105,6 +118,7 @@ class SttWidgetState extends State<SttWidget> {
   }
 
   Future<void> _speak(String text) async {
+    if (!mounted) return;
     if (text.isNotEmpty) {
       _questionText = text;
       await _flutterTts.speak(text);
@@ -113,6 +127,7 @@ class SttWidgetState extends State<SttWidget> {
 
   void _startListening() {
     _speech.initialize().then((available) {
+      if (!mounted) return;
       setState(() => _isListening = available);
       if (available) {
         _speech.listen(
@@ -122,6 +137,7 @@ class SttWidgetState extends State<SttWidget> {
           pauseFor: Duration(seconds: 5),
         );
       } else {
+        if (!mounted) return;
         setState(() => _isListening = false);
         print('The user has denied the use of speech recognition.');
       }
@@ -130,6 +146,7 @@ class SttWidgetState extends State<SttWidget> {
 
   void _handleResult(SpeechRecognitionResult result) {
     if (result.finalResult) {
+      if (!mounted) return;
       setState(() {
         _answerText = result.recognizedWords;
       });
@@ -154,6 +171,7 @@ class SttWidgetState extends State<SttWidget> {
     );
     AiChat aiChat = AiChat(state: noteState, message: text);
     AiChatService.postAiChat(aiChat).then((AiAnswer aiAnswer) {
+      if (!mounted) return;
       noteId = aiAnswer.id;
       noteProvider.updateNoteProvider(
         colorId: aiAnswer.newState.color.id,
@@ -172,6 +190,7 @@ class SttWidgetState extends State<SttWidget> {
       _speak(aiAnswer.message);
       _navigateToSection(aiAnswer.section);
     }).catchError((error) {
+      if (!mounted) return;
       setState(() {
         _questionText = error.toString().contains("COLOR_NOT_FOUND")
             ? "입력하신 색상을 찾을 수 없습니다. 다시 입력해 주세요."
@@ -201,9 +220,11 @@ class SttWidgetState extends State<SttWidget> {
       if (nextPage == 4) {
         postNote();
       } else if (nextPage == 5) {
+        stopTtsAndStt();
         Navigator.of(context).pop();
       } else {
         widget.onPageChangeRequest(nextPage);
+        if (!mounted) return;
         setState(() {
           _promptUser();
           _currentPage = nextPage;
@@ -224,14 +245,14 @@ class SttWidgetState extends State<SttWidget> {
       await NoteService.createNote(noteProvider);
 
       noteProvider.reset();
-      Future.delayed(
-        Duration(seconds: 3),
-            () {
-              Navigator.popUntil(context, (route) => route.isFirst);
-        },
-      );
+      if (!mounted) return;
+      Navigator.popUntil(context, (route) => route.isFirst);
 
     } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _questionText = "오류가 발생했습니다. 다시 시도해 주세요.";
+      });
       print("Error posting note: $e");
     }
   }
@@ -239,6 +260,7 @@ class SttWidgetState extends State<SttWidget> {
   void stopTtsAndStt() {
     _flutterTts.stop();
     _speech.stop();
+    if (!mounted) return;
     setState(() {
       _isListening = false;
       _isSpeaking = false;
@@ -263,7 +285,6 @@ class SttWidgetState extends State<SttWidget> {
               maxLines: 2, // 최대 두 줄로 제한
               overflow: TextOverflow.ellipsis, // 넘치는 텍스트를 ...으로 표시
             ),
-
           ),
           Container(
             height: MediaQuery.of(context).size.height * 0.2,
