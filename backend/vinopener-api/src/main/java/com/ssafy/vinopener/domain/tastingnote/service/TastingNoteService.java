@@ -72,14 +72,14 @@ public class TastingNoteService {
         AssistantThreadEntity assistantThreadEntity
                 = assistantThreadRepository.findByUserId(userId).orElse(null);
 
-//        if (assistantThreadEntity != null) {
-//            try {
-//                assistantStream.cleanConversation(assistantThreadEntity.getThreadId());
-//            } catch (Exception e) {
-//                log.info("e : {}", e.toString());
-//            }
-//
-//        }
+        if (assistantThreadEntity != null) {
+            try {
+                assistantStream.cleanConversation(assistantThreadEntity.getThreadId());
+            } catch (Exception e) {
+                log.info("e : {}", e.toString());
+            }
+
+        }
         assistantThreadRepository.deleteAllByUserId(userId);
 
         return tastingNoteRepository.findAllByUserId(userId).stream()
