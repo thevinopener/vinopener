@@ -37,7 +37,7 @@ class _NoteScreenState extends State<NoteScreen> {
     try {
       final noteProvider = Provider.of<NoteProvider>(context, listen: false);
       final noteWineProvider =
-          Provider.of<NoteWineProvider>(context, listen: false);
+      Provider.of<NoteWineProvider>(context, listen: false);
       final Wine? wine = noteWineProvider.getWine();
       print(wine);
       if (wine == null) {
@@ -61,6 +61,7 @@ class _NoteScreenState extends State<NoteScreen> {
         currentPage: _currentPage,
         onPageChangeRequest: (page) {
           _controller.jumpToPage(page);
+          if (!mounted) return;
           setState(() {
             _currentPage = page;
           });
@@ -73,9 +74,16 @@ class _NoteScreenState extends State<NoteScreen> {
     if (_currentPage < 3) {
       _controller.nextPage(
           duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+      if (!mounted) return;
       setState(() {
         _currentPage++;
       });
+    }
+  }
+
+  void _popToFirst(BuildContext context) {
+    while (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
     }
   }
 
@@ -103,7 +111,8 @@ class _NoteScreenState extends State<NoteScreen> {
         centerTitle: true,
         leading: TextButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            Provider.of<NoteProvider>(context, listen: false).reset();
+            _popToFirst(context);
           },
           child: Text(
             '이전',
@@ -122,9 +131,12 @@ class _NoteScreenState extends State<NoteScreen> {
               size: 24,
             ),
             onPressed: () {
-              // SttWidgetState의 stopTtsAndStt 메서드를 호출
-              Provider.of<NoteProvider>(context, listen: false).reset();
-              Navigator.popUntil(context, (route) => route.isFirst);
+              try {
+                Provider.of<NoteProvider>(context, listen: false).reset();
+              } catch (e) {
+                print('Failed to reset note provider: $e');
+              }
+              _popToFirst(context);
             },
           ),
         ],
@@ -142,6 +154,7 @@ class _NoteScreenState extends State<NoteScreen> {
               child: PageView(
                 controller: _controller,
                 onPageChanged: (page) {
+                  if (!mounted) return;
                   setState(() {
                     _currentPage = page;
                   });
