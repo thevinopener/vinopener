@@ -124,7 +124,7 @@ public class BookmarkController {
     public ResponseEntity<Void> deleteByWineId(
             @PathVariable final Long wineId,
             @UserPrincipalId final Long userId) {
-        bookmarkService.deleteByWineId(wineId, userId);
+        bookmarkService.deleteByWineId(userId, wineId);
         return ResponseEntity.noContent().build();
     }
 

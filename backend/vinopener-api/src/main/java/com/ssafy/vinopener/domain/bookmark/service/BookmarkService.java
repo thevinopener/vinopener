@@ -14,6 +14,7 @@ import com.ssafy.vinopener.domain.wine.repository.WineRepository;
 import com.ssafy.vinopener.global.exception.VinopenerException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BookmarkService {
 
     private final BookmarkRepository bookmarkRepository;
@@ -44,7 +46,7 @@ public class BookmarkService {
         var wine = wineRepository.findById(bookmarkCreateRequest.wineId())
                 .orElseThrow(() -> new VinopenerException(WineErrorCode.WINE_NOT_FOUND));
 
-        if (bookmarkRepository.existsByWineIdAndUserId(wine.getId(),userId)) {
+        if (bookmarkRepository.existsByWineIdAndUserId(wine.getId(), userId)) {
             throw new VinopenerException(BookmarkErrorCode.BOOKMARK_ALREADY_EXISTS);
         }
 
@@ -79,7 +81,6 @@ public class BookmarkService {
             bookmarkRepository.deleteByWineIdAndUserId(wineId, userId);
             return;
         }
-
         throw new VinopenerException(BookmarkErrorCode.NOT_BOOKMARKED_WINE);
     }
 
