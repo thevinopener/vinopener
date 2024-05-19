@@ -80,6 +80,7 @@ public class AiChatService {
             final AiChatCreateRequest aiChatCreateRequest,
             final Long userId
     ) {
+        //responseState;
         final var requestState = aiChatCreateRequest.state();
 
         final AiChatCreateUserMessageInfo userMessageInfo = AiChatCreateUserMessageInfo.builder()
