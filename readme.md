@@ -5,7 +5,7 @@
 </h2>
 <br>
 <p align="center">
-<a href="https://vinopener.netlify.app/">Download Our App</a>
+<b><a href="https://vinopener.netlify.app/">Download Our App</a></b>
 </p>
 
 ## 개발 기간
@@ -756,10 +756,10 @@ backend
 </details>
 
 # 시스템 아키텍처
-![시스템아키텍처](/uploads/e013dabdbad183f6d6152fd8613b4319/시스템아키텍처.png)
+![시스템아키텍처](https://github.com/thevinopener/vinopener/assets/33312417/5c1c5a84-1eb4-44ed-bbcc-4a1b781d35a7)
 
 # ERD
-![최종발표_ERD](/uploads/d134173fff8c618a7521814db9143fbf/최종발표_ERD.png)
+![최종발표_ERD](https://github.com/thevinopener/vinopener/assets/33312417/1b956281-753f-4fd2-bbbe-b3d5738b772e)
 
 # 화면 정의서
 
@@ -767,97 +767,80 @@ backend
 
 ### 전체 와이어 프레임
 
-![WireFrame](/uploads/b20770906a74f202649025aefc6b573b/WireFrame.png)
+![WireFrame](https://github.com/thevinopener/vinopener/assets/33312417/594853b9-2988-45a9-8f67-1496053f65c1)
 
-
----
 # 사용자 화면
 
 ## 로그인
 
 #### 로그인 화면
-![로그인](/uploads/a4ffc581e546098dc64f44680dad9887/로그인전.gif)
+![로그인](https://github.com/thevinopener/vinopener/assets/33312417/376974f1-5f3c-40ae-8a9e-1960e2f97f84)
 
 #### 로그인 온보딩 샘플
-![로그인_온보딩](/uploads/7101834d1b0e80b18d25cd1cb44437ee/로그인_온보딩.gif)
+![로그인_온보딩](https://github.com/thevinopener/vinopener/assets/33312417/0676524b-d4f9-482b-9cd3-ebde8d1e5522)
 
-#### 설문조사
-![선호도조사](/uploads/59ff0dfcfcc6967c20f89ae4e21807f9/선호도조사.gif)
+#### 선호도 조사
+![선호도조사](https://github.com/thevinopener/vinopener/assets/33312417/fee4fff9-d0b9-4a24-9dae-938aa1e85b39)
 
----
+
 
 ## 추천
 
 #### 메인화면
-![메인화면_구경](/uploads/8e4b710cf5f1f3fdcd7bf708f80322ac/메인화면_구경.gif)
-
-#### 와인상세조회
-![와인_상세조회](/uploads/c420d1846a508c7876b25f59e114317a/와인_상세조회.gif)
-
----
+![메인화면_구경](https://github.com/thevinopener/vinopener/assets/33312417/21595983-a8f4-4fbd-b621-a3f6eb1a10ae)
 
 ## 검색
 
-#### 타입별검색
-![와인_타입별_검색](/uploads/a33f4c5326dc56e8ca9ce96998335641/와인_타입별_검색.gif)
+#### 타입별 검색
+![와인_타입별_검색](https://github.com/thevinopener/vinopener/assets/33312417/f294e35c-a212-44a4-ae43-45b72fef32d0)
 
-#### 국가별검색
-![와인_국가별_검색](/uploads/4a28a60c6543ea13e17a88629ecbf4d9/와인_국가별_검색.gif)
+#### 국가별 검색
+![와인_국가별_검색](https://github.com/thevinopener/vinopener/assets/33312417/db29fa71-c201-4199-bce2-c904354885c8)
 
-#### 문자검색
-![문자검색](/uploads/361f0cdc8355c92926ab49afece4260a/문자검색.gif)
+#### 문자 검색
+![문자 검색](https://github.com/thevinopener/vinopener/assets/33312417/fcd034de-b645-4ed9-b309-61b0b7b65707)
 
-#### 검색기록
-![검색기록](/uploads/28a6c07f9d157c5ff3da8cee8be3a59a/검색기록.gif)
+#### 검색 기록
+![검색 기록](https://github.com/thevinopener/vinopener/assets/33312417/4e3e2f68-3866-464a-83a2-27c67a12e48c))
 
-#### 검색결과
-![검색결과](/uploads/860563408fe7c29131570a084025daf4/검색결과.gif)
+#### 검색 결과
+![검색 결과](https://github.com/thevinopener/vinopener/assets/33312417/2dc49aae-1ce8-4228-ab5a-944b31a0b816)
 
-#### 상세조회
-![와인상세조회](/uploads/99cd6be5ac261df428f692f911b80ab7/와인상세조회.gif)
+#### 상세 조회
+![와인 상세조회](https://github.com/thevinopener/vinopener/assets/33312417/ea1a39f0-da53-4286-8eb1-1124fbc7d091)
 
 #### 이미지 검색
-![OCR](/uploads/abf09a404f891df86b7f57dd0a853d7d/OCR_팀소유와인.gif)
-
----
+![OCR](https://github.com/thevinopener/vinopener/assets/33312417/a2c600cf-87ed-4aac-aa83-a6851e60c405)
 
 ## 피드
 
-#### 피드목록
-![피드목록](/uploads/2d92a9d5d6c283545c190037a3d2451e/피드목록.gif)
+#### 피드 목록
+![피드목록](https://github.com/thevinopener/vinopener/assets/33312417/270f8655-2d3c-4871-9913-eacb729d3624)
 
-#### 피드작성
-![피드작성](/uploads/7d0345757b3e1434866a39a6921db3fb/피드작성.gif)
-
----
+#### 피드 작성
+![피드작성](https://github.com/thevinopener/vinopener/assets/33312417/e68c1789-2d0d-4484-847a-dded8bb47457)
 
 ## 테이스팅 노트
 
-#### 노트목록
-![테노목록](/uploads/5dbe17f272eeb8203ed6aa780d9d2c9f/테노목록.gif)
+#### 노트 목록
+![테노목록](https://github.com/thevinopener/vinopener/assets/33312417/f3354a5f-b6eb-4f4c-8e71-4635fde03057)
 
 #### 일반 노트 작성
-![일반 노트 작성](/uploads/5c88a527da69bb81a0f2caff2a38cb62/테노-수기작성.gif)
+![일반 노트 작성](https://github.com/thevinopener/vinopener/assets/33312417/0e180fdb-ad70-4aef-a143-1255e6676a88)
 
-#### AI 음성 노트작성 (1/4)
-![AI 음성 노트 작성](/uploads/a3a3d260a47440e30b465c6611a23b1e/테이스팅노트-AI_2배속.gif)
-
----
+#### AI 음성 노트작성
+![AI 음성 노트 작성](https://github.com/thevinopener/vinopener/assets/33312417/0f61932f-976d-4f0b-9539-15fb7bde5f4a)
 
 ## 마이페이지
 
 ### 피드 / 즐겨찾기 / 셀러
-![마페-피드_북마크_셀러](/uploads/252466d0607babb01ea691ab39244630/마페-피드_북마크_셀러.gif)
+![마페-피드_북마크_셀러](https://github.com/thevinopener/vinopener/assets/33312417/1758bd70-fff2-42cb-8605-9c5a9067b47e)
 
-#### 피드삭제
-![피드삭제](/uploads/05e212daa874b10592d7088207342f5e/피드삭제.gif)
+#### 피드 삭제
+![피드삭제](https://github.com/thevinopener/vinopener/assets/33312417/94f3249d-127c-43bd-b0a3-80163ac389a6)
 
 #### 로그아웃
-![로그아웃](/uploads/e6aca5fc2948c385500540da55e62bff/로그아웃.gif)
-
-
----
-
+![로그아웃](https://github.com/thevinopener/vinopener/assets/33312417/3f86bb81-8c32-4bc0-a323-f6f2156bfb0f)
 
 ## 서비스 소개 (주요 기능)
 
@@ -892,19 +875,20 @@ backend
 
 - 피드
 
-  - 피드작성
-  - 피드목록조회
+  - 피드 작성
+  - 피드 목록조회
   - 게시글 좋아요
   - 피드 공유
-  - 피드삭제
+  - 피드 삭제
 
 - 테이스팅노트
   - 작성목록조회
-  - 작성: 와인색 선택 (1/4)
-  - 작성: 와인향 선택 (2/4)
-  - 작성: 와인맛 선택 (바디감/당도/산미/알코올감/타닌) (3/4)
-  - 작성: 와인 총평작성 (의견/별점) (4/4)
-  - 작성: AI Assistant
+  - 일반 작성
+    1. 와인색 선택
+    2. 와인향 선택
+    3. 와인맛 선택(바디감 / 당도 / 산미 / 알코올감 / 탄닌)
+    4. 와인 총평작성(의견 / 별점)
+  - AI 작성(AI Assistant)
 
 - 마이페이지
   - 내 피드목록 조회
